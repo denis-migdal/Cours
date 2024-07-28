@@ -6,8 +6,57 @@
         <script type="module" src="./index.js" defer></script>
     </head>
     <body>
-<div id='menu'>
-</div>
+        <style>
+            body {
+                display:flex;
+                flex-direction: column;
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+            main {
+                margin: 0 12px;
+                position: relative;
+                overflow-y: auto;
+            }
+            header {
+                z-index: 1;
+                margin-left: 50px;
+                font-weight: bold;
+                & > span {
+                    position: relative;
+                }
+                & > span:not(:hover) > .menu {
+                    display: none;
+                }
+                & > span > .menu {
+                    position: absolute;
+                    bottom: 0;
+                    transform: translate(0, 100%);
+                    left: 0;
+                    background-color: black;
+                    border: 1px solid gray;
+                    border-top: none;
+                    & > a {
+                        display: block;
+                        white-space: nowrap;
+                        padding: 5px 10px;
+                        &:hover {
+                            background-color: #222;
+                        }
+                    }
+                }
+                & > span::before {
+                    content: " > "
+                }
+                & > span:hover::before {
+                    content: " v "
+                }
+            }
+        </style>
+        <header></header>
+        <main>
+<div id='menu' style="display:none"></div>
 
 <todo> 
 
@@ -21,7 +70,7 @@ Détails:
   - espace moodle (avec navigation)
   - slides PDF LaTeX.
   - cheat-sheet...
-  
+
 <!--
 
 CM3
@@ -2394,92 +2443,6 @@ SELECT $COLS FROM T1 INNER JOIN T2 USING(?);
 
 </sql-interactive>
 
-# Autre
-
-## Idées TD
-
-### TD3
-
-Comment bien choisir les clef primaires/étrangères
-Comment bien découper en tables (conception), dépendance fonctionnelle (?).
-
-## Idées TP
-
-### TP1
-
-- tester WHERE et autres avec SELECT avant de tenter un UPDATE/DELETE.
-
-#### Interface pgAdmin ?
-
-#### Quelques commandes SQLite ? (prise en main)
-
-Quelques unes en TP2/3/4 en fonction des besoins ?
-
-Config show headers : https://stackoverflow.com/questions/5924149/how-to-configure-sqlite-to-display-headers-by-default
-
-.databases / .fullschema/.schema / .tables
-
-+ .mode (exports) / .dump  // .import
-
-+ .read / + .shell / .save
-
-+ .timer on (?)
-  https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html
-
-.help
-
-### TP2
-
-Voir les autres pré-traitements
-
-### TP3
-
-import/export/save table (schema/data)
-  -> as SQL
-  -> as CSV
-  ?
-
-soundex ? (détecter fautes de frappes ?) / levenstein ?
-
-Bonnes pratiques :
-
-- PRAGMA optimize;  / OPTIMIZE => avant chaque fermeture de la database.
-
-- FK : on delete/on update/cascade.
-
-#### TP4
-
-- IN vs JOIN
-  -> join qui retourne plusieurs résultats identique, puis un autre join (=> grosse table avec duplicats).
-  -> vs in (subquery).
-  ==> compter nombre de lignes.
-  ==> comparer vitesse exec sur tables grosses.
-
-## BDR2 ?
-
-Teasing BDR2 ?
-
-- TP ou BDR2 : https://sql.sh/fonctions/soundex
-- BDR2 : vues, droits d'accès, pl/sql/procédures ? / transactions / prepare / injections et protection ? / chiffrer BDD entière / hooks
-  algèbre relationnelle [TD ou BR2] ?
-
-avec transactions : gestion des erreurs
-    ON CONFLICT 
-      => que faire si erreur.
-        => ROLLBACK (default ?)
-        => ABORT : n'annule pas prev query de la transaction
-        => FAIL : echec seulement sur la ligne concernée (autres lignes modifiée requête pas annulée)
-        => IGNORE
-        => REPLACE : idx/unique thing.
-
-=> Vues (+ INSERT/DELETE/UPDATE on views ???)
-
-=> Triggers (reject some SQL queries ???)
-
-## Autres documents ?
-
-Recap / SQL (cheat sheet ?)
-
 <!--
   Non-correlated:
     - initialState : X in (....) // compute the list/value...
@@ -2513,5 +2476,7 @@ Recap / SQL (cheat sheet ?)
     -> 1 line T1 + lines T2 => produce final if cond matches.
     -> iterate T1 (+ empty "line")
 -->
-</body>
+
+</main>
+    </body>
 </html>

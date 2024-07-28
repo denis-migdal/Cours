@@ -6,8 +6,57 @@
         <script type="module" src="./index.js" defer></script>
     </head>
     <body>
-<div id='menu'>
-</div>
+        <style>
+            body {
+                display:flex;
+                flex-direction: column;
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+            main {
+                margin: 0 12px;
+                position: relative;
+                overflow-y: auto;
+            }
+            header {
+                z-index: 1;
+                margin-left: 50px;
+                font-weight: bold;
+                & > span {
+                    position: relative;
+                }
+                & > span:not(:hover) > .menu {
+                    display: none;
+                }
+                & > span > .menu {
+                    position: absolute;
+                    bottom: 0;
+                    transform: translate(0, 100%);
+                    left: 0;
+                    background-color: black;
+                    border: 1px solid gray;
+                    border-top: none;
+                    & > a {
+                        display: block;
+                        white-space: nowrap;
+                        padding: 5px 10px;
+                        &:hover {
+                            background-color: #222;
+                        }
+                    }
+                }
+                & > span::before {
+                    content: " > "
+                }
+                & > span:hover::before {
+                    content: " v "
+                }
+            }
+        </style>
+        <header></header>
+        <main>
+<div id='menu' style="display:none"></div>
 
 <todo> 
 
@@ -2002,73 +2051,6 @@ celles de l&#39;entrée de <code>$T1</code>. Ainsi, contrairement au produit car
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> T2 <span class="hljs-keyword">USING</span>(?);
 </code></pre></sql-interactive>
 
-<h1 id="autre">Autre</h1>
-<h2 id="idées-td">Idées TD</h2>
-<h3 id="td3">TD3</h3>
-<p>Comment bien choisir les clef primaires/étrangères
-Comment bien découper en tables (conception), dépendance fonctionnelle (?).</p>
-<h2 id="idées-tp">Idées TP</h2>
-<h3 id="tp1">TP1</h3>
-<ul>
-<li>tester WHERE et autres avec SELECT avant de tenter un UPDATE/DELETE.</li>
-</ul>
-<h4 id="interface-pgadmin-">Interface pgAdmin ?</h4>
-<h4 id="quelques-commandes-sqlite--prise-en-main">Quelques commandes SQLite ? (prise en main)</h4>
-<p>Quelques unes en TP2/3/4 en fonction des besoins ?</p>
-<p>Config show headers : <a href="https://stackoverflow.com/questions/5924149/how-to-configure-sqlite-to-display-headers-by-default">https://stackoverflow.com/questions/5924149/how-to-configure-sqlite-to-display-headers-by-default</a></p>
-<p>.databases / .fullschema/.schema / .tables</p>
-<ul>
-<li><p>.mode (exports) / .dump  // .import</p>
-</li>
-<li><p>.read / + .shell / .save</p>
-</li>
-<li><p>.timer on (?)
-<a href="https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html">https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html</a></p>
-</li>
-</ul>
-<p>.help</p>
-<h3 id="tp2">TP2</h3>
-<p>Voir les autres pré-traitements</p>
-<h3 id="tp3">TP3</h3>
-<p>import/export/save table (schema/data)
-  -&gt; as SQL
-  -&gt; as CSV
-  ?</p>
-<p>soundex ? (détecter fautes de frappes ?) / levenstein ?</p>
-<p>Bonnes pratiques :</p>
-<ul>
-<li><p>PRAGMA optimize;  / OPTIMIZE =&gt; avant chaque fermeture de la database.</p>
-</li>
-<li><p>FK : on delete/on update/cascade.</p>
-</li>
-</ul>
-<h4 id="tp4">TP4</h4>
-<ul>
-<li>IN vs JOIN
--&gt; join qui retourne plusieurs résultats identique, puis un autre join (=&gt; grosse table avec duplicats).
--&gt; vs in (subquery).
-==&gt; compter nombre de lignes.
-==&gt; comparer vitesse exec sur tables grosses.</li>
-</ul>
-<h2 id="bdr2-">BDR2 ?</h2>
-<p>Teasing BDR2 ?</p>
-<ul>
-<li>TP ou BDR2 : <a href="https://sql.sh/fonctions/soundex">https://sql.sh/fonctions/soundex</a></li>
-<li>BDR2 : vues, droits d&#39;accès, pl/sql/procédures ? / transactions / prepare / injections et protection ? / chiffrer BDD entière / hooks
-algèbre relationnelle [TD ou BR2] ?</li>
-</ul>
-<p>avec transactions : gestion des erreurs
-    ON CONFLICT 
-      =&gt; que faire si erreur.
-        =&gt; ROLLBACK (default ?)
-        =&gt; ABORT : n&#39;annule pas prev query de la transaction
-        =&gt; FAIL : echec seulement sur la ligne concernée (autres lignes modifiée requête pas annulée)
-        =&gt; IGNORE
-        =&gt; REPLACE : idx/unique thing.</p>
-<p>=&gt; Vues (+ INSERT/DELETE/UPDATE on views ???)</p>
-<p>=&gt; Triggers (reject some SQL queries ???)</p>
-<h2 id="autres-documents-">Autres documents ?</h2>
-<p>Recap / SQL (cheat sheet ?)</p>
 <!--
   Non-correlated:
     - initialState : X in (....) // compute the list/value...
@@ -2102,5 +2084,7 @@ algèbre relationnelle [TD ou BR2] ?</li>
     -> 1 line T1 + lines T2 => produce final if cond matches.
     -> iterate T1 (+ empty "line")
 -->
-</body>
+
+</main>
+    </body>
 </html>

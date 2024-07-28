@@ -291,8 +291,6 @@ class SQLInteractive extends LISS({
     constructor() {
         super();
 
-        console.warn("upgrade");
-
         this.#result   = this.content.querySelector(".result");
         this.#query    = this.content.querySelector(".query");
         this.#options  = this.content.querySelector(".options");
@@ -459,8 +457,6 @@ class SQLInteractive extends LISS({
 
     #execQuery() {
 
-        console.warn("exec");
-
         let table_created  = [];
         let table_modified = false;
 
@@ -537,9 +533,6 @@ class SQLInteractive extends LISS({
             results.push(message);
 
         } finally {
-
-
-            console.warn("update results");
 
             this.updateResult(exec_queries, results);
 
