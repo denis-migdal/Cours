@@ -9,21 +9,11 @@
 <div id='menu'>
 </div>
 
-<todo>
-4x (2h CM + 2h TD) + 6x2h TP.
-
-Documentation ?
-  - git add file/-u + git push => 
+<todo> 
 
 Contenu:
-  - cf commentaires en HTML.
-  - CM1 : exemple animé de l'ordre d'exécution...
-  - CM3 : ?
-
-Structure:
-  - Exemples:
+    - cf comments
     - corriger exemples JOIN.
-    - $XXX fix in inline (?) code.
 
 Détails:
   - publier lib...
@@ -31,14 +21,7 @@ Détails:
   - espace moodle (avec navigation)
   - slides PDF LaTeX.
   - cheat-sheet...
-
-  - PDF export :
-    - gérer les exemples de code (cacher output ou dupliquer en JS ?)
-  - remplacer $ par cadre dans codes non-démos.
-  - menu + joli
-  - Warnings plus visuels
-
-
+  
 <!--
 
 CM3
@@ -59,7 +42,7 @@ CM4
 
 6. op d'ensembles : tables decoupé e.g. années (pour des raisons de perfs) => faire des op dessus.
 
-- UNION : même # colonne et idéalement même structure (?)
+1. UNION : même # colonne et idéalement même structure (?)
 
 - exemples dynamiques/animés (jointures/cartésien).
 
@@ -83,8 +66,6 @@ CM4
       -> build result table below, one line by one.
 -->
 </todo>
-
-[[toc]]
 
 # CM1
 

@@ -8,6 +8,9 @@ const titres = document.querySelectorAll(titles_selector);
 
 const lists = [document.createElement('ol')];
 
+if( isMultiCM )
+    lists[0].setAttribute('type', 'I'); 
+
 for(let titre of titres) {
 
     const item = document.createElement('li');
@@ -23,7 +26,7 @@ for(let titre of titres) {
         case 'H1':
             list = lists[0];
             lists[1] = document.createElement('ol');
-            lists[1].setAttribute('type', 'a'); // ?
+            lists[1].setAttribute('type', '1'); // ?
             item.append(lists[1]);
         break;
         case 'H2':
