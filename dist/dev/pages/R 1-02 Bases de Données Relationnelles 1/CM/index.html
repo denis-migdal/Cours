@@ -1,9 +1,2139 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>R1-02 CM</title>
+        <title>CM</title>
         <link rel="stylesheet" href="./index.css">
-        <script src="./index.js" type="module" defer></script>
+        <script type="module" src="./index.js" defer></script>
     </head>
-    <body></body>
+    <body>
+<div id='menu'>
+</div>
+
+<todo>
+4x (2h CM + 2h TD) + 6x2h TP.
+
+<p>Documentation ?</p>
+<ul>
+<li>git add file/-u + git push =&gt;</li>
+</ul>
+<p>Contenu:</p>
+<ul>
+<li>cf commentaires en HTML.</li>
+<li>CM1 : exemple animé de l&#39;ordre d&#39;exécution...</li>
+<li>CM3 : ?</li>
+</ul>
+<p>Structure:</p>
+<ul>
+<li>Exemples:<ul>
+<li>corriger exemples JOIN.</li>
+<li>$XXX fix in inline (?) code.</li>
+</ul>
+</li>
+</ul>
+<p>Détails:</p>
+<ul>
+<li><p>publier lib...</p>
+</li>
+<li><p>split CM into different files.</p>
+</li>
+<li><p>espace moodle (avec navigation)</p>
+</li>
+<li><p>slides PDF LaTeX.</p>
+</li>
+<li><p>cheat-sheet...</p>
+</li>
+<li><p>PDF export :</p>
+<ul>
+<li>gérer les exemples de code (cacher output ou dupliquer en JS ?)</li>
+</ul>
+</li>
+<li><p>remplacer $ par cadre dans codes non-démos.</p>
+</li>
+<li><p>menu + joli</p>
+</li>
+<li><p>Warnings plus visuels</p>
+</li>
+</ul>
+<!--
+
+CM3
+
+-> à l'oral appuyer le fait que ex 2 ne marche pas (create table). [desc?]
+
+1. -Pour les schémas de table [plus FK/PK ?] => repr UML ?
+  -> (avec clé primaire en gras et clé etrangère soulignées, usuellement)
+
+2. - L'idée de base étant de se servir de la clé étrangère comme un moyen léger en mémoire de référencer les données d'une table secondaire
+3. -Pour les contraintes sur les colonnes, parle par exemple du numéro de téléphone (ça a dix chiffres, ça commence par 0,...) ?
+4. Contraintes : réinsister important (avantage de SQL)
+
+5. PK : ensemble de champs identifiant de manière unique une entrée. C'est un index un peu particulier etc.
+  + exemple insert clé existante.
+
+CM4
+
+6. op d'ensembles : tables decoupé e.g. années (pour des raisons de perfs) => faire des op dessus.
+
+- UNION : même # colonne et idéalement même structure (?)
+
+- exemples dynamiques/animés (jointures/cartésien).
+
+- ss-rq visu (?)
+  - normale : calculée une seule fois.
+
+  - animation : < [P/=] >
+    - X in (....)
+    - 4 in (....) - 1) curseur sur liste 2) when found, next value and add line.
+
+    - X in (QUERY)
+    - 4 in [...] <- (QUERY [replace values ?])
+      - 1) liste construite avec le curseur
+      - 2) when found, next value.
+
+  - normale
+    - X in (liste/value) => once (....). 
+      -> build result table below, one line by one.
+  - corrélée, recalculée à chaque fois.
+    - X in | (value change (car calculé))
+      -> build result table below, one line by one.
+-->
+</todo>
+
+<p>[[toc]]</p>
+<h1 id="cm1">CM1</h1>
+<h2 id="introduction-à-sql">Introduction à SQL</h2>
+<h3 id="les-sgbd">Les SGBD</h3>
+<p>Il est fréquent de devoir traiter de larges quantités de données :</p>
+<ul>
+<li>pour une entreprise : des listes de clients, de commandes, de produits, etc.</li>
+<li>pour une administration : des listes d&#39;administrés, de transactions, etc.</li>
+<li>pour un site Web : des logs de consultation de ses différentes pages, etc.</li>
+<li>...</li>
+</ul>
+<p>Ces données peuvent représenter des milliers, des millions (voire bien plus), d&#39;éléments. Il est évident qu&#39;on ne peut pas les manipuler &quot;à la main&quot;. Par exemple, si on souhaite compter le nombre de ventes d&#39;une entreprise à la main, c&#39;est :</p>
+<ul>
+<li><strong>chronophage</strong> :<br/>
+<em>35 jours pour un million de ventes à raison de 1 vente/seconde et 8h/jours.</em></li>
+<li><strong>source d&#39;erreurs</strong> :<br/>
+<em>Ventes comptées en double, sautées, etc.</em></li>
+<li><strong>incomplet</strong> :<br/>
+<em>Les ventes peuvent être stockées à plusieurs endroits différents, certaines perdues.</em></li>
+</ul>
+<p>Il est alors nécessaire d&#39;utiliser un logiciel permettant d&#39;efficacement :</p>
+<ul>
+<li><strong>stocker et organiser les données</strong>.</li>
+<li><strong>manipuler les données</strong> : ajouter/modifier/supprimer des données.</li>
+<li><strong>requêter les données</strong> : e.g. compter le nombre de ventes.</li>
+</ul>
+<p>Pour répondre à ces besoins, on utilise un <strong>Système de Gestion de Bases de Données</strong> (SGBD). Un SGBD est un logiciel permettant de créer, stocker, manipuler et requêter des bases de données. Un SGBD répond aussi à d&#39;autres besoins comme :</p>
+<ul>
+<li><strong>la cohérence des données :</strong> garantie l&#39;absence de données invalides.<br/>
+<em>e.g. avoir un âge négatif.</em></li>
+<li><strong>la robustesse :</strong> résister aux pannes.<br/>
+<em>e.g. l&#39;ordinateur plante alors qu&#39;on est en train de modifier une donnée.</em></li>
+<li><strong>le contrôle d&#39;accès :</strong> qui peut faire quoi sur quelles données ?.<br/>
+<em>e.g. l&#39;administrateur peut modifier et les utilisateurs lire les données.</em></li>
+<li><strong>les logs :</strong> que s&#39;est-il passé ? qui a fait quoi et quand ?<br/>
+<em>e.g. après une panne, qu&#39;était-il en train de faire ?</em><br/>
+<em>e.g. le stagiaire a fait une fausse manipulation, qu&#39;a-t-il réellement fait ?</em></li>
+<li><strong>accès concurrent :</strong> modifications simultanées de données.</li>
+</ul>
+<p>💡 Dans le cadre de ce module, on se concentrera sur <strong>SQL</strong> (<em>Structured Query Language</em>), un langage permettant, entres autres, de structurer et de manipuler des bases de données.</p>
+<h3 id="les-sgbd-sql">Les SGBD SQL</h3>
+<p>Le langage SQL est normalisé par la norme ISO/CEI 9075. Cependant certaines fonctionnalités diffèrent selon le SGBD utilisé.</p>
+<p>Parmi eux, <strong>SQLite</strong> est un SGBD léger où chaque base est stockée sous la forme d&#39;un fichier. Il est très utilisé pour stocker et gérer des données locales ayant peu d&#39;accès concurrents.</p>
+<p>Pour des usages plus intensifs, <strong>PostgreSQL</strong>, <strong>MySQL</strong>, et <strong>MariaDB</strong> sont des SGBD open sources plus complets, sous la forme de <strong>serveurs SQL</strong>. On interagit alors avec le SGBD via un <strong>client</strong> qui se charge de :</p>
+<ul>
+<li>se connecter au serveur ;</li>
+<li>d&#39;envoyer la requête SQL ;</li>
+<li>et de réceptionner la réponse.</li>
+</ul>
+<p>Les clients peuvent prendre plusieurs formes :</p>
+<ul>
+<li>une interface graphique de requêtage (<em>e.g.  ???</em>).</li>
+<li>une interface graphique de gestion de bases de données (<em>e.g. pgAdmin</em>).</li>
+<li>une application en ligne de commandes (<em>e.g. psgl, mysql</em>).</li>
+<li>une API utilisée dans le langage de programmation de votre choix.</li>
+</ul>
+<h3 id="les-tables-sql">Les tables SQL</h3>
+<p>Comme dans un tableur, les données sont représentées sous forme de <strong>tables</strong> :</p>
+<ul>
+<li>les lignes correspondent à des <strong>entrées</strong> ;</li>
+<li>les colonnes correspondent aux différentes propriétés de ces entrées.</li>
+</ul>
+<p>Par exemple, la table suivante contient 2 entrées ayant les propriétés <code>ID</code>, <code>Nom</code>, <code>Prenom</code>, <code>Age</code> :</p>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Prenom</th>
+      <th>Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Doe</td>
+      <td>John</td>
+      <td>32</td>
+    </tr><tr>
+      <td>2</td>
+      <td>Durand</td>
+      <td>John</td>
+      <td>64</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="vocabulaire">Vocabulaire</h4>
+<ul>
+<li>Une <strong>base de donnée</strong> est composée de plusieurs tables.</li>
+<li>Un <strong>schéma</strong> de table décrit les colonnes de la table (cf CM3).</li>
+<li>Les lignes d&#39;une table sont appelées <strong>entrées</strong> ou <strong>enregistrements</strong>.</li>
+</ul>
+<p>💡 Vous pouvez voir la base de données comme un fichier tableur, et les tables comme les feuilles de calculs contenues dans ce fichier.</p>
+<p>💡 Les tables sont aussi parfois appelées <strong>relations</strong>, d&#39;où le terme <em>base de données relationnelle</em>.</p>
+<h3 id="les-types-sql">Les types SQL</h3>
+<p>En SQL chaque colonne a un type, i.e. le type des données qu&#39;on peut y insérer. SQL supporte en général 4 familles de types :</p>
+<ul>
+<li><code>TEXT</code> : une chaîne de caractère.</li>
+<li><code>BLOB</code> : des données binaires. </li>
+<li><code>INT</code>/<code>INTEGER</code> : un nombre entier.</li>
+<li><code>REAL</code> : un nombre décimal.</li>
+<li><code>ANY</code>  : accepte n&#39;importe quelle valeur.</li>
+</ul>
+<p>💡 Par défaut, chaque type accepte la valeur <code>NULL</code>, qui indique une absence de données.</p>
+<p>En général, les SGBD (sauf SQLite) offrent une variété de sous-types permettant d&#39;optimiser leur stockage. Une table (non-exhaustive) des sous-types les plus communs vous est proposée ci-dessous à titre informatif :</p>
+<details>
+  <summary><em><strong>Montrer la table des sous-types</strong></em></summary>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Famille</th>
+        <th>Type</th>
+        <th>Octets</th>
+        <th>Description<th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan='9'>TEXT</td>
+        <td>CHAR</td>
+        <td>1 à 3</td>
+        <td>Caractère UTF8</td>
+      </tr><tr>
+        <td>CHAR(N)</td>
+        <td>N*1 à N*3</td>
+        <td>Taille fixe</td>
+      </tr><tr>
+        <td>VARCHAR(N)</td>
+        <td>0 à N*3</td>
+        <td>Taille variable</td>
+      </tr>
+      <tr><td></td><td></td><td></td></tr>
+      <tr>
+        <td>NCHAR</td>
+        <td>2</td>
+        <td>Caractère UTF16</td>
+      </tr><tr>
+        <td>NCHAR(N)</td>
+        <td>N*2</td>
+        <td>Taille fixe</td>
+      </tr><tr>
+        <td>NVARCHAR(N)</td>
+        <td>0 à N*2</td>
+        <td>Taille variable</td>
+      </tr>
+      <tr><td></td><td></td><td></td></tr>
+      <tr>
+        <td>TEXT(N)</td>
+        <td>N</td>
+        <td>Pour de gros textes.</td>
+      </tr>
+      <tr><td></td><td></td><td></td><td></td></tr>
+      <tr>
+        <td rowspan='2'>BLOB</td>
+        <td>BIT(N)</td>
+        <td>N/8</td>
+        <td>Champ de bits</td>
+      </tr><tr>
+        <td>BLOB(N)</td>
+        <td>N</td>
+        <td></td>
+      </tr>
+      <tr><td></td><td></td><td></td><td></td></tr>
+      <tr></tr>
+        <td rowspan='6'>INT</td>
+        <td>BOOLEAN</td>
+        <td>1</td>
+        <td></td>
+      </tr>
+        <td>SMALLINT</td>
+        <td>2</td>
+        <td></td>
+      </tr><tr>
+        <td>INTEGER</td>
+        <td>4</td>
+        <td></td>
+      </tr><tr>
+        <td>BIGINT</td>
+        <td>8</td>
+        <td></td>
+      </tr><tr>
+        <td>NUMERIC(N)</td>
+        <td>N</td>
+        <td></td>
+      </tr><tr>
+        <td>ENUM(val[,...])</td>
+        <td>2</td>
+        <td>Peut aussi être TEXT</td>
+      </tr>
+      <tr><td></td><td></td><td></td><td></td></tr>
+      <tr>
+        <td rowspan='4'>REAL</td>
+        <td>FLOAT</td>
+        <td>4</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>DOUBLE</td>
+        <td>8</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>FLOAT(N)</td>
+        <td>N</td>
+        <td>Virgule flottante</td>
+      </tr>
+      <tr>
+        <td>DECIMAL(N,S)</td>
+        <td>N</td>
+        <td>Précision fixe</td>
+      </tr><tr><td></td><td></td><td></td><td></td></tr>
+      <tr>
+        <td rowspan='4'>DATE</td>
+        <td>DATE</td>
+        <td>4</td>
+        <td>10 en SQLite (TEXT)</td>
+      </tr>
+      <tr>
+        <td>TIME</td>
+        <td>8 à 12</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>DATETIME</td>
+        <td>12 à 16?</td>
+        <td>19 en SQLite (TEXT)</td>
+      </tr>
+      <tr>
+        <td>TIMESTAMP</td>
+        <td>8</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+<p>  💡 En fonction du SGBD utilisé, il existe une pléthore d&#39;autres types plus ou moins complexes.</p>
+</details>
+
+<h3 id="documentation">Documentation</h3>
+<p>💡 Vous trouver plus amples documentation via les liens suivants :</p>
+<ul>
+<li>SQL :<ul>
+<li><a href="https://www.w3schools.com/sql/">https://www.w3schools.com/sql/</a></li>
+<li><a href="https://sql.sh">https://sql.sh</a></li>
+</ul>
+</li>
+<li>SGBD :<ul>
+<li>SQLite : <a href="https://www.sqlite.org">https://www.sqlite.org</a></li>
+<li>PostgreSQL : <a href="https://www.postgresql.org/docs/">https://www.postgresql.org/docs/</a></li>
+<li>MySQL : <a href="https://dev.mysql.com/doc/">https://dev.mysql.com/doc/</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="requêtes-de-bases">Requêtes de bases</h2>
+<h3 id="les-types-de-requêtes">Les types de requêtes</h3>
+<p>Il existe plusieurs types de commandes SQL permettant d&#39;effectuer différent types actions :</p>
+<ul>
+<li><code>SELECT</code> : lire des données ;</li>
+<li><code>UPDATE</code> : modifier des entrées ;</li>
+<li><code>INSERT</code> : insérer des entrées ;</li>
+<li><code>DELETE</code> : supprimer des entrées.</li>
+</ul>
+<p>Nous allons dans un premier temps nous concentrer sur le premier, et verrons les 3 autres par la suite.</p>
+<h2 id="la-requête-select">La requête SELECT</h2>
+<p>La requête SQL <code>SELECT</code> permet de récupérer des données présentes dans une base de donnée, et se présente usuellement sous la forme suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS[,...] <span class="hljs-keyword">FROM</span> $<span class="hljs-keyword">TABLE</span>; 
+</code></pre><ul>
+<li><p><code>$TABLE</code> est le nom de la table SQL à requêter.</p>
+</li>
+<li><p><code>$COLS[,...]</code> est la liste des colonnes à récupérer séparées par &quot;,&quot;.</p>
+<p>💡 <code>*</code> correspond à l&#39;ensemble des colonnes.</p>
+</li>
+</ul>
+<p>⚠ Il est d&#39;usage de ne récupérer que les colonnes dont on a réellement besoin. En effet, sur de grandes tables et de grosses requêtes, réduire le nombre de colonnes récupérées permet de réduire le volume des données transférées. </p>
+<h3 id="exemples">Exemples</h3>
+<sql-interactive id="col-sql" table="Users">
+  <sql-dymtable slot="post" id="col-table" table="Users"></sql-dymtable>
+  <span slot="options" data-cols="*">Retourner toutes les colonnes</span>
+  <span slot="options" data-cols="Nom">Retourner une seule colonne</span>
+  <span slot="options" data-cols="ID, Prenom">Retourner plusieurs colonnes</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS <span class="hljs-keyword">FROM</span> Users;
+</code></pre></sql-interactive>
+
+<script type="module">
+  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+
+  const coltable = await LISS.qs("#col-table");
+  const colsql   = await LISS.qs("#col-sql");
+
+  colsql.host.addEventListener("change", (ev) => {
+    update(ev.detail.datas);
+  });
+  update( colsql.lastDatas );
+
+  function update(datas) {
+
+    const cols = Object.keys(datas[0][0]);
+
+    coltable.highlightCol( (colname) => cols.includes(colname) ); //TODO...
+  }
+
+</script>
+
+<h3 id="alias-de-colonnes">Alias de colonnes</h3>
+<p>💡 Dans le cadre d&#39;une requête SQL, vous pouvez temporairement associer un alias à une colonne grâce au mot clé <code>as</code> :</p>
+<sql-interactive table="Users">
+  <span slot="options" data-col_as="">Requête normale</span>
+  <span slot="options" data-col_as="as User">Renommer une colonne</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> Nom $COL_AS, Age <span class="hljs-keyword">FROM</span> Users;
+</code></pre></sql-interactive>
+
+<h3 id="trier-par-ordre-croissantdécroissant-les-lignes">Trier par ordre croissant/décroissant les lignes</h3>
+<p>La clause <code>ORDER BY $COL [DESC|ASC][,...]</code> permet de trier les lignes retournées par ordre croissant (<code>ASC</code>) ou décroissant (<code>DESC</code>).</p>
+<sql-interactive table="Users">
+  <span slot="options" data-row_sort="Age ASC">Trier par Age croissant</span>
+  <span slot="options" data-row_sort="Age DESC">Trier par Age décroissant</span>
+  <span slot="options" data-row_sort="Age DESC, Nom ASC">Trier par Age décroissant, puis par Nom croissant</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> Users <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> $ROW_SORT;
+</code></pre></sql-interactive>
+
+<h2 id="selection-des-lignes">Selection des lignes</h2>
+<p><code>SELECT</code> retourne l&#39;intégralité des entrées de la table, ce qui peut représenter des milliers de lignes. Or, bien souvent, seules quelques entrées nous intéressent.</p>
+<p>Il est ainsi important de sélectionner uniquement les lignes qui nous intéressent afin de réduire le volume des données transférées, ainsi que de réduire la consommation de ressources serveurs (processeur, RAM, disque).</p>
+<p>Il est ainsi possible de sélectionner des lignes de différentes manières :</p>
+<ul>
+<li>via un filtre via la clause <code>WHERE $COND</code> :<br/>
+<em>e.g. les entrées correspondant aux utilisateurs mineurs.</em></li>
+<li>en supprimant les doublons via la clause <code>DISTINCT</code> :<br/>
+<em>e.g. les âges sans doublons.</em></li>
+<li>en limitant le nombre de lignes retournées via les clauses <code>LIMIT $N OFFSET $O</code> :<br/>
+<em>e.g. les 10 plus jeunes utilisateurs.</em></li>
+</ul>
+<h3 id="clause-where">Clause WHERE</h3>
+<p>La manière générique de filter les lignes à retourner est d&#39;ajouter une clause <code>WHERE $COND</code> à la requête. Seules les lignes pour lesquelles <code>$COND</code> est vraie seront retournées.</p>
+<sql-interactive id="row-sql" table="Users">
+  <sql-dymtable slot="post" id="row-table" table="Users"></sql-dymtable>
+  <span slot="options" data-cond="Age > 18">Retourner les entrées où Age > 18</span>
+  <span slot="options" data-cond="Nom == 'Doe'">Retourner les entrées où Nom est "Doe"</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> Users <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre></sql-interactive>
+
+
+<script type="module">
+  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+
+  const rowtable = await LISS.qs("#row-table");
+  const rowsql   = await LISS.qs("#row-sql");
+
+  rowsql.host.addEventListener("change", (ev) => {
+    update(ev.detail.datas);
+  });
+  update( rowsql.lastDatas );
+
+  function update(datas) {
+
+    const ids = datas[0].map(r => r.ID);
+
+    rowtable.highlightRow( (ID) => ids.includes(+ID) );
+  }
+
+</script>
+
+<h4 id="opérateurs-de-comparaisons">Opérateurs de comparaisons</h4>
+<p>💡 La structure d&#39;une condition est très simple, utilisant les opérateurs de comparaison que vous connaissez déjà : <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>!=</code>.</p>
+<sql-interactive table="Users">
+  <span slot="options" data-cond="ID > 1">Comparaison simple</span>
+  <span slot="options" data-cond="Prenom == Nom">Comparaison entre 2 colonnes</span>
+  <span slot="options" data-cond="0 < Age < 18">Chaîner les opérateurs produit un résultat étrange</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> Age, Nom, Prenom <span class="hljs-keyword">FROM</span> Users <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre></sql-interactive>
+
+<p>💡 Vous pouvez utiliser les noms de colonnes comme opérandes, même si elles n&#39;apparaissent pas dans les colonnes à retourner.</p>
+<p>⚠ Comme vous le constatez dans l&#39;exemple ci-dessus, bien que cela soit syntaxiquement valide, <strong>chaîner les opérateurs de comparaisons ne produira pas le résultat attendu</strong>.<br/>
+Vous ne devez ainsi pas écrire, e.g. <code>0 &lt; Age &lt; 18</code>, mais (cf suite du cours) :</p>
+<ul>
+  <li>soit <code>0 < Age AND Age < 18</code> ;</li>
+  <li>soit <code>Age BETWEEN 0 AND 18</code> .</li>
+</ul>
+
+<h4 id="opérateurs-logiques">Opérateurs logiques</h4>
+<p>Vous pouvez composer des conditions à l&#39;aide d&#39;opérateurs logiques que vous connaissez déjà : <code>AND</code>, <code>OR</code>, <code>NOT</code>.</p>
+<sql-interactive table="Users">
+  <span slot="options" data-cond="Age > 18 AND Age < 45">Intersection (et)</span>
+  <span slot="options" data-cond="Age > 18 OR Age < 45">Union (ou)</span>
+  <span slot="options" data-cond="NOT ( Age > 18 )">Négation (non)</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> Age, Nom, Prenom <span class="hljs-keyword">FROM</span> Users <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre></sql-interactive>
+
+<p>💡 Vous pouvez aussi utiliser des parenthèses.</p>
+<h4 id="autres-opérateurs">Autres opérateurs</h4>
+<sql-interactive table="Users">
+  <span slot="options" data-cond="Age IS NULL">Entrées où Age vaut null</span>
+  <span slot="options" data-cond="Nom IN ('Doe', 'Nescio')">Entrées où Nom est dans la liste</span>
+  <span slot="options" data-cond="Age BETWEEN 0 AND 18">Entrées où Age est compris entre 0 et 18</span>
+  <span slot="options" data-cond="Nom LIKE 'D%'">Entrées où Nom commence par "D"</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> Age, Nom, Prenom <span class="hljs-keyword">FROM</span> Users <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre></sql-interactive>
+
+<ul>
+<li><p><code>[NOT] IS NULL</code> : si la valeur est nulle/n&#39;est pas nulle.<br/>
+⚠ En SQL <code>NULL == NULL</code> est généralement évalué à <code>False</code>.</p>
+</li>
+<li><p><code>[NOT] IN ($VALS[,...])</code> : si la valeur est/n&#39;est pas dans une liste donnée.</p>
+</li>
+<li><p><code>[NOT] BETWEEN $MIN AND $MAX</code> : si la valeur est/n&#39;est pas entre <code>$MIN</code> et <code>$MAX</code>.<br/>
+💡 C&#39;est l&#39;équivalant de <code>$VAL &gt;= $MIN AND $VAL &lt;= $MAX</code><br/>
+⚠ Le comportement de l&#39;opérateur <code>BETWEEN</code> peut changer en fonction du système, et peut alors être équivalent à <code>$VAL &gt; $MIN AND $VAL &lt; $MAX</code>.</p>
+</li>
+<li><p><code>[NOT] LIKE $PATTERN</code> : si la valeur correspond/ne correspond pas à <code>$PATTERN</code>.<br/>
+<code>_</code> correspond à n&#39;importe quel caractère.<br/>
+<code>%</code> correspond à un nombre indéterminé de n&#39;importe quel caractère.<br/>
+e.g. <code>LIKE &#39;D%&#39;</code>: une valeur commençant par &quot;D&quot;.</p>
+</li>
+</ul>
+<h3 id="supprimer-les-doublons">Supprimer les doublons</h3>
+<p>La clause <code>DISTINCT</code> permet de supprimer les doublons dans les lignes retournées :</p>
+<sql-interactive table="Users">
+  <span slot="options" data-row_distinct="">Requête normale</span>
+  <span slot="options" data-row_distinct="DISTINCT">Ne pas retourner les doublons</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $ROW_DISTINCT Age <span class="hljs-keyword">FROM</span> Users;
+</code></pre></sql-interactive>
+
+<h3 id="tops-et-pagination">Tops et pagination</h3>
+<h4 id="tops">Tops</h4>
+<p>La clause <code>LIMIT $N</code> permet de ne récupérer que les <code>$N</code> premières entrées retournées. Souvent utilisée avec la clause <code>ORDER BY</code>, elle permet notamment de générer des tops, e.g. les X utilisateurs les plus jeunes.</p>
+<sql-interactive table="Users">
+  <span slot="options" data-pagination="1">Ne récupérer que la première entrée</span>
+  <span slot="options" data-pagination="2">Ne récupérer que les deux premières entrées</span>
+  <span slot="options" data-orderby="ORDER BY Age" data-pagination="1">Ne récupérer que l'utilisateur le plus jeune</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> Users $ORDERBY LIMIT $PAGINATION;
+</code></pre></sql-interactive>
+
+<h4 id="pagination">Pagination</h4>
+<p>Lorsqu&#39;une requête retourne des milliers de lignes, il peut être coûteux de toutes les récupérer et les afficher en même temps. On peut alors découper la liste en plusieurs pages, en affichant que e.g. 50 lignes par pages. Ainsi la première page récupère et affiche les 50 premières lignes, la seconde les 50 suivantes, et ainsi de suite.</p>
+<p>Pour cela, on utilisera la clause <code>LIMIT 50</code> afin de ne récupérer que 50 entrées par requêtes. En conjonction, on utilisera la clause <code>OFFSET $P*50</code> qui permet de ne pas récupérer les <code>$P*50</code> premières entrées retournées. <code>$P+1</code> étant alors le numéro de la page actuelle.</p>
+<sql-interactive id="pagination-sql" table="Users">
+  <sql-dymtable slot="post" id="pagination-table" table="Users"></sql-dymtable>
+  <span slot="options" data-pagination="1" data-p="0">Page 1 (1 entrée par page)</span>
+  <span slot="options" data-pagination="1" data-p="1">Page 2 (1 entrée par page)</span>
+  <span slot="options" data-pagination="1" data-p="2">Page 3 (1 entrée par page)</span>
+  <span slot="options" data-pagination="2" data-p="0*2">Page 1 (2 entrée par page)</span>
+  <span slot="options" data-pagination="2" data-p="1*2">Page 2 (2 entrée par page)</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> Users LIMIT $PAGINATION <span class="hljs-keyword">OFFSET</span> $P ;
+</code></pre></sql-interactive>
+
+<script type="module">
+  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+
+  const table = await LISS.qs("#pagination-table");
+  const sql   = await LISS.qs("#pagination-sql");
+
+  sql.host.addEventListener("change", (ev) => {
+    update(ev.detail.datas);
+  });
+  update( sql.lastDatas );
+
+  function update(datas) {
+
+    const ids = datas[0].map(r => r.ID);
+    table.highlightRow( (ID) => ids.includes(+ID) );
+  }
+
+</script>
+
+
+<h2 id="ordre-dexécution-et-décriture">Ordre d&#39;exécution et d&#39;écriture</h2>
+<p>Le différentes <strong>clauses</strong> des requêtes SQL sont généralement écrites dans leur ordre d&#39;exécution, et exécutées dans leur ordre d&#39;écriture, i.e. de gauche à droite.</p>
+<style>
+  .later {
+    color: gray;
+    font-style: italic;
+    opacity: 0.5;
+  }
+  .warning {
+    color: red;
+  }
+
+</style>
+
+<p>Par exemple lors d&#39;une requête <code>SELECT</code>:</p>
+<div style="display:flex">
+  <ol id="order-list">
+    <li step="1">On récupère la table (clause <code>FROM</code>).</li>
+    <li step="2" class="warning"><em>Alias de colonnes définies ici.</em></li>
+    <li step="3">On filtre les entrées (clause <code>WHERE</code>).</li>
+    <li class="later">On groupe les entrées en lignes (clause <code>GROUP BY</code>).</li>
+    <li class="later warning"><em>Alias de colonnes d'agrégats définies ici.</em></li>
+    <li class="later">On filtre les lignes agrégées (clause <code>HAVING</code>).</li>
+    <li class="warning" step="4">On supprime les doublons (clause <code>SELECT DISTINCT</code>).</li>
+    <li step="5">On trie les lignes (clause <code>ORDER BY</code>).</li>
+    <li step="6">On limite le nombre de lignes retournées (clauses <code>LIMIT</code>/<code>OFFSET</code>).</li>
+  </ol>
+  <div>
+    <div style="text-align: center">
+      <anim-player speed="1500" id="order-player"></anim-player>
+    </div>
+    <div style="display:flex;height: fit-content;">
+      <style>
+        .notyet {
+          color: gray;
+        }
+        .cur {
+          color: yellow;
+        }
+        .warning.cur {
+          color: orange;
+        }
+      </style>
+      <pre style="margin:0"><code id="order_sql">SELECT <span class="notyet">DISTINCT</span> Date, Ref, Q as Nb
+    FROM Produits
+    WHERE Ref = "Gomme"
+    ORDER BY Q
+    LIMIT 2;</code></pre>
+      <sql-dymtable header="" table="Produits" id="order-table"><sql-dym-table>>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+
+
+  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+
+  const player = await LISS.qs("#order-player");
+  const table  = await LISS.qs("#order-table");
+  const order_sql = document.querySelector("#order_sql");
+
+  const list = document.querySelectorAll("#order-list > li");
+
+  const query = [
+`SELECT `, [4, `DISTINCT `], `Date, Ref, Q `, [2, "as Nb"],
+    [ 1, `\n    FROM Produits`],
+    [ 3, `\n    WHERE Ref = 'Gomme'`],
+    [ 5, `\n    ORDER BY Q`],
+    [ 6, `\n    LIMIT 2`], ';' ];
+
+  function buildQuery(step) {
+    let output = "";
+    for(let elem of query) {
+      if( Array.isArray(elem) ) {
+        if( elem[0] > step && step !== 0 )
+          continue;
+        elem = elem[1];
+      }
+      output += elem;
+    }
+
+    return output;
+  }
+  function buildOutput(step) {
+    let output = [];
+    for(let elem of query) {
+      if( Array.isArray(elem) ) {
+        const html = document.createElement('span');
+        html.textContent = elem[1];
+        html.classList.toggle("cur", elem[0] === step);
+        
+        if( elem[0] > step && step !== 0 )
+          html.classList.add("notyet");
+        elem = html;
+      }
+      output.push(elem);
+    }
+
+    return output;
+  }
+
+  function doStep(i) {
+
+    if( i > 6) {
+      player.reset();
+      return;
+    }
+
+    order_sql.replaceChildren( ...buildOutput(i) ); //TODO highlight
+    for(let li of list)
+      li.classList.toggle("cur", li.getAttribute("step") === `${i}`);
+
+    table.exec( buildQuery(i) );
+  }
+
+  player.host.addEventListener("reset", ()   => { doStep(0)          });
+  player.host.addEventListener("step" , (ev) => { doStep( ev.detail) });
+
+  doStep(0);
+</script>
+
+<p>💡 Les étapes en gris seront étudiées au CM suivant.</p>
+<p>⚠ En rouge sont indiqués des cas d&#39;exceptions dont l&#39;ordre d&#39;écriture ne correspond pas à leur ordre d&#39;exécution. Une autre exception existe dans les requêtes <code>UPDATE</code> où la clause <code>SET</code> s&#39;écrit <strong>avant</strong> la clause <code>WHERE</code>.</p>
+<h1 id="cm2-">CM2 ???</h1>
+<h2 id="modifier-le-contenu-dune-table-">Modifier le contenu d&#39;une table (????)</h2>
+<p>Pour rappel, il existe plusieurs types de commandes SQL permettant d&#39;effectuer différent types actions :</p>
+<ul>
+<li><code>SELECT</code> : lire des données ;</li>
+<li><code>UPDATE</code> : modifier des entrées ;</li>
+<li><code>INSERT</code> : insérer des entrées ;</li>
+<li><code>DELETE</code> : supprimer des entrées.</li>
+</ul>
+<p>Nous allons désormais nous intéresser aux 3 dernières.</p>
+<h3 id="insérer-des-lignes">Insérer des lignes</h3>
+<p>La requête SQL <code>INSERT</code> permet d&#39;insérer des entrées dans une table, et se présente usuellement sous la forme suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> $TABLENAME <span class="hljs-keyword">VALUES</span> ($VALS[,...])[,...];
+</code></pre><ul>
+<li><code>($VALS[,...])</code> représente une entrée à insérer. Les différentes valeurs de l&#39;entrée sont séparées par une virgule.<br/>
+💡 Vous pouvez insérer plusieurs entrées à la fois en les séparant par une virgule.</li>
+</ul>
+<sql-interactive table="Users">
+  <span slot='select'>SELECT * FROM Users;</span>
+  <span slot="options" data-m_vals="(NULL, 'Doe', 'Jon', 32)">Insérer une entrée</span>
+  <span slot="options" data-m_vals="      (NULL, 'Doe',    'Jon', 32),
+       (NULL, 'Sawyer', 'Tom', 15)">Insérer plusieurs entrées</span>
+  <span slot="options" data-cols="(Prenom, Nom)" data-m_vals="('Jon', 'Doe')">Insérer une entrée sans renseigner Age</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> Users $COLS <span class="hljs-keyword">VALUES</span>
+$M_VALS;
+</code></pre></sql-interactive>
+
+<p>💡 Vous pouvez aussi ne renseigner les valeurs que pour certaines colonnes dont vous indiquez les noms avant <code>VALUES</code>. Dans ce cas, les colonnes non renseignées vaudront <code>NULL</code>.</p>
+<h3 id="modifier-des-lignes">Modifier des lignes</h3>
+<p>La requête SQL <code>UPDATE</code> de modifier des entrées dans une table, et se présente usuellement sous la forme suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">UPDATE</span> $TABLENAME <span class="hljs-keyword">SET</span> $COL <span class="hljs-operator">=</span> $VAL[,...] <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre><ul>
+<li><code>$COL</code> est le nom de la colonne à modifier.</li>
+<li><code>$VAL</code> est la nouvelle valeur de cette colonne.</li>
+<li><code>$COND</code> indique quelles entrées doivent être modifiées.</li>
+</ul>
+<p>💡 Vous pouvez modifier plusieurs colonnes à la fois en séparant les <code>$COL = $VAL</code> par une virgule.</p>
+<sql-interactive table="Users">
+  <span slot='select'>SELECT * FROM Users;</span>
+  <span slot="options" data-vals="Nom = 'Durand'" data-cond="Nom == 'Durant'">Modifier une colonne</span>
+  <span slot="options" data-vals="Nom = 'Durand', Prenom='Théo'" data-cond="ID == 2">Modifier plusieurs colonnes</span>
+  <span slot="options" data-vals="Age = 23" data-cond="Age == 43">Plusieurs lignes modifiées</span>
+  <span slot="options" data-vals="Age = Age + 10" data-cond="Nom LIKE 'D%'">Valeur calculée à partir de l'entrée</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">UPDATE</span> Users
+  <span class="hljs-keyword">SET</span> $VALS
+  <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre></sql-interactive>
+
+<p>💡 Vous pouvez calculer les nouvelles valeurs à partir des valeurs initiales de l&#39;entrée.</p>
+<p>⚠ Il est possible d&#39;avoir des utilisateurs avec le même nom et/ou prénoms. Il est ainsi préférable, autant que possible, d&#39;effectuer la condition <code>$COND</code> les ID pour s&#39;assurer de modifier les bonnes entrées, et non celles d&#39;homonymes.</p>
+<h3 id="supprimer-des-lignes">Supprimer des lignes</h3>
+<p>La requête SQL <code>DELETE</code> de supprimer des entrées dans une table, et se présente usuellement sous la forme suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> $TABLENAME <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre><ul>
+<li><code>$COND</code> indique quelles entrées doivent être supprimées.</li>
+</ul>
+<sql-interactive table="Users">
+  <span slot='select'>SELECT * FROM Users;</span>
+  <span slot="options" data-cond="Age < 18">Supprimer les entrées où Age > 18</span>
+  <span slot="options" data-cond="Age > 18">Supprimer les entrées où Age > 18</span>
+  <span slot="options" data-cond="ID == 2">Supprimer un utilisateur donné</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> Users <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre></sql-interactive>
+
+<p>⚠ Il est possible d&#39;avoir des utilisateurs avec le même nom et/ou prénoms. Il est ainsi préférable, autant que possible, d&#39;effectuer la condition <code>$COND</code> les ID pour s&#39;assurer de supprimer les bonnes entrées, et non celles d&#39;homonymes.</p>
+<h2 id="prétraitements">Prétraitements</h2>
+<p>Il est bien souvent important de pré-traiter les données avant de les utiliser (e.g. comparaisons, insertions), ce afin de s&#39;assurer que les informations soient bien représentées de la même manière. Par exemple, un nom de famille peut s&#39;écrire de plusieurs manières : <code>&quot;Nom&quot;</code>, &quot;<code>NOM</code>&quot;, ou &quot;<code>nom</code>&quot;. Si ces trois chaînes de caractères représentent bien la même information, elles ne sont pas égales pour autant. Ainsi, aucune entrée ne sera retournée si on recherche <code>&quot;Nom&quot;</code> dans la base de données, alors qu&#39;il est stocké en majuscules (i.e. <code>&quot;NOM&quot;</code>).</p>
+<p>Pré-traiter les données permet alors de s&#39;assurer de l&#39;uniformité des données, i.e. que les données manipulées suivent le même format, facilitant e.g. leur comparaisons. Pré-traiter les données avant insertions permet aussi de s&#39;assurer de la cohérence et consistance de la base de données.</p>
+<p>💡 Il est possible de <strong>tester</strong> les différentes fonctions de prétraitements en effectuant une requête <code>SELECT</code> sans la clause <code>FROM</code> (ou avec <code>FROM DUAL</code> pour certains SGBD) :</p>
+<sql-interactive table="Users">
+  <span slot="options" data-col1="'nom'" data-col2="UPPER('nom')">Mettre en majuscules</span>
+  <span slot="options" data-col1="1.2" data-col2="ROUND(1.2)">Arrondir</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COL1 <span class="hljs-keyword">as</span> BEFORE, $COL2 <span class="hljs-keyword">as</span> AFTER;
+</code></pre></sql-interactive>
+
+<p>⚠ Dans les requêtes <code>SELECT</code>, il ne faut pas trop abuser de ces pré-traitements pour les valeurs retournées. Il est souvent préférable de gérer des données structurées en SQL, et de gérer leur pré-traitement via le langage utilisé par votre application (e.g. Python, R, JavaScript, etc). Cela permet notamment de pouvoir réutiliser une même requête pour différents usages.</p>
+<p>💡 Certains SGBD ont aussi des systèmes de cache, permettant de recalculer plus rapidement le résultat d&#39;une requête exécutée fréquemment.</p>
+<h3 id="sur-les-nombres">Sur les nombres</h3>
+<p>Avec SQL, vous pouvez utiliser les opérateurs et fonctions arithmétiques classiques :</p>
+<sql-interactive table="Users">
+  <span slot="options" data-cols="1+1, 4%3, 4/3, 4/3.0">Opérations mathématiques</span>
+  <span slot="options" data-cols="FLOOR(1.2), ROUND(1.2), CEIL(1.2)">Arrondis</span>
+  <span slot="options" data-cols="ABS(1), ABS(-1)">Valeur absolue</span>
+  <span slot="options" data-cols="RANDOM()">Entier aléatoire</span>
+  <span slot="options" data-cols="ABS(RANDOM()) % 10">Entier aléatoire (dans [[0;10[[)</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS;
+</code></pre></sql-interactive>
+
+<p>⚠ <code>/</code> utilisé avec des nombres entiers effectuera la division entière. Si vous souhaitez faire la division décimale, vous devez avoir au moins une opérande décimale.</p>
+<ul>
+<li><code>FLOOR/ROUND/CEIL($N[, $D])</code> : arrondir <code>$N</code> à <code>$D</code> décimales.</li>
+<li><code>ABS($N)</code> : la valeur absolue du nombre <code>$N</code>.</li>
+<li><code>RANDOM()</code> : génère un entier aléatoire.<br/>
+💡 Utilisez <code>ABS(RANDOM()) % $N</code> pour générer un entier dans <code>[[0;$N[[</code>.<br/>
+💡 Certains SGBD proposent une fonction <code>RAND()</code> permettant de générer un réel dans <code>[0,1[</code>.<br/></li>
+</ul>
+<p>💡 Vous avez aussi beaucoup d&#39;autres fonctions trigonométriques, de logs, etc.</p>
+<h3 id="sur-les-dates">Sur les dates</h3>
+<p>Les opérations sur les dates sont complexes à effectuer à la main. En effet, il faut alors gérer :</p>
+<ul>
+<li>les mois avec des nombres de jours différents ;</li>
+<li>les années bissextiles ;</li>
+<li>les fuseaux horaires ;</li>
+<li>les heures d&#39;été et d&#39;hiver.</li>
+</ul>
+<p>Les SGBD fournissent donc des fonctions permettant de manipuler les dates qui s&#39;occupent de prendre tout cela en compte. Par exemple <code>TIMEDIFF()</code> permet de calculer la durée entre deux dates.</p>
+<p>Il est aussi fréquent d&#39;utiliser des <strong>timestamps</strong>, e.g. l&#39;unix timestamp, qui représente une date par le nombre de secondes écoulées depuis le 1er janvier 1970. Il permet notamment d&#39;aisément comparer et stocker des dates.</p>
+<sql-interactive table="Users">
+  <span slot="options" data-cols="DATE(), TIME(), DATETIME()">Date et/ou heure actuelle</span>
+  <span slot="options" data-cols="UNIXEPOCH('now')">Timestamp actuel</span>
+  <span slot="options" data-cols="DATETIME(10, 'unixepoch')">Convertir un timestamp (10) en date</span>
+  <span slot="options" data-cols="TIMEDIFF('now', '2001-01-01')">Calculer la durée entre deux dates</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS;
+</code></pre></sql-interactive>
+
+<ul>
+<li><code>DATE()</code>/<code>TIME()</code>/<code>DATETIME()</code> : retourne la date et/ou l&#39;heure actuelle.</li>
+<li><code>TIMEDIFF($a, $b)</code> : donne la durée entre deux dates.</li>
+<li><code>UNIXEPOCH($d)</code> : donne le nombre de secondes écoulées entre le 1er janvier 1970 et la date <code>$d</code>.</li>
+</ul>
+<p>💡 Idem, il existe de nombreuses autres opérations et formatage sur les dates que nous ne verrons pas dans le cadre de ce cours.</p>
+<p>⚠ Les fonctions de dates ne sont pas normalisées et dépendent donc du SGBD utilisé.</p>
+<h3 id="sur-les-chaînes-de-caractères">Sur les chaînes de caractères</h3>
+<p>D&#39;un utilisateur à un autre, la casse des lettres dans les chaines de caractères est souvent inconsistante. Lorsque la casse importe peu quant à l&#39;information stockée, il est alors fréquent de mettre la chaîne de caractère en minuscule (ou en majuscule) afin de pouvoir ensuite plus facilement les manipuler/comparer en s&#39;assurant de la consistance des données (e.g. e-mail, nom, etc.).</p>
+<p>Les chaînes de caractères sont généralement stockées sur des colonnes à taille variables. Mais il arrive que pour des raisons d&#39;optimisations, elles soient stockées sur des colonnes à tailles fixes. Dès lors, pour stocker une chaîne de caractère d&#39;une taille moindre, on lui ajoutera généralement des espaces en début ou fin de chaîne (<em>pad</em>). L&#39;opération inverse consiste à retirer les espaces en début ou fin de chaîne (<em>trim</em>).</p>
+<sql-interactive table="Users">
+  <span slot="options" data-cols="LOWER('Hello'), UPPER('Hello')">Transformer la casse</span>
+  <span slot="options" data-cols="LENGTH('23'), LENGTH(32)">Taille</span>
+  <span slot="options" data-cols="TRIM(' w '), LTRIM(' w '), RTRIM(' w ')">Retirer les espaces en début/fin</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS;
+</code></pre></sql-interactive>
+
+<ul>
+<li><code>LOWER($W)</code>/<code>UPPER($W)</code> : transforme tous les caractères en minuscules/majuscules.</li>
+<li><code>LENGTH($N)</code> : la taille de <code>$N</code>.</li>
+<li><code>[L/R]TRIM($W)</code> : enlève les espaces en début et/ou fin de chaîne.</li>
+<li><code>[L/R]PAD($W, $N, $C)</code> : l&#39;inverse de <code>[L/R]TRIM()</code>, ajoute des caractères <code>$C</code> en début/fin de <code>$W</code>, de sorte à avoir une chaîne de caractère de taille <code>$N</code>.<br/>
+⚠ Cette fonction n&#39;est pas disponible sur SQLite.</li>
+</ul>
+<p>Il existe bien d&#39;autres fonctions que nous ne verrons pas dans le cadre de ce cours :</p>
+<details>
+  <summary>
+    <strong><em>Afficher les autres pré-traitements</em></strong>
+  </summary>
+
+<ul>
+<li><code>FORMAT()</code> : formate une chaîne de caractère comme <code>printf()</code> en C/Python (pas standardisé).<br>
+Cf <a href="https://www.sqlite.org/printf.html">documentation SQLite</a>.<br/>
+Cf <a href="https://www.postgresql.org/docs/current/functions-string.html#FUNCTIONS-STRING-FORMAT">documentation PostgreSQL</a>.</li>
+<li><code>REVERSE($W)</code> : inverse l&#39;ordre des caractères.</li>
+<li><code>REPLACE($W, $S, $R)</code> : dans <code>$W</code>, remplace <code>$S</code> par <code>$R</code>.</li>
+<li><code>SUBSTR($W, $B[, $L])</code> : retourne la sous-chaîne de <code>$W</code> commençant à l&#39;index <code>$B</code> et de taille <code>$L</code>.</li>
+<li><code>LOCATE($W, $S)</code> : retourne l&#39;index à laquelle se trouve <code>$S</code> dans <code>$W</code>.</li>
+</ul>
+</details>
+
+
+<details>
+  <summary>
+
+<h2 id="autres-prétraitements-en-tp">Autres prétraitements (en TP)</h2>
+  </summary>
+
+<h3 id="sur-les-valeurs-nulles">Sur les valeurs nulles</h3>
+<sql-interactive table="Users">
+  <span slot="options" data-cols="NULL"></span>
+  <span slot="options" data-cols="COALESCE(NULL, 4)"></span>
+  <span slot="options" data-cols="COALESCE(NULL, NULL)"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS;
+</code></pre></sql-interactive>
+
+<ul>
+<li><code>COALESCE($args[,...])</code> : renvoie la première valeur non nulle (ou null si toutes nulles).</li>
+</ul>
+<h3 id="conversions">Conversions</h3>
+<sql-interactive table="Users">
+  <span slot="options" data-col_cast="'1.2' AS REAL">Convertir en réel</span>
+  <span slot="options" data-col_cast="'1.2' AS INT">Convertir en entier</span>
+  <span slot="options" data-col_cast="1.2 AS TEXT">Convertir en texte</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">CAST</span>( $COL_CAST );
+</code></pre></sql-interactive>
+
+<ul>
+<li><code>CAST($V AS $T)</code> : converti la valeur <code>$V</code> dans le type <code>$T</code>.<br/>
+💡 <code>$T</code> sera ainsi généralement : <code>REAL</code>, <code>INT</code>/<code>INTEGER</code>, ou <code>TEXT</code>.</li>
+</ul>
+<p>💡 Il existe bien d&#39;autres fonctions de conversions plus ou moins spécifiques aux SGBD.</p>
+<h3 id="concaténer-des-colonnes">Concaténer des colonnes</h3>
+<p>💡 Vous pouvez aussi concaténer des colonnes en utilisant l&#39;opérateur <code>||</code> :</p>
+<sql-interactive table="Users">
+  <span slot="options" data-col_concat="Nom">Nom</span>
+  <span slot="options" data-col_concat="Nom || ' ' || Prenom">Nom Prenom</span>
+  <span slot="options" data-col_concat="Nom || ' (' || Age || ')'">Nom (Age)</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COL_CONCAT <span class="hljs-keyword">as</span> <span class="hljs-keyword">User</span> <span class="hljs-keyword">FROM</span> Users;
+</code></pre></sql-interactive>
+
+<p>⚠ Attention à ne pas abuser des concaténations. Il est bien souvent préférable de récupérer des données structurées, puis de gérer leurs formatages et affichages via le langage utilisé par votre application (e.g. Python, R, JavaScript, etc). Cela permet notamment de pouvoir réutiliser une même requête pour différents usages.</p>
+<p>💡 Certains SGBD ont aussi des systèmes de cache, permettant de recalculer plus rapidement le résultat d&#39;une requête exécutée fréquemment.</p>
+<h3 id="conditions">Conditions</h3>
+<p>De manière <strong>rare</strong>, il est possible qu&#39;on souhaite effectuer des conditions.</p>
+<sql-interactive table="Users">
+  <span slot="options" data-age='2'>Utilisateur mineur</span>
+  <span slot="options" data-age='20'>Utilisateur majeur</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> (<span class="hljs-keyword">CASE</span>
+  <span class="hljs-keyword">WHEN</span> Age <span class="hljs-operator">&lt;</span> <span class="hljs-number">0</span>  <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;???&#x27;</span>
+  <span class="hljs-keyword">WHEN</span> Age <span class="hljs-operator">&lt;</span> <span class="hljs-number">18</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;mineur&#x27;</span>
+                <span class="hljs-keyword">ELSE</span> <span class="hljs-string">&#x27;majeur&#x27;</span>
+<span class="hljs-keyword">END</span>) <span class="hljs-keyword">as</span> Status <span class="hljs-keyword">FROM</span> (<span class="hljs-keyword">SELECT</span> $Age <span class="hljs-keyword">as</span> Age);
+</code></pre></sql-interactive>
+
+<p>Le format est relativement simple :</p>
+<ul>
+<li>il commence par <code>(CASE</code> et fini par <code>END)</code>.</li>
+<li><code>WHEN $COND THEN $VAL</code> retourne la valeur <code>$VAL</code> si <code>$COND</code> est évalué à vrai.</li>
+<li><code>ELSE $VAL</code> est la valeur par défaut si aucune condition n&#39;est vraie.</li>
+</ul>
+<p>⚠ Le <code>(SELECT $Age as Age)</code> n&#39;est là qu&#39;à des fins de démonstrations, afin de vous permettre de modifier la valeur de l&#39;âge. Pour le moment ignorez-le.</p>
+<p>⚠ Si vous utilisez fréquemment la clause <code>CASE</code> dans les <code>INSERT</code>/<code>UPDATE</code>/<code>DELETE</code> pour :</p>
+<ul>
+<li>calculer la valeur d&#39;une colonne dépendant d&#39;autres colonnes : est-il vraiment nécessaire de la stocker ?</li>
+<li>transformer la valeur d&#39;une colonne : serait-il intéressant de plutôt stocker la valeur transformée ?</li>
+</ul>
+<details>
+  <summary>
+  
+<h3 id="considérations-de-sécurité">Considérations de sécurité</h3>
+  </summary>
+
+
+<p>Il est possible de hasher certaines données avant de les insérer dans la base de données. Cela peut par exemple être utilisé afin de rapidement comparer deux fichiers, ou de contrôler l&#39;intégrité d&#39;un fichier.</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> Files <span class="hljs-keyword">VALUES</span> ($FILENAME, LENGTH($FILECONTENT), SHA256($FILECONTENT) );
+<span class="hljs-keyword">SELECT</span> Filename, Filesize <span class="hljs-keyword">FROM</span> Files <span class="hljs-keyword">WHERE</span> Filehash <span class="hljs-operator">=</span><span class="hljs-operator">=</span> SHA256($FILECONTENT);
+</code></pre><p>⚠ La fonction <code>SHA256($D)</code> permet de hasher les données <code>$D</code> passées en paramètre. Elle n&#39;est cependant pas disponible dans tous les SGBD. Sur SQLite, elle requière d&#39;installer une extension.</p>
+<p>⚠ Il faut impérativement hasher ou chiffrer les données sensibles <strong>AVANT</strong> de les transmettre à la requête SQL. En effet, si vous hashez/chiffrez des données sensibles à l&#39;intérieur même d&#39;une requête SQL, il y a de fortes chances qu&#39;elles soient ensuite stockées en clair dans les logs du SGBD...</p>
+<p>💡 Vous approfondirez les questions de chiffrement et de hashage dans d&#39;autres modules.</p>
+</details>
+
+</details>
+
+<h2 id="agrégation">Agrégation</h2>
+<p>Une agrégation permet de regrouper, au sein d&#39;une même ligne, plusieurs entrées, e.g. pour obtenir la liste des nombres de produits vendus, par dates ou par produits : </p>
+<sql-interactive table="Produits">
+  <span slot="options" data-grp='Ref'>Agrégé par références</span>
+  <span slot="options" data-grp='Date'>Agrégé par dates</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $GRP, GROUP_CONCAT(Q)
+  <span class="hljs-keyword">FROM</span> Produits <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> $GRP;
+</code></pre></sql-interactive>
+
+<p>Pour cela, on utilise la clause <code>GROUP BY $COLS[,...]</code> qui permet de fusionner, au sein d&#39;une même ligne, les entrées dont les valeurs de <code>$COLS[,...]</code> sont égales. Vous trouverez ci-dessous une représentation visuelle d&#39;une agrégation :</p>
+<div style="display:flex;justify-content: space-around;width:100%">
+  <sql-dymtable table="Produits"></sql-dymtable>
+  <sql-dymtable id="group-date" table="Produits" header="Group by Date"></sql-dymtable>
+  <sql-dymtable id="group-ref"  table="Produits" header="Group by Ref"></sql-dymtable>
+</div>
+
+<script type="module">
+
+  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+
+  const gdate_table = await LISS.qs("#group-date");
+  const  gref_table = await LISS.qs("#group-ref");
+
+  gdate_table.groupBy("Date");
+   gref_table.groupBy("Ref");
+
+
+/*  const rowsql   = await LISS.qs("#row-sql");
+
+  rowsql.host.addEventListener("change", (ev) => {
+    update(ev.detail.datas);
+  });
+  update( rowsql.lastDatas );
+
+  function update(datas) {
+
+    const ids = datas[0].map(r => r.ID);
+
+    rowtable.highlightRow( (ID) => ids.includes(+ID) );
+  }*/
+</script>
+
+<p>Vous remarquerez alors que les lignes contiennent plusieurs valeurs pour une même colonne. Il convient alors d&#39;utiliser une <strong>fonction d&#39;agrégation</strong> qui prendra la liste des valeurs et retournera une valeur unique. Par exemple, <code>GROUP_CONCAT(Q)</code> concatène, pour chaque ligne, la colonne <code>Q</code> de ses entrées :</p>
+<sql-interactive table="Produits">
+  <span slot="options" data-op='GROUP_CONCAT(Q)' data-grp="Ref">Concaténation</span>
+  <span slot="options" data-op='SUM(Q)' data-grp="Date">Somme</span>
+  <span slot="options" data-op='AVG(Q)' data-grp="Ref">Moyenne</span>
+  <span slot="options" data-op='MIN(Q)' data-grp="Date">Minimum</span>
+  <span slot="options" data-op='MAX(Q)' data-grp="Date">Maximum</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $GRP, $OP
+  <span class="hljs-keyword">FROM</span> Produits <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> $GRP;
+</code></pre></sql-interactive>
+
+<ul>
+<li><code>GROUP_CONCAT($COL)</code> : concatène les valeurs.</li>
+<li><code>SUM($COL)</code>/<code>TOTAL($COL)</code> : fait la somme des valeurs.</li>
+<li><code>AVG($COL)</code> : fait la moyenne des valeurs.</li>
+<li><code>MIN($COL)</code> : retourne la valeur minimale.</li>
+<li><code>MAX($COL)</code> : retourne la valeur maximale.</li>
+</ul>
+<p>💡 Par défaut, en l&#39;absence d&#39;une fonction d&#39;agrégation, SQL retourne la première valeur.</p>
+<p><todo>Improve example</todo></p>
+<p>💡 Il est aussi possible de compter les entrées/valeurs de chaque lignes :</p>
+<sql-interactive table="Produits">
+  <span slot="options" data-op='COUNT(*)' data-grp="Date">Compte le nombre d'entrées</span>
+  <span slot="options" data-op='COUNT(Q)' data-grp="Date">Compte les valeurs non-nulles</span>
+  <span slot="options" data-op='COUNT(DISTINCT Q)' data-grp="Date">Compte les valeurs distinctes</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $GRP, $OP
+  <span class="hljs-keyword">FROM</span> Produits <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> $GRP;
+</code></pre></sql-interactive>
+
+<ul>
+<li><code>COUNT(*)</code> : compte le nombre d&#39;entrées.</li>
+<li><code>COUNT($COL)</code> : compte le nombre de valeurs non-nulles.</li>
+<li><code>COUNT(DISTINCT $COL)</code> : permet de ne pas compter les doublons.</li>
+</ul>
+<h3 id="conditions-sur-les-agrégations">Conditions sur les agrégations</h3>
+<p>Jusqu&#39;à présent, nous utilisions la clause <code>WHERE</code> pour sélectionner les entrées à récupérer. Cependant, la clause <code>WHERE</code> filtre les entrées <strong>avant</strong> leur agrégation au sein d&#39;une même ligne. Ainsi, l&#39;usage d&#39;une fonction d&#39;agrégation dans sa condition générera un message d&#39;erreur :</p>
+<sql-interactive table="Produits">
+  <span slot="options" data-aggr=""    data-cond=">=10" data-cols="Q">Retirer des entrées avant agrégation</span>
+  <span slot="options" data-aggr=""    data-cond=">=20" data-cols="Q">Retirer des entrées avant agrégation</span>
+  <span slot="options" data-aggr="SUM" data-cond=">=20" data-cols="Q">Fonction d'agrégation génère erreur</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-type">Date</span>, group_concat($COLS) <span class="hljs-keyword">FROM</span> Produits
+  <span class="hljs-keyword">WHERE</span> $AGGR($COLS) $COND
+  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-type">Date</span>;
+</code></pre></sql-interactive>
+
+<p>Pour filtrer les lignes <strong>après</strong> l&#39;agrégation, il convient alors d&#39;utiliser la clause <code>HAVING $COND</code> :</p>
+<sql-interactive table="Produits">
+  <span slot="options" data-grp='Date' data-lcondp="" data-lcond="SUM(Q)" data-rcond =">= 0">Sans alias d'agrégat</span>
+  <span slot="options" data-grp='Date' data-lcondp="SUM(Q) as" data-lcond="Total" data-rcond =">= 30">Lignes dont la somme est >= 30</span>
+  <span slot="options" data-grp='Date' data-lcondp="SUM(Q) as" data-lcond="Total" data-rcond =">= 50">Lignes dont la somme est >= 50</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $GRP, $LCONDP $LCOND <span class="hljs-keyword">FROM</span> Produits
+  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> $GRP <span class="hljs-keyword">HAVING</span> $LCOND $RCOND;
+</code></pre></sql-interactive>
+
+
+<h1 id="cm3--tables-sql">CM3 : Tables SQL</h1>
+<h2 id="schémas-de-tables">Schémas de tables</h2>
+<p>La structure d&#39;une table, appelée <strong>schémas</strong>, est constituée du nom et du type de chaque colonne :</p>
+<sql-interactive table="Produits">
+  <span slot="options" data-tablename="'Users'"></span>
+  <span slot="options" data-tablename="'Produits'"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span>
+pragma_table_xinfo($TABLENAME);
+</code></pre></sql-interactive>
+
+<ul>
+<li><code>cid</code> est l&#39;identifiant de la colonne.</li>
+<li><code>name</code> est le nom de la colonne.</li>
+<li><code>type</code> est le type de données stockées dans la colonne.</li>
+<li><code>notnull</code> indique si la colonne peut contenir des valeurs <code>NULL</code>.</li>
+<li><code>dflt_value</code> est la valeur par défaut de la colonne (i.e. valeur insérée si non spécifiée lors de l&#39;insertion).</li>
+<li><code>pk</code> indique si la colonne fait partie d&#39;une clé primaire (cf suite du cours).</li>
+<li><code>hidden</code> indique si la colonne est générée (cf suite du cours)</li>
+</ul>
+<p>⚠ La manière d&#39;afficher le schéma d&#39;une table diffère d&#39;un SGBD à l&#39;autre :</p>
+<table>
+  <thead>
+    <tr>
+      <th>SGBD</th>
+      <th>Commande</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SQLite</td>
+      <td>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> pragma_table_xinfo($TABLENAME);
+</code></pre></td>
+    </tr><tr>
+      <td>PostgreSQL</td>
+      <td>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> information_schema.columns 
+<span class="hljs-keyword">WHERE</span> table_name <span class="hljs-operator">=</span><span class="hljs-operator">=</span> $TABLENAME;
+</code></pre></td>
+    </tr><tr>
+      <td>MySQL</td>
+      <td>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">DESCRIBE</span> $TABLENAME;  
+</code></pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="opérations-sur-les-tables">Opérations sur les tables</h2>
+<p>Jusqu&#39;à présent, nous avons écrit des requêtes SQL pour récupérer, insérer, modifier, et supprimer des entrées d&#39;une table. De manière analogue est aussi possible de créer, modifier, et supprimer des tables via des commandes SQL :</p>
+<ul>
+<li><code>CREATE TABLE</code> : créer une table ;</li>
+<li><code>ALTER TABLE</code> : modifier une table ;</li>
+<li><code>TRUNCATE TABLE</code> : supprimer toutes les entrées d&#39;une table ;</li>
+<li><code>DELETE TABLE</code> : supprimer une table.</li>
+</ul>
+<h3 id="création-dune-table">Création d&#39;une table</h3>
+<p>La requête SQL <code>CREATE TABLE</code> permet de créer une nouvelle table, et se présente usuellement sous la forme suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> [IF <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span>] $TABLENAME ($COLNAME $COLTYPE[,...]);
+</code></pre><ul>
+<li><code>$COLNAME</code> est le nom de la colonne ;</li>
+<li><code>$COLTYPE</code> est le type des données stockées dans la colonne.</li>
+</ul>
+<p>⚠ Si vous utilisez SQLite, il faut ajouter <code>STRICT</code> à la fin de la requête SQL afin de le forcer à vérifier les types des colonnes lors des opérations sur la table.</p>
+<sql-interactive table="Users">
+  <span slot='select'>SELECT * FROM T;</span>
+  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="('Crayon', 4)"></span>
+  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="(4, 'Crayon')"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T
+      $M_COLS STRICT;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> T <span class="hljs-keyword">VALUES</span>
+      $M_VALS;
+</code></pre></sql-interactive>
+
+<h4 id="if-not-exists">IF NOT EXISTS</h4>
+<p>Si la table existe déjà, une erreur sera lancée. Pour éviter cela, vous pouvez ajouter la clause <code>IF NOT EXISTS</code> qui créera la table seulement si elle n&#39;existe pas.</p>
+<p>⚠ Après un <code>IF NOT EXISTS</code>, la table ne sera pas nécessairement vide. Si vous avez besoin que la table soit vide, utilisez une requête <code>TRUNCATE TABLE</code> (cf suite du cours).</p>
+<p>⚠ Si le schéma de table du <code>IF NOT EXISTS</code> est différent de la table existante, aucune erreur ne sera lancée.</p>
+<sql-interactive table="Users">
+  <span slot="options" data-ifexists=""></span>
+  <span slot="options" data-ifexists="IF NOT EXISTS"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T
+      (<span class="hljs-type">Date</span> TEXT) STRICT;
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> $IFEXISTS T
+      (<span class="hljs-type">Date</span> <span class="hljs-type">INT</span>) STRICT;
+</code></pre></sql-interactive>
+
+<h4 id="create-table-as">CREATE TABLE AS</h4>
+<p>💡 Vous pouvez aussi créer et remplir une nouvelle table à partir du résultat d&#39;une requête <code>SELECT</code>.</p>
+<sql-interactive table="Users">
+  <span slot="select">SELECT * FROM T;</span>
+  <span slot="options" data-cols="*" data-tablename="Produits" data-cond="1==1"></span>
+  <span slot="options" data-cols="Date, Q" data-tablename="Produits" data-cond="Ref == 'Gomme'"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T <span class="hljs-keyword">AS</span>
+    <span class="hljs-keyword">SELECT</span> $COLS
+    <span class="hljs-keyword">FROM</span> $TABLENAME
+    <span class="hljs-keyword">WHERE</span> $COND;
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> T;
+</code></pre></sql-interactive>
+
+<p>⚠ Sur SQLite, les tables créées de cette manière ne sont pas <code>STRICT</code>.</p>
+<h4 id="exemples-1">Exemples</h4>
+<p>💡 Pour références, les requêtes SQL utilisées pour créer les tables des exemples peuvent être visualisées ci-dessous :</p>
+<sql-interactive table="Produits">
+  <span slot="options" data-tablename="'Produits'"></span>
+  <span slot="options" data-tablename="'Users'"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">FROM</span> sqlite_schema
+<span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span><span class="hljs-operator">=</span> $TABLENAME;
+</code></pre></sql-interactive>
+
+<h3 id="suppression-dune-table">Suppression d&#39;une table</h3>
+<p>Les requêtes SQL <code>DROP TABLE</code> et <code>TRUNCATE TABLE</code> permettent, respectivement, de supprimer et de vider une table existantes, et se présentent usuellement sous la forme suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> [IF <span class="hljs-keyword">EXISTS</span>] $TABLENAME;
+<span class="hljs-keyword">TRUNCATE</span> <span class="hljs-keyword">TABLE</span> $TABLENAME;
+</code></pre><sql-interactive table="Produits">
+  <span slot="select">SELECT name, type, "notnull", dflt_value, pk, hidden
+        FROM pragma_table_xinfo('Produits');
+SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
+  <span slot="options" data-command="DROP TABLE"></span>
+  <span slot="options" data-command="DELETE FROM"></span>
+
+<pre><code class="hljs language-sql">$COMMAND Produits;
+</code></pre></sql-interactive>
+
+<p>💡 Dans certains SGBD, <code>DROP TABLE</code> supporte une clause <code>IF EXISTS</code>. Ainsi, si vous souhaitez créer une table vide, vous pouvez la <code>DROP TABLE IF EXISTS</code> avant sa création pour vous assurer de la construire correctement.</p>
+<p>⚠ <code>TRUNCATE TABLE</code> n&#39;existe pas sur SQLite. Il vous faut alors utiliser <code>DELETE FROM $TABLENAME;</code> à la place.</p>
+<h3 id="modification-dune-table">Modification d&#39;une table</h3>
+<p>La requête SQL <code>ALTER TABLE</code> permet de modifier une table, et se présente usuellement sous la forme suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> $TABLENAME (RENAME<span class="hljs-operator">|</span><span class="hljs-keyword">ADD</span><span class="hljs-operator">|</span><span class="hljs-keyword">DROP</span>) <span class="hljs-keyword">COLUMN</span> $OPT;
+</code></pre><ul>
+<li><code>RENAME</code> renomme une colonne.<br/>
+<code>$OPT</code>: <code>$OLD_COLNAME TO $NEW_COLNAME</code>.</li>
+<li><code>ADD</code> ajoute une colonne.<br/>
+<code>$OPT</code>: <code>$COLNAME $COLTYPE</code>.</li>
+<li><code>DROP</code> supprime une colonne.<br/>
+<code>$OPT</code>: <code>$COLNAME</code>.</li>
+</ul>
+<sql-interactive table="Produits">
+  <span slot="select">SELECT name, type, "notnull", dflt_value, pk, hidden
+        FROM pragma_table_xinfo('Produits');</span>
+  <span slot="options" data-command="RENAME" data-opts="Ref TO Prod"></span>
+  <span slot="options" data-command="ADD" data-opts="Sum INT"></span>
+  <span slot="options" data-command="DROP" data-opts="Date"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> Produits
+  $COMMAND <span class="hljs-keyword">COLUMN</span> $OPTS;
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> Produits;
+</code></pre></sql-interactive>
+
+<p>⚠ Renommer ou supprimer la colonne d&#39;une table n&#39;est pas anodin. En effet, si ces colonnes sont utilisées ailleurs, e.g. dans des requêtes SQL, ces dernières ne fonctionneront plus correctement.</p>
+<p>💡 Certains SGBD supportent des clauses <code>IF EXISTS</code> et <code>IF NOT EXISTS</code> sur les colonnes.</p>
+<p>💡 Vous pouvez aussi renommer une table avec la commande SQL suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> $OLD_TABLENAME RENAME <span class="hljs-keyword">TO</span> $NEW_TABLENAME;
+</code></pre><h2 id="les-contraintes">Les contraintes</h2>
+<p>Il est possible de définir des contraintes sur les colonnes et sur la table afin de garantir sa cohérence et consistence.</p>
+<p><todo>Exemple parlant?</todo></p>
+<h3 id="contraintes-sur-les-colonnes">Contraintes sur les colonnes</h3>
+<p>Lors de la création de la table, il est possible de spécifier des contraintes sur des colonnes. Pour ce faire, on ajoute le(s) contrainte(s) après le type de la colonne :</p>
+<sql-interactive table="Produits">
+  <span slot="options" data-cstrnt="DEFAULT 'D'" data-vals="(1)" data-cols='(A)' ></span>
+  <span slot="select">SELECT * FROM T;</span>
+  <span slot="options" data-cstrnt="NOT NULL" data-vals="(1, NULL)"></span>
+  <span slot="options" data-cstrnt="UNIQUE" data-vals="(1, 2), (1, 2)"></span>
+  <span slot="options" data-cstrnt="CHECK(B != 'NA')" data-vals="(1, 'NA')" ></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T ( A TEXT,
+    B TEXT $CSTRNT
+  ) STRICT;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span>  T $COLS <span class="hljs-keyword">VALUES</span>
+    $VALS;
+</code></pre></sql-interactive>
+
+<ul>
+<li><code>DEFAULT $VAL</code> : valeur par défaut si non renseignée lors d&#39;un <code>INSERT</code>.</li>
+<li><code>NOT NULL</code> : la valeur ne peut pas être <code>NULL</code>.</li>
+<li><code>UNIQUE</code> : il ne peut pas y avoir deux valeurs identiques dans la colonne.<br/>
+⚠ La colonne peut contenir plusieurs valeurs <code>NULL</code>.</li>
+<li><code>CHECK($COND)</code> : la valeur de la colonne doit respecter la condition <code>$COND</code>.</li>
+</ul>
+<h3 id="contraintes-sur-la-table">Contraintes sur la table</h3>
+<p>Les contraintes <code>UNIQUE</code> et <code>CHECK</code> peuvent dépendre de plusieurs colonnes. Dans ce cas, la contrainte est ajoutée après la liste des colonnes :</p>
+<sql-interactive table="Produits">
+  <span slot="options" data-cstrnt="UNIQUE(A,B)" data-vals="(1, 2), (1, 2)"></span>
+  <span slot="options" data-cstrnt="CHECK(B != A)" data-vals="(1, 1)" ></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (
+    A TEXT, B TEXT,
+    $CSTRNT
+  ) STRICT;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span>  T <span class="hljs-keyword">VALUES</span>
+    $VALS;
+</code></pre></sql-interactive>
+
+<h3 id="colonnes-générées">Colonnes générées</h3>
+<p>Il est possible de générer la valeur d&#39;une colonne à partir des valeurs d&#39;autres colonnes grâce à la contrainte <code>AS</code> :</p>
+<sql-interactive table="Produits">
+  <span slot='select'>SELECT * FROM T;</span>
+  <span slot="options" data-cstrnt="(PU*Q )" data-vals="(1,2), (3,4)"></span>
+  <span slot="options" data-cstrnt="(PU*Q) STORED" data-vals="(1,2), (3,4)"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (
+    PU <span class="hljs-type">INT</span>, Q <span class="hljs-type">INTEGER</span>,
+    T <span class="hljs-type">INT</span> <span class="hljs-keyword">AS</span> $CSTRNT
+  ) STRICT;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span>  T <span class="hljs-keyword">VALUES</span>
+    $VALS;
+</code></pre></sql-interactive>
+
+<p>💡 <code>STORED</code> signifie que la valeur sera calculée lors des insertions/modifications puis stockées. Si absent, la valeur sera recalculée à chaque accès.</p>
+<h2 id="les-index">Les index</h2>
+<p>Il est fréquent de vouloir récupérer une entrée à partir d&#39;un identifiant donné. Cependant, s&#39;il faut à chaque fois parcourir toutes les entrées de la table unes à unes, cela peut s&#39;avérer relativement lent sur de grandes tables.</p>
+<p>Un <strong>index</strong> est une structure permettant de trouver très rapidement la/les entrée(s) associée(s) à un tel identifiant.</p>
+<p>💡 Lorsqu&#39;une colonne a la contrainte <code>UNIQUE</code>, il est fréquent que le SGBD créé automatiquement un index.</p>
+<h3 id="les-clefs-primaires-pk">Les clefs primaires (PK)</h3>
+<p>Une clef primaire est un index un peu spécial accélérant encore plus les recherches d&#39;entrées à partir d&#39;un identifiant.</p>
+<p>Elle est créée via une contrainte <code>PRIMARY KEY</code> et implique les contraintes <code>UNIQUE NOT NULL</code>. Il ne peut y avoir qu&#39;une clef primaire par table.</p>
+<sql-interactive table="Produits">
+  <span slot='select'>SELECT * FROM T;</span>
+  <span slot="options" data-pk="TEXT PRIMARY KEY" data-vals="('1'), ('2')"></span>
+  <span slot="options" data-pk="INTEGER
+      PRIMARY KEY AUTOINCREMENT" data-vals="(NULL), (NULL)"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (
+    K $PK
+  ) STRICT;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span>  T <span class="hljs-keyword">VALUES</span>
+    $VALS;
+</code></pre></sql-interactive>
+
+<p>💡 La contrainte <code>AUTOINCREMENT</code> permet d&#39;automatiquement incrémenter la clef primaire des entrées insérées. Elle ne peut être utilisée que sur une colonne <code>INTEGER PRIMARY KEY</code>.</p>
+<p>💡 Comme avec la contrainte <code>UNIQUE</code>, il est aussi possible de créer une clef primaire sur plusieurs colonnes via contrainte de table :</p>
+<sql-interactive table="Produits">
+  <span slot='select'>SELECT * FROM T;</span>
+  <span slot="options" data-pk="PRIMARY KEY(ID, CODE)" data-vals="(1, 'E')"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (
+    ID <span class="hljs-type">INT</span>, CODE TEXT,
+    $PK
+  ) STRICT;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span>  T <span class="hljs-keyword">VALUES</span>
+    $VALS;
+</code></pre></sql-interactive>
+
+<p>💡 Certains SGBD crééent automatiquement, pour chaque table, une clef primaire cachée nommée <code>ROWID</code>.</p>
+<h3 id="les-clefs-étrangères-fk">Les clefs étrangères (FK)</h3>
+<p><todo>Motivation</todo></p>
+<p>Une clé étrangère est composée d&#39;une ou plusieurs colonnes référençant une ou plusieurs colonnes de contraine <code>UNIQUE</code> ou <code>PRIMARY KEY</code>. On l&#39;indique via une contrainte de table sous la forme :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">FOREIGN</span> KEY($COLS_FK[,...]) <span class="hljs-keyword">REFERENCES</span> $T
+<span class="hljs-keyword">FOREIGN</span> KEY($COLS_FK[,...]) <span class="hljs-keyword">REFERENCES</span> $T($COLS_PK[,...])
+</code></pre><ul>
+<li><code>$COL_FK</code> sont les colonnes constituant la clé étrangère.</li>
+<li><code>$COL_PK</code> sont les colonnes référencées.</li>
+</ul>
+<p>💡 Si la/les colonne(s) de la table référencée ne sont pas spécifiées, la/les colonne(s) de la clef primaire sont utilisée(s).</p>
+<sql-interactive table="Produits">
+  <span slot='select'>SELECT * FROM T;
+SELECT * FROM Users;</span>
+  <span slot="options" data-fk="FOREIGN KEY(ID)
+    REFERENCES Users" data-vals="(1, 'E')"></span>
+  <span slot="options" data-fk="FOREIGN KEY(ID)
+    REFERENCES Users" data-vals="(4, 'E')"></span>
+  <span slot="options" data-fk="FOREIGN KEY(ID)
+    REFERENCES Users" data-vals="(NULL, 'E')"></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (ID <span class="hljs-type">INT</span>, C TEXT,
+    $FK
+  ) STRICT;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span>  T <span class="hljs-keyword">VALUES</span>
+    $VALS;
+</code></pre></sql-interactive>
+
+<p>💡 La clé étrangère peut être nulle (sauf si contrainte <code>NOT NULL</code>).</p>
+<p>💡 On préfère souvent nommer la/les colonne(s) de la clef étrangères avec les noms de la/les colonne(s) référencée(s).</p>
+<p>⚠ La vérification des clefs étrangères n&#39;est pas activé par défaut sur SQLite. La commande <code>PRAGMA foreign_keys = ON</code> permet de l&#39;activer.</p>
+<h3 id="uml">UML</h3>
+<sql-interactive id="uml-sql" table="Users">
+  <!-- TODO: change order -->
+  <span slot="options" data-pk="ID, CODE" data-fk="ID, CODE" data-cols_a="CODE TEXT, X INT, ID INT" data-cols_b="ID INT, CODE TEXT"></span>
+  <span slot="options" data-pk="ID" data-fk="ID" data-cols_a="ID INT, CODE TEXT" data-cols_b="ID INT, CODE TEXT"></span>
+  <!-- TODO: LISS -->
+  <pre id="uml" slot="post" class="hljs">
+    <code>
+      <div class="output"></div>
+    </code>
+  </pre>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> A (
+    $COLS_A,
+    <span class="hljs-keyword">PRIMARY</span> KEY($PK)
+  ) STRICT;
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> B (
+    $COLS_B,
+    <span class="hljs-keyword">FOREIGN</span> KEY($FK)
+    <span class="hljs-keyword">REFERENCES</span> B
+  ) STRICT;
+</code></pre></sql-interactive>
+
+<!-- test -->
+
+<script type="module">
+  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+
+  const uml_output = document.querySelector("#uml .output");
+  //await LISS.qs("#col-table");
+  const umlsql   = await LISS.qs("#uml-sql");
+
+  umlsql.host.addEventListener("change", (ev) => {
+    console.warn( umlsql.lastVars );
+    update( umlsql.lastVars );
+  });
+  update( umlsql.lastVars );
+
+  function update({cols_a, cols_b, fk, pk}) {
+
+    fk = fk.split(',').map( k => k.trim() );
+    pk = pk.split(',').map( k => k.trim() );
+
+    function buildTable(cols, hcols, isPK) {
+      let content = [];
+
+      const hmethod = isPK ? "strong" : "em";
+
+      let max_w  = 0;
+      let max_nw = 0;
+      let max_cw = 0;
+
+      const cnstr = `${isPK ? "PK" : "FK"}(${(isPK ? pk : fk).join(', ')})`;
+      max_w = cnstr.length;
+
+      cols = cols.split(',').map( l => {
+          l = l.trim();
+          const pos = l.indexOf(' ');
+          const colname = l.slice(0, pos);
+          const constrainst = l.slice(pos+1);
+
+          const nw = colname.length;
+          const cw = constrainst.length;
+          if( nw > max_nw)
+            max_nw = nw;
+          if( cw > max_cw)
+            max_cw = cw;
+
+          return [colname, constrainst];
+      });
+
+      if( max_w > max_nw + max_cw)
+        max_cw = max_w - max_nw;
+      if( max_w < max_nw + max_cw )
+        max_w = max_nw + max_cw;
+
+
+      let prefix = "";
+      let suffix = "";
+
+      if( isPK )
+        suffix = "   ";
+      else
+        prefix = "   ";
+
+
+      content.push(`${prefix}+-${"".padEnd(max_w+2, "-")}-+${suffix}`);
+      const lpad_len = Math.floor( (max_w+2-1)/2);
+      let lpad = "".padEnd(lpad_len);
+      let rpad = "".padEnd(max_w+2-1 - lpad_len);
+      content.push(`${prefix}| ${lpad}<strong>${(isPK ? "A" : "B")}</strong>${rpad} |${suffix}`);
+      content.push(`${prefix}+-${"".padEnd(max_w+2, "-")}-+${suffix}`);
+
+      for(let col of cols) {
+
+        let w = max_w;
+
+        let lsuffix = suffix;
+        let lprefix = prefix
+
+        let colname = col[0].padEnd(max_nw);
+
+        if( hcols.includes(col[0]) ) {
+          colname = `<${hmethod}>${colname}</${hmethod}>`;
+
+          if( isPK )
+            lsuffix = "---";
+          else
+            lprefix = "-->";
+        }
+        
+        const line = `${colname}: ${col[1].padEnd(max_cw)}`;
+        content.push(`${lprefix}| ${line} |${lsuffix}`);
+      }
+
+      content.push(`${prefix}+-${"".padEnd(max_w+2, "-")}-+${suffix}`);
+      content.push(`${prefix}| ${cnstr.padEnd(max_w+2)} |${suffix}`);
+      content.push(`${prefix}+-${"".padEnd(max_w+2, "-")}-+${suffix}`);
+
+      return content;
+    }
+
+    let tA = buildTable(cols_a, pk, true);
+    let tB = buildTable(cols_b, fk, false);
+
+    if( tB.length > tA.length) {
+      tA.push(... new Array(tB.length - tA.length).fill("".padEnd(tA[0].length)) );
+    }
+    if( tA.length > tB.length) { // just to simplify code.
+      tB.push(... new Array(tA.length - tB.length).fill("".padEnd(tB[0].length)) );
+    }
+
+    let start_idx, end_idx;
+    for(let i = 0; i < tA.length; ++i) {
+      const idx = tA[i].length-1;
+      if(tA[i][idx] === "-" || tB[i][0] === "-") {
+        start_idx = i;
+        break;
+      }
+    }
+    for(let i = tA.length - 1; i >= 0 ; --i) {
+      const idx = tA[i].length-1;
+      if(tA[i][idx] === "-" || tB[i][0] === "-") {
+        end_idx = i;
+        break;
+      }
+    }
+
+    let content = "";
+    for(let i = 0; i < tA.length; ++i) {
+
+      let sep = "   ";
+
+      if( pk.length === 1 && fk.length === 1) { // unique.
+        if(start_idx === end_idx) {
+          if(i === start_idx)
+            sep = "---";
+        } else {
+          if(i === start_idx || i === end_idx) {
+            if(tA[i][ tA[i].length - 1 ] !== " ")
+              sep = "-+ ";
+            else
+              sep = " +-";
+          }
+          if( i > start_idx && i < end_idx)
+            sep = " | ";
+        }
+      }
+
+      if( pk.length > 1 || fk.length > 1) { // 1 vs N and N vs 1 shouldn't occur ?
+        if( i >= start_idx && i <= end_idx) {
+
+          sep = [" ", "|", " "];
+
+          if(tA[i][ tA[i].length - 1 ] !== " ") {
+            sep[0] = "-";
+            sep[1] = "+";
+          }
+          if(tB[i][0] !== " ") {
+            sep[1] = "+";
+            sep[2] = "-";
+          }
+
+          sep = sep.join("");
+        }
+      } 
+
+      content += `${tA[i]}${sep}${i < tB.length ? tB[i] : ""}\n`;
+    }
+
+    uml_output.innerHTML = content;
+  }
+
+</script>
+
+<h2 id="opérations-sur-table-avec-contraintes">Opérations sur table avec contraintes</h2>
+<h3 id="modificationsuppression-sur-des-colonnes-référencées">Modification/Suppression sur des colonnes référencées</h3>
+<p>Comme nous l&#39;avons vu à la section précédente, une clef étrangère référence des colonnes d&#39;une autre table. Mais que se passe-t-il lorsqu&#39;on modifie ou supprime des entrées dans les colonnes référencées ?</p>
+<p>C&#39;est à vous de le définir via les clauses <code>ON DELETE $POLICY</code> et <code>ON UPDATE $POLICY</code> sur la clef primaire :</p>
+<p><todo> Exemple </todo>
+<sql-interactive table="Produits"></p>
+<pre><code class="hljs language-sql">...
+</code></pre></sql-interactive>
+
+<ul>
+<li><code>CASCADE</code> : modifie/supprime la clef étrangère lorsque des valeurs des colonnes référencées sont modifiées.</li>
+<li><code>SET NULL|DEFAULT</code> : modifie la clef étrangère lorsque des valeurs des colonnes référencées sont modifiées.</li>
+<li><code>RESTRICT</code> : empêche la modification/suppression si les valeurs sont référencées par une clef étrangère.</li>
+</ul>
+<h3 id="merge-mettre-à-jour-si-existe-sinon-insérer">Merge: mettre à jour si existe, sinon insérer.</h3>
+<p><todo>Pour MERGE dont on avait dit qu&#39;on ne verrais pas au CM2, mais au TP2, finalement, je pense qu&#39;il vaut mieux l&#39;évoquer au CM3 juste après les clefs étrangères.</p>
+<p>En gros la problématique est d&#39;ajouter si inexistant, et de modifier si existant.</p>
+<p>On peut faire un select, puis refaire une requête pour update ou insert, mais c&#39;est pas pratique de faire plusieurs requêtes.</p>
+<p>On a des choses comme REPLACE (MySQL) supprime l&#39;entrée si elle existe, puis ajoute la nouvelle. Sauf que s&#39;il y a des clefs primaires référencées par des clefs étrangères ça casse tout.</p>
+<p>Il faut ainsi faire cela en une seule opération.
+Pour cela on a UPSERT et INSERT ON DUPLICATE KEYS UPDATE (dépend du SGBD) qui s&#39;utilise comme INSERT et qui sont plutôt simples (vérifient si la clef primaire existe).</p>
+<p>Et pour d&#39;autres, MERGE (SQL2003), qui est plus puissant (on peut personnaliser la condition), et l&#39;utiliser pour d&#39;autres usages (on peut aussi supprimer).</todo></p>
+<ul>
+<li>évoquer <a href="https://sql.sh/cours/merge">https://sql.sh/cours/merge</a> (à la fin d&#39;un TP ?)</li>
+</ul>
+<p>=&gt; ajouter (ou modifier si existe) =&gt; besoin notion de clef primaire.</p>
+<ul>
+<li><p>UPSERT.</p>
+</li>
+<li><p>ajouter ou modifier si existe (seulement mysql)
+<a href="https://dev.mysql.com/doc/refman/8.4/en/insert-on-duplicate.html">https://dev.mysql.com/doc/refman/8.4/en/insert-on-duplicate.html</a>
+<a href="https://dev.mysql.com/doc/refman/9.0/en/replace.html">https://dev.mysql.com/doc/refman/9.0/en/replace.html</a></p>
+</li>
+</ul>
+<p>Replace à éviter ( <a href="https://stackoverflow.com/questions/9168928/what-are-practical-differences-between-replace-and-insert-on-duplicate-key">https://stackoverflow.com/questions/9168928/what-are-practical-differences-between-replace-and-insert-on-duplicate-key</a> ).</p>
+<h3 id="modifier-les-contraintes">Modifier les contraintes</h3>
+<p>Pour information, certains SGBD (pas sur SQLite) permettent de modifier les contraintes de colonnes et de tables :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> $T <span class="hljs-keyword">ALTER</span><span class="hljs-operator">|</span>MODIFY <span class="hljs-keyword">COLUMN</span> $NAME $<span class="hljs-keyword">DESC</span>;
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> $T <span class="hljs-keyword">ADD</span><span class="hljs-operator">|</span><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CHECK</span> $<span class="hljs-keyword">DESC</span>;
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> $T <span class="hljs-keyword">ADD</span><span class="hljs-operator">|</span><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">PRIMARY</span> KEY ($COL);
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> $T <span class="hljs-keyword">ADD</span><span class="hljs-operator">|</span><span class="hljs-keyword">DROP</span> CONSTRAINST PK_$T <span class="hljs-keyword">PRIMARY</span> KEY ($COL[,...]);
+</code></pre><p>⚠ Modifier le schéma et les contraintes d&#39;une table existante/non-vide n&#39;est pas anodin.</p>
+<h1 id="cm4-fusions">CM4 Fusions</h1>
+<h2 id="opérations-densembles">Opérations d&#39;ensembles</h2>
+<p>Il est possible d&#39;opérer des opérations d&#39;ensembles sur les <strong>lignes</strong> retournées par deux requête <code>SELECT</code>, à conditions qu&#39;elles aient le même nombre de colonnes :</p>
+<ul>
+<li><code>UNION</code>     : concaténer les lignes.</li>
+<li><code>INTERSECT</code> : les lignes communes aux deux requêtes.</li>
+<li><code>EXCEPT</code>    : les lignes de la première requête absentes de la seconde.</li>
+</ul>
+<p>Ces opérations s&#39;utilisent sous la forme suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $QUERY_1
+<span class="hljs-keyword">UNION</span><span class="hljs-operator">|</span><span class="hljs-keyword">INTERSECT</span><span class="hljs-operator">|</span><span class="hljs-keyword">EXCEPT</span> [<span class="hljs-keyword">ALL</span>]
+<span class="hljs-keyword">SELECT</span> $QUERY_2
+</code></pre><sql-interactive table="Joins">
+  <span slot="options" data-op='UNION'></span>
+  <span slot="options" data-op='UNION ALL'></span>
+  <span slot="options" data-op='INTERSECT'></span>
+  <span slot="options" data-op='EXCEPT'></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> Produits
+$OP
+<span class="hljs-keyword">SELECT</span> Nom, Prenom, Age <span class="hljs-keyword">FROM</span> Users;
+</code></pre></sql-interactive>
+
+<p><todo>Better example</todo></p>
+<p>💡 Par défaut, les lignes en doublons sont supprimées. L&#39;option <code>ALL</code> permet de conserver l&#39;ensemble des lignes.</p>
+<h2 id="sous-requêtes">Sous requêtes</h2>
+<p>Vous pouvez utiliser le résultat d&#39;une requête <code>SELECT</code> (alors appelée &quot;sous-requête&quot;) comme valeur dans une autre requête. Par exemple, pour utiliser une sous-requête dans une condition <code>WHERE</code>, il suffit de l&#39;ajouter entre parenthèses :</p>
+<sql-interactive table="Joins">
+  <span slot="options" data-cond='=' data-subquery='SELECT MAX(Y) FROM T2'></span>
+  <span slot="options" data-cond='IN' data-subquery='SELECT Y FROM T2'></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">WHERE</span> X $COND ( $SUBQUERY )
+</code></pre></sql-interactive>
+
+<p>⚠ La sous-requête doit retourner une valeur unique (une seule ligne et colonne) ou, pour <code>IN</code>, une liste (une seule colonne).</p>
+<h3 id="sous-requête-corrélée">Sous-requête corrélée</h3>
+<p>Lorsque la sous-requête dépend d&#39;une colonne de la requête principale, elle est dite &quot;corrélée&quot;, et sera réexécutée à chaque ligne de la requête principale.</p>
+<p>Dès lors, pour des raisons de performances on utilisera les opérateurs :</p>
+<ul>
+<li><code>EXISTS</code> à la place de <code>IN</code>.</li>
+<li><code>ANY</code>/<code>SOME</code> ou <code>ALL</code> au lieu d&#39;utiliser certaines fonctions d&#39;agrégations.</li>
+</ul>
+<sql-interactive table="Joins">
+  <span slot="options" data-cond='EXISTS'></span>
+  <span slot="options" data-cond='X > ANY'></span>
+  <span slot="options" data-cond='X > ALL'></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">WHERE</span> $COND (
+  <span class="hljs-keyword">SELECT</span> Y <span class="hljs-keyword">FROM</span> T2 <span class="hljs-keyword">WHERE</span> T2.X <span class="hljs-operator">=</span> T1.X
+)
+</code></pre></sql-interactive>
+
+<p>En effet, une sous-requête non-corrélée, n&#39;est exécutée qu&#39;une seule fois. Ainsi il est intéressant de récupérer toutes les lignes (pour <code>IN</code>) ou de calculer des agrégats qui seront réutilisés pour évaluer la clause <code>WHERE</code> à chaque entrée de la requête principale.</p>
+<p>Cependant, quand une sous-requête est corrélée, il n&#39;est pas utile de calculer l&#39;ensemble des lignes de la sous-requête, car on peut s&#39;arrêter à :</p>
+<ul>
+<li>la première ligne existante pour <code>EXISTS</code>.</li>
+<li>la première ligne satisfaisant la condition pour <code>ALL</code>.</li>
+<li>la première ligne ne satisfaisant pas la condition pour <code>ALL</code>.</li>
+</ul>
+<p>⚠ Il va de soit qu&#39;il faut éviter les sous-requêtes corrélées autant que possible...</p>
+<h2 id="jointures">Jointures</h2>
+<p>[+] rappel clefs étrangères.
+[+] motivation pour jointures.</p>
+<h3 id="le-produit-cartésien">Le produit cartésien</h3>
+<p>Une méthode naïve (<strong>et à ne jamais utiliser</strong>) d&#39;effectuer une jointure est d&#39;utiliser un produit cartésien :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> $T1, $T2 <span class="hljs-keyword">WHERE</span> $T1.$KEY <span class="hljs-operator">=</span><span class="hljs-operator">=</span> $T2.$KEY;
+</code></pre><p>Pour exécuter cette requête, le SGDB va construire une table intermédiaire constituée de toutes les combinaisons de lignes possibles entre <code>$T1</code> et <code>$T2</code>, qu&#39;elle va ensuite parcourir pour filtrer les lignes via la clause <code>WHERE</code>.</p>
+<style>
+  .color1 {
+    background-color: red;
+  }
+  .color2 {
+    background-color: blue;
+  }
+  .color3 {
+    background-color: green;
+  }
+  .color4 {
+    background-color: orange;
+  }
+
+  .table_flex {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+</style>
+
+<div class='table_flex'>
+
+<table>
+  <caption>T1</caption>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class='color1'>
+      <td>1</td><td>...</td>
+    </tr>
+    <tr class='color2'>
+      <td>2</td><td>...</td>
+    </tr>
+    <tr class='color3'>
+      <td>3</td><td>...</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>x</p>
+<table>
+  <caption>T2</caption>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class='color1'>
+      <td>1</td><td>...</td>
+    </tr>
+    <tr class='color3'>
+      <td>3</td><td>...</td>
+    </tr>
+    <tr class='color3'>
+      <td>3</td><td>...</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>=</p>
+<table>
+  <caption>T1xT2</caption>
+  <thead>
+    <tr>
+      <th>T1.ID</th>
+      <th>...</th>
+      <th>T2.ID</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class='color1'>1</td><td class='color1'>...</td>
+      <td class='color1'>1</td><td class='color1'>...</td>
+    </tr>
+    <tr>
+      <td class='color1'>1</td><td class='color1'>...</td>
+      <td class='color3'>1</td><td class='color3'>...</td>
+    </tr>
+    <tr>
+      <td class='color1'>1</td><td class='color1'>...</td>
+      <td class='color3'>1</td><td class='color3'>...</td>
+    </tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr>
+      <td class='color2'>2</td><td class='color2'>...</td>
+      <td class='color1'>1</td><td class='color1'>...</td>
+    </tr>
+    <tr>
+      <td class='color2'>2</td><td class='color2'>...</td>
+      <td class='color3'>1</td><td class='color3'>...</td>
+    </tr>
+    <tr>
+      <td class='color2'>2</td><td class='color2'>...</td>
+      <td class='color3'>1</td><td class='color3'>...</td>
+    </tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr>
+      <td class='color3'>2</td><td class='color3'>...</td>
+      <td class='color1'>1</td><td class='color1'>...</td>
+    </tr>
+    <tr>
+      <td class='color3'>2</td><td class='color3'>...</td>
+      <td class='color3'>1</td><td class='color3'>...</td>
+    </tr>
+    <tr>
+      <td class='color3'>2</td><td class='color3'>...</td>
+      <td class='color3'>1</td><td class='color3'>...</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>WHERE -&gt;</p>
+<table>
+  <caption>T1xT2 + WHERE</caption>
+  <thead>
+    <tr>
+      <th>T1.ID</th>
+      <th>...</th>
+      <th>T2.ID</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class='color1'>1</td><td class='color1'>...</td>
+      <td class='color1'>1</td><td class='color1'>...</td>
+    </tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr>
+      <td class='color3'>3</td><td class='color3'>...</td>
+      <td class='color3'>3</td><td class='color3'>...</td>
+    </tr>
+    <tr>
+      <td class='color3'>3</td><td class='color3'>...</td>
+      <td class='color3'>3</td><td class='color3'>...</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<p><todo>construire auto + animation</todo></p>
+<p>Ainsi, le produit cartésien de deux tables de 3 entrées produira une table intermédiaire de 9 lignes, dont la majorité des lignes seront ensuite rejettées par la clause <code>WHERE</code>.</p>
+<p>Même sur de petites tables, la construction de la table intermédiaire explose très vite les capacités du SGDB :</p>
+<style>
+  .danger {
+    background-color: red;
+  }
+</style>
+
+<table>
+  <thead>
+    <tr>
+      <th># Entrées</th>
+      <th># Tables</th>
+      <th># Table intermédiaire</th>
+      <th># Résultats</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>E</td>
+      <td>T</td>
+      <td>E^T</td>
+      <td>E</td>
+    </tr>
+    <tr>
+    <tr>
+      <td>1 000</td>
+      <td>2</td>
+      <td>1 000 000</td>
+      <td>1 000</td>
+    </tr>
+    <tr>
+      <td>1 000</td>
+      <td>3</td>
+      <td class='danger'>1 000 000 000</td>
+      <td>1 000</td>
+    </tr>
+    <tr>
+      <td>32 000</td>
+      <td>2</td>
+      <td class='danger'>1 024 000 000</td>
+      <td>32 000</td>
+    </tr>
+    <tr>
+      <td>1 000</td>
+      <td>6</td>
+      <td class='danger'>10^18</td>
+      <td>1 000</td>
+    </tr>
+    <tr>
+      <td>1 000 000</td>
+      <td>3</td>
+      <td class='danger'>10^18</td>
+      <td>1 000 000</td>
+    </tr>
+    <tr>
+      <td><input class='join_nbEntries' 
+      value='2'
+      type=number></input></td>
+      <td><input class='join_nbTables' value='2' type=number min='2'></input></td>
+      <td class='join_cartesien'></td>
+      <td class='join_best'></td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+  const nb_tables_input = document.querySelector('.join_nbTables');
+  const nb_entries_input = document.querySelector('.join_nbEntries');
+
+  const result_cartesien = document.querySelector('.join_cartesien');
+  const result_mieux = document.querySelector('.join_best');
+
+  function update() {
+    const nb_table   = +nb_tables_input.value;
+    const nb_entries = +nb_entries_input.value;
+
+    result_cartesien.textContent = Math.pow(nb_entries, nb_table).toLocaleString();
+
+    result_mieux.textContent = nb_entries.toLocaleString();
+  }
+
+  nb_tables_input.addEventListener('input', update);
+  nb_entries_input.addEventListener('input', update);
+
+  update();
+</script>
+
+<span class='complexite_cartesien'>
+
+<p>Pour rappel, 1 milliard de lignes correspondent à plusieurs Go en mémoire, et 10^18 à plusieurs Po !!!</p>
+<p>⚠ Pour cette raison, on n&#39;utilise <strong>JAMAIS</strong> les produits cartésien en SQL ! <strong>JA-MAIS !</strong></p>
+<h3 id="le-principe-des-jointures">Le principe des jointures</h3>
+<p>La bonne manière de procéder est d&#39;utiliser la clause <code>JOIN</code> qui s&#39;utilise usuellement de la sorte :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> $T1 <span class="hljs-keyword">NATURAL</span> <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> $T2;
+</code></pre><p>Pour chaque entrée de <code>$T1</code>, le SGBD va rechercher les entrées de <code>$T2</code> dont les valeurs des colonnes communes sont identiques à 
+celles de l&#39;entrée de <code>$T1</code>. Ainsi, contrairement au produit cartésien, le SGBD n&#39;a pas besoin de construire une table intermédiaire colossale, réduisant très fortement la consommation de mémoire vive.</p>
+<p><todo>animation : construction</todo></p>
+<p>💡 Si les colonnes en communs constituent un index, la recherche des entrées de <code>$T2</code> est plus rapide, encore plus si elles constituent une clé primaire/étrangère. Il est ainsi <strong>plus que fortement recommandé</strong> d&#39;effectuer des jointures sur des clés primaires/étrangères.</p>
+<p>💡 Vous pouvez ajouter une clause <code>WHERE</code> à vôtre requête SQL. En théorie la clause <code>WHERE</code> est appliquée aux entrées <strong>après</strong> jointures. Cependant, les SGBD sont capables d&#39;optimiser la requête en préfiltrant, lorsque possible, les tables avant jointures.</p>
+<h3 id="les-types-de-jointures">Les types de jointures</h3>
+<p>En réalité, il existe 3 types de jointures fréquemment utilisées :</p>
+<ul>
+<li><code>INNER</code> : par défaut.</li>
+<li><code>LEFT</code>  : comme <code>INNER</code>, mais ajoute au résultat les entrées de <code>$T1</code> dont aucune entrée de <code>$T2</code> ne correspond.</li>
+<li><code>FULL</code> (plus rare) : comme <code>LEFT</code>, mais ajoute au résultat les entrées de <code>$T2</code> dont aucune entrée de <code>$T1</code> ne correspond.<br/>
+💡 Il est équivalant à l&#39;union de <code>$T1 LEFT JOIN $T2</code> et <code>$T2 LEFT JOIN $T1</code>.</li>
+</ul>
+<style>
+.join_table :is(td,th):last-child {
+  border :none;
+}
+</style>
+
+<div class='table_flex'>
+
+<table>
+  <caption>T1</caption>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class='color1'>
+      <td>1</td><td>...</td>
+    </tr>
+    <tr class='color2'>
+      <td>2</td><td>...</td>
+    </tr>
+    <tr class='color3'>
+      <td>3</td><td>...</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>JOIN</p>
+<table>
+  <caption>T2</caption>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class='color1'>
+      <td>1</td><td>...</td>
+    </tr>
+    <tr class='color3'>
+      <td>3</td><td>...</td>
+    </tr>
+    <tr class='color3'>
+      <td>3</td><td>...</td>
+    </tr>
+    <tr class='color4'>
+      <td>N/A</td><td>...</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>=</p>
+<table class='join_table'>
+  <caption>T1 JOIN T2</caption>
+  <thead>
+    <tr>
+      <th>T1.ID</th>
+      <th>...</th>
+      <th>T2.ID</th>
+      <th>...</th>
+      <th></th>
+    </tr>
+  </thead>  <tbody>
+    <tr>
+      <td class='color1'>1</td><td class='color1'>...</td>
+      <td class='color1'>1</td><td class='color1'>...</td><td></td><td></td>
+    </tr>
+    <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr>
+      <td class='color2'>2</td><td class='color2'>...</td>
+      <td>N/A</td><td>N/A</td><td>Si LEFT ou FULL</td>
+    </tr>
+    <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr>
+      <td class='color3'>3</td><td class='color3'>...</td>
+      <td class='color3'>3</td><td class='color3'>...</td><td></td>
+    </tr>
+    <tr>
+      <td class='color3'>3</td><td class='color3'>...</td>
+      <td class='color3'>3</td><td class='color3'>...</td><td></td>
+    </tr>
+    <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr>
+      <td>N/A</td><td>N/A</td>
+      <td class='color4'>N/A</td><td class='color4'>...</td><td>Si RIGHT ou FULL</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<p><todo>Générer tableaux + sync</todo>
+<todo>Modifier exemple + parlant</todo></p>
+<sql-interactive table="Joins">
+  <span slot="options" data-jointype='INNER' data-tablename1='T1' data-tablename2='T2'></span>
+  <span slot="options" data-jointype='LEFT' data-tablename1='T1' data-tablename2='T2'></span>
+  <span slot="options" data-jointype='RIGHT' data-tablename1='T1' data-tablename2='T2'></span>
+  <span slot="options" data-jointype='FULL' data-tablename1='T1' data-tablename2='T2'></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> $TABLENAME1 <span class="hljs-keyword">NATURAL</span> $JOINTYPE <span class="hljs-keyword">JOIN</span> $TABLENAME2;
+</code></pre></sql-interactive>
+
+<p>⚠ Il existe 2 autres types de jointures, à éviter :</p>
+<ul>
+<li><code>RIGHT</code> : <code>$T1 RIGHT JOIN $T2</code> est équivalant à <code>$T2 LEFT JOIN $T1</code><br/>
+⚠  Pour des raisons de lisibilité, autant que possible, utilisez <code>LEFT</code> à la place.</li>
+<li><code>CROSS</code> : produit cartésien (<strong>à éviter</strong>).</li>
+</ul>
+<p>💡 Vous pourrez aussi trouver <code>LEFT/RIGHT/FULL OUTER JOIN</code> dans certaines requêtes SQL. Ils sont en réalité équivalents à <code>LEFT/RIGHT/FULL JOIN</code>.</p>
+<h3 id="préciser-la-condition-de-jointure">Préciser la condition de jointure</h3>
+<p>Il se peut que vous souhaitiez expliciter les colonnes sur lesquelles effectuer la jointure pour :</p>
+<ul>
+<li>exclure une colonne de la jointure, avec :<br/>
+<code>USING($COLS[,...])</code> indiquant les colonnes à utiliser.</li>
+<li>utiliser des colonnes de noms différents, avec :<br/>
+<code>ON T1.$COL1 == T2.$COL2</code> indiquant la condition de jointure.</li>
+</ul>
+<p>⚠ Dans les deux cas, il vous faudra retirer le mot clef <code>NATURAL</code>.</p>
+<p>💡 Il est recommandé d&#39;utiliser <code>USING</code> au lieu de jointures naturelles (i.e. avec <code>NATURAL</code>) afin d&#39;éviter des jointures accidentelles.</p>
+<sql-interactive table="Joins">
+  <span slot="options" data-jointype='NATURAL'></span>
+  <span slot="options" data-joincond='USING(?)'></span>
+  <span slot="options" data-joincond='ON T1.x == T2.X'></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> T1 $JOINTYPE <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> T2 $JOINCOND;
+</code></pre></sql-interactive>
+
+<p>⚠ Si deux colonnes ont le même nom, seule la première sera affichée. Si vous souhaitez afficher la seconde, il est alors nécessaire de la renommer :</p>
+<sql-interactive table="Joins">
+  <span slot="options" data-cols='*'></span>
+  <span slot="options" data-cols='*, T2.? as ?'></span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> T2 <span class="hljs-keyword">USING</span>(?);
+</code></pre></sql-interactive>
+
+<h1 id="autre">Autre</h1>
+<h2 id="idées-td">Idées TD</h2>
+<h3 id="td3">TD3</h3>
+<p>Comment bien choisir les clef primaires/étrangères
+Comment bien découper en tables (conception), dépendance fonctionnelle (?).</p>
+<h2 id="idées-tp">Idées TP</h2>
+<h3 id="tp1">TP1</h3>
+<ul>
+<li>tester WHERE et autres avec SELECT avant de tenter un UPDATE/DELETE.</li>
+</ul>
+<h4 id="interface-pgadmin-">Interface pgAdmin ?</h4>
+<h4 id="quelques-commandes-sqlite--prise-en-main">Quelques commandes SQLite ? (prise en main)</h4>
+<p>Quelques unes en TP2/3/4 en fonction des besoins ?</p>
+<p>Config show headers : <a href="https://stackoverflow.com/questions/5924149/how-to-configure-sqlite-to-display-headers-by-default">https://stackoverflow.com/questions/5924149/how-to-configure-sqlite-to-display-headers-by-default</a></p>
+<p>.databases / .fullschema/.schema / .tables</p>
+<ul>
+<li><p>.mode (exports) / .dump  // .import</p>
+</li>
+<li><p>.read / + .shell / .save</p>
+</li>
+<li><p>.timer on (?)
+<a href="https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html">https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html</a></p>
+</li>
+</ul>
+<p>.help</p>
+<h3 id="tp2">TP2</h3>
+<p>Voir les autres pré-traitements</p>
+<h3 id="tp3">TP3</h3>
+<p>import/export/save table (schema/data)
+  -&gt; as SQL
+  -&gt; as CSV
+  ?</p>
+<p>soundex ? (détecter fautes de frappes ?) / levenstein ?</p>
+<p>Bonnes pratiques :</p>
+<ul>
+<li><p>PRAGMA optimize;  / OPTIMIZE =&gt; avant chaque fermeture de la database.</p>
+</li>
+<li><p>FK : on delete/on update/cascade.</p>
+</li>
+</ul>
+<h4 id="tp4">TP4</h4>
+<ul>
+<li>IN vs JOIN
+-&gt; join qui retourne plusieurs résultats identique, puis un autre join (=&gt; grosse table avec duplicats).
+-&gt; vs in (subquery).
+==&gt; compter nombre de lignes.
+==&gt; comparer vitesse exec sur tables grosses.</li>
+</ul>
+<h2 id="bdr2-">BDR2 ?</h2>
+<p>Teasing BDR2 ?</p>
+<ul>
+<li>TP ou BDR2 : <a href="https://sql.sh/fonctions/soundex">https://sql.sh/fonctions/soundex</a></li>
+<li>BDR2 : vues, droits d&#39;accès, pl/sql/procédures ? / transactions / prepare / injections et protection ? / chiffrer BDD entière / hooks
+algèbre relationnelle [TD ou BR2] ?</li>
+</ul>
+<p>avec transactions : gestion des erreurs
+    ON CONFLICT 
+      =&gt; que faire si erreur.
+        =&gt; ROLLBACK (default ?)
+        =&gt; ABORT : n&#39;annule pas prev query de la transaction
+        =&gt; FAIL : echec seulement sur la ligne concernée (autres lignes modifiée requête pas annulée)
+        =&gt; IGNORE
+        =&gt; REPLACE : idx/unique thing.</p>
+<p>=&gt; Vues (+ INSERT/DELETE/UPDATE on views ???)</p>
+<p>=&gt; Triggers (reject some SQL queries ???)</p>
+<h2 id="autres-documents-">Autres documents ?</h2>
+<p>Recap / SQL (cheat sheet ?)</p>
+<!--
+  Non-correlated:
+    - initialState : X in (....) // compute the list/value...
+      + [ ] in (...)
+    - step (new value)
+      - 4 in (....)
+    - step (check) => until end or found.
+      - 4 in ([.]...)
+    - if found : add line.
+
+  - correlated:
+    - initialState : X in (QUERY)
+      + [ ] in () <- (QUERY [ ] )
+    - step (new value)
+      - 4 in () <- (QUERY [4])
+    - step (check) => until end or found.
+      - 4 in ([.]...) <- query [4]
+    - if found : add line.
+
+  - cartesian
+    -> initial state : show all
+    -> empty
+    -> 1 line T1 + lines T2 (+empty "line") => produce T1xT2
+    -> iterate T1 (+empty "line")
+    -> then iterate T1xT2 to build final.
+
+  
+  - join
+    -> initial state : show all
+    -> empty
+    -> 1 line T1 + lines T2 => produce final if cond matches.
+    -> iterate T1 (+ empty "line")
+-->
+</body>
 </html>
