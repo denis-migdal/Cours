@@ -15,7 +15,7 @@
                 padding: 0;
             }
             main {
-                margin: 0 12px;
+                padding: 0 12px;
                 position: relative;
                 overflow-y: auto;
             }
@@ -116,7 +116,7 @@ CM4
 -->
 </todo>
 
-<h1 id="cm1">CM1</h1>
+<h1 id="requêter-une-base-de-données">Requêter une base de données</h1>
 <h2 id="introduction-à-sql">Introduction à SQL</h2>
 <h3 id="les-sgbd">Les SGBD</h3>
 <p>Il est fréquent de devoir traiter de larges quantités de données :</p>
@@ -716,8 +716,8 @@ e.g. <code>LIKE &#39;D%&#39;</code>: une valeur commençant par &quot;D&quot;.</
 
 <p>💡 Les étapes en gris seront étudiées au CM suivant.</p>
 <p>⚠ En rouge sont indiqués des cas d&#39;exceptions dont l&#39;ordre d&#39;écriture ne correspond pas à leur ordre d&#39;exécution. Une autre exception existe dans les requêtes <code>UPDATE</code> où la clause <code>SET</code> s&#39;écrit <strong>avant</strong> la clause <code>WHERE</code>.</p>
-<h1 id="cm2-">CM2 ???</h1>
-<h2 id="modifier-le-contenu-dune-table-">Modifier le contenu d&#39;une table (????)</h2>
+<h1 id="manipuler-des-entrées">Manipuler des entrées</h1>
+<h2 id="modifier-le-contenu-dune-table">Modifier le contenu d&#39;une table</h2>
 <p>Pour rappel, il existe plusieurs types de commandes SQL permettant d&#39;effectuer différent types actions :</p>
 <ul>
 <li><code>SELECT</code> : lire des données ;</li>
@@ -1068,12 +1068,12 @@ Cf <a href="https://www.postgresql.org/docs/current/functions-string.html#FUNCTI
 </code></pre></sql-interactive>
 
 
-<h1 id="cm3--tables-sql">CM3 : Tables SQL</h1>
+<h1 id="tables-et-contraintes">Tables et contraintes</h1>
 <h2 id="schémas-de-tables">Schémas de tables</h2>
 <p>La structure d&#39;une table, appelée <strong>schémas</strong>, est constituée du nom et du type de chaque colonne :</p>
 <sql-interactive table="Produits">
-  <span slot="options" data-tablename="'Users'"></span>
-  <span slot="options" data-tablename="'Produits'"></span>
+  <span slot="options" data-tablename="'Users'">Schéma de la table Users</span>
+  <span slot="options" data-tablename="'Produits'">Schéma de la table Produits</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span>
 pragma_table_xinfo($TABLENAME);
@@ -1138,8 +1138,8 @@ pragma_table_xinfo($TABLENAME);
 <p>⚠ Si vous utilisez SQLite, il faut ajouter <code>STRICT</code> à la fin de la requête SQL afin de le forcer à vérifier les types des colonnes lors des opérations sur la table.</p>
 <sql-interactive table="Users">
   <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="('Crayon', 4)"></span>
-  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="(4, 'Crayon')"></span>
+  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="('Crayon', 4)">Création d'une table</span>
+  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="(4, 'Crayon')">Violation contrainte de type</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T
       $M_COLS STRICT;
@@ -1152,8 +1152,8 @@ pragma_table_xinfo($TABLENAME);
 <p>⚠ Après un <code>IF NOT EXISTS</code>, la table ne sera pas nécessairement vide. Si vous avez besoin que la table soit vide, utilisez une requête <code>TRUNCATE TABLE</code> (cf suite du cours).</p>
 <p>⚠ Si le schéma de table du <code>IF NOT EXISTS</code> est différent de la table existante, aucune erreur ne sera lancée.</p>
 <sql-interactive table="Users">
-  <span slot="options" data-ifexists=""></span>
-  <span slot="options" data-ifexists="IF NOT EXISTS"></span>
+  <span slot="options" data-ifexists="">Re-création d'une table</span>
+  <span slot="options" data-ifexists="IF NOT EXISTS">Avec IF NOT EXISTS</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T
       (<span class="hljs-type">Date</span> TEXT) STRICT;
@@ -1179,8 +1179,8 @@ pragma_table_xinfo($TABLENAME);
 <h4 id="exemples-1">Exemples</h4>
 <p>💡 Pour références, les requêtes SQL utilisées pour créer les tables des exemples peuvent être visualisées ci-dessous :</p>
 <sql-interactive table="Produits">
-  <span slot="options" data-tablename="'Produits'"></span>
-  <span slot="options" data-tablename="'Users'"></span>
+  <span slot="options" data-tablename="'Produits'">CREATE TABLE pour Produits</span>
+  <span slot="options" data-tablename="'Users'">CREATE TABLE pour Users</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">FROM</span> sqlite_schema
 <span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span><span class="hljs-operator">=</span> $TABLENAME;
@@ -1194,8 +1194,8 @@ pragma_table_xinfo($TABLENAME);
   <span slot="select">SELECT name, type, "notnull", dflt_value, pk, hidden
         FROM pragma_table_xinfo('Produits');
 SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
-  <span slot="options" data-command="DROP TABLE"></span>
-  <span slot="options" data-command="DELETE FROM"></span>
+  <span slot="options" data-command="DROP TABLE">Suppression de la table</span>
+  <span slot="options" data-command="DELETE FROM">Suppression des entrées</span>
 
 <pre><code class="hljs language-sql">$COMMAND Produits;
 </code></pre></sql-interactive>
@@ -1587,7 +1587,7 @@ Pour cela on a UPSERT et INSERT ON DUPLICATE KEYS UPDATE (dépend du SGBD) qui s
 <span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> $T <span class="hljs-keyword">ADD</span><span class="hljs-operator">|</span><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">PRIMARY</span> KEY ($COL);
 <span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> $T <span class="hljs-keyword">ADD</span><span class="hljs-operator">|</span><span class="hljs-keyword">DROP</span> CONSTRAINST PK_$T <span class="hljs-keyword">PRIMARY</span> KEY ($COL[,...]);
 </code></pre><p>⚠ Modifier le schéma et les contraintes d&#39;une table existante/non-vide n&#39;est pas anodin.</p>
-<h1 id="cm4-fusions">CM4 Fusions</h1>
+<h1 id="fusions-et-jointures">Fusions et jointures</h1>
 <h2 id="opérations-densembles">Opérations d&#39;ensembles</h2>
 <p>Il est possible d&#39;opérer des opérations d&#39;ensembles sur les <strong>lignes</strong> retournées par deux requête <code>SELECT</code>, à conditions qu&#39;elles aient le même nombre de colonnes :</p>
 <ul>

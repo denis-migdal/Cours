@@ -19,7 +19,7 @@ window.addEventListener('beforeprint', () => {
 const main   = document.querySelector("main")!;
 const header = document.querySelector("header")!;
 
-const titles = document.querySelectorAll<HTMLElement>("h1, h2, h3");
+const titles = document.querySelectorAll<HTMLElement>("h1, h2, h3, h4");
 
 type Node = {
     html    : HTMLElement,
@@ -72,6 +72,18 @@ const hid = [
     ["a", "b","c","d","e","f","g","h"],
 ]
 
+function getTitlePrefix(s: Node) {
+
+    if( s.level >= hid.length )
+        return "";
+
+    const idx = s.parent!.children.indexOf(s);
+
+    const num = hid[s.level][idx];
+
+    return `${num}. `;
+}
+
 function buildMenu(nodes: Node[]) {
 
     const menu = document.createElement("div");
@@ -79,7 +91,7 @@ function buildMenu(nodes: Node[]) {
 
     menu.append( ... nodes.map( (s,idx) => {
         const item = document.createElement("a");
-        item.textContent= `${hid[s.level][idx]}. ${s.html.textContent}`;
+        item.textContent= `${getTitlePrefix(s)}${s.html.textContent}`;
         item.setAttribute("href", `#${s.html.id}`);
         return item;
     }) );
@@ -105,7 +117,7 @@ function updateHeader() {
         const h_html = document.createElement("span");
 
         const link = document.createElement("a");
-        link.textContent = h.textContent;
+        link.textContent = `${getTitlePrefix(hnode)}${h.textContent}`;
         link.setAttribute('href', `#${h.id}`);
 
         const menu = buildMenu(hnode.parent!.children);

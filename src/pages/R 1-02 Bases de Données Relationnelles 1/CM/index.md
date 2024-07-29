@@ -15,7 +15,7 @@
                 padding: 0;
             }
             main {
-                margin: 0 12px;
+                padding: 0 12px;
                 position: relative;
                 overflow-y: auto;
             }
@@ -116,7 +116,7 @@ CM4
 -->
 </todo>
 
-# CM1
+# Requêter une base de données
 
 ## Introduction à SQL
 
@@ -796,9 +796,9 @@ Par exemple lors d'une requête `SELECT`:
 ⚠ En rouge sont indiqués des cas d'exceptions dont l'ordre d'écriture ne correspond pas à leur ordre d'exécution. Une autre exception existe dans les requêtes `UPDATE` où la clause `SET` s'écrit **avant** la clause `WHERE`.
 
 
-# CM2 ???
+# Manipuler des entrées
 
-## Modifier le contenu d'une table (????)
+## Modifier le contenu d'une table
 
 Pour rappel, il existe plusieurs types de commandes SQL permettant d'effectuer différent types actions :
 
@@ -1257,15 +1257,15 @@ SELECT $GRP, $LCONDP $LCOND FROM Produits
 </sql-interactive>
 
 
-# CM3 : Tables SQL
+# Tables et contraintes
 
 ## Schémas de tables
 
 La structure d'une table, appelée **schémas**, est constituée du nom et du type de chaque colonne :
 
 <sql-interactive table="Produits">
-  <span slot="options" data-tablename="'Users'"></span>
-  <span slot="options" data-tablename="'Produits'"></span>
+  <span slot="options" data-tablename="'Users'">Schéma de la table Users</span>
+  <span slot="options" data-tablename="'Produits'">Schéma de la table Produits</span>
 
 ```sql
 SELECT * FROM
@@ -1348,8 +1348,8 @@ CREATE TABLE [IF NOT EXISTS] $TABLENAME ($COLNAME $COLTYPE[,...]);
 
 <sql-interactive table="Users">
   <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="('Crayon', 4)"></span>
-  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="(4, 'Crayon')"></span>
+  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="('Crayon', 4)">Création d'une table</span>
+  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="(4, 'Crayon')">Violation contrainte de type</span>
 
 ```sql
 CREATE TABLE T
@@ -1369,8 +1369,8 @@ Si la table existe déjà, une erreur sera lancée. Pour éviter cela, vous pouv
 ⚠ Si le schéma de table du `IF NOT EXISTS` est différent de la table existante, aucune erreur ne sera lancée.
 
 <sql-interactive table="Users">
-  <span slot="options" data-ifexists=""></span>
-  <span slot="options" data-ifexists="IF NOT EXISTS"></span>
+  <span slot="options" data-ifexists="">Re-création d'une table</span>
+  <span slot="options" data-ifexists="IF NOT EXISTS">Avec IF NOT EXISTS</span>
 
 ```sql
 CREATE TABLE T
@@ -1407,8 +1407,8 @@ SELECT * FROM T;
 💡 Pour références, les requêtes SQL utilisées pour créer les tables des exemples peuvent être visualisées ci-dessous :
 
 <sql-interactive table="Produits">
-  <span slot="options" data-tablename="'Produits'"></span>
-  <span slot="options" data-tablename="'Users'"></span>
+  <span slot="options" data-tablename="'Produits'">CREATE TABLE pour Produits</span>
+  <span slot="options" data-tablename="'Users'">CREATE TABLE pour Users</span>
 
 ```sql
 SELECT sql FROM sqlite_schema
@@ -1430,8 +1430,8 @@ TRUNCATE TABLE $TABLENAME;
   <span slot="select">SELECT name, type, "notnull", dflt_value, pk, hidden
         FROM pragma_table_xinfo('Produits');
 SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
-  <span slot="options" data-command="DROP TABLE"></span>
-  <span slot="options" data-command="DELETE FROM"></span>
+  <span slot="options" data-command="DROP TABLE">Suppression de la table</span>
+  <span slot="options" data-command="DELETE FROM">Suppression des entrées</span>
 
 ```sql
 $COMMAND Produits;
@@ -1912,7 +1912,7 @@ ALTER TABLE $T ADD|DROP CONSTRAINST PK_$T PRIMARY KEY ($COL[,...]);
 
 ⚠ Modifier le schéma et les contraintes d'une table existante/non-vide n'est pas anodin.
 
-# CM4 Fusions
+# Fusions et jointures
 
 ## Opérations d'ensembles
 

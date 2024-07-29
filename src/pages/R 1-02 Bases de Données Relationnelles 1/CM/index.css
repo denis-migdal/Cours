@@ -34,7 +34,7 @@ line-height: 1.7em;
 background-color: black;
 color: white;
 
-& > table {
+& > main > table {
     margin: auto;
 }
 }
