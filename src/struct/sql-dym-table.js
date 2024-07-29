@@ -1,6 +1,6 @@
 import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
 
-import {SQLTables} from "./sql-interactive.js";
+import {db2} from "./SQLite";
 
 const CSS =
 `:host {
@@ -54,10 +54,7 @@ class SQLDymTable extends LISS({
 
     exec(query) {
 
-        const tableconfig = SQLTables[this.attrs.table];
-        const db = tableconfig.db;
-
-        this.data = db.selectObjects(query);
+        this.data = db2.exec_one(query);
 
         const table = document.createElement('table');
 

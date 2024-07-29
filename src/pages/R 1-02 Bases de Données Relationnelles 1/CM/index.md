@@ -413,7 +413,7 @@ SELECT $COLS[,...] FROM $TABLE;
 
 ### Exemples
 
-<sql-interactive id="col-sql" table="Users">
+<sql-interactive id="col-sql">
   <sql-dymtable slot="post" id="col-table" table="Users"></sql-dymtable>
   <span slot="options" data-cols="*">Retourner toutes les colonnes</span>
   <span slot="options" data-cols="Nom">Retourner une seule colonne</span>
@@ -449,7 +449,7 @@ SELECT $COLS FROM Users;
 
 💡 Dans le cadre d'une requête SQL, vous pouvez temporairement associer un alias à une colonne grâce au mot clé `as` :
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-col_as="">Requête normale</span>
   <span slot="options" data-col_as="as User">Renommer une colonne</span>
 
@@ -463,7 +463,7 @@ SELECT Nom $COL_AS, Age FROM Users;
 
 La clause `ORDER BY $COL [DESC|ASC][,...]` permet de trier les lignes retournées par ordre croissant (`ASC`) ou décroissant (`DESC`).
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-row_sort="Age ASC">Trier par Age croissant</span>
   <span slot="options" data-row_sort="Age DESC">Trier par Age décroissant</span>
   <span slot="options" data-row_sort="Age DESC, Nom ASC">Trier par Age décroissant, puis par Nom croissant</span>
@@ -493,7 +493,7 @@ Il est ainsi possible de sélectionner des lignes de différentes manières :
 
 La manière générique de filter les lignes à retourner est d'ajouter une clause `WHERE $COND` à la requête. Seules les lignes pour lesquelles `$COND` est vraie seront retournées.
 
-<sql-interactive id="row-sql" table="Users">
+<sql-interactive id="row-sql">
   <sql-dymtable slot="post" id="row-table" table="Users"></sql-dymtable>
   <span slot="options" data-cond="Age > 18">Retourner les entrées où Age > 18</span>
   <span slot="options" data-cond="Nom == 'Doe'">Retourner les entrées où Nom est "Doe"</span>
@@ -529,7 +529,7 @@ SELECT * FROM Users WHERE $COND;
 
 💡 La structure d'une condition est très simple, utilisant les opérateurs de comparaison que vous connaissez déjà : `>`, `<`, `>=`, `<=`, `!=`.
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-cond="ID > 1">Comparaison simple</span>
   <span slot="options" data-cond="Prenom == Nom">Comparaison entre 2 colonnes</span>
   <span slot="options" data-cond="0 < Age < 18">Chaîner les opérateurs produit un résultat étrange</span>
@@ -553,7 +553,7 @@ Vous ne devez ainsi pas écrire, e.g. `0 < Age < 18`, mais (cf suite du cours) :
 
 Vous pouvez composer des conditions à l'aide d'opérateurs logiques que vous connaissez déjà : `AND`, `OR`, `NOT`.
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-cond="Age > 18 AND Age < 45">Intersection (et)</span>
   <span slot="options" data-cond="Age > 18 OR Age < 45">Union (ou)</span>
   <span slot="options" data-cond="NOT ( Age > 18 )">Négation (non)</span>
@@ -568,7 +568,7 @@ SELECT Age, Nom, Prenom FROM Users WHERE $COND;
 
 #### Autres opérateurs
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-cond="Age IS NULL">Entrées où Age vaut null</span>
   <span slot="options" data-cond="Nom IN ('Doe', 'Nescio')">Entrées où Nom est dans la liste</span>
   <span slot="options" data-cond="Age BETWEEN 0 AND 18">Entrées où Age est compris entre 0 et 18</span>
@@ -598,7 +598,7 @@ SELECT Age, Nom, Prenom FROM Users WHERE $COND;
 
 La clause `DISTINCT` permet de supprimer les doublons dans les lignes retournées :
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-row_distinct="">Requête normale</span>
   <span slot="options" data-row_distinct="DISTINCT">Ne pas retourner les doublons</span>
 
@@ -615,7 +615,7 @@ SELECT $ROW_DISTINCT Age FROM Users;
 La clause `LIMIT $N` permet de ne récupérer que les `$N` premières entrées retournées. Souvent utilisée avec la clause `ORDER BY`, elle permet notamment de générer des tops, e.g. les X utilisateurs les plus jeunes.
 
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-pagination="1">Ne récupérer que la première entrée</span>
   <span slot="options" data-pagination="2">Ne récupérer que les deux premières entrées</span>
   <span slot="options" data-orderby="ORDER BY Age" data-pagination="1">Ne récupérer que l'utilisateur le plus jeune</span>
@@ -632,7 +632,7 @@ Lorsqu'une requête retourne des milliers de lignes, il peut être coûteux de t
 
 Pour cela, on utilisera la clause `LIMIT 50` afin de ne récupérer que 50 entrées par requêtes. En conjonction, on utilisera la clause `OFFSET $P*50` qui permet de ne pas récupérer les `$P*50` premières entrées retournées. `$P+1` étant alors le numéro de la page actuelle.
 
-<sql-interactive id="pagination-sql" table="Users">
+<sql-interactive id="pagination-sql">
   <sql-dymtable slot="post" id="pagination-table" table="Users"></sql-dymtable>
   <span slot="options" data-pagination="1" data-p="0">Page 1 (1 entrée par page)</span>
   <span slot="options" data-pagination="1" data-p="1">Page 2 (1 entrée par page)</span>
@@ -820,7 +820,7 @@ INSERT INTO $TABLENAME VALUES ($VALS[,...])[,...];
 - `($VALS[,...])` représente une entrée à insérer. Les différentes valeurs de l'entrée sont séparées par une virgule.<br/>
   💡 Vous pouvez insérer plusieurs entrées à la fois en les séparant par une virgule.
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot='select'>SELECT * FROM Users;</span>
   <span slot="options" data-m_vals="(NULL, 'Doe', 'Jon', 32)">Insérer une entrée</span>
   <span slot="options" data-m_vals="      (NULL, 'Doe',    'Jon', 32),
@@ -850,7 +850,7 @@ UPDATE $TABLENAME SET $COL = $VAL[,...] WHERE $COND;
 
 💡 Vous pouvez modifier plusieurs colonnes à la fois en séparant les `$COL = $VAL` par une virgule.
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot='select'>SELECT * FROM Users;</span>
   <span slot="options" data-vals="Nom = 'Durand'" data-cond="Nom == 'Durant'">Modifier une colonne</span>
   <span slot="options" data-vals="Nom = 'Durand', Prenom='Théo'" data-cond="ID == 2">Modifier plusieurs colonnes</span>
@@ -879,7 +879,7 @@ DELETE FROM $TABLENAME WHERE $COND;
 
 - `$COND` indique quelles entrées doivent être supprimées.
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot='select'>SELECT * FROM Users;</span>
   <span slot="options" data-cond="Age < 18">Supprimer les entrées où Age > 18</span>
   <span slot="options" data-cond="Age > 18">Supprimer les entrées où Age > 18</span>
@@ -901,7 +901,7 @@ Pré-traiter les données permet alors de s'assurer de l'uniformité des donnée
 
 💡 Il est possible de **tester** les différentes fonctions de prétraitements en effectuant une requête `SELECT` sans la clause `FROM` (ou avec `FROM DUAL` pour certains SGBD) :
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-col1="'nom'" data-col2="UPPER('nom')">Mettre en majuscules</span>
   <span slot="options" data-col1="1.2" data-col2="ROUND(1.2)">Arrondir</span>
 
@@ -919,7 +919,7 @@ SELECT $COL1 as BEFORE, $COL2 as AFTER;
 
 Avec SQL, vous pouvez utiliser les opérateurs et fonctions arithmétiques classiques :
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-cols="1+1, 4%3, 4/3, 4/3.0">Opérations mathématiques</span>
   <span slot="options" data-cols="FLOOR(1.2), ROUND(1.2), CEIL(1.2)">Arrondis</span>
   <span slot="options" data-cols="ABS(1), ABS(-1)">Valeur absolue</span>
@@ -955,7 +955,7 @@ Les SGBD fournissent donc des fonctions permettant de manipuler les dates qui s'
 
 Il est aussi fréquent d'utiliser des **timestamps**, e.g. l'unix timestamp, qui représente une date par le nombre de secondes écoulées depuis le 1er janvier 1970. Il permet notamment d'aisément comparer et stocker des dates.
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-cols="DATE(), TIME(), DATETIME()">Date et/ou heure actuelle</span>
   <span slot="options" data-cols="UNIXEPOCH('now')">Timestamp actuel</span>
   <span slot="options" data-cols="DATETIME(10, 'unixepoch')">Convertir un timestamp (10) en date</span>
@@ -981,7 +981,7 @@ D'un utilisateur à un autre, la casse des lettres dans les chaines de caractèr
 
 Les chaînes de caractères sont généralement stockées sur des colonnes à taille variables. Mais il arrive que pour des raisons d'optimisations, elles soient stockées sur des colonnes à tailles fixes. Dès lors, pour stocker une chaîne de caractère d'une taille moindre, on lui ajoutera généralement des espaces en début ou fin de chaîne (*pad*). L'opération inverse consiste à retirer les espaces en début ou fin de chaîne (*trim*).
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-cols="LOWER('Hello'), UPPER('Hello')">Transformer la casse</span>
   <span slot="options" data-cols="LENGTH('23'), LENGTH(32)">Taille</span>
   <span slot="options" data-cols="TRIM(' w '), LTRIM(' w '), RTRIM(' w ')">Retirer les espaces en début/fin</span>
@@ -1025,7 +1025,7 @@ Il existe bien d'autres fonctions que nous ne verrons pas dans le cadre de ce co
 
 ### Sur les valeurs nulles
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-cols="NULL"></span>
   <span slot="options" data-cols="COALESCE(NULL, 4)"></span>
   <span slot="options" data-cols="COALESCE(NULL, NULL)"></span>
@@ -1040,7 +1040,7 @@ SELECT $COLS;
 
 ### Conversions
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-col_cast="'1.2' AS REAL">Convertir en réel</span>
   <span slot="options" data-col_cast="'1.2' AS INT">Convertir en entier</span>
   <span slot="options" data-col_cast="1.2 AS TEXT">Convertir en texte</span>
@@ -1060,7 +1060,7 @@ SELECT CAST( $COL_CAST );
 
 💡 Vous pouvez aussi concaténer des colonnes en utilisant l'opérateur `||` :
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-col_concat="Nom">Nom</span>
   <span slot="options" data-col_concat="Nom || ' ' || Prenom">Nom Prenom</span>
   <span slot="options" data-col_concat="Nom || ' (' || Age || ')'">Nom (Age)</span>
@@ -1079,7 +1079,7 @@ SELECT $COL_CONCAT as User FROM Users;
 
 De manière **rare**, il est possible qu'on souhaite effectuer des conditions.
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-age='2'>Utilisateur mineur</span>
   <span slot="options" data-age='20'>Utilisateur majeur</span>
 
@@ -1135,7 +1135,7 @@ SELECT Filename, Filesize FROM Files WHERE Filehash == SHA256($FILECONTENT);
 
 Une agrégation permet de regrouper, au sein d'une même ligne, plusieurs entrées, e.g. pour obtenir la liste des nombres de produits vendus, par dates ou par produits : 
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="options" data-grp='Ref'>Agrégé par références</span>
   <span slot="options" data-grp='Date'>Agrégé par dates</span>
 
@@ -1183,7 +1183,7 @@ Pour cela, on utilise la clause `GROUP BY $COLS[,...]` qui permet de fusionner, 
 Vous remarquerez alors que les lignes contiennent plusieurs valeurs pour une même colonne. Il convient alors d'utiliser une **fonction d'agrégation** qui prendra la liste des valeurs et retournera une valeur unique. Par exemple, `GROUP_CONCAT(Q)` concatène, pour chaque ligne, la colonne `Q` de ses entrées :
 
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="options" data-op='GROUP_CONCAT(Q)' data-grp="Ref">Concaténation</span>
   <span slot="options" data-op='SUM(Q)' data-grp="Date">Somme</span>
   <span slot="options" data-op='AVG(Q)' data-grp="Ref">Moyenne</span>
@@ -1209,7 +1209,7 @@ SELECT $GRP, $OP
 
 💡 Il est aussi possible de compter les entrées/valeurs de chaque lignes :
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="options" data-op='COUNT(*)' data-grp="Date">Compte le nombre d'entrées</span>
   <span slot="options" data-op='COUNT(Q)' data-grp="Date">Compte les valeurs non-nulles</span>
   <span slot="options" data-op='COUNT(DISTINCT Q)' data-grp="Date">Compte les valeurs distinctes</span>
@@ -1229,7 +1229,7 @@ SELECT $GRP, $OP
 
 Jusqu'à présent, nous utilisions la clause `WHERE` pour sélectionner les entrées à récupérer. Cependant, la clause `WHERE` filtre les entrées **avant** leur agrégation au sein d'une même ligne. Ainsi, l'usage d'une fonction d'agrégation dans sa condition générera un message d'erreur :
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="options" data-aggr=""    data-cond=">=10" data-cols="Q">Retirer des entrées avant agrégation</span>
   <span slot="options" data-aggr=""    data-cond=">=20" data-cols="Q">Retirer des entrées avant agrégation</span>
   <span slot="options" data-aggr="SUM" data-cond=">=20" data-cols="Q">Fonction d'agrégation génère erreur</span>
@@ -1244,7 +1244,7 @@ SELECT Date, group_concat($COLS) FROM Produits
 
 Pour filtrer les lignes **après** l'agrégation, il convient alors d'utiliser la clause `HAVING $COND` :
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="options" data-grp='Date' data-lcondp="" data-lcond="SUM(Q)" data-rcond =">= 0">Sans alias d'agrégat</span>
   <span slot="options" data-grp='Date' data-lcondp="SUM(Q) as" data-lcond="Total" data-rcond =">= 30">Lignes dont la somme est >= 30</span>
   <span slot="options" data-grp='Date' data-lcondp="SUM(Q) as" data-lcond="Total" data-rcond =">= 50">Lignes dont la somme est >= 50</span>
@@ -1263,7 +1263,7 @@ SELECT $GRP, $LCONDP $LCOND FROM Produits
 
 La structure d'une table, appelée **schémas**, est constituée du nom et du type de chaque colonne :
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="options" data-tablename="'Users'">Schéma de la table Users</span>
   <span slot="options" data-tablename="'Produits'">Schéma de la table Produits</span>
 
@@ -1346,7 +1346,7 @@ CREATE TABLE [IF NOT EXISTS] $TABLENAME ($COLNAME $COLTYPE[,...]);
 
 ⚠ Si vous utilisez SQLite, il faut ajouter `STRICT` à la fin de la requête SQL afin de le forcer à vérifier les types des colonnes lors des opérations sur la table.
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
   <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="('Crayon', 4)">Création d'une table</span>
   <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="(4, 'Crayon')">Violation contrainte de type</span>
@@ -1368,7 +1368,7 @@ Si la table existe déjà, une erreur sera lancée. Pour éviter cela, vous pouv
 
 ⚠ Si le schéma de table du `IF NOT EXISTS` est différent de la table existante, aucune erreur ne sera lancée.
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="options" data-ifexists="">Re-création d'une table</span>
   <span slot="options" data-ifexists="IF NOT EXISTS">Avec IF NOT EXISTS</span>
 
@@ -1385,7 +1385,7 @@ CREATE TABLE $IFEXISTS T
 
 💡 Vous pouvez aussi créer et remplir une nouvelle table à partir du résultat d'une requête `SELECT`.
 
-<sql-interactive table="Users">
+<sql-interactive>
   <span slot="select">SELECT * FROM T;</span>
   <span slot="options" data-cols="*" data-tablename="Produits" data-cond="1==1"></span>
   <span slot="options" data-cols="Date, Q" data-tablename="Produits" data-cond="Ref == 'Gomme'"></span>
@@ -1406,7 +1406,7 @@ SELECT * FROM T;
 
 💡 Pour références, les requêtes SQL utilisées pour créer les tables des exemples peuvent être visualisées ci-dessous :
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="options" data-tablename="'Produits'">CREATE TABLE pour Produits</span>
   <span slot="options" data-tablename="'Users'">CREATE TABLE pour Users</span>
 
@@ -1426,7 +1426,7 @@ DROP TABLE [IF EXISTS] $TABLENAME;
 TRUNCATE TABLE $TABLENAME;
 ```
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="select">SELECT name, type, "notnull", dflt_value, pk, hidden
         FROM pragma_table_xinfo('Produits');
 SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
@@ -1458,7 +1458,7 @@ ALTER TABLE $TABLENAME (RENAME|ADD|DROP) COLUMN $OPT;
 - `DROP` supprime une colonne.<br/>
   `$OPT`: `$COLNAME`.
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="select">SELECT name, type, "notnull", dflt_value, pk, hidden
         FROM pragma_table_xinfo('Produits');</span>
   <span slot="options" data-command="RENAME" data-opts="Ref TO Prod"></span>
@@ -1493,7 +1493,7 @@ Il est possible de définir des contraintes sur les colonnes et sur la table afi
 
 Lors de la création de la table, il est possible de spécifier des contraintes sur des colonnes. Pour ce faire, on ajoute le(s) contrainte(s) après le type de la colonne :
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="options" data-cstrnt="DEFAULT 'D'" data-vals="(1)" data-cols='(A)' ></span>
   <span slot="select">SELECT * FROM T;</span>
   <span slot="options" data-cstrnt="NOT NULL" data-vals="(1, NULL)"></span>
@@ -1520,7 +1520,7 @@ INSERT INTO  T $COLS VALUES
 
 Les contraintes `UNIQUE` et `CHECK` peuvent dépendre de plusieurs colonnes. Dans ce cas, la contrainte est ajoutée après la liste des colonnes :
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot="options" data-cstrnt="UNIQUE(A,B)" data-vals="(1, 2), (1, 2)"></span>
   <span slot="options" data-cstrnt="CHECK(B != A)" data-vals="(1, 1)" ></span>
 
@@ -1539,7 +1539,7 @@ INSERT INTO  T VALUES
 
 Il est possible de générer la valeur d'une colonne à partir des valeurs d'autres colonnes grâce à la contrainte `AS` :
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
   <span slot="options" data-cstrnt="(PU*Q )" data-vals="(1,2), (3,4)"></span>
   <span slot="options" data-cstrnt="(PU*Q) STORED" data-vals="(1,2), (3,4)"></span>
@@ -1571,7 +1571,7 @@ Une clef primaire est un index un peu spécial accélérant encore plus les rech
 
 Elle est créée via une contrainte `PRIMARY KEY` et implique les contraintes `UNIQUE NOT NULL`. Il ne peut y avoir qu'une clef primaire par table.
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
   <span slot="options" data-pk="TEXT PRIMARY KEY" data-vals="('1'), ('2')"></span>
   <span slot="options" data-pk="INTEGER
@@ -1591,7 +1591,7 @@ INSERT INTO  T VALUES
 
 💡 Comme avec la contrainte `UNIQUE`, il est aussi possible de créer une clef primaire sur plusieurs colonnes via contrainte de table :
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
   <span slot="options" data-pk="PRIMARY KEY(ID, CODE)" data-vals="(1, 'E')"></span>
 
@@ -1624,7 +1624,7 @@ FOREIGN KEY($COLS_FK[,...]) REFERENCES $T($COLS_PK[,...])
 
 💡 Si la/les colonne(s) de la table référencée ne sont pas spécifiées, la/les colonne(s) de la clef primaire sont utilisée(s).
 
-<sql-interactive table="Produits">
+<sql-interactive>
   <span slot='select'>SELECT * FROM T;
 SELECT * FROM Users;</span>
   <span slot="options" data-fk="FOREIGN KEY(ID)
@@ -1652,7 +1652,7 @@ INSERT INTO  T VALUES
 
 ### UML
 
-<sql-interactive id="uml-sql" table="Users">
+<sql-interactive id="uml-sql">
   <!-- TODO: change order -->
   <span slot="options" data-pk="ID, CODE" data-fk="ID, CODE" data-cols_a="CODE TEXT, X INT, ID INT" data-cols_b="ID INT, CODE TEXT"></span>
   <span slot="options" data-pk="ID" data-fk="ID" data-cols_a="ID INT, CODE TEXT" data-cols_b="ID INT, CODE TEXT"></span>
@@ -1858,7 +1858,7 @@ Comme nous l'avons vu à la section précédente, une clef étrangère référen
 C'est à vous de le définir via les clauses `ON DELETE $POLICY` et `ON UPDATE $POLICY` sur la clef primaire :
 
 <todo> Exemple </todo>
-<sql-interactive table="Produits">
+<sql-interactive>
 
 ```sql
 ...
@@ -1930,7 +1930,7 @@ UNION|INTERSECT|EXCEPT [ALL]
 SELECT $QUERY_2
 ```
 
-<sql-interactive table="Joins">
+<sql-interactive>
   <span slot="options" data-op='UNION'></span>
   <span slot="options" data-op='UNION ALL'></span>
   <span slot="options" data-op='INTERSECT'></span>
@@ -1952,7 +1952,7 @@ SELECT Nom, Prenom, Age FROM Users;
 
 Vous pouvez utiliser le résultat d'une requête `SELECT` (alors appelée "sous-requête") comme valeur dans une autre requête. Par exemple, pour utiliser une sous-requête dans une condition `WHERE`, il suffit de l'ajouter entre parenthèses :
 
-<sql-interactive table="Joins">
+<sql-interactive>
   <span slot="options" data-cond='=' data-subquery='SELECT MAX(Y) FROM T2'></span>
   <span slot="options" data-cond='IN' data-subquery='SELECT Y FROM T2'></span>
 
@@ -1973,7 +1973,7 @@ Dès lors, pour des raisons de performances on utilisera les opérateurs :
 - `EXISTS` à la place de `IN`.
 - `ANY`/`SOME` ou `ALL` au lieu d'utiliser certaines fonctions d'agrégations.
 
-<sql-interactive table="Joins">
+<sql-interactive>
   <span slot="options" data-cond='EXISTS'></span>
   <span slot="options" data-cond='X > ANY'></span>
   <span slot="options" data-cond='X > ALL'></span>
@@ -2387,7 +2387,7 @@ JOIN
 <todo>Générer tableaux + sync</todo>
 <todo>Modifier exemple + parlant</todo>
 
-<sql-interactive table="Joins">
+<sql-interactive>
   <span slot="options" data-jointype='INNER' data-tablename1='T1' data-tablename2='T2'></span>
   <span slot="options" data-jointype='LEFT' data-tablename1='T1' data-tablename2='T2'></span>
   <span slot="options" data-jointype='RIGHT' data-tablename1='T1' data-tablename2='T2'></span>
@@ -2420,7 +2420,7 @@ Il se peut que vous souhaitiez expliciter les colonnes sur lesquelles effectuer 
 
 💡 Il est recommandé d'utiliser `USING` au lieu de jointures naturelles (i.e. avec `NATURAL`) afin d'éviter des jointures accidentelles.
 
-<sql-interactive table="Joins">
+<sql-interactive>
   <span slot="options" data-jointype='NATURAL'></span>
   <span slot="options" data-joincond='USING(?)'></span>
   <span slot="options" data-joincond='ON T1.x == T2.X'></span>
@@ -2433,7 +2433,7 @@ SELECT * FROM T1 $JOINTYPE INNER JOIN T2 $JOINCOND;
 
 ⚠ Si deux colonnes ont le même nom, seule la première sera affichée. Si vous souhaitez afficher la seconde, il est alors nécessaire de la renommer :
 
-<sql-interactive table="Joins">
+<sql-interactive>
   <span slot="options" data-cols='*'></span>
   <span slot="options" data-cols='*, T2.? as ?'></span>
 

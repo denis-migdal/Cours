@@ -1,62 +1,4 @@
-//INIT
-const sqlite3 = (await sqlite3InitModule()).oo1;
-const db = new sqlite3.DB("/mydb.sqlite3",'c'); // add t for tracing.
-
-db.exec('PRAGMA foreign_keys=ON;');
-
-// db.exec([]);
-// => return value ???
-// => exec many at once, detect changes => remove them...
-
-const SQLTables = {
-    Users: {db,
-            reset: () => {
-
-            db.exec("drop table if exists Users");
-            db.exec("CREATE TABLE IF NOT EXISTS Users(ID INTEGER PRIMARY KEY AUTOINCREMENT, Nom TEXT, Prenom TEXT, Age INT) STRICT;");            
-            db.exec("INSERT INTO Users VALUES (NULL, 'Doe', 'John',  43);");
-            db.exec("INSERT INTO Users VALUES (NULL, 'Durant', 'Paul',  9)");
-            db.exec("INSERT INTO Users VALUES (NULL, 'Nescio', 'Nomen',  43)");
-        }
-    },
-    Produits: {db, reset: () => {
-
-            db.exec("drop table if exists Produits");
-            db.exec("CREATE TABLE IF NOT EXISTS Produits(Date TEXT, Ref TEXT, Q INT) STRICT;");            
-            db.exec("INSERT INTO Produits VALUES ('2023-01-01', 'Gomme', 10);");
-            db.exec("INSERT INTO Produits VALUES ('2023-02-23', 'Gomme', 9)");
-            db.exec("INSERT INTO Produits VALUES ('2023-06-13', 'Gomme', 24)");
-            db.exec("INSERT INTO Produits VALUES ('2023-01-01', 'Crayon', 20);");
-            db.exec("INSERT INTO Produits VALUES ('2023-02-23', 'Crayon', 18)");
-            db.exec("INSERT INTO Produits VALUES ('2023-06-13', 'Crayon', 50)");
-
-        }
-    },
-    Joins: {
-        db,
-        reset: () => {
-
-
-            db.exec("drop table if exists T1");
-            db.exec("CREATE TABLE IF NOT EXISTS T1(ID INTEGER PRIMARY KEY AUTOINCREMENT, T1 TEXT) STRICT;");            
-            db.exec("INSERT INTO T1 (T1) VALUES ('1'), ('2'), ('3');");
-
-
-            db.exec("drop table if exists T2");
-            db.exec("CREATE TABLE IF NOT EXISTS T2(ID INT, T2 TEXT, FOREIGN KEY(ID) REFERENCES T1(ID) ) STRICT;");            
-            db.exec("INSERT INTO T2 VALUES (1, '1'), (3, '2'), (3, '3'), (NULL, '4');");
-
-        }
-
-    }
-};
-
-for(let table in SQLTables )
-    SQLTables[table].reset();
-
-window.SQLTables = SQLTables;
-
-export {SQLTables};
+import {db2} from "./SQLite";
 
 // LISS
 
@@ -280,8 +222,7 @@ const styles = [...document.querySelectorAll('style')].map(s => {
 
 class SQLInteractive extends LISS({
     content,
-    css: [css],
-    attributes: ["table"],
+    css: [css]
 }) {
 
     #result   = "";
@@ -461,9 +402,6 @@ class SQLInteractive extends LISS({
 
     #execQuery() {
 
-        let table_created  = [];
-        let table_modified = false;
-
         // build queries to execute...
 
         let queries = this.#getQuery().split(';\n').slice(0,-1).map( q => q + ";");
@@ -491,12 +429,15 @@ class SQLInteractive extends LISS({
             }
 
             if( query.startsWith("CREATE TABLE ") ) {
+
+                let q = "CREATE TABLE ";
+                if( query.startsWith("CREATE TABLE IF EXISTS ") )
+                    q = "CREATE TABLE IF EXISTS ";
+
                 exec_queries.push(query);
-                const tb_name = query.slice(13, query.indexOf(" ", 13) );
+                const tb_name = query.slice(13, query.indexOf(" ", q.length) );
                 exec_queries.push(`SELECT name, type, "notnull", dflt_value, pk, hidden\n        FROM pragma_table_xinfo('${tb_name}');`);
                 show_table = false;
-                if( ! table_created.includes(tb_name) )
-                    table_created.push(tb_name);
                 continue;
             }
 
@@ -506,29 +447,12 @@ class SQLInteractive extends LISS({
             exec_queries.push(query);
 
             show();
-            if( table_created.length === 0 )
-                table_modified = true; // ?
         }
 
-        const tableconfig = window.SQLTables[this.attrs["table"]];
-        const db = tableconfig.db;
-
-        const results = [];
+        let results = [];
 
         try {
-            
-            // Execute query list.
-            for(let query of exec_queries) {
-
-                if( query.startsWith("SELECT ") ) {
-                    results.push( db.selectObjects(query) );
-                    continue;
-                }
-
-                db.exec(query);
-                results.push(null);
-            }
-
+            results = db2.exec_many(exec_queries);
         } catch(e) {
 
             console.log(e);
@@ -540,12 +464,7 @@ class SQLInteractive extends LISS({
 
             this.updateResult(exec_queries, results);
 
-            if( table_created.length > 0 )
-                for(let tb_name of table_created)
-                    db.exec(`DROP TABLE ${tb_name};`);
-
-            if( table_modified )
-                tableconfig.reset();
+            db2.reset();
         }
     }
 
@@ -669,7 +588,6 @@ class SQLInteractive extends LISS({
                     
                 }
 
-                //TODO cmp cols...
                 result_text += this.#rawline(row);
             }
             result_text +=  this.#hline(colsizes);
