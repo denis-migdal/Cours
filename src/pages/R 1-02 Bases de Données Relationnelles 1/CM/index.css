@@ -84,3 +84,7 @@ content: "TODO: ";
 pre > code.hljs {
     color: white;
 }
+
+a:visited {
+  color: blue;
+}
