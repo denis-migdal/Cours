@@ -73,20 +73,6 @@ Détails:
 
 <!--
 
-CM3
-
--> à l'oral appuyer le fait que ex 2 ne marche pas (create table). [desc?]
-
-1. -Pour les schémas de table [plus FK/PK ?] => repr UML ?
-  -> (avec clé primaire en gras et clé etrangère soulignées, usuellement)
-
-2. - L'idée de base étant de se servir de la clé étrangère comme un moyen léger en mémoire de référencer les données d'une table secondaire
-3. -Pour les contraintes sur les colonnes, parle par exemple du numéro de téléphone (ça a dix chiffres, ça commence par 0,...) ?
-4. Contraintes : réinsister important (avantage de SQL)
-
-5. PK : ensemble de champs identifiant de manière unique une entrée. C'est un index un peu particulier etc.
-  + exemple insert clé existante.
-
 CM4
 
 6. op d'ensembles : tables decoupé e.g. années (pour des raisons de perfs) => faire des op dessus.
@@ -1482,9 +1468,9 @@ ALTER TABLE $OLD_TABLENAME RENAME TO $NEW_TABLENAME;
 
 ## Les contraintes
 
-Il est possible de définir des contraintes sur les colonnes et sur la table afin de garantir sa cohérence et consistence.
+Afin de garantir la cohérence et consistence des tables, il est possible de définir des contraintes sur les colonnes, ainsi que sur les tables. Par exemple, il est possible de définir des contraintes sur des colonnes "numéro de téléphone", "adresse e-mail", etc. pour s'assurer que les données stockées suivent bien le format d'un numéro de téléphone ou d'une adresse mail. 
 
-<todo>Exemple parlant?</todo>
+💡 L'assurance de la structure des données stockées et manipulées constitue un des avantages majeurs des bases de données SQL.
 
 ### Contraintes sur les colonnes
 
@@ -1495,7 +1481,7 @@ Lors de la création de la table, il est possible de spécifier des contraintes 
   <span slot="options" data-cstrnt="DEFAULT 'D'" data-vals="(1)" data-cols='(A)' >Valeur par défaut</span>
   <span slot="options" data-cstrnt="NOT NULL" data-vals="(1, NULL)">Valeur non-nulle</span>
   <span slot="options" data-cstrnt="UNIQUE" data-vals="(1, 2), (1, 2)">Valeur unique</span>
-  <span slot="options" data-cstrnt="CHECK(B != 'NA')" data-vals="(1, 'NA')" >Condition sur la valeur</span>
+  <span slot="options" data-cstrnt="CHECK(B == UPPER(B) )" data-vals="(1, 'Nom')" >Condition sur la valeur</span>
 
 ```sql
 CREATE TABLE T ( A TEXT,
@@ -1564,13 +1550,14 @@ Un **index** est une structure permettant de trouver très rapidement la/les ent
 
 ### Les clefs primaires (PK)
 
-Une clef primaire est un index un peu spécial accélérant encore plus les recherches d'entrées à partir d'un identifiant.
+Une clef primaire est un index un peu spécial accélérant encore plus les recherches d'entrées à partir d'un identifiant. Il est un champ (ou un ensemble de champs) identifiant de manière unique une entrée.
 
 Elle est créée via une contrainte `PRIMARY KEY` et implique les contraintes `UNIQUE NOT NULL`. Il ne peut y avoir qu'une clef primaire par table.
 
 <sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
   <span slot="options" data-pk="TEXT PRIMARY KEY" data-vals="('1'), ('2')">Clé primaire (texte)</span>
+  <span slot="options" data-pk="TEXT PRIMARY KEY" data-vals="('1'), ('1')">Clé primaire (dupliquée)</span>
   <span slot="options" data-pk="INTEGER
       PRIMARY KEY AUTOINCREMENT" data-vals="(NULL), (NULL)">Clé primaire (auto-incrément)</span>
 
@@ -1607,15 +1594,18 @@ INSERT INTO  T VALUES
 
 ### Les clefs étrangères (FK)
 
-<todo>Motivation</todo>
+Il est fréquent, dans une base de données, que des entrées fassent référence à des entrées d'une autre table. Par exemple, une table `Vente` pourra mettre en relation une table `Vendeur` et une table `Client`.
 
-Une clé étrangère est composée d'une ou plusieurs colonnes référençant une ou plusieurs colonnes de contraine `UNIQUE` ou `PRIMARY KEY`. On l'indique via une contrainte de table sous la forme :
+💡 Le terme de "base de données relationnelles" vient en partie de là : on établie des relations entre différentes entrées/données. Ceci constitue une des fonctionnalités majeurs des bases de données SQL.
+
+Pour cela, on utilise une clef étrangère (FK) qui est un moyen léger en mémoire (et en performances) de référencer les données d'une table référencée. Elle est composée d'une ou plusieurs colonnes référençant une ou plusieurs colonnes de contraine `UNIQUE` ou `PRIMARY KEY`. On l'indique via une contrainte de table sous la forme suivante :
 
 ```sql
 FOREIGN KEY($COLS_FK[,...]) REFERENCES $T
 FOREIGN KEY($COLS_FK[,...]) REFERENCES $T($COLS_PK[,...])
 ```
 
+- `$T` est la table référencée.
 - `$COL_FK` sont les colonnes constituant la clé étrangère.
 - `$COL_PK` sont les colonnes référencées.
 
@@ -1648,6 +1638,22 @@ INSERT INTO  T VALUES
 ⚠ La vérification des clefs étrangères n'est pas activé par défaut sur SQLite. La commande `PRAGMA foreign_keys = ON` permet de l'activer.
 
 ### UML
+
+Les bases de données ont généralement de très nombreuses tables. Il est alors difficile de se faire une idée de sa structure, du schéma des tables et de leurs relations, sans une représentation appropriée. Pour cela on utilise soit un diagramme UML, soit un diagramme Merise. Le dernier étant très franco-français, nous nous concentrerons sur le premier.
+
+Dans un diagramme UML, chaque table est représentée par un rectangle découpé en 3 cadres contenant :
+- le nom de la table ;
+- les colonnes de la table ;
+- les contraintes de la table.
+
+Par convention, les noms de colonnes sont formattés comme suit :
+- en gras pour les clefs primaires ;
+- en italique pour les clefs étrangères ;
+- soulignés pour les colonnes uniques.
+
+Une flèche est aussi tirée des clefs étrangères jusqu'aux clefs primaires qu'elles référencent.
+
+💡 En fonction des besoins, il est possible d'ajouter plus ou moins de détails, comme e.g. les types et contraintes de colonnes.
 
 <sql-interactive id="uml-sql">
   <span slot="options" data-pk="ID" data-fk="ID" data-cols_a="ID INT, CODE TEXT" data-cols_b="ID INT, CODE TEXT">Clef primaire (uni-col)</span>
@@ -1756,9 +1762,9 @@ CREATE TABLE B (
           colname = `<${hmethod}>${colname}</${hmethod}>`;
 
           if( isPK )
-            lsuffix = "---";
+            lsuffix = "<--";
           else
-            lprefix = "-->";
+            lprefix = "---";
         }
         
         const line = `${colname}: ${col[1].padEnd(max_cw)}`;
@@ -1851,9 +1857,7 @@ CREATE TABLE B (
 
 Comme nous l'avons vu à la section précédente, une clef étrangère référence des colonnes d'une autre table. Mais que se passe-t-il lorsqu'on modifie ou supprime des entrées dans les colonnes référencées ?
 
-C'est à vous de le définir via les clauses `ON DELETE $POLICY` et `ON UPDATE $POLICY` sur la clef primaire :
-
-<todo> Exemple </todo>
+C'est à vous de le définir via les clauses `ON DELETE $POLICY` et `ON UPDATE $POLICY` sur la clef étrangère :
 
 <sql-interactive full-reset="true">
   <span slot='select'>SELECT * FROM T3;</span>
@@ -1878,11 +1882,15 @@ DELETE FROM T1 WHERE ID = 2;
 - `CASCADE` : modifie/supprime la clef étrangère lorsque des valeurs des colonnes référencées sont modifiées.
 - `SET NULL|DEFAULT` : modifie la clef étrangère lorsque des valeurs des colonnes référencées sont modifiées.
 
-  
-### Merge: mettre à jour si existe, sinon insérer.
+<details>
+  <summary>
 
-<todo>Pour MERGE dont on avait dit qu'on ne verrais pas au CM2, mais au TP2, finalement, je pense qu'il vaut mieux l'évoquer au CM3 juste après les clefs étrangères.
+### Merge : mettre à jour si existe, sinon insérer (en TD ?).
  
+</summary>
+
+<todo>Rédiger</todo>
+
 En gros la problématique est d'ajouter si inexistant, et de modifier si existant.
  
 On peut faire un select, puis refaire une requête pour update ou insert, mais c'est pas pratique de faire plusieurs requêtes.
@@ -1906,6 +1914,7 @@ https://dev.mysql.com/doc/refman/9.0/en/replace.html
 
 Replace à éviter ( https://stackoverflow.com/questions/9168928/what-are-practical-differences-between-replace-and-insert-on-duplicate-key ).
 
+</details>
 
 ### Modifier les contraintes
 
