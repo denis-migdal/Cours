@@ -402,9 +402,11 @@ class SQLInteractive extends LISS({
 
     #execQuery() {
 
-        // build queries to execute...
 
         let queries = this.#getQuery().split(';\n').slice(0,-1).map( q => q + ";");
+
+        // build queries to execute...
+
         const exec_queries = [];
         let show_table = true;
 
@@ -449,23 +451,9 @@ class SQLInteractive extends LISS({
             show();
         }
 
-        let results = [];
-
-        try {
-            results = db2.exec_many(exec_queries);
-        } catch(e) {
-
-            console.log(e);
-
-            const message = "Error:" + e.message.split(':').slice(2).join(':');
-            results.push(message);
-
-        } finally {
-
-            this.updateResult(exec_queries, results);
-
-            db2.reset();
-        }
+        let results = db2.exec_many(exec_queries);
+        this.updateResult(exec_queries, results);
+        db2.reset();
     }
 
 
@@ -505,11 +493,29 @@ class SQLInteractive extends LISS({
         this.#result.classList.remove('error');
         let content = '';
 
-        let compare = false;
-        if(datas.length > 2 && datas[0] !== null && datas[datas.length-1] !== null)
-            compare = true;
-
         for(let i = 0; i < datas.length; ++i) {
+
+            let compare_to = null;
+
+            // correct select
+            if( datas[i] !== null && typeof datas[i] !== "string") {
+
+                // compare_to last or first
+                for(let j = datas.length - 1; j > i; --j)
+                    if( queries[j] === queries[i] && datas[j] !== null && typeof datas[j] !== "string" ) {
+                        compare_to = datas[j];
+                        break;
+                    }
+                
+                if( compare_to === null) {
+
+                    for(let j = 0; j < i; ++j)
+                        if( queries[j] === queries[i] && datas[j] !== null && typeof datas[j] !== "string" ) {
+                            compare_to = datas[j];
+                            break;
+                        }
+                }
+            }
 
             const query = queries[i];
             const data  = datas[i];
@@ -561,15 +567,20 @@ class SQLInteractive extends LISS({
 
                 let row = results[j];
 
-                if( ! compare) {
+                if( compare_to === null) {
                     result_text += this.#line(row, colsizes);
                     continue;
                 }
 
                 // highlight changes
-                    
-                let compare_to = i === 0 ? datas[datas.length-1] : datas[0];
-                let cmp_line = compare_to.find( e => e.ID === data[j].ID); // h4cky
+
+                let key = "ID";
+                if( ! (key in data[j]) )
+                    key = "name";
+
+                let cmp_line = compare_to.find( e => e[key] === data[j][key]); // h4cky
+
+                console.warn(compare_to === datas[i]);
 
                 row = this.#padRow(row, colsizes);
 

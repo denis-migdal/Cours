@@ -125,7 +125,22 @@ class DB {
     }
 
     exec_many(sql: string[]) {
-        return sql.map( e => this.exec_one(e) );
+
+        let results = [];
+
+        for(let i = 0; i < sql.length; ++i) {
+
+            try {
+
+                results.push( this.exec_one(sql[i]) );
+
+            } catch(e) {
+                const message = "Error:" + (e as Error).message.split(':').slice(2).join(':');
+                results.push(message);
+                break;
+            }
+        }
+        return results;
     }
 }
 
