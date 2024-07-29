@@ -1,8 +1,12 @@
 //INIT
 const sqlite3 = (await sqlite3InitModule()).oo1;
-const db = new sqlite3.DB("/mydb.sqlite3",'ct');
+const db = new sqlite3.DB("/mydb.sqlite3",'c'); // add t for tracing.
 
-db.exec('PRAGMA foreign_keys=ON;')
+db.exec('PRAGMA foreign_keys=ON;');
+
+// db.exec([]);
+// => return value ???
+// => exec many at once, detect changes => remove them...
 
 const SQLTables = {
     Users: {db,
