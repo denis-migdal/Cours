@@ -1854,17 +1854,29 @@ Comme nous l'avons vu à la section précédente, une clef étrangère référen
 C'est à vous de le définir via les clauses `ON DELETE $POLICY` et `ON UPDATE $POLICY` sur la clef primaire :
 
 <todo> Exemple </todo>
-<sql-interactive>
+
+<sql-interactive full-reset="true">
+  <span slot='select'>SELECT * FROM T3;</span>
+  <span slot="options" data-pol="RESTRICT">Empêcher la suppression</span>
+  <span slot="options" data-pol="CASCADE">Supprimer l'entrée</span>
+  <span slot="options" data-pol="SET NULL">Mettre la colonne à NULL</span>
+
 
 ```sql
-...
+CREATE TABLE T3 (
+    ID INT, A TEXT,
+    FOREIGN KEY(ID) REFERENCES T1
+    ON DELETE $POL
+  ) STRICT;
+INSERT INTO T3 VALUES (2, 'A');
+DELETE FROM T1 WHERE ID = 2;
 ```
 
 </sql-interactive>
 
+- `RESTRICT`: empêche la modification/suppression si les valeurs sont référencées par une clef étrangère.
 - `CASCADE` : modifie/supprime la clef étrangère lorsque des valeurs des colonnes référencées sont modifiées.
 - `SET NULL|DEFAULT` : modifie la clef étrangère lorsque des valeurs des colonnes référencées sont modifiées.
-- `RESTRICT` : empêche la modification/suppression si les valeurs sont référencées par une clef étrangère.
 
   
 ### Merge: mettre à jour si existe, sinon insérer.

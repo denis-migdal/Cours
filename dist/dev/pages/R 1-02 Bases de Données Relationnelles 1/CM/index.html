@@ -1545,15 +1545,27 @@ SELECT * FROM Users;</span>
 <h3 id="modificationsuppression-sur-des-colonnes-référencées">Modification/Suppression sur des colonnes référencées</h3>
 <p>Comme nous l&#39;avons vu à la section précédente, une clef étrangère référence des colonnes d&#39;une autre table. Mais que se passe-t-il lorsqu&#39;on modifie ou supprime des entrées dans les colonnes référencées ?</p>
 <p>C&#39;est à vous de le définir via les clauses <code>ON DELETE $POLICY</code> et <code>ON UPDATE $POLICY</code> sur la clef primaire :</p>
-<p><todo> Exemple </todo>
-<sql-interactive></p>
-<pre><code class="hljs language-sql">...
+<p><todo> Exemple </todo></p>
+<sql-interactive full-reset="true">
+  <span slot='select'>SELECT * FROM T3;</span>
+  <span slot="options" data-pol="RESTRICT">Empêcher la suppression</span>
+  <span slot="options" data-pol="CASCADE">Supprimer l'entrée</span>
+  <span slot="options" data-pol="SET NULL">Mettre la colonne à NULL</span>
+
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T3 (
+    ID <span class="hljs-type">INT</span>, A TEXT,
+    <span class="hljs-keyword">FOREIGN</span> KEY(ID) <span class="hljs-keyword">REFERENCES</span> T1
+    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> $POL
+  ) STRICT;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> T3 <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;A&#x27;</span>);
+<span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">WHERE</span> ID <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;
 </code></pre></sql-interactive>
 
 <ul>
+<li><code>RESTRICT</code>: empêche la modification/suppression si les valeurs sont référencées par une clef étrangère.</li>
 <li><code>CASCADE</code> : modifie/supprime la clef étrangère lorsque des valeurs des colonnes référencées sont modifiées.</li>
 <li><code>SET NULL|DEFAULT</code> : modifie la clef étrangère lorsque des valeurs des colonnes référencées sont modifiées.</li>
-<li><code>RESTRICT</code> : empêche la modification/suppression si les valeurs sont référencées par une clef étrangère.</li>
 </ul>
 <h3 id="merge-mettre-à-jour-si-existe-sinon-insérer">Merge: mettre à jour si existe, sinon insérer.</h3>
 <p><todo>Pour MERGE dont on avait dit qu&#39;on ne verrais pas au CM2, mais au TP2, finalement, je pense qu&#39;il vaut mieux l&#39;évoquer au CM3 juste après les clefs étrangères.</p>

@@ -222,7 +222,8 @@ const styles = [...document.querySelectorAll('style')].map(s => {
 
 class SQLInteractive extends LISS({
     content,
-    css: [css]
+    css: [css],
+    attributes: ["full-reset"]
 }) {
 
     #result   = "";
@@ -453,7 +454,11 @@ class SQLInteractive extends LISS({
 
         let results = db2.exec_many(exec_queries);
         this.updateResult(exec_queries, results);
-        db2.reset();
+        
+        if( this.attrs["full-reset"] === "true")
+            db2.fullReset();
+        else
+            db2.reset();
     }
 
 

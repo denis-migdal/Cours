@@ -42,11 +42,13 @@ class DB {
         this.fullReset();
     }
 
-    resetTable(name: string) {
+    #dropTable(name: string) {
+        this.#db.exec(`drop table if exists ${name}`);
+    }
+    #createTable(name: string) {
 
         const desc = this.#desc[name];
 
-        this.#db.exec(`drop table if exists ${name}`);
         const cols = Object.entries(desc.schema).map( ([name, type]) => `${name} ${type}`).join(", ");
         let constraints = "";
         if( "constraints" in desc)
@@ -56,6 +58,11 @@ class DB {
         // Populate...
         const values = desc.entries.map( e => `(${ e.map(c => js2sql(c)).join(', ') })`).join(", ");
         this.#db.exec(`INSERT INTO ${name} VALUES ${values};`);
+    }
+
+    resetTable(name: string) {
+        this.#dropTable(name);
+        this.#createTable(name);
     }
 
     #created_table = new Set<string>();
@@ -78,8 +85,13 @@ class DB {
         for( let name of [...this.#created_table.values()].reverse() )
             this.#db.exec(`drop table if exists ${name}`);
 
-        for(let table in this.#desc)
-            this.resetTable(table);
+        const names = Object.keys(this.#desc);
+
+        // required due to FK...
+        for(let table of names.reverse() )
+            this.#dropTable(table)
+        for(let table of names.reverse() )
+            this.#createTable(table)
 
         this.#created_table.clear();
         this.#updated_table.clear();
