@@ -15,6 +15,8 @@
 
 ## TODO
 
+Motivation/Problematic first.
+
 ### Structure
 
 - Warnings plus visuels

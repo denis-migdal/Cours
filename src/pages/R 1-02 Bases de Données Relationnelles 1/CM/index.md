@@ -65,7 +65,6 @@ Contenu:
     - corriger exemples JOIN.
 
 Détails:
-  - publier lib...
   - split CM into different files.
   - espace moodle (avec navigation)
   - slides PDF LaTeX.
@@ -74,10 +73,6 @@ Détails:
 <!--
 
 CM4
-
-6. op d'ensembles : tables decoupé e.g. années (pour des raisons de perfs) => faire des op dessus.
-
-1. UNION : même # colonne et idéalement même structure (?)
 
 - exemples dynamiques/animés (jointures/cartésien).
 
@@ -1933,11 +1928,14 @@ ALTER TABLE $T ADD|DROP CONSTRAINST PK_$T PRIMARY KEY ($COL[,...]);
 
 ## Opérations d'ensembles
 
-Il est possible d'opérer des opérations d'ensembles sur les **lignes** retournées par deux requête `SELECT`, à conditions qu'elles aient le même nombre de colonnes :
+Il est possible d'opérer des opérations d'ensembles sur les **lignes** retournées par deux requête `SELECT`, à conditions qu'elles aient le même nombre de colonnes (et idéalement la même structure) :
 
 - `UNION`     : concaténer les lignes.
 - `INTERSECT` : les lignes communes aux deux requêtes.
 - `EXCEPT`    : les lignes de la première requête absentes de la seconde.
+
+
+Les opérations d'ensembles sont en pratique relativement rares. Elles peuvent toutefois être pertinentes quand une table a été divisée en plusieurs tables pour des raisons de performances. Par exemple, une table `Vente` contenant de très nombreuses entrées, et dont la manipulation se fait quasi-exclusivement en précisant une année de vente, pourrait être découpée en vue d'obtenir une table par année.
 
 Ces opérations s'utilisent sous la forme suivante :
 
@@ -1961,8 +1959,6 @@ SELECT Nom, Prenom, Age FROM Users;
 
 </sql-interactive>
 
-<todo>Better example</todo>
-
 💡 Par défaut, les lignes en doublons sont supprimées. L'option `ALL` permet de conserver l'ensemble des lignes.
 
 ## Sous requêtes
@@ -1970,11 +1966,11 @@ SELECT Nom, Prenom, Age FROM Users;
 Vous pouvez utiliser le résultat d'une requête `SELECT` (alors appelée "sous-requête") comme valeur dans une autre requête. Par exemple, pour utiliser une sous-requête dans une condition `WHERE`, il suffit de l'ajouter entre parenthèses :
 
 <sql-interactive>
-  <span slot="options" data-cond='=' data-subquery='SELECT MAX(Y) FROM T2'></span>
-  <span slot="options" data-cond='IN' data-subquery='SELECT Y FROM T2'></span>
+  <span slot="options" data-cond='=' data-subquery='SELECT MAX(ID) FROM T2'>Sous-requête (opérateur)</span>
+  <span slot="options" data-cond='IN' data-subquery='SELECT ID FROM T2'>Sous-requête (IN)</span>
 
 ```sql
-SELECT * FROM T1 WHERE X $COND ( $SUBQUERY )
+SELECT * FROM T1 WHERE ID $COND ( $SUBQUERY );
 ```
 
 </sql-interactive>
@@ -1991,14 +1987,12 @@ Dès lors, pour des raisons de performances on utilisera les opérateurs :
 - `ANY`/`SOME` ou `ALL` au lieu d'utiliser certaines fonctions d'agrégations.
 
 <sql-interactive>
-  <span slot="options" data-cond='EXISTS'></span>
-  <span slot="options" data-cond='X > ANY'></span>
-  <span slot="options" data-cond='X > ALL'></span>
+  <span slot="options" data-cond='EXISTS'>Sous-requête corrélée</span>
 
 ```sql
 SELECT * FROM T1 WHERE $COND (
-  SELECT Y FROM T2 WHERE T2.X = T1.X
-)
+  SELECT ID FROM T2 WHERE T2.ID = T1.ID
+);
 ```
 
 </sql-interactive>
@@ -2013,10 +2007,15 @@ Cependant, quand une sous-requête est corrélée, il n'est pas utile de calcule
 
 ⚠ Il va de soit qu'il faut éviter les sous-requêtes corrélées autant que possible...
 
+⚠ SQLite ne supporte que `IN`, il ne supporte ni `ANY`, ni `ALL`.
+
 ## Jointures
 
-[+] rappel clefs étrangères.
-[+] motivation pour jointures.
+Pour rappel, une table (e.g. `Vente`) peut en référencer une autre (e.g. `Vendeur`). Il est alors possible d'obtenir e.g. :
+- la liste des vendeurs ayant au moins 10 ventes ?
+- la liste des ventes des vendeurs embauchés il y a moins de 5 ans.
+
+Pour cela il est possible d'utiliser des requêtes corrélées, mais la syntaxe serait lourde et la requête peu performante. Dans ce cas de figure on utilise ce qu'on appelle des **jointures**, qui permettent de fusionner des entrées de tables différentes au sein d'une même ligne.
 
 ### Le produit cartésien
 
@@ -2287,14 +2286,15 @@ La bonne manière de procéder est d'utiliser la clause `JOIN` qui s'utilise usu
 SELECT * FROM $T1 NATURAL INNER JOIN $T2;
 ```
 
-Pour chaque entrée de `$T1`, le SGBD va rechercher les entrées de `$T2` dont les valeurs des colonnes communes sont identiques à 
-celles de l'entrée de `$T1`. Ainsi, contrairement au produit cartésien, le SGBD n'a pas besoin de construire une table intermédiaire colossale, réduisant très fortement la consommation de mémoire vive.
+Pour chaque entrée de `$T1`, le SGBD va rechercher les entrées de `$T2` dont les valeurs des colonnes communes sont identiques à celles de l'entrée de `$T1`. Ainsi, contrairement au produit cartésien, le SGBD n'a pas besoin de construire une table intermédiaire colossale, réduisant très fortement la consommation de mémoire vive.
 
 <todo>animation : construction</todo>
 
-💡 Si les colonnes en communs constituent un index, la recherche des entrées de `$T2` est plus rapide, encore plus si elles constituent une clé primaire/étrangère. Il est ainsi **plus que fortement recommandé** d'effectuer des jointures sur des clés primaires/étrangères.
+💡 Si les colonnes en communs constituent un index, la recherche des entrées de `$T2` s'en retrouve grandement accelérée. Si elles constituent une clé primaire/étrangère, la recherche devient quasi instantanée.
 
-💡 Vous pouvez ajouter une clause `WHERE` à vôtre requête SQL. En théorie la clause `WHERE` est appliquée aux entrées **après** jointures. Cependant, les SGBD sont capables d'optimiser la requête en préfiltrant, lorsque possible, les tables avant jointures.
+⚠ Il est ainsi **plus que fortement recommandé** d'effectuer des jointures sur des clés primaires/étrangères.
+
+💡 Vous pouvez ajouter une clause `WHERE` à vôtre requête SQL. En théorie la clause `WHERE` est appliquée aux entrées **après** jointures. Cependant, les SGBD sont capables d'optimiser la requête en préfiltrant, lorsque possible, les tables **avant** jointures.
 
 ### Les types de jointures
 
@@ -2438,9 +2438,9 @@ Il se peut que vous souhaitiez expliciter les colonnes sur lesquelles effectuer 
 💡 Il est recommandé d'utiliser `USING` au lieu de jointures naturelles (i.e. avec `NATURAL`) afin d'éviter des jointures accidentelles.
 
 <sql-interactive>
-  <span slot="options" data-jointype='NATURAL'></span>
-  <span slot="options" data-joincond='USING(?)'></span>
-  <span slot="options" data-joincond='ON T1.x == T2.X'></span>
+  <span slot="options" data-jointype='NATURAL'>Jointure naturelle (à éviter)</span>
+  <span slot="options" data-joincond='USING(ID)'>Jointure explicite (noms de colonnes identiques)</span>
+  <span slot="options" data-joincond='ON T1.T1 == T2.T2'>Jointure explicite (noms de colonnes différentes)</span>
 
 ```sql
 SELECT * FROM T1 $JOINTYPE INNER JOIN T2 $JOINCOND;
@@ -2451,11 +2451,11 @@ SELECT * FROM T1 $JOINTYPE INNER JOIN T2 $JOINCOND;
 ⚠ Si deux colonnes ont le même nom, seule la première sera affichée. Si vous souhaitez afficher la seconde, il est alors nécessaire de la renommer :
 
 <sql-interactive>
-  <span slot="options" data-cols='*'></span>
-  <span slot="options" data-cols='*, T2.? as ?'></span>
+  <span slot="options" data-cols='*'>Sans renommer les colonnes de même noms</span>
+  <span slot="options" data-cols='*, T2.ID as ID2'>En renommant les colonnes de même noms</span>
 
 ```sql
-SELECT $COLS FROM T1 INNER JOIN T2 USING(?);
+SELECT $COLS FROM T1 INNER JOIN T2 USING(ID);
 ```
 
 </sql-interactive>

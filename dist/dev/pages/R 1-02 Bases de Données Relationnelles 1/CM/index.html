@@ -65,7 +65,6 @@
     - corriger exemples JOIN.</p>
 <p>Détails:</p>
 <ul>
-<li>publier lib...</li>
 <li>split CM into different files.</li>
 <li>espace moodle (avec navigation)</li>
 <li>slides PDF LaTeX.</li>
@@ -74,10 +73,6 @@
 <!--
 
 CM4
-
-6. op d'ensembles : tables decoupé e.g. années (pour des raisons de perfs) => faire des op dessus.
-
-1. UNION : même # colonne et idéalement même structure (?)
 
 - exemples dynamiques/animés (jointures/cartésien).
 
@@ -1607,12 +1602,13 @@ Pour cela on a UPSERT et INSERT ON DUPLICATE KEYS UPDATE (dépend du SGBD) qui s
 </code></pre><p>⚠ Modifier le schéma et les contraintes d&#39;une table existante/non-vide n&#39;est pas anodin.</p>
 <h1 id="fusions-et-jointures">Fusions et jointures</h1>
 <h2 id="opérations-densembles">Opérations d&#39;ensembles</h2>
-<p>Il est possible d&#39;opérer des opérations d&#39;ensembles sur les <strong>lignes</strong> retournées par deux requête <code>SELECT</code>, à conditions qu&#39;elles aient le même nombre de colonnes :</p>
+<p>Il est possible d&#39;opérer des opérations d&#39;ensembles sur les <strong>lignes</strong> retournées par deux requête <code>SELECT</code>, à conditions qu&#39;elles aient le même nombre de colonnes (et idéalement la même structure) :</p>
 <ul>
 <li><code>UNION</code>     : concaténer les lignes.</li>
 <li><code>INTERSECT</code> : les lignes communes aux deux requêtes.</li>
 <li><code>EXCEPT</code>    : les lignes de la première requête absentes de la seconde.</li>
 </ul>
+<p>Les opérations d&#39;ensembles sont en pratique relativement rares. Elles peuvent toutefois être pertinentes quand une table a été divisée en plusieurs tables pour des raisons de performances. Par exemple, une table <code>Vente</code> contenant de très nombreuses entrées, et dont la manipulation se fait quasi-exclusivement en précisant une année de vente, pourrait être découpée en vue d&#39;obtenir une table par année.</p>
 <p>Ces opérations s&#39;utilisent sous la forme suivante :</p>
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $QUERY_1
 <span class="hljs-keyword">UNION</span><span class="hljs-operator">|</span><span class="hljs-keyword">INTERSECT</span><span class="hljs-operator">|</span><span class="hljs-keyword">EXCEPT</span> [<span class="hljs-keyword">ALL</span>]
@@ -1628,15 +1624,14 @@ $OP
 <span class="hljs-keyword">SELECT</span> Nom, Prenom, Age <span class="hljs-keyword">FROM</span> Users;
 </code></pre></sql-interactive>
 
-<p><todo>Better example</todo></p>
 <p>💡 Par défaut, les lignes en doublons sont supprimées. L&#39;option <code>ALL</code> permet de conserver l&#39;ensemble des lignes.</p>
 <h2 id="sous-requêtes">Sous requêtes</h2>
 <p>Vous pouvez utiliser le résultat d&#39;une requête <code>SELECT</code> (alors appelée &quot;sous-requête&quot;) comme valeur dans une autre requête. Par exemple, pour utiliser une sous-requête dans une condition <code>WHERE</code>, il suffit de l&#39;ajouter entre parenthèses :</p>
 <sql-interactive>
-  <span slot="options" data-cond='=' data-subquery='SELECT MAX(Y) FROM T2'></span>
-  <span slot="options" data-cond='IN' data-subquery='SELECT Y FROM T2'></span>
+  <span slot="options" data-cond='=' data-subquery='SELECT MAX(ID) FROM T2'>Sous-requête (opérateur)</span>
+  <span slot="options" data-cond='IN' data-subquery='SELECT ID FROM T2'>Sous-requête (IN)</span>
 
-<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">WHERE</span> X $COND ( $SUBQUERY )
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">WHERE</span> ID $COND ( $SUBQUERY );
 </code></pre></sql-interactive>
 
 <p>⚠ La sous-requête doit retourner une valeur unique (une seule ligne et colonne) ou, pour <code>IN</code>, une liste (une seule colonne).</p>
@@ -1648,13 +1643,11 @@ $OP
 <li><code>ANY</code>/<code>SOME</code> ou <code>ALL</code> au lieu d&#39;utiliser certaines fonctions d&#39;agrégations.</li>
 </ul>
 <sql-interactive>
-  <span slot="options" data-cond='EXISTS'></span>
-  <span slot="options" data-cond='X > ANY'></span>
-  <span slot="options" data-cond='X > ALL'></span>
+  <span slot="options" data-cond='EXISTS'>Sous-requête corrélée</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">WHERE</span> $COND (
-  <span class="hljs-keyword">SELECT</span> Y <span class="hljs-keyword">FROM</span> T2 <span class="hljs-keyword">WHERE</span> T2.X <span class="hljs-operator">=</span> T1.X
-)
+  <span class="hljs-keyword">SELECT</span> ID <span class="hljs-keyword">FROM</span> T2 <span class="hljs-keyword">WHERE</span> T2.ID <span class="hljs-operator">=</span> T1.ID
+);
 </code></pre></sql-interactive>
 
 <p>En effet, une sous-requête non-corrélée, n&#39;est exécutée qu&#39;une seule fois. Ainsi il est intéressant de récupérer toutes les lignes (pour <code>IN</code>) ou de calculer des agrégats qui seront réutilisés pour évaluer la clause <code>WHERE</code> à chaque entrée de la requête principale.</p>
@@ -1665,9 +1658,14 @@ $OP
 <li>la première ligne ne satisfaisant pas la condition pour <code>ALL</code>.</li>
 </ul>
 <p>⚠ Il va de soit qu&#39;il faut éviter les sous-requêtes corrélées autant que possible...</p>
+<p>⚠ SQLite ne supporte que <code>IN</code>, il ne supporte ni <code>ANY</code>, ni <code>ALL</code>.</p>
 <h2 id="jointures">Jointures</h2>
-<p>[+] rappel clefs étrangères.
-[+] motivation pour jointures.</p>
+<p>Pour rappel, une table (e.g. <code>Vente</code>) peut en référencer une autre (e.g. <code>Vendeur</code>). Il est alors possible d&#39;obtenir e.g. :</p>
+<ul>
+<li>la liste des vendeurs ayant au moins 10 ventes ?</li>
+<li>la liste des ventes des vendeurs embauchés il y a moins de 5 ans.</li>
+</ul>
+<p>Pour cela il est possible d&#39;utiliser des requêtes corrélées, mais la syntaxe serait lourde et la requête peu performante. Dans ce cas de figure on utilise ce qu&#39;on appelle des <strong>jointures</strong>, qui permettent de fusionner des entrées de tables différentes au sein d&#39;une même ligne.</p>
 <h3 id="le-produit-cartésien">Le produit cartésien</h3>
 <p>Une méthode naïve (<strong>et à ne jamais utiliser</strong>) d&#39;effectuer une jointure est d&#39;utiliser un produit cartésien :</p>
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> $T1, $T2 <span class="hljs-keyword">WHERE</span> $T1.$KEY <span class="hljs-operator">=</span><span class="hljs-operator">=</span> $T2.$KEY;
@@ -1918,11 +1916,11 @@ $OP
 <h3 id="le-principe-des-jointures">Le principe des jointures</h3>
 <p>La bonne manière de procéder est d&#39;utiliser la clause <code>JOIN</code> qui s&#39;utilise usuellement de la sorte :</p>
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> $T1 <span class="hljs-keyword">NATURAL</span> <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> $T2;
-</code></pre><p>Pour chaque entrée de <code>$T1</code>, le SGBD va rechercher les entrées de <code>$T2</code> dont les valeurs des colonnes communes sont identiques à 
-celles de l&#39;entrée de <code>$T1</code>. Ainsi, contrairement au produit cartésien, le SGBD n&#39;a pas besoin de construire une table intermédiaire colossale, réduisant très fortement la consommation de mémoire vive.</p>
+</code></pre><p>Pour chaque entrée de <code>$T1</code>, le SGBD va rechercher les entrées de <code>$T2</code> dont les valeurs des colonnes communes sont identiques à celles de l&#39;entrée de <code>$T1</code>. Ainsi, contrairement au produit cartésien, le SGBD n&#39;a pas besoin de construire une table intermédiaire colossale, réduisant très fortement la consommation de mémoire vive.</p>
 <p><todo>animation : construction</todo></p>
-<p>💡 Si les colonnes en communs constituent un index, la recherche des entrées de <code>$T2</code> est plus rapide, encore plus si elles constituent une clé primaire/étrangère. Il est ainsi <strong>plus que fortement recommandé</strong> d&#39;effectuer des jointures sur des clés primaires/étrangères.</p>
-<p>💡 Vous pouvez ajouter une clause <code>WHERE</code> à vôtre requête SQL. En théorie la clause <code>WHERE</code> est appliquée aux entrées <strong>après</strong> jointures. Cependant, les SGBD sont capables d&#39;optimiser la requête en préfiltrant, lorsque possible, les tables avant jointures.</p>
+<p>💡 Si les colonnes en communs constituent un index, la recherche des entrées de <code>$T2</code> s&#39;en retrouve grandement accelérée. Si elles constituent une clé primaire/étrangère, la recherche devient quasi instantanée.</p>
+<p>⚠ Il est ainsi <strong>plus que fortement recommandé</strong> d&#39;effectuer des jointures sur des clés primaires/étrangères.</p>
+<p>💡 Vous pouvez ajouter une clause <code>WHERE</code> à vôtre requête SQL. En théorie la clause <code>WHERE</code> est appliquée aux entrées <strong>après</strong> jointures. Cependant, les SGBD sont capables d&#39;optimiser la requête en préfiltrant, lorsque possible, les tables <strong>avant</strong> jointures.</p>
 <h3 id="les-types-de-jointures">Les types de jointures</h3>
 <p>En réalité, il existe 3 types de jointures fréquemment utilisées :</p>
 <ul>
@@ -2054,19 +2052,19 @@ celles de l&#39;entrée de <code>$T1</code>. Ainsi, contrairement au produit car
 <p>⚠ Dans les deux cas, il vous faudra retirer le mot clef <code>NATURAL</code>.</p>
 <p>💡 Il est recommandé d&#39;utiliser <code>USING</code> au lieu de jointures naturelles (i.e. avec <code>NATURAL</code>) afin d&#39;éviter des jointures accidentelles.</p>
 <sql-interactive>
-  <span slot="options" data-jointype='NATURAL'></span>
-  <span slot="options" data-joincond='USING(?)'></span>
-  <span slot="options" data-joincond='ON T1.x == T2.X'></span>
+  <span slot="options" data-jointype='NATURAL'>Jointure naturelle (à éviter)</span>
+  <span slot="options" data-joincond='USING(ID)'>Jointure explicite (noms de colonnes identiques)</span>
+  <span slot="options" data-joincond='ON T1.T1 == T2.T2'>Jointure explicite (noms de colonnes différentes)</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> T1 $JOINTYPE <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> T2 $JOINCOND;
 </code></pre></sql-interactive>
 
 <p>⚠ Si deux colonnes ont le même nom, seule la première sera affichée. Si vous souhaitez afficher la seconde, il est alors nécessaire de la renommer :</p>
 <sql-interactive>
-  <span slot="options" data-cols='*'></span>
-  <span slot="options" data-cols='*, T2.? as ?'></span>
+  <span slot="options" data-cols='*'>Sans renommer les colonnes de même noms</span>
+  <span slot="options" data-cols='*, T2.ID as ID2'>En renommant les colonnes de même noms</span>
 
-<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> T2 <span class="hljs-keyword">USING</span>(?);
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> T2 <span class="hljs-keyword">USING</span>(ID);
 </code></pre></sql-interactive>
 
 <!--
