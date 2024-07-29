@@ -1451,19 +1451,16 @@ La requête SQL `ALTER TABLE` permet de modifier une table, et se présente usue
 ALTER TABLE $TABLENAME (RENAME|ADD|DROP) COLUMN $OPT;
 ```
 
-- `RENAME` renomme une colonne.<br/>
-  `$OPT`: `$OLD_COLNAME TO $NEW_COLNAME`.
-- `ADD` ajoute une colonne.<br/>
-  `$OPT`: `$COLNAME $COLTYPE`.
-- `DROP` supprime une colonne.<br/>
-  `$OPT`: `$COLNAME`.
+- `RENAME` renomme une colonne (`$OPT` = `$OLD_COLNAME TO $NEW_COLNAME`).
+- `ADD` ajoute une colonne (`$OPT` = `$COLNAME $COLTYPE`).
+- `DROP` supprime une colonne (`$OPT` = `$COLNAME`).
 
 <sql-interactive>
   <span slot="select">SELECT name, type, "notnull", dflt_value, pk, hidden
         FROM pragma_table_xinfo('Produits');</span>
-  <span slot="options" data-command="RENAME" data-opts="Ref TO Prod"></span>
-  <span slot="options" data-command="ADD" data-opts="Sum INT"></span>
-  <span slot="options" data-command="DROP" data-opts="Date"></span>
+  <span slot="options" data-command="RENAME" data-opts="Ref TO Prod">Renommer une colonne</span>
+  <span slot="options" data-command="ADD" data-opts="Sum INT">Ajouter une colonne</span>
+  <span slot="options" data-command="DROP" data-opts="Date">Supprimer une colonne</span>
 
 ```sql
 ALTER TABLE Produits
@@ -1494,11 +1491,11 @@ Il est possible de définir des contraintes sur les colonnes et sur la table afi
 Lors de la création de la table, il est possible de spécifier des contraintes sur des colonnes. Pour ce faire, on ajoute le(s) contrainte(s) après le type de la colonne :
 
 <sql-interactive>
-  <span slot="options" data-cstrnt="DEFAULT 'D'" data-vals="(1)" data-cols='(A)' ></span>
   <span slot="select">SELECT * FROM T;</span>
-  <span slot="options" data-cstrnt="NOT NULL" data-vals="(1, NULL)"></span>
-  <span slot="options" data-cstrnt="UNIQUE" data-vals="(1, 2), (1, 2)"></span>
-  <span slot="options" data-cstrnt="CHECK(B != 'NA')" data-vals="(1, 'NA')" ></span>
+  <span slot="options" data-cstrnt="DEFAULT 'D'" data-vals="(1)" data-cols='(A)' >Valeur par défaut</span>
+  <span slot="options" data-cstrnt="NOT NULL" data-vals="(1, NULL)">Valeur non-nulle</span>
+  <span slot="options" data-cstrnt="UNIQUE" data-vals="(1, 2), (1, 2)">Valeur unique</span>
+  <span slot="options" data-cstrnt="CHECK(B != 'NA')" data-vals="(1, 'NA')" >Condition sur la valeur</span>
 
 ```sql
 CREATE TABLE T ( A TEXT,
@@ -1521,8 +1518,8 @@ INSERT INTO  T $COLS VALUES
 Les contraintes `UNIQUE` et `CHECK` peuvent dépendre de plusieurs colonnes. Dans ce cas, la contrainte est ajoutée après la liste des colonnes :
 
 <sql-interactive>
-  <span slot="options" data-cstrnt="UNIQUE(A,B)" data-vals="(1, 2), (1, 2)"></span>
-  <span slot="options" data-cstrnt="CHECK(B != A)" data-vals="(1, 1)" ></span>
+  <span slot="options" data-cstrnt="UNIQUE(A,B)" data-vals="(1, 2), (1, 2)">Colonnes uniques</span>
+  <span slot="options" data-cstrnt="CHECK(B != A)" data-vals="(1, 1)" >Condition</span>
 
 ```sql
 CREATE TABLE T (
@@ -1541,8 +1538,8 @@ Il est possible de générer la valeur d'une colonne à partir des valeurs d'aut
 
 <sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-cstrnt="(PU*Q )" data-vals="(1,2), (3,4)"></span>
-  <span slot="options" data-cstrnt="(PU*Q) STORED" data-vals="(1,2), (3,4)"></span>
+  <span slot="options" data-cstrnt="(PU*Q )" data-vals="(1,2), (3,4)">Colonne générée virtuelle</span>
+  <span slot="options" data-cstrnt="(PU*Q) STORED" data-vals="(1,2), (3,4)">Colonne générée stockée</span>
 
 ```sql
 CREATE TABLE T (
@@ -1573,9 +1570,9 @@ Elle est créée via une contrainte `PRIMARY KEY` et implique les contraintes `U
 
 <sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-pk="TEXT PRIMARY KEY" data-vals="('1'), ('2')"></span>
+  <span slot="options" data-pk="TEXT PRIMARY KEY" data-vals="('1'), ('2')">Clé primaire (texte)</span>
   <span slot="options" data-pk="INTEGER
-      PRIMARY KEY AUTOINCREMENT" data-vals="(NULL), (NULL)"></span>
+      PRIMARY KEY AUTOINCREMENT" data-vals="(NULL), (NULL)">Clé primaire (auto-incrément)</span>
 
 ```sql
 CREATE TABLE T (
@@ -1593,7 +1590,7 @@ INSERT INTO  T VALUES
 
 <sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-pk="PRIMARY KEY(ID, CODE)" data-vals="(1, 'E')"></span>
+  <span slot="options" data-pk="PRIMARY KEY(ID, CODE)" data-vals="(1, 'E')">Clé primaire (multi-cols)</span>
 
 ```sql
 CREATE TABLE T (
@@ -1628,11 +1625,11 @@ FOREIGN KEY($COLS_FK[,...]) REFERENCES $T($COLS_PK[,...])
   <span slot='select'>SELECT * FROM T;
 SELECT * FROM Users;</span>
   <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(1, 'E')"></span>
+    REFERENCES Users" data-vals="(1, 'E')">Clef étrangère existante</span>
   <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(4, 'E')"></span>
+    REFERENCES Users" data-vals="(4, 'E')">Clef étrangère non-existante</span>
   <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(NULL, 'E')"></span>
+    REFERENCES Users" data-vals="(NULL, 'E')">Clef étrangère nulle</span>
 
 ```sql
 CREATE TABLE T (ID INT, C TEXT,
@@ -1653,9 +1650,8 @@ INSERT INTO  T VALUES
 ### UML
 
 <sql-interactive id="uml-sql">
-  <!-- TODO: change order -->
-  <span slot="options" data-pk="ID, CODE" data-fk="ID, CODE" data-cols_a="CODE TEXT, X INT, ID INT" data-cols_b="ID INT, CODE TEXT"></span>
-  <span slot="options" data-pk="ID" data-fk="ID" data-cols_a="ID INT, CODE TEXT" data-cols_b="ID INT, CODE TEXT"></span>
+  <span slot="options" data-pk="ID" data-fk="ID" data-cols_a="ID INT, CODE TEXT" data-cols_b="ID INT, CODE TEXT">Clef primaire (uni-col)</span>
+  <span slot="options" data-pk="ID, CODE" data-fk="ID, CODE" data-cols_a="CODE TEXT, X INT, ID INT" data-cols_b="ID INT, CODE TEXT">Clef primaire (multi-cols)</span>
   <!-- TODO: LISS -->
   <pre id="uml" slot="post" class="hljs">
     <code>

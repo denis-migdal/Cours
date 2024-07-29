@@ -1206,19 +1206,16 @@ SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
 <p>La requête SQL <code>ALTER TABLE</code> permet de modifier une table, et se présente usuellement sous la forme suivante :</p>
 <pre><code class="hljs language-sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> $TABLENAME (RENAME<span class="hljs-operator">|</span><span class="hljs-keyword">ADD</span><span class="hljs-operator">|</span><span class="hljs-keyword">DROP</span>) <span class="hljs-keyword">COLUMN</span> $OPT;
 </code></pre><ul>
-<li><code>RENAME</code> renomme une colonne.<br/>
-<code>$OPT</code>: <code>$OLD_COLNAME TO $NEW_COLNAME</code>.</li>
-<li><code>ADD</code> ajoute une colonne.<br/>
-<code>$OPT</code>: <code>$COLNAME $COLTYPE</code>.</li>
-<li><code>DROP</code> supprime une colonne.<br/>
-<code>$OPT</code>: <code>$COLNAME</code>.</li>
+<li><code>RENAME</code> renomme une colonne (<code>$OPT</code> = <code>$OLD_COLNAME TO $NEW_COLNAME</code>).</li>
+<li><code>ADD</code> ajoute une colonne (<code>$OPT</code> = <code>$COLNAME $COLTYPE</code>).</li>
+<li><code>DROP</code> supprime une colonne (<code>$OPT</code> = <code>$COLNAME</code>).</li>
 </ul>
 <sql-interactive>
   <span slot="select">SELECT name, type, "notnull", dflt_value, pk, hidden
         FROM pragma_table_xinfo('Produits');</span>
-  <span slot="options" data-command="RENAME" data-opts="Ref TO Prod"></span>
-  <span slot="options" data-command="ADD" data-opts="Sum INT"></span>
-  <span slot="options" data-command="DROP" data-opts="Date"></span>
+  <span slot="options" data-command="RENAME" data-opts="Ref TO Prod">Renommer une colonne</span>
+  <span slot="options" data-command="ADD" data-opts="Sum INT">Ajouter une colonne</span>
+  <span slot="options" data-command="DROP" data-opts="Date">Supprimer une colonne</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> Produits
   $COMMAND <span class="hljs-keyword">COLUMN</span> $OPTS;
@@ -1235,11 +1232,11 @@ SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
 <h3 id="contraintes-sur-les-colonnes">Contraintes sur les colonnes</h3>
 <p>Lors de la création de la table, il est possible de spécifier des contraintes sur des colonnes. Pour ce faire, on ajoute le(s) contrainte(s) après le type de la colonne :</p>
 <sql-interactive>
-  <span slot="options" data-cstrnt="DEFAULT 'D'" data-vals="(1)" data-cols='(A)' ></span>
   <span slot="select">SELECT * FROM T;</span>
-  <span slot="options" data-cstrnt="NOT NULL" data-vals="(1, NULL)"></span>
-  <span slot="options" data-cstrnt="UNIQUE" data-vals="(1, 2), (1, 2)"></span>
-  <span slot="options" data-cstrnt="CHECK(B != 'NA')" data-vals="(1, 'NA')" ></span>
+  <span slot="options" data-cstrnt="DEFAULT 'D'" data-vals="(1)" data-cols='(A)' >Valeur par défaut</span>
+  <span slot="options" data-cstrnt="NOT NULL" data-vals="(1, NULL)">Valeur non-nulle</span>
+  <span slot="options" data-cstrnt="UNIQUE" data-vals="(1, 2), (1, 2)">Valeur unique</span>
+  <span slot="options" data-cstrnt="CHECK(B != 'NA')" data-vals="(1, 'NA')" >Condition sur la valeur</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T ( A TEXT,
     B TEXT $CSTRNT
@@ -1258,8 +1255,8 @@ SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
 <h3 id="contraintes-sur-la-table">Contraintes sur la table</h3>
 <p>Les contraintes <code>UNIQUE</code> et <code>CHECK</code> peuvent dépendre de plusieurs colonnes. Dans ce cas, la contrainte est ajoutée après la liste des colonnes :</p>
 <sql-interactive>
-  <span slot="options" data-cstrnt="UNIQUE(A,B)" data-vals="(1, 2), (1, 2)"></span>
-  <span slot="options" data-cstrnt="CHECK(B != A)" data-vals="(1, 1)" ></span>
+  <span slot="options" data-cstrnt="UNIQUE(A,B)" data-vals="(1, 2), (1, 2)">Colonnes uniques</span>
+  <span slot="options" data-cstrnt="CHECK(B != A)" data-vals="(1, 1)" >Condition</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (
     A TEXT, B TEXT,
@@ -1273,8 +1270,8 @@ SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
 <p>Il est possible de générer la valeur d&#39;une colonne à partir des valeurs d&#39;autres colonnes grâce à la contrainte <code>AS</code> :</p>
 <sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-cstrnt="(PU*Q )" data-vals="(1,2), (3,4)"></span>
-  <span slot="options" data-cstrnt="(PU*Q) STORED" data-vals="(1,2), (3,4)"></span>
+  <span slot="options" data-cstrnt="(PU*Q )" data-vals="(1,2), (3,4)">Colonne générée virtuelle</span>
+  <span slot="options" data-cstrnt="(PU*Q) STORED" data-vals="(1,2), (3,4)">Colonne générée stockée</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (
     PU <span class="hljs-type">INT</span>, Q <span class="hljs-type">INTEGER</span>,
@@ -1294,9 +1291,9 @@ SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
 <p>Elle est créée via une contrainte <code>PRIMARY KEY</code> et implique les contraintes <code>UNIQUE NOT NULL</code>. Il ne peut y avoir qu&#39;une clef primaire par table.</p>
 <sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-pk="TEXT PRIMARY KEY" data-vals="('1'), ('2')"></span>
+  <span slot="options" data-pk="TEXT PRIMARY KEY" data-vals="('1'), ('2')">Clé primaire (texte)</span>
   <span slot="options" data-pk="INTEGER
-      PRIMARY KEY AUTOINCREMENT" data-vals="(NULL), (NULL)"></span>
+      PRIMARY KEY AUTOINCREMENT" data-vals="(NULL), (NULL)">Clé primaire (auto-incrément)</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (
     K $PK
@@ -1309,7 +1306,7 @@ SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
 <p>💡 Comme avec la contrainte <code>UNIQUE</code>, il est aussi possible de créer une clef primaire sur plusieurs colonnes via contrainte de table :</p>
 <sql-interactive>
   <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-pk="PRIMARY KEY(ID, CODE)" data-vals="(1, 'E')"></span>
+  <span slot="options" data-pk="PRIMARY KEY(ID, CODE)" data-vals="(1, 'E')">Clé primaire (multi-cols)</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (
     ID <span class="hljs-type">INT</span>, CODE TEXT,
@@ -1334,11 +1331,11 @@ SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
   <span slot='select'>SELECT * FROM T;
 SELECT * FROM Users;</span>
   <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(1, 'E')"></span>
+    REFERENCES Users" data-vals="(1, 'E')">Clef étrangère existante</span>
   <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(4, 'E')"></span>
+    REFERENCES Users" data-vals="(4, 'E')">Clef étrangère non-existante</span>
   <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(NULL, 'E')"></span>
+    REFERENCES Users" data-vals="(NULL, 'E')">Clef étrangère nulle</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (ID <span class="hljs-type">INT</span>, C TEXT,
     $FK
@@ -1352,9 +1349,8 @@ SELECT * FROM Users;</span>
 <p>⚠ La vérification des clefs étrangères n&#39;est pas activé par défaut sur SQLite. La commande <code>PRAGMA foreign_keys = ON</code> permet de l&#39;activer.</p>
 <h3 id="uml">UML</h3>
 <sql-interactive id="uml-sql">
-  <!-- TODO: change order -->
-  <span slot="options" data-pk="ID, CODE" data-fk="ID, CODE" data-cols_a="CODE TEXT, X INT, ID INT" data-cols_b="ID INT, CODE TEXT"></span>
-  <span slot="options" data-pk="ID" data-fk="ID" data-cols_a="ID INT, CODE TEXT" data-cols_b="ID INT, CODE TEXT"></span>
+  <span slot="options" data-pk="ID" data-fk="ID" data-cols_a="ID INT, CODE TEXT" data-cols_b="ID INT, CODE TEXT">Clef primaire (uni-col)</span>
+  <span slot="options" data-pk="ID, CODE" data-fk="ID, CODE" data-cols_a="CODE TEXT, X INT, ID INT" data-cols_b="ID INT, CODE TEXT">Clef primaire (multi-cols)</span>
   <!-- TODO: LISS -->
   <pre id="uml" slot="post" class="hljs">
     <code>

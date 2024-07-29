@@ -85,11 +85,16 @@ class DB {
         this.#updated_table.clear();
     }
 
+    #isTableName(c: string) {
+        return c !== " " && c !== ";" && c !== "\n";
+    }
+
     #extractTableNameFromSQL(sql: string) {
 
         const types = [
             "CREATE TABLE IF NOT EXISTS ",
             "CREATE TABLE ",
+            "ALTER TABLE ",
             "DROP TABLE ",
             "UPDATE ",
             "INSERT INTO ",
@@ -98,9 +103,12 @@ class DB {
 
         const sql_type = types.find( v => sql.startsWith(v) )!;
 
-        const start_pos  = sql_type.length;
+        let start_pos  = sql_type.length;
+        while( ! this.#isTableName( sql[start_pos] ) )
+            ++start_pos;
+
         let end_pos = start_pos;
-        while( sql[end_pos] !== " " && sql[end_pos] !== ";" && sql[end_pos] !== "\n")
+        while( this.#isTableName( sql[end_pos] ) )
             ++end_pos;
     
         const table_name = sql.slice(start_pos, end_pos );
@@ -135,6 +143,7 @@ class DB {
                 results.push( this.exec_one(sql[i]) );
 
             } catch(e) {
+                console.warn(e);
                 const message = "Error:" + (e as Error).message.split(':').slice(2).join(':');
                 results.push(message);
                 break;
