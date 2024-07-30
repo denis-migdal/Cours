@@ -61,7 +61,12 @@
 <todo> 
 
 Contenu:
-    - corriger exemples JOIN.
+  - subqueries animations...
+    - T1 table
+    - subquery (updated if correlated)
+    - subquery table
+    -> exec op for cmp
+    - result table.
 
 Détails:
   - split CM into different files.
