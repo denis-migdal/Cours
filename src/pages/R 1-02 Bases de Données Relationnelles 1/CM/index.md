@@ -2426,20 +2426,44 @@ JOIN
 
 </div>
 
-<todo>Générer tableaux + sync</todo>
-<todo>Modifier exemple + parlant</todo>
-
-<sql-interactive>
-  <span slot="options" data-jointype='INNER' data-tablename1='T1' data-tablename2='T2'></span>
-  <span slot="options" data-jointype='LEFT' data-tablename1='T1' data-tablename2='T2'></span>
-  <span slot="options" data-jointype='RIGHT' data-tablename1='T1' data-tablename2='T2'></span>
-  <span slot="options" data-jointype='FULL' data-tablename1='T1' data-tablename2='T2'></span>
+<sql-interactive id="join2_sql">
+  <span slot="options" data-jointype='INNER'></span>
+  <span slot="options" data-jointype='LEFT' ></span>
+  <span slot="options" data-jointype='RIGHT'></span>
+  <span slot="options" data-jointype='FULL' ></span>
+  <sql-dymtable slot="post" id="join2_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1 FULL JOIN T2 USING(ID)" header="T1 JOIN T2"></sql-dymtable>
 
 ```sql
-SELECT * FROM $TABLENAME1 NATURAL $JOINTYPE JOIN $TABLENAME2;
+SELECT * FROM T1 NATURAL $JOINTYPE JOIN T2;
 ```
 
 </sql-interactive>
+
+<script type="module">
+  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+
+  const T1_T2W = await LISS.qs("#join2_T1_T2W");
+  const sql    = await LISS.qs("#join2_sql");
+
+  function update(datas) {
+
+    const t2 = datas[0].map( e => e.T2);
+
+    T1_T2W.highlightRow( (row) => {
+      return { lowlight: ! t2.includes(row["T2.T2"]) }
+    });
+  }
+
+  sql.host.addEventListener("change", (ev) => {
+    update(ev.detail.datas);
+  });
+  update(sql.lastDatas);
+
+  T1_T2W.highlightCells( (row, colname) => {
+    const id = row[ colname.split('.')[0] + ".ID"];
+    return `high_${id}`;
+  });
+</script>
 
 ⚠ Il existe 2 autres types de jointures, à éviter :
 

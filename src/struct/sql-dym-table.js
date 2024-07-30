@@ -42,6 +42,9 @@ const CSS =
         border : 4px solid yellow;
         opacity: 0.5;
     }
+    .lowlight {
+        opacity: 0.25;
+    }
 
     & td, & th {
         padding: 5px 10px;
