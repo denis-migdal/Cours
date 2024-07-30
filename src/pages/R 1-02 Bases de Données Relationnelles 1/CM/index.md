@@ -2325,15 +2325,28 @@ En réalité, il existe 3 types de jointures fréquemment utilisées :
 <style>
 .join_table :is(td,th):last-child {
   border :none;
+  font-style:italic;
+}
+.join_table :is(td,th):first-child {
+  border :none;
+  text-align: right;
 }
 </style>
 <table class="join_table">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="3" style="text-align:center">Entries</th>
+      <th style="text-align:center">WHERE</th>
+      <th></th>
+    </tr>
+  </thead>
   <tbody>
-    <tr><td>T1.ID</td><td>==</td><td>T2.ID</td><td><= INNER</td></tr>
-    <tr><td></td><td></td><td></td><td></td></tr>
-    <tr><td>T1.ID</td><td></td><td>NULL </td><td><= LEFT</td></tr>
-    <tr><td></td><td></td><td><td></td></td></tr>
-    <tr><td>NULL </td><td></td><td>T2.ID</td><td><= FULL</td></tr>
+    <tr><td>INNER :</td><td>T1</td><td>x</td><td>T2</td><td>T1.ID == T2.ID</td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>LEFT :</td><td>T1</td><td>x</td><td>NULL</td><td>T1.ID <strong>NOT IN</strong> T2.ID</td><td>(+ entrées INNER)</td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>FULL :</td><td>NULL</td><td>x</td><td>T2</td><td>T2.ID <strong>NOT IN</strong> T1.ID</td><td>(+ entrées LEFT)</td></tr>
   </tbody>
 </table>
 
