@@ -22,6 +22,27 @@ const CSS =
         print-color-adjust: exact;
     }
 
+    /* TODO: make style adoptable through LISS... */
+    .high_1 {
+        background-color: red;
+    }
+    .high_2 {
+        background-color: blue;
+    }
+    .high_3 {
+        background-color: green;
+    }
+    .high_null {
+        background-color: orange;
+    }
+    .hide {
+        display: none;
+    }
+    .cur {
+        border : 4px solid yellow;
+        opacity: 0.5;
+    }
+
     & td, & th {
         padding: 5px 10px;
         text-align: left;
@@ -43,13 +64,19 @@ const CSS =
 }`;
 
 class SQLDymTable extends LISS({
-    attributes: ["table", "header"],
+    attributes: ["table", "header", "cols"],
     css: CSS
 }) {
     constructor() {
         super();
 
-        this.exec(`SELECT * FROM ${this.attrs.table};`)
+        let cols = this.attrs.cols ?? "*";
+
+        this.exec(`SELECT ${cols} FROM ${this.attrs.table};`)
+    }
+
+    get nbRows() {
+        return this.rows.length;
     }
 
     exec(query) {
@@ -87,7 +114,7 @@ class SQLDymTable extends LISS({
         }
         thead.append(trhead);
 
-        this.rows = {};
+        this.rows = [];
 
         const tbody = document.createElement('tbody');
         for(let line of this.data) {
@@ -95,13 +122,12 @@ class SQLDymTable extends LISS({
             const tr = document.createElement('tr');
             for(let colname of colnames) {
                 const td = document.createElement('td');
-                td.textContent = line[colname];
+                td.textContent = line[colname] ?? "N/A";
                 tr.append(td);
             }
             tbody.append(tr);
 
-            if( "ID" in line)
-                this.rows[line.ID] = tr;
+            this.rows.push([line,tr]);
         }
 
         table.append(caption, colgroup, thead, tbody);
@@ -154,13 +180,36 @@ class SQLDymTable extends LISS({
 
     highlightCol( filter ) {
         for(let colname in this.cols)
-            this.cols[colname].classList.toggle('highlight', filter(colname));
+            this.#highlight(this.cols[colname], filter(colname) );
+    }
+
+    #highlight(target, highlight) { // target: HTMLElement, highlight: boolean|string|Record<string, boolean> ) {
+
+        if( typeof highlight === "boolean")
+            return target.classList.toggle('highlight', highlight);
+        if( typeof highlight === "string" )
+            return target.classList.add(highlight);
+        
+        for(let name in highlight)
+            target.classList.toggle(name, highlight[name]);
+
     }
 
     highlightRow( filter ) {
+        for(let i = 0; i < this.rows.length; ++i)
+            this.#highlight( this.rows[i][1], filter(this.rows[i][0], i) );
+    }
 
-        for(let ID in this.rows)
-            this.rows[ID].classList.toggle('highlight', filter(ID));
+    highlightCells( filter ) {
+
+        for(let i = 0; i < this.rows.length; ++i) {
+
+            const [row_data, row_html] = this.rows[i];
+            const cols = Object.keys(row_data);
+
+            for(let j = 0; j < cols.length; ++j)
+                this.#highlight( row_html.children[j] , filter(row_data, cols[j]) );
+        }
     }
 };
 

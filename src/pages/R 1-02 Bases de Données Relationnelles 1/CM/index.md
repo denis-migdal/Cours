@@ -61,7 +61,6 @@
 <todo> 
 
 Contenu:
-    - cf comments
     - corriger exemples JOIN.
 
 Détails:
@@ -501,7 +500,7 @@ SELECT * FROM Users WHERE $COND;
 
     const ids = datas[0].map(r => r.ID);
 
-    rowtable.highlightRow( (ID) => ids.includes(+ID) );
+    rowtable.highlightRow( ({ID}) => ids.includes(+ID) );
   }
 
 </script>
@@ -641,7 +640,7 @@ SELECT * FROM Users LIMIT $PAGINATION OFFSET $P ;
   function update(datas) {
 
     const ids = datas[0].map(r => r.ID);
-    table.highlightRow( (ID) => ids.includes(+ID) );
+    table.highlightRow( ({ID}) => ids.includes(+ID) );
   }
 
 </script>
@@ -754,10 +753,8 @@ Par exemple lors d'une requête `SELECT`:
 
   function doStep(i) {
 
-    if( i > 6) {
-      player.reset();
-      return;
-    }
+    if( i > 6)
+      return player.reset();
 
     order_sql.replaceChildren( ...buildOutput(i) ); //TODO highlight
     for(let li of list)
@@ -2043,148 +2040,110 @@ Pour exécuter cette requête, le SGDB va construire une table intermédiaire co
 
   .table_flex {
     display: flex;
-    align-items: center;
+    align-items: top;
     gap: 10px;
   }
 </style>
 
+<div style="text-align: center">
+  <anim-player id="cart_anim"></anim-player>
+</div>
 <div class='table_flex'>
-
-<table>
-  <caption>T1</caption>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>...</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class='color1'>
-      <td>1</td><td>...</td>
-    </tr>
-    <tr class='color2'>
-      <td>2</td><td>...</td>
-    </tr>
-    <tr class='color3'>
-      <td>3</td><td>...</td>
-    </tr>
-  </tbody>
-</table>
-
-x
-
-<table>
-  <caption>T2</caption>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>...</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class='color1'>
-      <td>1</td><td>...</td>
-    </tr>
-    <tr class='color3'>
-      <td>3</td><td>...</td>
-    </tr>
-    <tr class='color3'>
-      <td>3</td><td>...</td>
-    </tr>
-  </tbody>
-</table>
-
-=
-
-<table>
-  <caption>T1xT2</caption>
-  <thead>
-    <tr>
-      <th>T1.ID</th>
-      <th>...</th>
-      <th>T2.ID</th>
-      <th>...</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class='color1'>1</td><td class='color1'>...</td>
-      <td class='color1'>1</td><td class='color1'>...</td>
-    </tr>
-    <tr>
-      <td class='color1'>1</td><td class='color1'>...</td>
-      <td class='color3'>1</td><td class='color3'>...</td>
-    </tr>
-    <tr>
-      <td class='color1'>1</td><td class='color1'>...</td>
-      <td class='color3'>1</td><td class='color3'>...</td>
-    </tr>
-    <tr><td></td><td></td><td></td><td></td></tr>
-    <tr>
-      <td class='color2'>2</td><td class='color2'>...</td>
-      <td class='color1'>1</td><td class='color1'>...</td>
-    </tr>
-    <tr>
-      <td class='color2'>2</td><td class='color2'>...</td>
-      <td class='color3'>1</td><td class='color3'>...</td>
-    </tr>
-    <tr>
-      <td class='color2'>2</td><td class='color2'>...</td>
-      <td class='color3'>1</td><td class='color3'>...</td>
-    </tr>
-    <tr><td></td><td></td><td></td><td></td></tr>
-    <tr>
-      <td class='color3'>2</td><td class='color3'>...</td>
-      <td class='color1'>1</td><td class='color1'>...</td>
-    </tr>
-    <tr>
-      <td class='color3'>2</td><td class='color3'>...</td>
-      <td class='color3'>1</td><td class='color3'>...</td>
-    </tr>
-    <tr>
-      <td class='color3'>2</td><td class='color3'>...</td>
-      <td class='color3'>1</td><td class='color3'>...</td>
-    </tr>
-  </tbody>
-</table>
-
-WHERE ->
-
-<table>
-  <caption>T1xT2 + WHERE</caption>
-  <thead>
-    <tr>
-      <th>T1.ID</th>
-      <th>...</th>
-      <th>T2.ID</th>
-      <th>...</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class='color1'>1</td><td class='color1'>...</td>
-      <td class='color1'>1</td><td class='color1'>...</td>
-    </tr>
-    <tr><td></td><td></td><td></td><td></td></tr>
-    <tr><td></td><td></td><td></td><td></td></tr>
-    <tr>
-      <td class='color3'>3</td><td class='color3'>...</td>
-      <td class='color3'>3</td><td class='color3'>...</td>
-    </tr>
-    <tr>
-      <td class='color3'>3</td><td class='color3'>...</td>
-      <td class='color3'>3</td><td class='color3'>...</td>
-    </tr>
-  </tbody>
-</table>
-
+  <sql-dymtable id="cart_T1" table="T1" header="T1"></sql-dymtable>
+    <span><strong>x</strong></span>
+  <sql-dymtable id="cart_T2" table="T2" header="T2"></sql-dymtable>
+    <span><strong>=</strong></span>
+  <sql-dymtable id="cart_T1_T2" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1, T2" header="T1xT2"></sql-dymtable>
+    <span><strong>-- WHERE T1.ID == T2.ID --></strong></span>
+  <sql-dymtable id="cart_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1, T2" header="T1xT2 WHERE T1.ID == T2.ID"></sql-dymtable>
 </div>
 
-<todo>construire auto + animation</todo>
 
-Ainsi, le produit cartésien de deux tables de 3 entrées produira une table intermédiaire de 9 lignes, dont la majorité des lignes seront ensuite rejettées par la clause `WHERE`.
+<script type="module">
+  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
 
-Même sur de petites tables, la construction de la table intermédiaire explose très vite les capacités du SGDB :
+  const T1 = await LISS.qs("#cart_T1");
+  const T2 = await LISS.qs("#cart_T2");
+
+  const T1_T2  = await LISS.qs("#cart_T1_T2");
+  const T1_T2W = await LISS.qs("#cart_T1_T2W");
+
+  const anim   = await LISS.qs("#cart_anim");
+
+  T1.highlightRow( ({ID}) => `high_${ID}` );
+  T2.highlightRow( ({ID}) => `high_${ID}` );
+
+  T1_T2.highlightCells( (row, colname) => {
+    const id = row[ colname.split('.')[0] + ".ID"];
+    return `high_${id}`;
+  });
+  T1_T2W.highlightCells( (row, colname) => {
+    const id = row[ colname.split('.')[0] + ".ID"];
+    return `high_${id}`;
+  });
+  
+  function doStep(step) {
+
+    let genT1_T2_max_step = T1.nbRows * (T2.nbRows + 2) + 2;
+
+    if( step - genT1_T2_max_step > T1_T2.nbRows )
+      return anim.reset();
+
+    let T1_rownum;
+    let T2_rownum;
+    let T1_T2_rownum;
+    let T1_T2_generated = step === 0 ? undefined : -1;
+
+    if( step > 1 && step < genT1_T2_max_step ) { // build T1xT2
+      T1_rownum = Math.trunc( (step - 2) / (T2.nbRows + 2) );
+      T2_rownum =             (step - 2) % (T2.nbRows + 2) - 1;
+
+      T1_T2_generated = T1_rownum * T2.nbRows + T2_rownum;
+
+      if( T2_rownum === -1 )
+        T2_rownum = undefined;
+      if( T2_rownum === T2.nbRows ) {
+        T2_rownum = undefined;
+        --T1_T2_generated;
+      }
+
+      T1_T2_rownum = T1_rownum * T2.nbRows + T2_rownum;
+    }
+
+    let T1_T2W_rownum = step === 0 ? T1_T2.nbRows : -1;
+
+    if( step >= genT1_T2_max_step ) { // filter T1xT2
+      T1_T2_generated = T1_T2.nbRows;
+      T1_T2W_rownum = T1_T2_rownum = step - genT1_T2_max_step;
+    }
+
+
+    T1.highlightRow( (_, row_num) => {
+      return {cur: row_num === T1_rownum}
+    });
+    T2.highlightRow( (_, row_num) => {
+      return {cur: row_num === T2_rownum}
+    });
+
+    T1_T2.highlightRow( (_, row_num) => {
+      return {
+        cur : row_num === T1_T2_rownum,
+        hide: row_num >   T1_T2_generated
+      }
+    });
+    T1_T2W.highlightRow( (row, row_num) => {
+      return {
+        cur : row_num === T1_T2W_rownum,
+        hide: row_num >   T1_T2W_rownum || row["T1.ID"] !== row["T2.ID"]
+      }
+    });
+  }
+
+  anim.host.addEventListener("step", (ev) => doStep(ev.detail) );
+  doStep(0);
+</script>
+
+Ainsi, le produit cartésien de deux tables de 3 entrées produira une table intermédiaire de 9 lignes, dont la majorité des lignes seront ensuite rejettées par la clause `WHERE`. Même sur de petites tables, la construction de la table intermédiaire explose très vite les capacités du SGDB :
 
 <style>
   .danger {

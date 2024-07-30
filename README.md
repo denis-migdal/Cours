@@ -21,6 +21,7 @@ Motivation/Problematic first.
 
 - Warnings plus visuels
 - $XXX fix in inline (?) code.
+- scroll too early https://github.com/vercel/next.js/issues/3303
 
 ### BDR1
 
