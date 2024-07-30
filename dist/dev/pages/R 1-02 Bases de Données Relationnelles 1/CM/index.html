@@ -1873,8 +1873,6 @@ $OP
   update();
 </script>
 
-<span class='complexite_cartesien'>
-
 <p>Pour rappel, 1 milliard de lignes correspondent à plusieurs Go en mémoire, et 10^18 à plusieurs Po !!!</p>
 <p>⚠ Pour cette raison, on n&#39;utilise <strong>JAMAIS</strong> les produits cartésien en SQL ! <strong>JA-MAIS !</strong></p>
 <h3 id="le-principe-des-jointures">Le principe des jointures</h3>
@@ -1953,106 +1951,27 @@ $OP
 <p>💡 Vous pouvez ajouter une clause <code>WHERE</code> à vôtre requête SQL. En théorie la clause <code>WHERE</code> est appliquée aux entrées <strong>après</strong> jointures. Cependant, les SGBD sont capables d&#39;optimiser la requête en préfiltrant, lorsque possible, les tables <strong>avant</strong> jointures.</p>
 <h3 id="les-types-de-jointures">Les types de jointures</h3>
 <p>En réalité, il existe 3 types de jointures fréquemment utilisées :</p>
+<style>
+.join_table :is(td,th):last-child {
+  border :none;
+}
+</style>
+<table class="join_table">
+  <tbody>
+    <tr><td>T1.ID</td><td>==</td><td>T2.ID</td><td><= INNER</td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td>T1.ID</td><td></td><td>NULL </td><td><= LEFT</td></tr>
+    <tr><td></td><td></td><td><td></td></td></tr>
+    <tr><td>NULL </td><td></td><td>T2.ID</td><td><= FULL</td></tr>
+  </tbody>
+</table>
+
 <ul>
 <li><code>INNER</code> : par défaut.</li>
 <li><code>LEFT</code>  : comme <code>INNER</code>, mais ajoute au résultat les entrées de <code>$T1</code> dont aucune entrée de <code>$T2</code> ne correspond.</li>
 <li><code>FULL</code> (plus rare) : comme <code>LEFT</code>, mais ajoute au résultat les entrées de <code>$T2</code> dont aucune entrée de <code>$T1</code> ne correspond.<br/>
 💡 Il est équivalant à l&#39;union de <code>$T1 LEFT JOIN $T2</code> et <code>$T2 LEFT JOIN $T1</code>.</li>
 </ul>
-<style>
-.join_table :is(td,th):last-child {
-  border :none;
-}
-</style>
-
-<div class='table_flex'>
-
-<table>
-  <caption>T1</caption>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>...</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class='color1'>
-      <td>1</td><td>...</td>
-    </tr>
-    <tr class='color2'>
-      <td>2</td><td>...</td>
-    </tr>
-    <tr class='color3'>
-      <td>3</td><td>...</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>JOIN</p>
-<table>
-  <caption>T2</caption>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>...</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class='color1'>
-      <td>1</td><td>...</td>
-    </tr>
-    <tr class='color3'>
-      <td>3</td><td>...</td>
-    </tr>
-    <tr class='color3'>
-      <td>3</td><td>...</td>
-    </tr>
-    <tr class='color4'>
-      <td>N/A</td><td>...</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>=</p>
-<table class='join_table'>
-  <caption>T1 JOIN T2</caption>
-  <thead>
-    <tr>
-      <th>T1.ID</th>
-      <th>...</th>
-      <th>T2.ID</th>
-      <th>...</th>
-      <th></th>
-    </tr>
-  </thead>  <tbody>
-    <tr>
-      <td class='color1'>1</td><td class='color1'>...</td>
-      <td class='color1'>1</td><td class='color1'>...</td><td></td><td></td>
-    </tr>
-    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-    <tr>
-      <td class='color2'>2</td><td class='color2'>...</td>
-      <td>N/A</td><td>N/A</td><td>Si LEFT ou FULL</td>
-    </tr>
-    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-    <tr>
-      <td class='color3'>3</td><td class='color3'>...</td>
-      <td class='color3'>3</td><td class='color3'>...</td><td></td>
-    </tr>
-    <tr>
-      <td class='color3'>3</td><td class='color3'>...</td>
-      <td class='color3'>3</td><td class='color3'>...</td><td></td>
-    </tr>
-    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-    <tr>
-      <td>N/A</td><td>N/A</td>
-      <td class='color4'>N/A</td><td class='color4'>...</td><td>Si RIGHT ou FULL</td>
-    </tr>
-  </tbody>
-</table>
-
-</div>
-
 <sql-interactive id="join2_sql">
   <span slot="options" data-jointype='INNER'></span>
   <span slot="options" data-jointype='LEFT' ></span>

@@ -2231,8 +2231,6 @@ Ainsi, le produit cartésien de deux tables de 3 entrées produira une table int
   update();
 </script>
 
-<span class='complexite_cartesien'>
-
 Pour rappel, 1 milliard de lignes correspondent à plusieurs Go en mémoire, et 10^18 à plusieurs Po !!!
 
 ⚠ Pour cette raison, on n'utilise **JAMAIS** les produits cartésien en SQL ! **JA-MAIS !**
@@ -2324,107 +2322,25 @@ Pour chaque entrée de `$T1`, le SGBD va rechercher les entrées de `$T2` dont l
 ### Les types de jointures
 
 En réalité, il existe 3 types de jointures fréquemment utilisées :
-
-- `INNER` : par défaut.
-- `LEFT`  : comme `INNER`, mais ajoute au résultat les entrées de `$T1` dont aucune entrée de `$T2` ne correspond.
-- `FULL` (plus rare) : comme `LEFT`, mais ajoute au résultat les entrées de `$T2` dont aucune entrée de `$T1` ne correspond.<br/>
-  💡 Il est équivalant à l'union de `$T1 LEFT JOIN $T2` et `$T2 LEFT JOIN $T1`.
-
 <style>
 .join_table :is(td,th):last-child {
   border :none;
 }
 </style>
-
-<div class='table_flex'>
-
-<table>
-  <caption>T1</caption>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>...</th>
-    </tr>
-  </thead>
+<table class="join_table">
   <tbody>
-    <tr class='color1'>
-      <td>1</td><td>...</td>
-    </tr>
-    <tr class='color2'>
-      <td>2</td><td>...</td>
-    </tr>
-    <tr class='color3'>
-      <td>3</td><td>...</td>
-    </tr>
+    <tr><td>T1.ID</td><td>==</td><td>T2.ID</td><td><= INNER</td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td>T1.ID</td><td></td><td>NULL </td><td><= LEFT</td></tr>
+    <tr><td></td><td></td><td><td></td></td></tr>
+    <tr><td>NULL </td><td></td><td>T2.ID</td><td><= FULL</td></tr>
   </tbody>
 </table>
 
-JOIN
-
-<table>
-  <caption>T2</caption>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>...</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class='color1'>
-      <td>1</td><td>...</td>
-    </tr>
-    <tr class='color3'>
-      <td>3</td><td>...</td>
-    </tr>
-    <tr class='color3'>
-      <td>3</td><td>...</td>
-    </tr>
-    <tr class='color4'>
-      <td>N/A</td><td>...</td>
-    </tr>
-  </tbody>
-</table>
-
-=
-
-<table class='join_table'>
-  <caption>T1 JOIN T2</caption>
-  <thead>
-    <tr>
-      <th>T1.ID</th>
-      <th>...</th>
-      <th>T2.ID</th>
-      <th>...</th>
-      <th></th>
-    </tr>
-  </thead>  <tbody>
-    <tr>
-      <td class='color1'>1</td><td class='color1'>...</td>
-      <td class='color1'>1</td><td class='color1'>...</td><td></td><td></td>
-    </tr>
-    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-    <tr>
-      <td class='color2'>2</td><td class='color2'>...</td>
-      <td>N/A</td><td>N/A</td><td>Si LEFT ou FULL</td>
-    </tr>
-    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-    <tr>
-      <td class='color3'>3</td><td class='color3'>...</td>
-      <td class='color3'>3</td><td class='color3'>...</td><td></td>
-    </tr>
-    <tr>
-      <td class='color3'>3</td><td class='color3'>...</td>
-      <td class='color3'>3</td><td class='color3'>...</td><td></td>
-    </tr>
-    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-    <tr>
-      <td>N/A</td><td>N/A</td>
-      <td class='color4'>N/A</td><td class='color4'>...</td><td>Si RIGHT ou FULL</td>
-    </tr>
-  </tbody>
-</table>
-
-</div>
+- `INNER` : par défaut.
+- `LEFT`  : comme `INNER`, mais ajoute au résultat les entrées de `$T1` dont aucune entrée de `$T2` ne correspond.
+- `FULL` (plus rare) : comme `LEFT`, mais ajoute au résultat les entrées de `$T2` dont aucune entrée de `$T1` ne correspond.<br/>
+  💡 Il est équivalant à l'union de `$T1 LEFT JOIN $T2` et `$T2 LEFT JOIN $T1`.
 
 <sql-interactive id="join2_sql">
   <span slot="options" data-jointype='INNER'></span>
