@@ -78,6 +78,9 @@ class SQLDymTable extends LISS({
     get nbRows() {
         return this.rows.length;
     }
+    getRow(rowid) {
+        return this.rows[rowid];
+    }
 
     exec(query) {
 

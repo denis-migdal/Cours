@@ -2247,7 +2247,73 @@ SELECT * FROM $T1 NATURAL INNER JOIN $T2;
 
 Pour chaque entrée de `$T1`, le SGBD va rechercher les entrées de `$T2` dont les valeurs des colonnes communes sont identiques à celles de l'entrée de `$T1`. Ainsi, contrairement au produit cartésien, le SGBD n'a pas besoin de construire une table intermédiaire colossale, réduisant très fortement la consommation de mémoire vive.
 
-<todo>animation : construction</todo>
+
+<div style="text-align: center">
+  <anim-player id="join_anim"></anim-player>
+</div>
+
+<div class='table_flex'>
+  <sql-dymtable id="join_T1" table="T1" header="T1"></sql-dymtable>
+    <span><strong>JOIN</strong></span>
+  <sql-dymtable id="join_T2" table="T2" header="T2"></sql-dymtable>
+    <span><strong>=</strong></span>
+  <sql-dymtable id="join_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1 RIGHT JOIN T2 USING(ID)" header="T1 JOIN T2"></sql-dymtable>
+</div>
+
+
+<script type="module">
+  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+
+  const T1 = await LISS.qs("#join_T1");
+  const T2 = await LISS.qs("#join_T2");
+
+  const T1_T2W = await LISS.qs("#join_T1_T2W");
+
+  const anim   = await LISS.qs("#join_anim");
+
+  T1.highlightRow( ({ID}) => `high_${ID}` );
+  T2.highlightRow( ({ID}) => `high_${ID}` );
+
+  T1_T2W.highlightCells( (row, colname) => {
+    const id = row[ colname.split('.')[0] + ".ID"];
+    return `high_${id}`;
+  });
+  
+  function doStep(step) {
+
+    let T2_rownum;
+    let substep;
+
+    if( step > 1 ) { // build T1 JOIN T2
+      T2_rownum = Math.trunc( (step - 2) / 3);
+      substep = (step - 2) % 3;
+    }
+
+    if( T2_rownum !== undefined && T2_rownum >= T2.nbRows){
+      anim.reset();
+      return 
+    }
+
+    T1.highlightRow( ({ID}) => {
+
+      return {cur: T2_rownum !== undefined && ID === T2.getRow(T2_rownum)[0].ID && substep > 0 }
+    });
+    T2.highlightRow( (_, row_num) => {
+      return {cur: row_num === T2_rownum}
+    });
+
+    T1_T2W.highlightRow( (row, row_num) => {
+      return {
+        cur : step !== 0 && row_num === T2_rownum && substep === 2,
+        hide: step !== 0 && (step === 1 || row_num > T2_rownum || row_num === T2_rownum && substep !== 2)
+      }
+    });
+  }
+
+  anim.host.addEventListener("reset", (ev) => doStep(0) );
+  anim.host.addEventListener("step", (ev) => doStep(ev.detail) );
+  doStep(0);
+</script>
 
 💡 Si les colonnes en communs constituent un index, la recherche des entrées de `$T2` s'en retrouve grandement accelérée. Si elles constituent une clé primaire/étrangère, la recherche devient quasi instantanée.
 
