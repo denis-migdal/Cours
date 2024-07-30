@@ -1625,16 +1625,18 @@ $OP
 <h2 id="sous-requêtes">Sous requêtes</h2>
 <p>Vous pouvez utiliser le résultat d&#39;une requête <code>SELECT</code> (alors appelée &quot;sous-requête&quot;) comme valeur dans une autre requête. Par exemple, pour utiliser une sous-requête dans une condition <code>WHERE</code>, il suffit de l&#39;ajouter entre parenthèses :</p>
 <sql-interactive>
-  <span slot="options" data-cond='=' data-subquery='SELECT MAX(ID) FROM T2'>Sous-requête (opérateur)</span>
+  <span slot="options" data-cond='>' data-subquery='SELECT AVG(ID) FROM T2'>Sous-requête (op. de comparaison sur une valeur)</span>
+  <span slot="options" data-cond='>' data-subquery='SELECT ID FROM T2'>Sous-requête (op. de comparaison sur une liste)</span>
   <span slot="options" data-cond='IN' data-subquery='SELECT ID FROM T2'>Sous-requête (IN)</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">WHERE</span> ID $COND ( $SUBQUERY );
 </code></pre></sql-interactive>
 
-<p>⚠ La sous-requête doit retourner une valeur unique (une seule ligne et colonne) ou, pour <code>IN</code>, une liste (une seule colonne).</p>
+<p>⚠ La sous-requête doit retourner une liste (i.e. une seule colonne).</p>
+<p>💡 Les opérateurs de comparaisons utilisés sur une liste retourneront vrai si la condition est vraie pour au moins un élément de la liste.</p>
+<p>⚠ Certains SGBD requièrent d&#39;ajouter <code>ANY</code> entre l&#39;opérateur de comparaison et la liste.</p>
 <h3 id="sous-requête-corrélée">Sous-requête corrélée</h3>
-<p>Lorsque la sous-requête dépend d&#39;une colonne de la requête principale, elle est dite &quot;corrélée&quot;, et sera réexécutée à chaque ligne de la requête principale.</p>
-<p>Dès lors, pour des raisons de performances on utilisera les opérateurs :</p>
+<p>Lorsque la sous-requête dépend d&#39;une colonne de la requête principale, elle est dite &quot;corrélée&quot;, et sera réexécutée à chaque ligne de la requête principale. Dès lors, pour des raisons de performances on utilisera les opérateurs :</p>
 <ul>
 <li><code>EXISTS</code> à la place de <code>IN</code>.</li>
 <li><code>ANY</code>/<code>SOME</code> ou <code>ALL</code> au lieu d&#39;utiliser certaines fonctions d&#39;agrégations.</li>
@@ -1647,8 +1649,8 @@ $OP
 );
 </code></pre></sql-interactive>
 
-<p>En effet, une sous-requête non-corrélée, n&#39;est exécutée qu&#39;une seule fois. Ainsi il est intéressant de récupérer toutes les lignes (pour <code>IN</code>) ou de calculer des agrégats qui seront réutilisés pour évaluer la clause <code>WHERE</code> à chaque entrée de la requête principale.</p>
-<p>Cependant, quand une sous-requête est corrélée, il n&#39;est pas utile de calculer l&#39;ensemble des lignes de la sous-requête, car on peut s&#39;arrêter à :</p>
+<p>En effet, une sous-requête non-corrélée n&#39;étant exécutée qu&#39;une seule fois, il est intéressant de l&#39;évaluer entièrement en amont (i.e. récupérer toutes les lignes), pour ensuite utiliser son résultat, à chaque entrée de la requête principale, lors de l&#39;évaluation la clause <code>WHERE</code>, sans avoir à le recalculer à chaque fois.</p>
+<p>En revanche, quand une sous-requête est corrélée, il faudra nécessairement évaluer la sous-requête à chaque entrée de la requête principale. Cependant il n&#39;est alors pas utile de calculer l&#39;ensemble des lignes de la sous-requête, car on peut s&#39;arrêter à :</p>
 <ul>
 <li>la première ligne existante pour <code>EXISTS</code>.</li>
 <li>la première ligne satisfaisant la condition pour <code>ALL</code>.</li>
@@ -2072,20 +2074,6 @@ $OP
     - step (check) => until end or found.
       - 4 in ([.]...) <- query [4]
     - if found : add line.
-
-  - cartesian
-    -> initial state : show all
-    -> empty
-    -> 1 line T1 + lines T2 (+empty "line") => produce T1xT2
-    -> iterate T1 (+empty "line")
-    -> then iterate T1xT2 to build final.
-
-  
-  - join
-    -> initial state : show all
-    -> empty
-    -> 1 line T1 + lines T2 => produce final if cond matches.
-    -> iterate T1 (+ empty "line")
 -->
 
 </main>

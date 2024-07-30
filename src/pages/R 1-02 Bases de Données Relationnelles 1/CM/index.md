@@ -1963,7 +1963,8 @@ SELECT Nom, Prenom, Age FROM Users;
 Vous pouvez utiliser le résultat d'une requête `SELECT` (alors appelée "sous-requête") comme valeur dans une autre requête. Par exemple, pour utiliser une sous-requête dans une condition `WHERE`, il suffit de l'ajouter entre parenthèses :
 
 <sql-interactive>
-  <span slot="options" data-cond='=' data-subquery='SELECT MAX(ID) FROM T2'>Sous-requête (opérateur)</span>
+  <span slot="options" data-cond='>' data-subquery='SELECT AVG(ID) FROM T2'>Sous-requête (op. de comparaison sur une valeur)</span>
+  <span slot="options" data-cond='>' data-subquery='SELECT ID FROM T2'>Sous-requête (op. de comparaison sur une liste)</span>
   <span slot="options" data-cond='IN' data-subquery='SELECT ID FROM T2'>Sous-requête (IN)</span>
 
 ```sql
@@ -1972,13 +1973,15 @@ SELECT * FROM T1 WHERE ID $COND ( $SUBQUERY );
 
 </sql-interactive>
 
-⚠ La sous-requête doit retourner une valeur unique (une seule ligne et colonne) ou, pour `IN`, une liste (une seule colonne).
+⚠ La sous-requête doit retourner une liste (i.e. une seule colonne).
+
+💡 Les opérateurs de comparaisons utilisés sur une liste retourneront vrai si la condition est vraie pour au moins un élément de la liste.
+
+⚠ Certains SGBD requièrent d'ajouter `ANY` entre l'opérateur de comparaison et la liste.
 
 ### Sous-requête corrélée
 
-Lorsque la sous-requête dépend d'une colonne de la requête principale, elle est dite "corrélée", et sera réexécutée à chaque ligne de la requête principale.
-
-Dès lors, pour des raisons de performances on utilisera les opérateurs :
+Lorsque la sous-requête dépend d'une colonne de la requête principale, elle est dite "corrélée", et sera réexécutée à chaque ligne de la requête principale. Dès lors, pour des raisons de performances on utilisera les opérateurs :
 
 - `EXISTS` à la place de `IN`.
 - `ANY`/`SOME` ou `ALL` au lieu d'utiliser certaines fonctions d'agrégations.
@@ -1994,9 +1997,9 @@ SELECT * FROM T1 WHERE $COND (
 
 </sql-interactive>
 
-En effet, une sous-requête non-corrélée, n'est exécutée qu'une seule fois. Ainsi il est intéressant de récupérer toutes les lignes (pour `IN`) ou de calculer des agrégats qui seront réutilisés pour évaluer la clause `WHERE` à chaque entrée de la requête principale.
+En effet, une sous-requête non-corrélée n'étant exécutée qu'une seule fois, il est intéressant de l'évaluer entièrement en amont (i.e. récupérer toutes les lignes), pour ensuite utiliser son résultat, à chaque entrée de la requête principale, lors de l'évaluation la clause `WHERE`, sans avoir à le recalculer à chaque fois.
 
-Cependant, quand une sous-requête est corrélée, il n'est pas utile de calculer l'ensemble des lignes de la sous-requête, car on peut s'arrêter à :
+En revanche, quand une sous-requête est corrélée, il faudra nécessairement évaluer la sous-requête à chaque entrée de la requête principale. Cependant il n'est alors pas utile de calculer l'ensemble des lignes de la sous-requête, car on peut s'arrêter à :
 
 - la première ligne existante pour `EXISTS`.
 - la première ligne satisfaisant la condition pour `ALL`.
@@ -2456,20 +2459,6 @@ SELECT $COLS FROM T1 INNER JOIN T2 USING(ID);
     - step (check) => until end or found.
       - 4 in ([.]...) <- query [4]
     - if found : add line.
-
-  - cartesian
-    -> initial state : show all
-    -> empty
-    -> 1 line T1 + lines T2 (+empty "line") => produce T1xT2
-    -> iterate T1 (+empty "line")
-    -> then iterate T1xT2 to build final.
-
-  
-  - join
-    -> initial state : show all
-    -> empty
-    -> 1 line T1 + lines T2 => produce final if cond matches.
-    -> iterate T1 (+ empty "line")
 -->
 
 </main>
