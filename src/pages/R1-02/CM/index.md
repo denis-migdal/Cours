@@ -7,52 +7,6 @@
     </head>
     <body>
         <style>
-            body {
-                display:flex;
-                flex-direction: column;
-                height: 100vh;
-                margin: 0;
-                padding: 0;
-            }
-            main {
-                padding: 0 12px;
-                position: relative;
-                overflow-y: auto;
-            }
-            header {
-                z-index: 1;
-                margin-left: 50px;
-                font-weight: bold;
-                & > span {
-                    position: relative;
-                }
-                & > span:not(:hover) > .menu {
-                    display: none;
-                }
-                & > span > .menu {
-                    position: absolute;
-                    bottom: 0;
-                    transform: translate(0, 100%);
-                    left: 0;
-                    background-color: black;
-                    border: 1px solid gray;
-                    border-top: none;
-                    & > a {
-                        display: block;
-                        white-space: nowrap;
-                        padding: 5px 10px;
-                        &:hover {
-                            background-color: #222;
-                        }
-                    }
-                }
-                & > span::before {
-                    content: " > "
-                }
-                & > span:hover::before {
-                    content: " v "
-                }
-            }
         </style>
         <header></header>
         <main>
@@ -396,7 +350,7 @@ SELECT $COLS[,...] FROM $TABLE;
 
 ⚠ Il est d'usage de ne récupérer que les colonnes dont on a réellement besoin. En effet, sur de grandes tables et de grosses requêtes, réduire le nombre de colonnes récupérées permet de réduire le volume des données transférées. 
 
-### Exemples
+### Sélection des colonnes
 
 <sql-interactive id="col-sql">
   <sql-dymtable slot="post" id="col-table" table="Users"></sql-dymtable>

@@ -29,15 +29,21 @@
 
 - Quelques rq pour explorer la base de donnée (cf README).
     - .headers ON
+- `SELECT * FROM chimiste;`
 
 ## Col
 
-1. `SELECT * FROM chimiste;`
+Pas toutes les cols, certaines tables des 30ènes de cols
+
 1. Country
+   <pre lang="sql" contenteditable="true"><span class="hljs-keyword">SELECT</span> e</pre>
 1. Country distinct
 1. Nom, Prenom
+1. (Re)nommer une col.
 
 ## Line
+
+Pas toutes les lignes, extraire les info qu'on recherche.
 
 1. Chercheur FR.
 1. Nom commence par D.
@@ -46,11 +52,11 @@
 
 ## Op. maths.
 
-1. Age mort
+Quelques calculs : col accepte des opérateurs arithmétique, e.g. 2024 - date mort depuis combien de temps mort.
+
+1. Age mort (nommez la col Age).
 1. Age vivant
 1. mort ou 2024 => fct.
-
-1. Renommer colonne.
 1. Plus de 100 ans encore vivant.
 
 

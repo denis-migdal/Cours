@@ -7,52 +7,6 @@
     </head>
     <body>
         <style>
-            body {
-                display:flex;
-                flex-direction: column;
-                height: 100vh;
-                margin: 0;
-                padding: 0;
-            }
-            main {
-                padding: 0 12px;
-                position: relative;
-                overflow-y: auto;
-            }
-            header {
-                z-index: 1;
-                margin-left: 50px;
-                font-weight: bold;
-                & > span {
-                    position: relative;
-                }
-                & > span:not(:hover) > .menu {
-                    display: none;
-                }
-                & > span > .menu {
-                    position: absolute;
-                    bottom: 0;
-                    transform: translate(0, 100%);
-                    left: 0;
-                    background-color: black;
-                    border: 1px solid gray;
-                    border-top: none;
-                    & > a {
-                        display: block;
-                        white-space: nowrap;
-                        padding: 5px 10px;
-                        &:hover {
-                            background-color: #222;
-                        }
-                    }
-                }
-                & > span::before {
-                    content: " > "
-                }
-                & > span:hover::before {
-                    content: " v "
-                }
-            }
         </style>
         <header></header>
         <main>
@@ -380,7 +334,7 @@ CM4
 </li>
 </ul>
 <p>⚠ Il est d&#39;usage de ne récupérer que les colonnes dont on a réellement besoin. En effet, sur de grandes tables et de grosses requêtes, réduire le nombre de colonnes récupérées permet de réduire le volume des données transférées. </p>
-<h3 id="exemples">Exemples</h3>
+<h3 id="sélection-des-colonnes">Sélection des colonnes</h3>
 <sql-interactive id="col-sql">
   <sql-dymtable slot="post" id="col-table" table="Users"></sql-dymtable>
   <span slot="options" data-cols="*">Retourner toutes les colonnes</span>
@@ -1163,7 +1117,7 @@ pragma_table_xinfo($TABLENAME);
 </code></pre></sql-interactive>
 
 <p>⚠ Sur SQLite, les tables créées de cette manière ne sont pas <code>STRICT</code>.</p>
-<h4 id="exemples-1">Exemples</h4>
+<h4 id="exemples">Exemples</h4>
 <p>💡 Pour références, les requêtes SQL utilisées pour créer les tables des exemples peuvent être visualisées ci-dessous :</p>
 <sql-interactive>
   <span slot="options" data-tablename="'Produits'">CREATE TABLE pour Produits</span>
