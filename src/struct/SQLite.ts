@@ -1,6 +1,6 @@
-//TODO: better
+//TODO: better (assets)
 import "./sqlite/sqlite3.js";
-require("../pages/R 1-02 Bases de Données Relationnelles 1/CM/sqlite3.wasm");
+require("../pages/R1-02/CM/sqlite3.wasm");
 //require("../../../struct/sqlite/sqlite3.wasm");
 
 import * as s from "./sqlite/sqlite3.js";

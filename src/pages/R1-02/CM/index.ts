@@ -3,6 +3,8 @@ import "../../../struct/sql-interactive.js";
 import "../../../struct/sql-dym-table.js";
 import "../../../struct/anim-player.js";
 
+import pages, {root_path} from "../../../struct/content";
+
 /*
 window.addEventListener('beforeprint', () => {
   //...
@@ -127,8 +129,91 @@ function updateHeader() {
 
         html.push(empty)
     }
+
+    function make_page_href(pathprefix: string, path: string, desc: any) {
+
+        let href = `${pathprefix}${path}/`;
+
+        if(desc.children?.length) {
+            desc = desc.children[0];
+            href += `${desc.path ?? desc}/`;
+        }
+
+        return href;
+    }
+
+    function make_page_menu(pathprefix: string, path: string, pages: any) {
+        const desc = pages.find( (page: any) => page === path || page.path === path )!;
+
+        console.warn(pages, path);
+        
+        const html = document.createElement("span");
+        {
+            const link = document.createElement("a");
+            link.textContent = desc.sname ?? desc.name ?? desc;
+            link.setAttribute('href', make_page_href(pathprefix, path, desc) );
     
-    header.replaceChildren(...html);
+            const menu = document.createElement("div");
+            menu.classList.add("menu");
+    
+            menu.append( ... pages.map( (page:any) => {
+                const item = document.createElement("a");
+                item.textContent= page.name ?? page;
+                item.setAttribute("href", make_page_href(pathprefix, page.path??page, page) );
+                return item;
+            }) );
+    
+            html.append(link, menu);
+        }
+
+        return html;
+    }
+    
+    let curpage = window.location.pathname.slice(root_path.length).split('/');
+
+    const module_html = make_page_menu(root_path, curpage[0], pages);
+
+    const desc = pages.find( (page: any) => page.path === curpage[0] )!;
+    const type_html   = make_page_menu(root_path + curpage[0] + "/", curpage[1], desc.children);
+
+    //TODO 3rd... (TP1)
+
+    // module
+    // type
+    // seance
+
+/*
+    const module = decodeURI( curpage[curpage.length-3] );
+    const type   = curpage[curpage.length-2];
+    const path   = curpage.slice(0,-3).join('/');
+
+    const [sname, desc] = Object.entries(pages).find( ([name, obj]) => obj.dir === module )!;
+    console.warn(sname, desc);
+
+    //
+    
+    //
+
+    const module_html = document.createElement("span");
+    {
+        const link = document.createElement("a");
+        link.textContent = sname;
+        link.setAttribute('href', `${path}/${module}/CM/`);
+
+        const menu = document.createElement("div");
+        menu.classList.add("menu");
+
+        menu.append( ... Object.entries(pages).map( ([sname, desc]) => {
+            const item = document.createElement("a");
+            item.textContent= sname;
+            item.setAttribute("href", `${path}/${desc.dir}/CM/`);
+            return item;
+        }) );
+
+        module_html.append(link, menu);
+    }*/
+    
+    header.replaceChildren(module_html, type_html, ...html);
 }
 
 main.addEventListener('scroll', updateHeader);
