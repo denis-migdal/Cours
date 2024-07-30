@@ -1,0 +1,130 @@
+body {
+    display:flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+main {
+    padding: 0 12px;
+    position: relative;
+    overflow-y: auto;
+}
+header {
+    z-index: 1;
+    margin-left: 50px;
+    font-weight: bold;
+    & > span {
+        position: relative;
+    }
+    & > span:not(:hover) > .menu {
+        display: none;
+    }
+    & > span > .menu {
+        position: absolute;
+        bottom: 0;
+        transform: translate(0, 100%);
+        left: 0;
+        background-color: black;
+        border: 1px solid gray;
+        border-top: none;
+        & > a {
+            display: block;
+            white-space: nowrap;
+            padding: 5px 10px;
+            &:hover {
+                background-color: #222;
+            }
+        }
+    }
+    & > span::before {
+        content: " > "
+    }
+    & > span:hover::before {
+        content: " v "
+    }
+}
+
+
+/* compteurs */
+body {
+    counter-reset: h1 h2 h3;
+}
+
+h1::before {
+counter-set: h2 h3;
+counter-increment: h1;
+content: counter(h1, upper-roman) ". ";
+}
+h2::before {
+counter-set: h3;
+counter-increment: h2;
+content: counter(h1, upper-roman) "." counter(h2) ". ";
+}
+h3::before {
+counter-increment: h3;
+content: counter(h1, upper-roman) "." counter(h2) "." counter(h3, lower-alpha) ". ";
+
+}
+
+
+body {
+font-size: 1.5em !important;
+line-height: 1.7em !important;
+background-color: black;
+color: white;
+
+& > main > table {
+    margin: auto;
+}
+}
+body pre {
+background-color: #333;
+color: white !important;
+}
+
+@media print {
+todo {
+    display: none !important;
+}
+
+body {
+    font-size: unset;
+    line-height: unset;
+}
+}
+todo {
+position: absolute;
+right: 50px;
+background: lightblue;
+padding: 1rem;
+display: block;
+border-radius: 5px;
+color: black;
+z-index: 1;
+}
+todo:hover {
+z-index: 2;
+}
+todo:not(:hover) {
+max-width: 25%;
+max-height: 2rem;
+overflow: hidden;
+}
+
+@media (max-width: 600px) {
+todo {
+    position: static;
+}
+}
+todo:before {
+content: "TODO: ";
+}
+
+pre > code.hljs {
+    color: white;
+}
+
+a:visited {
+  color: blue;
+}

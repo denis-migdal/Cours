@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>CM</title>
+        <title>CM (BDR1)</title>
         <link rel="stylesheet" href="./index.css">
         <script type="module" src="./index.js" defer></script>
     </head>
