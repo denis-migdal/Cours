@@ -11,6 +11,57 @@
 
 # TP1 : ?
 
+<todo>Add TP system support [import/export]</todo>
+
+*💡 Ce TP est inspiré de sources en parties inconnues.*
+
+## Consignes
+
+- export/rendus.
+- en vous aidant des supports CM et de la cheat sheet, répondez aux questions suivantes
+- ne pas vous aider de ressources Web, => lire doc fournie aussi compétence + demander prof.
+
+## SQLite
+
+<todo>commandes</todo>
+
+- Charger BDD chimiste (lien).
+
+- Quelques rq pour explorer la base de donnée (cf README).
+    - .headers ON
+
+## Col
+
+1. `SELECT * FROM chimiste;`
+1. Country
+1. Country distinct
+1. Nom, Prenom
+
+## Line
+
+1. Chercheur FR.
+1. Nom commence par D.
+1. Vivant
+1. Mort
+
+## Op. maths.
+
+1. Age mort
+1. Age vivant
+1. mort ou 2024 => fct.
+
+1. Renommer colonne.
+1. Plus de 100 ans encore vivant.
+
+
+## Trier les entrées
+
+1. Ordonner par age (croissant)
+1. Ordonner par age (décroissant)
+1. TOP5 des plus vieux.
+1. TOP5 des plus jeunes.
+
+
 </main>
     </body>
 </html>
