@@ -80,22 +80,86 @@ function getAnswersFields() {
     return [ ...document.querySelectorAll("[contenteditable]") ];
 }
 
-const PAGE = window.location.pathname;
-let answers: string[] = JSON.parse( localStorage.getItem(`answers:${PAGE}`) ?? "[]" );
-
 const answers_fields = getAnswersFields();
 
 for(let i = 0; i < answers_fields.length; ++i ) {
 
-    if( answers[i] !== undefined ) {
-        answers_fields[i].textContent = answers[i];
-        answers_fields[i].dispatchEvent( new CustomEvent("input") );
-    }
-
     answers_fields[i].addEventListener('input', () => {
         const answer_txt = answers_fields[i].textContent!;
-        answers[i] = answer_txt;
+        answers[i].text = answer_txt;
         localStorage.setItem(`answers:${PAGE}`, JSON.stringify(answers) );
     });
 }
 // init...
+
+function download(data: any, filename: string, type: string = "plain/text") {
+    const file = new Blob([data], {type});
+    const a   = document.createElement("a");
+    const url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);  
+    }, 0); 
+}
+
+
+const PAGE = window.location.pathname;
+
+let localAnswers = localStorage.getItem(`answers:${PAGE}`);
+
+//TODO get real type...
+let answers = answers_fields.map( e => { text: ""} );
+
+importAnswersFromText(localAnswers);
+
+const toolbar = document.createElement("span");
+toolbar.classList.add("toolbar");
+
+const import_btn = document.createElement('span');
+import_btn.textContent = "[import]";
+
+const file_upload = document.createElement('input');
+file_upload.setAttribute('type', 'file');
+import_btn.addEventListener('click', () => {
+    file_upload.click();
+});
+
+file_upload.addEventListener('change', async () => {
+    
+    let text = await file_upload.files![0].text();
+    answers = JSON.parse(text);
+
+    importAnswersFromText( text );
+});
+
+
+const export_btn = document.createElement('span');
+export_btn.textContent = "[export]";
+
+export_btn.addEventListener('click', () => {
+    download( JSON.stringify(answers, null, "\t"), `${PAGE}.answers`);
+});
+
+
+toolbar.append(import_btn, export_btn);
+
+document.querySelector('main')!.append(toolbar);
+
+
+function importAnswersFromText(text: string|null) {
+    
+    if(text === null)
+        return;
+
+    answers = JSON.parse(text);
+
+    for(let i = 0; i < answers_fields.length; ++i)
+        if( answers[i] !== undefined ) {
+            answers_fields[i].textContent = answers[i].text;
+            answers_fields[i].dispatchEvent( new CustomEvent("input") );
+        }
+}

@@ -1,2 +1,12 @@
 @import "../../../../struct/struct.css";
 @import "../../../../struct/vscode.css";
+
+main {
+    position: relative;
+}
+.toolbar {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 2;
+}
