@@ -25,6 +25,8 @@ Motivation/Problematic first.
 
 ### BDR1
 
++ Slides
++ Cheat sheet
 
 #### TD3
 
@@ -34,6 +36,10 @@ Comment bien découper en tables (conception), dépendance fonctionnelle (?).
 #### TP1
 
 - tester WHERE et autres avec SELECT avant de tenter un UPDATE/DELETE.
+
+#### TP5
+
+- interfaces pgAdmin / python bindings (injections) ?
 
 ##### Interface pgAdmin ?
 
