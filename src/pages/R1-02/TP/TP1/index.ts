@@ -3,17 +3,23 @@ import "../../../../struct/menu.ts";
 const hljs = require('highlight.js');
 const language = "sql";
 
-// highlight...
-for(let pre of document.querySelectorAll('pre[lang="sql"][contenteditable]') ) {
-    
+for(let field of document.querySelectorAll('[contenteditable]') ) {
+
     // @ts-ignore
-    pre.addEventListener("keypress", (ev: KeyboardEvent) => {
+    field.addEventListener("keypress", (ev: KeyboardEvent) => {
         if( ev.code === "Enter" && ! ev.shiftKey ) {
 
             ev.preventDefault();
             (ev.target as HTMLElement)!.blur();
         }
     });
+}
+
+// highlight...
+for(let pre of document.querySelectorAll('pre[lang="sql"][contenteditable]') ) {
+    
+    pre.setAttribute("spellcheck", "false");
+
 
     pre.addEventListener("input", (ev) => {
         
@@ -82,12 +88,15 @@ function getAnswersFields() {
 
 const answers_fields = getAnswersFields();
 
+console.warn(answers_fields.length);
+
 for(let i = 0; i < answers_fields.length; ++i ) {
 
     answers_fields[i].addEventListener('input', () => {
         const answer_txt = answers_fields[i].textContent!;
-        answers[i].text = answer_txt;
+        (answers[i] ??= {}).text = answer_txt;
         localStorage.setItem(`answers:${PAGE}`, JSON.stringify(answers) );
+        console.warn('ok');
     });
 }
 // init...
@@ -158,20 +167,22 @@ function importAnswersFromText(text: string|null) {
 
     answers = JSON.parse(text);
 
-    for(let i = 0; i < answers_fields.length; ++i)
-        if( answers[i] !== undefined ) {
-            answers_fields[i].textContent = answers[i].text;
-            answers_fields[i].dispatchEvent( new CustomEvent("input") );
+    for(let i = 0; i < answers_fields.length; ++i) {
+        if( answers[i] === undefined || answers[i] === null )
+            continue;
+        
+        answers_fields[i].textContent = answers[i].text;
+        answers_fields[i].dispatchEvent( new CustomEvent("input") );
 
-            answers_fields[i].classList.remove('wrong', 'correct', 'comment');
-            if( "grade" in answers[i] )
-                answers_fields[i].classList.add( answers[i].grade === 1 ? "correct" : 'wrong');
-            if( "comments" in answers[i] ) {
-                answers_fields[i].classList.add('comments');
-                console.warn(answers[i].comments);
-                answers_fields[i].setAttribute('comments', answers[i].comments);
-            }
+        answers_fields[i].classList.remove('wrong', 'correct', 'comment');
+        if( "grade" in answers[i] )
+            answers_fields[i].classList.add( answers[i].grade === 1 ? "correct" : 'wrong');
+        if( "comments" in answers[i] ) {
+            answers_fields[i].classList.add('comments');
+            console.warn(answers[i].comments);
+            answers_fields[i].setAttribute('comments', answers[i].comments);
         }
+    }
 }
 
 

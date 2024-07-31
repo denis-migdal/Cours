@@ -33,17 +33,7 @@ Motivation/Problematic first.
 Comment bien choisir les clef primaires/étrangères
 Comment bien découper en tables (conception), dépendance fonctionnelle (?).
 
-#### TP1
-
-- tester WHERE et autres avec SELECT avant de tenter un UPDATE/DELETE.
-
-#### TP5
-
-- interfaces pgAdmin / python bindings (injections) ?
-
-##### Interface pgAdmin ?
-
-##### Quelques commandes SQLite ? (prise en main)
+#### Quelques commandes SQLite ? (prise en main)
 
 Quelques unes en TP2/3/4 en fonction des besoins ?
 
@@ -84,6 +74,10 @@ Bonnes pratiques :
   -> vs in (subquery).
   ==> compter nombre de lignes.
   ==> comparer vitesse exec sur tables grosses.
+
+#### TP5
+
+- interfaces pgAdmin / python bindings (injections) ?
 
 ### BDR2
 

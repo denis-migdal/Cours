@@ -28,3 +28,8 @@ main {
     margin-top: 10px;
     display: block;
 }
+
+div[contenteditable] {
+    border-radius: 3px;
+    border: 1px solid #cccccc;
+}
