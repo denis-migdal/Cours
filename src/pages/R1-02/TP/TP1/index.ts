@@ -1,10 +1,10 @@
 import "../../../../struct/menu.ts";
 
 const hljs = require('highlight.js');
-
 const language = "sql";
 
-for(let pre of document.querySelectorAll('pre[lang="sql"]') ) {
+// highlight...
+for(let pre of document.querySelectorAll('pre[lang="sql"][contenteditable]') ) {
     
     // @ts-ignore
     pre.addEventListener("keypress", (ev: KeyboardEvent) => {
@@ -16,8 +16,16 @@ for(let pre of document.querySelectorAll('pre[lang="sql"]') ) {
     });
 
     pre.addEventListener("input", (ev) => {
-        // https://stackoverflow.com/questions/21234741/place-caret-back-where-it-was-after-changing-innerhtml-of-a-contenteditable-elem
+        
         let p = ev.target as HTMLElement;
+
+        if( document.activeElement !== p ) {
+            p.innerHTML = hljs.highlight(p.textContent, { language }).value;
+            return;
+        }
+
+        // https://stackoverflow.com/questions/21234741/place-caret-back-where-it-was-after-changing-innerhtml-of-a-contenteditable-elem
+
         let rrange = window.getSelection()!.getRangeAt(0);
         let c = rrange.startOffset;
 
@@ -64,3 +72,30 @@ for(let pre of document.querySelectorAll('pre[lang="sql"]') ) {
         //console.log( getCaretCharacterOffsetWithin(ev.target)  );
     });
 }
+
+
+
+function getAnswersFields() {
+    //TODO...
+    return [ ...document.querySelectorAll("[contenteditable]") ];
+}
+
+const PAGE = window.location.pathname;
+let answers: string[] = JSON.parse( localStorage.getItem(`answers:${PAGE}`) ?? "[]" );
+
+const answers_fields = getAnswersFields();
+
+for(let i = 0; i < answers_fields.length; ++i ) {
+
+    if( answers[i] !== undefined ) {
+        answers_fields[i].textContent = answers[i];
+        answers_fields[i].dispatchEvent( new CustomEvent("input") );
+    }
+
+    answers_fields[i].addEventListener('input', () => {
+        const answer_txt = answers_fields[i].textContent!;
+        answers[i] = answer_txt;
+        localStorage.setItem(`answers:${PAGE}`, JSON.stringify(answers) );
+    });
+}
+// init...
