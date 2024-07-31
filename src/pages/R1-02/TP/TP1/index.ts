@@ -197,8 +197,6 @@ function highlight(q_id: number) {
     const answer = answers_fields[q_id];
     answer.classList.add('answer_highlight');
 
-    const main = document.querySelector('main');
-
     const vh = document.documentElement.clientHeight;
     const ah = answer.clientHeight;
 

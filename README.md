@@ -33,25 +33,9 @@ Motivation/Problematic first.
 Comment bien choisir les clef primaires/étrangères
 Comment bien découper en tables (conception), dépendance fonctionnelle (?).
 
-#### Quelques commandes SQLite ? (prise en main)
-
-Quelques unes en TP2/3/4 en fonction des besoins ?
-
-Config show headers : https://stackoverflow.com/questions/5924149/how-to-configure-sqlite-to-display-headers-by-default
-
-.databases / .fullschema/.schema / .tables
-
-+ .mode (exports) / .dump  // .import
-
-+ .read / + .shell / .save
-
-+ .timer on (?)
-  https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html
-
-.help
-
 #### TP2
 
+.changes on
 Voir les autres pré-traitements
 
 #### TP3
@@ -60,6 +44,8 @@ import/export/save table (schema/data)
   -> as SQL
   -> as CSV
   ?
++ .mode (exports) / .dump  // .import
++ .fullschema/.schema
 
 Bonnes pratiques :
 
@@ -68,6 +54,9 @@ Bonnes pratiques :
 - FK : on delete/on update/cascade.
 
 ##### TP4
+
++ .timer on (?)
+  https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html
 
 - IN vs JOIN
   -> join qui retourne plusieurs résultats identique, puis un autre join (=> grosse table avec duplicats).

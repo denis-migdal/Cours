@@ -11,35 +11,60 @@
 
 # TP1 : ?
 
-<todo>Add TP system support [import/export]</todo>
-
-*💡 Ce TP est inspiré de sources en parties inconnues.*
+*💡 Ce TP est inspiré de sources en partie inconnues.*
 
 ## Consignes
 
-- export/rendus.
-- en vous aidant des supports CM et de la cheat sheet, répondez aux questions suivantes
-- ne pas vous aider de ressources Web, doc fourni suffisant pour rep exo. => lire doc fournie aussi compétence + demander prof.
+En vous aidant des supports de cours fournis (CM, slides, et cheat sheet), répondez aux différentes questions dans les champs prévus à cet effet.
+
+À la fin de la séance de TP, vous exporterez les réponses via le bouton en haut à droite de la page, et déposerez le fichier ainsi obtenu sur Moodle.
+
+⚠ Les exercices de ce TP ont un objectif pédagogique, rechercher les réponses sur Internet va à l'encontre de cet objectif.
+
+💡 En cas de difficulté, n'hésitez pas à interroger votre encadrant de TP.
 
 ## SQLite
 
-<todo>commandes</todo>
+SQLite est un SGBD très léger dont chaque base de données est stockée sous la forme d'un fichier `.sqlite`. Comme de nombreux SGDB, il permet de manipuler une base de données via plusieurs types d'interfaces :
+- interface en lignes de commandes.
+- interface graphique.
+- interface de programmation *(e.g. pour manipuler une base à partir d'un script Python)*.
 
-- Charger BDD chimiste (lien).
+💡 Dans le cadre de ce TP, nous utiliserons SQLite via son interface CLI.
 
-- Quelques rq pour explorer la base de donnée (cf README).
-    => + lire help...
+### Usage de SQLite
 
-Formatter le résultat.
-    - .headers ON
-    - --header --column
-    -> .mode [several...]
+SQLite se lance dans le terminal via la commande suivante :
 
-    - box/table/column <= human read
-    - csv/json/tabs/list (computer read/exports)
-    - html/markdown (site web)
+```bash
+sqlite3 $FILE [$OPTS]
+```
 
-- `SELECT * FROM chimiste;`
+Une fois lancé, vous pourrez ensuite écrire vos requêtes SQL après l'invite (`sqlite>`), appuyer sur entrée pour les exécuter, puis visualiser les résultats.
+
+💡 Vous pouvez aussi entrer des commandes préfixées par un `.` :
+- `.quit` : quitter SQLite.
+- `.help [$CMD]` : afficher l'aide de SQLite.
+
+### Explorer la base de données
+
+1. Téléchargez la base de données "chimiste" via <a href="../../../../assets/sql/chimiste.sqlite">ce lien</a>.
+1. Dans un terminal, exécutez la commande `sqlite3 $FILE` afin d'ouvrir le fichier ainsi téléchargé.
+1. Exécutez la commande `.tables` pour afficher le(s) nom(s) de(s) table(s) de la base de données.
+1. Affichez le contenu de la table `chimiste` grâce à la commande SQL suivante :<br/>
+   `SELECT * FROM chimiste;`
+
+### Formatter le résultat
+
+Comme vous pouvez le constater, l'affichage des résultats est, par défaut, un peu austère. Plusieurs commandes SQLite (ou arguments de la commande `sqlite3`) permettent d'améliorer l'affichage :
+- `.headers ON` (ou `--header`) : dans les résultats, affiche les noms des colonnes.
+- `.mode $MODE` (ou `--$MODE`) : change le format d'affichage des résultats :
+  - pour des humains : `box`, `table`, `column`.
+  - pour un ordinateur : `csv`, `json`, `tabs`, `list`.
+  - pour les pages Web : `html`, `markdown`.
+
+1. Activez l'affichage des noms des colonnes, puis re-exécutez la requête SQL précédente.
+1. Testez les affichages `.mode box`, `.mode table`, et `.mode column`, sur la requête SQL précédente.
 
 ## Sélection des colonnes
 

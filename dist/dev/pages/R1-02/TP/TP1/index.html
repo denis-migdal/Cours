@@ -10,33 +10,52 @@
         <main>
 
 <h1 id="tp1--">TP1 : ?</h1>
-<p><todo>Add TP system support [import/export]</todo></p>
-<p><em>💡 Ce TP est inspiré de sources en parties inconnues.</em></p>
+<p><em>💡 Ce TP est inspiré de sources en partie inconnues.</em></p>
 <h2 id="consignes">Consignes</h2>
-<ul>
-<li>export/rendus.</li>
-<li>en vous aidant des supports CM et de la cheat sheet, répondez aux questions suivantes</li>
-<li>ne pas vous aider de ressources Web, doc fourni suffisant pour rep exo. =&gt; lire doc fournie aussi compétence + demander prof.</li>
-</ul>
+<p>En vous aidant des supports de cours fournis (CM, slides, et cheat sheet), répondez aux différentes questions dans les champs prévus à cet effet.</p>
+<p>À la fin de la séance de TP, vous exporterez les réponses via le bouton en haut à droite de la page, et déposerez le fichier ainsi obtenu sur Moodle.</p>
+<p>⚠ Les exercices de ce TP ont un objectif pédagogique, rechercher les réponses sur Internet va à l&#39;encontre de cet objectif.</p>
+<p>💡 En cas de difficulté, n&#39;hésitez pas à interroger votre encadrant de TP.</p>
 <h2 id="sqlite">SQLite</h2>
-<p><todo>commandes</todo></p>
+<p>SQLite est un SGBD très léger dont chaque base de données est stockée sous la forme d&#39;un fichier <code>.sqlite</code>. Comme de nombreux SGDB, il permet de manipuler une base de données via plusieurs types d&#39;interfaces :</p>
 <ul>
-<li><p>Charger BDD chimiste (lien).</p>
-</li>
-<li><p>Quelques rq pour explorer la base de donnée (cf README).
-  =&gt; + lire help...</p>
+<li>interface en lignes de commandes.</li>
+<li>interface graphique.</li>
+<li>interface de programmation <em>(e.g. pour manipuler une base à partir d&#39;un script Python)</em>.</li>
+</ul>
+<p>💡 Dans le cadre de ce TP, nous utiliserons SQLite via son interface CLI.</p>
+<h3 id="usage-de-sqlite">Usage de SQLite</h3>
+<p>SQLite se lance dans le terminal via la commande suivante :</p>
+<pre><code class="hljs language-bash">sqlite3 <span class="hljs-variable">$FILE</span> [<span class="hljs-variable">$OPTS</span>]
+</code></pre><p>Une fois lancé, vous pourrez ensuite écrire vos requêtes SQL après l&#39;invite (<code>sqlite&gt;</code>), appuyer sur entrée pour les exécuter, puis visualiser les résultats.</p>
+<p>💡 Vous pouvez aussi entrer des commandes préfixées par un <code>.</code> :</p>
+<ul>
+<li><code>.quit</code> : quitter SQLite.</li>
+<li><code>.help [$CMD]</code> : afficher l&#39;aide de SQLite.</li>
+</ul>
+<h3 id="explorer-la-base-de-données">Explorer la base de données</h3>
+<ol>
+<li>Téléchargez la base de données &quot;chimiste&quot; via <a href="../../../../assets/sql/chimiste.sqlite">ce lien</a>.</li>
+<li>Dans un terminal, exécutez la commande <code>sqlite3 $FILE</code> afin d&#39;ouvrir le fichier ainsi téléchargé.</li>
+<li>Exécutez la commande <code>.tables</code> pour afficher le(s) nom(s) de(s) table(s) de la base de données.</li>
+<li>Affichez le contenu de la table <code>chimiste</code> grâce à la commande SQL suivante :<br/>
+<code>SELECT * FROM chimiste;</code></li>
+</ol>
+<h3 id="formatter-le-résultat">Formatter le résultat</h3>
+<p>Comme vous pouvez le constater, l&#39;affichage des résultats est, par défaut, un peu austère. Plusieurs commandes SQLite (ou arguments de la commande <code>sqlite3</code>) permettent d&#39;améliorer l&#39;affichage :</p>
+<ul>
+<li><code>.headers ON</code> (ou <code>--header</code>) : dans les résultats, affiche les noms des colonnes.</li>
+<li><code>.mode $MODE</code> (ou <code>--$MODE</code>) : change le format d&#39;affichage des résultats :<ul>
+<li>pour des humains : <code>box</code>, <code>table</code>, <code>column</code>.</li>
+<li>pour un ordinateur : <code>csv</code>, <code>json</code>, <code>tabs</code>, <code>list</code>.</li>
+<li>pour les pages Web : <code>html</code>, <code>markdown</code>.</li>
+</ul>
 </li>
 </ul>
-<p>Formatter le résultat.
-    - .headers ON
-    - --header --column
-    -&gt; .mode [several...]</p>
-<pre><code>- box/table/column &lt;= human read
-- csv/json/tabs/list (computer read/exports)
-- html/markdown (site web)
-</code></pre><ul>
-<li><code>SELECT * FROM chimiste;</code></li>
-</ul>
+<ol>
+<li>Activez l&#39;affichage des noms des colonnes, puis re-exécutez la requête SQL précédente.</li>
+<li>Testez les affichages <code>.mode box</code>, <code>.mode table</code>, et <code>.mode column</code>, sur la requête SQL précédente.</li>
+</ol>
 <h2 id="sélection-des-colonnes">Sélection des colonnes</h2>
 <p>Les tables SQL peuvent contenir de très nombreuses colonnes. Afin de conserver des résultats succins et lisibles, il convient ainsi de ne récupérer que les colonnes qui nous intéressent.</p>
 <ol>
