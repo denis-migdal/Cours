@@ -77,7 +77,7 @@ for(let pre of document.querySelectorAll('pre[lang="sql"][contenteditable]') ) {
 
 function getAnswersFields() {
     //TODO...
-    return [ ...document.querySelectorAll("[contenteditable]") ];
+    return [ ...document.querySelectorAll<HTMLElement>("[contenteditable]") ];
 }
 
 const answers_fields = getAnswersFields();
@@ -112,7 +112,7 @@ const PAGE = window.location.pathname;
 let localAnswers = localStorage.getItem(`answers:${PAGE}`);
 
 //TODO get real type...
-let answers = answers_fields.map( e => { text: ""} );
+let answers = answers_fields.map( e => { return { text: ""} } );
 
 importAnswersFromText(localAnswers);
 
@@ -147,7 +147,8 @@ export_btn.addEventListener('click', () => {
 
 toolbar.append(import_btn, export_btn);
 
-document.querySelector('main')!.append(toolbar);
+const main = document.querySelector('main')!;
+main.append(toolbar);
 
 
 function importAnswersFromText(text: string|null) {
@@ -161,5 +162,38 @@ function importAnswersFromText(text: string|null) {
         if( answers[i] !== undefined ) {
             answers_fields[i].textContent = answers[i].text;
             answers_fields[i].dispatchEvent( new CustomEvent("input") );
+
+            answers_fields[i].classList.remove('wrong', 'correct', 'comment');
+            if( "grade" in answers[i] )
+                answers_fields[i].classList.add( answers[i].grade === 1 ? "correct" : 'wrong');
+            if( "comments" in answers[i] ) {
+                answers_fields[i].classList.add('comments');
+                console.warn(answers[i].comments);
+                answers_fields[i].setAttribute('comments', answers[i].comments);
+            }
         }
+}
+
+
+addEventListener("message", (e) => {
+    highlight(e.data);
+})
+
+function highlight(q_id: number) {
+
+    document.querySelector(".answer_highlight")?.classList.remove("answer_highlight");
+
+    const answer = answers_fields[q_id];
+    answer.classList.add('answer_highlight');
+
+    const main = document.querySelector('main');
+
+    const vh = document.documentElement.clientHeight;
+    const ah = answer.clientHeight;
+
+    main.scrollTo({
+        top: answer.offsetTop - (document.documentElement.clientHeight / 2 + ah / 2),
+        behavior: "instant"
+    })
+    //TODO: scroll2middle...
 }
