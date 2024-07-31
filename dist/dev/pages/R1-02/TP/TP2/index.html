@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TP2 (BDR1)</title>
+        <link rel="stylesheet" href="./index.css">
+        <script type="module" src="./index.js" defer></script>
+    </head>
+    <body>
+        <header></header>
+        <main>
+
+<h1 id="tp2--">TP2 : ???</h1>
+<p><em>💡 Ce TP est inspiré de sources en partie inconnues.</em></p>
+<h2 id="consignes-bis-repetitae">Consignes (bis repetitae)</h2>
+<h2 id="modification-des-entrées-de-la-table">Modification des entrées de la table</h2>
+<p><todo>Echaper un guillement dans CM ? (type string)</todo></p>
+<ol>
+<li>En une seule requête SQL, insérez les chimistes suivant dans table <code>chimiste</code> :<pre lang="sql" contenteditable></pre>
+<pre style="margin-left: -3em; padding: 0; padding-left: 8px; font-size: 0.85rem; line-height: calc( 1.2 * 0.85rem)">┌────┬─────────────┬─────────┬─────────────────┬────────────┬────────────────┐
+│ id │     nom     │ prenom  │ annee_naissance │ annee_mort │ pays_naissance │
+├────┼─────────────┼─────────┼─────────────────┼────────────┼────────────────┤
+│ 35 │ Markov      │ Andrei  │ 1856            │ 1922       │ Russie         │
+│ 34 │ van 't Hoff │ Jacobus │ 1852            │ 1911       │ Pays-Bas       │
+│ 33 │ Kekule      │ August  │ 1896            │ 1829       │ Allemagne      │
+└────┴─────────────┴─────────┴─────────────────┴────────────┴────────────────┘</pre></li>
+<li>Sachant que 33, 34, et 35 sont les identifiants les plus élevés, affichez les 2 chimistes que vous venez d&#39;insérer.<pre lang="sql" contenteditable></pre></li>
+<li>Vous remarquerez que August Kekule est mort avant d&#39;être né... En une seule requête, invertissez les années de naissance et de mort de l&#39;entrée d&#39;identifiant <code>33</code>.<pre lang="sql" contenteditable></pre></li>
+<li>Pourquoi utiliser le nom/prénom en place de l&#39;identifiant est dangereux lors de requêtes <code>UPDATE</code> et <code>DELETE</code> ?<div contenteditable></div></li>
+<li>Il semblerait que Andrei Markov soit un mathématicien, et non un chimiste, supprimez-le (de la table).<pre lang="sql" contenteditable></pre></li>
+</ol>
+<h2 id="quelques-prétraitements">Quelques prétraitements</h2>
+<p>Qqs prétraitements avant d&#39;afficher...</p>
+<p>Pour rappel, utilisé après vaut mieux faire certains trucs dans le langage de prog.</p>
+<h3 id="assigner-un-label-conditions">Assigner un label (conditions)</h3>
+<p>=&gt; le premier catégories numériques calculée, mais autres ? e.g. textuelles ?</p>
+<ul>
+<li>epoque (cf TP3/8).</li>
+</ul>
+<p>desc.</p>
+<ul>
+<li>vivant mort : status (rappel) [cf ci-dessous]</li>
+</ul>
+<h3 id="concaténations">Concaténations</h3>
+<ul>
+<li>Prenom | Nom (maj)</li>
+</ul>
+<p>descr.</p>
+<ul>
+<li>Concat : nom_complet</li>
+</ul>
+<h3 id="format-numbers">Format numbers</h3>
+<ul>
+<li>(?) <code>ROUND($N, 2)</code>.</li>
+</ul>
+<p>desc.</p>
+<ul>
+<li>round pas beau, printf/format* (like print in python), &quot;%6.2f&quot; (cf ci-dessous)</li>
+</ul>
+<ul>
+<li>print dans SQLite &lt;3.38.
+[L] : %f [type] =&gt; on peut préciser [len] [.pad] / %e (exp) / %g (mix %f et %e)  // pour info: (%x %o : octal et hexa) // %s un texte, on peut aussi utiliser op. de concat.</li>
+</ul>
+<h3 id="format-date">Format date</h3>
+<p><todo>Add CM</todo></p>
+<ul>
+<li>instead of 2024 en dur, extraire année actuelle. (obtenir année seule, puis on peut ajouter/soustraire dessus - pas besoin de conversion).</li>
+</ul>
+<p>DATE_FORMAT / STRFTIME (python/sqlite)</p>
+<p>%F 		ISO 8601 date: YYYY-MM-DD
+    %Y 		year: 0000-9999
+    %m 		month: 01-12
+    %d 		day of month: 01-31</p>
+<p>%T 		ISO 8601 time: HH:MM:SS
+    %H 		hour: 00-24
+    %M 		minute: 00-59
+    %S 		seconds: 00-59</p>
+<h2 id="agrégat-sur-une-colonne">Agrégat sur une colonne</h2>
+<p>=&gt; fct agrégat dans les cols =&gt; regroupe toutes les entrées au sein d&#39;une même ligne.</p>
+<ul>
+<li>affichez le nombre de chimistes dans la table (i.e. compter le nombre d&#39;entrées) [give].</li>
+<li>prev. rq + groupez les chimistes par pays (add pays)</li>
+<li>order by + rename</li>
+<li>give where : marche pas explain</li>
+<li>au moins 5</li>
+</ul>
+<h2 id="agrégat-sur-une-expression">Agrégat sur une expression</h2>
+<p>Fct agrégat, pas seulement colonne mais expression autorisé, e.g. agrégat sur formule de calcul d&#39;age du TP précédent.</p>
+<ul>
+<li>age moyen des chimistes dans la base.</li>
+<li><ul>
+<li>arrondir la colonne âge moyen à 2 décimales après la virgule</li>
+</ul>
+</li>
+<li>Idem (même steps), âge moyen des chimistes par pays, classé par ordre croissant, pays &gt; 65 ans.</li>
+</ul>
+</main>
+    </body>
+</html>

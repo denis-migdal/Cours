@@ -9,7 +9,11 @@ export default [
                 name: "TP" ,
                 path : "TP",
                 children: [
-                    "TP1"
+                    "TP1",
+                    "TP2",
+                    "TP3",
+                    "TP4",
+                    "TP5"
                 ]
             }
         ]

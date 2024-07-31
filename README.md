@@ -27,6 +27,7 @@ Motivation/Problematic first.
 
 + Slides
 + Cheat sheet
++ Compléter exo TP avec notions vu en CM.
 
 #### TD3
 
@@ -69,6 +70,8 @@ Bonnes pratiques :
 - interfaces pgAdmin / python bindings (injections) ?
 
 ### BDR2
+
+- prog interfaces + binds + SQL injections.
 
 Teasing BDR2 ?
 
