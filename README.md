@@ -23,11 +23,11 @@ Motivation/Problematic first.
 - $XXX fix in inline (?) code.
 - scroll too early https://github.com/vercel/next.js/issues/3303
 
-### BDR1
+### BDR1 (8j)
 
-+ Slides
-+ Cheat sheet
-+ Compléter exo TP3-4 avec notions vu en CM.
++ (2j) Slides
++ (2j) Cheat sheet
++ (4j) Compléter exo TP3-4 avec notions vu en CM + TP5
 
 #### Cheat sheet
 

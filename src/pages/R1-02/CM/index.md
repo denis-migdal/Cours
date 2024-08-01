@@ -172,6 +172,8 @@ En SQL chaque colonne a un type, i.e. le type des données qu'on peut y insérer
 
 💡 Par défaut, chaque type accepte la valeur `NULL`, qui indique une absence de données.
 
+💡 En SQL les chaînes de caractères s'écrivent entre guillemets simples (`'`). Pour échapper un guillemet simple dans la chaîne de caractères, il suffit de l'écrire en double, e.g. `'J''ai échappé.'`. 
+
 En général, les SGBD (sauf SQLite) offrent une variété de sous-types permettant d'optimiser leur stockage. Une table (non-exhaustive) des sous-types les plus communs vous est proposée ci-dessous à titre informatif :
 
 <details>
@@ -349,6 +351,8 @@ SELECT $COLS[,...] FROM $TABLE;
   💡 `*` correspond à l'ensemble des colonnes.
 
 ⚠ Il est d'usage de ne récupérer que les colonnes dont on a réellement besoin. En effet, sur de grandes tables et de grosses requêtes, réduire le nombre de colonnes récupérées permet de réduire le volume des données transférées. 
+
+⚠ Le nom de la colonne devra être écrite entre guillemets s'il contient des caractères non-alphanumériques.
 
 ### Sélection des colonnes
 
@@ -909,6 +913,7 @@ Il est aussi fréquent d'utiliser des **timestamps**, e.g. l'unix timestamp, qui
 
 <sql-interactive>
   <span slot="options" data-cols="DATE(), TIME(), DATETIME()">Date et/ou heure actuelle</span>
+  <span slot="options" data-cols="DATE(), STRFTIME('%d/%m/%Y', DATE())">Formatter une date</span>
   <span slot="options" data-cols="UNIXEPOCH('now')">Timestamp actuel</span>
   <span slot="options" data-cols="DATETIME(10, 'unixepoch')">Convertir un timestamp (10) en date</span>
   <span slot="options" data-cols="TIMEDIFF('now', '2001-01-01')">Calculer la durée entre deux dates</span>
@@ -920,6 +925,7 @@ SELECT $COLS;
 </sql-interactive>
 
 - `DATE()`/`TIME()`/`DATETIME()` : retourne la date et/ou l'heure actuelle.
+- `FORMAT_DATE($F, $D)`/`STRFTIME($F, $D)` : formate la date `$D` au format `$F` (cf TP2).
 - `TIMEDIFF($a, $b)` : donne la durée entre deux dates.
 - `UNIXEPOCH($d)` : donne le nombre de secondes écoulées entre le 1er janvier 1970 et la date `$d`.
 
@@ -937,6 +943,7 @@ Les chaînes de caractères sont généralement stockées sur des colonnes à ta
   <span slot="options" data-cols="LOWER('Hello'), UPPER('Hello')">Transformer la casse</span>
   <span slot="options" data-cols="LENGTH('23'), LENGTH(32)">Taille</span>
   <span slot="options" data-cols="TRIM(' w '), LTRIM(' w '), RTRIM(' w ')">Retirer les espaces en début/fin</span>
+  <span slot="options" data-cols="PRINTF('{x=%.2f, y=%.2f}', 1.2, 1.)">Formatter des données</span>
 
 ```sql
 SELECT $COLS;
@@ -949,6 +956,8 @@ SELECT $COLS;
 - `[L/R]TRIM($W)` : enlève les espaces en début et/ou fin de chaîne.
 - `[L/R]PAD($W, $N, $C)` : l'inverse de `[L/R]TRIM()`, ajoute des caractères `$C` en début/fin de `$W`, de sorte à avoir une chaîne de caractère de taille `$N`.<br/>
   ⚠ Cette fonction n'est pas disponible sur SQLite.
+- `FORMAT($F, $T[,...])` : formate des données `$T` au format `$F` (cf TP2).<br/>
+  ⚠ Pour SQLite < 3.38, cette fonction s'appelle `PRINTF()`.
 
 Il existe bien d'autres fonctions que nous ne verrons pas dans le cadre de ce cours :
 
@@ -957,9 +966,6 @@ Il existe bien d'autres fonctions que nous ne verrons pas dans le cadre de ce co
     <strong><em>Afficher les autres pré-traitements</em></strong>
   </summary>
 
-- `FORMAT()` : formate une chaîne de caractère comme `printf()` en C/Python (pas standardisé).<br>
-  Cf [documentation SQLite](https://www.sqlite.org/printf.html).<br/>
-  Cf [documentation PostgreSQL](https://www.postgresql.org/docs/current/functions-string.html#FUNCTIONS-STRING-FORMAT).
 - `REVERSE($W)` : inverse l'ordre des caractères.
 - `REPLACE($W, $S, $R)` : dans `$W`, remplace `$S` par `$R`.
 - `SUBSTR($W, $B[, $L])` : retourne la sous-chaîne de `$W` commençant à l'index `$B` et de taille `$L`.
@@ -1156,6 +1162,10 @@ SELECT $GRP, $OP
 - `MAX($COL)` : retourne la valeur maximale.
 
 💡 Par défaut, en l'absence d'une fonction d'agrégation, SQL retourne la première valeur.
+
+💡 Par défaut, si une fonction d'agrégation est utilisée sans clause `GROUP BY`, alors toutes les entrées sont regroupées dans la même ligne.
+
+### Compter les lignes/entrées
 
 <todo>Improve example</todo>
 

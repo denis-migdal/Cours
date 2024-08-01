@@ -16,7 +16,6 @@
 <p>💡 Dans ce TP, vous reprendrez la base <code>chimiste.sqlite</code> utilisée au TP précédent.</p>
 <p>⚠ Vous activerez l&#39;option <code>.changes on</code> afin d&#39;afficher le nombre de lignes modifiées lors des insertions/modifications/suppressions.</p>
 <h2 id="modification-des-entrées-de-la-table">Modification des entrées de la table</h2>
-<p><todo>Echaper un guillement dans CM ? (type string)</todo></p>
 <ol>
 <li>En une seule requête SQL, insérez les chimistes suivant dans table <code>chimiste</code> :<pre lang="sql" contenteditable></pre>
 <pre style="margin-left: -3em; padding: 0; padding-left: 8px; font-size: 0.85rem; line-height: calc( 1.2 * 0.85rem)">┌────┬─────────────┬─────────┬─────────────────┬────────────┬────────────────┐
@@ -60,7 +59,6 @@
 <li>Affichez le nom, prénom, et status (vivant ou mort), des chercheurs.<pre lang="sql" contenteditable></pre></li>
 </ol>
 <h3 id="formatter-des-dates">Formatter des dates</h3>
-<p><todo>Add CM</todo></p>
 <p>Il est fréquent qu&#39;on souhaite extraire des informations d&#39;une date, ou l&#39;afficher différemment. Pour cela, on utilise la fonction <code>DATE_FORMAT($FORMAT, $DATE)</code> (<code>STRFTIME</code> pour SQLite). Comme en Python, le format est une chaîne de caractère qui défini les éléments à afficher :</p>
 <ul>
 <li><code>%F</code> : la date, équivalant à <code>%Y-%m-%d</code>.<ul>
@@ -119,7 +117,6 @@
 <li>Affichez l&#39;âge des chimistes avec une précision de deux chiffres après la virgule, et une longueur minimale telle que les âges soient correctement alignés.<pre lang="sql" contenteditable></pre></li>
 </ol>
 <h2 id="agrégat-sur-une-colonne">Agrégat sur une colonne</h2>
-<p><todo>Add CM</todo></p>
 <p>Pour rappel, il est possible d&#39;agréger plusieurs entrées au sein d&#39;une même ligne grâce à la clause <code>GROUP BY $COL[,...]</code>. Si une fonction d&#39;agrégat est utilisée sans clause <code>GROUP BY</code>, toutes les entrées seront regroupées au sein d&#39;une même ligne.</p>
 <ol>
 <li>Exécutez la requête suivante :<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MIN</span>(annee_naissance) <span class="hljs-keyword">as</span> min,

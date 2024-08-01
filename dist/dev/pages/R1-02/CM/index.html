@@ -163,6 +163,7 @@ CM4
 <li><code>ANY</code>  : accepte n&#39;importe quelle valeur.</li>
 </ul>
 <p>💡 Par défaut, chaque type accepte la valeur <code>NULL</code>, qui indique une absence de données.</p>
+<p>💡 En SQL les chaînes de caractères s&#39;écrivent entre guillemets simples (<code>&#39;</code>). Pour échapper un guillemet simple dans la chaîne de caractères, il suffit de l&#39;écrire en double, e.g. <code>&#39;J&#39;&#39;ai échappé.&#39;</code>. </p>
 <p>En général, les SGBD (sauf SQLite) offrent une variété de sous-types permettant d&#39;optimiser leur stockage. Une table (non-exhaustive) des sous-types les plus communs vous est proposée ci-dessous à titre informatif :</p>
 <details>
   <summary><em><strong>Montrer la table des sous-types</strong></em></summary>
@@ -334,6 +335,7 @@ CM4
 </li>
 </ul>
 <p>⚠ Il est d&#39;usage de ne récupérer que les colonnes dont on a réellement besoin. En effet, sur de grandes tables et de grosses requêtes, réduire le nombre de colonnes récupérées permet de réduire le volume des données transférées. </p>
+<p>⚠ Le nom de la colonne devra être écrite entre guillemets s&#39;il contient des caractères non-alphanumériques.</p>
 <h3 id="sélection-des-colonnes">Sélection des colonnes</h3>
 <sql-interactive id="col-sql">
   <sql-dymtable slot="post" id="col-table" table="Users"></sql-dymtable>
@@ -789,6 +791,7 @@ $M_VALS;
 <p>Il est aussi fréquent d&#39;utiliser des <strong>timestamps</strong>, e.g. l&#39;unix timestamp, qui représente une date par le nombre de secondes écoulées depuis le 1er janvier 1970. Il permet notamment d&#39;aisément comparer et stocker des dates.</p>
 <sql-interactive>
   <span slot="options" data-cols="DATE(), TIME(), DATETIME()">Date et/ou heure actuelle</span>
+  <span slot="options" data-cols="DATE(), STRFTIME('%d/%m/%Y', DATE())">Formatter une date</span>
   <span slot="options" data-cols="UNIXEPOCH('now')">Timestamp actuel</span>
   <span slot="options" data-cols="DATETIME(10, 'unixepoch')">Convertir un timestamp (10) en date</span>
   <span slot="options" data-cols="TIMEDIFF('now', '2001-01-01')">Calculer la durée entre deux dates</span>
@@ -798,6 +801,7 @@ $M_VALS;
 
 <ul>
 <li><code>DATE()</code>/<code>TIME()</code>/<code>DATETIME()</code> : retourne la date et/ou l&#39;heure actuelle.</li>
+<li><code>FORMAT_DATE($F, $D)</code>/<code>STRFTIME($F, $D)</code> : formate la date <code>$D</code> au format <code>$F</code> (cf TP2).</li>
 <li><code>TIMEDIFF($a, $b)</code> : donne la durée entre deux dates.</li>
 <li><code>UNIXEPOCH($d)</code> : donne le nombre de secondes écoulées entre le 1er janvier 1970 et la date <code>$d</code>.</li>
 </ul>
@@ -810,6 +814,7 @@ $M_VALS;
   <span slot="options" data-cols="LOWER('Hello'), UPPER('Hello')">Transformer la casse</span>
   <span slot="options" data-cols="LENGTH('23'), LENGTH(32)">Taille</span>
   <span slot="options" data-cols="TRIM(' w '), LTRIM(' w '), RTRIM(' w ')">Retirer les espaces en début/fin</span>
+  <span slot="options" data-cols="PRINTF('{x=%.2f, y=%.2f}', 1.2, 1.)">Formatter des données</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS;
 </code></pre></sql-interactive>
@@ -820,6 +825,8 @@ $M_VALS;
 <li><code>[L/R]TRIM($W)</code> : enlève les espaces en début et/ou fin de chaîne.</li>
 <li><code>[L/R]PAD($W, $N, $C)</code> : l&#39;inverse de <code>[L/R]TRIM()</code>, ajoute des caractères <code>$C</code> en début/fin de <code>$W</code>, de sorte à avoir une chaîne de caractère de taille <code>$N</code>.<br/>
 ⚠ Cette fonction n&#39;est pas disponible sur SQLite.</li>
+<li><code>FORMAT($F, $T[,...])</code> : formate des données <code>$T</code> au format <code>$F</code> (cf TP2).<br/>
+⚠ Pour SQLite &lt; 3.38, cette fonction s&#39;appelle <code>PRINTF()</code>.</li>
 </ul>
 <p>Il existe bien d&#39;autres fonctions que nous ne verrons pas dans le cadre de ce cours :</p>
 <details>
@@ -828,9 +835,6 @@ $M_VALS;
   </summary>
 
 <ul>
-<li><code>FORMAT()</code> : formate une chaîne de caractère comme <code>printf()</code> en C/Python (pas standardisé).<br>
-Cf <a href="https://www.sqlite.org/printf.html">documentation SQLite</a>.<br/>
-Cf <a href="https://www.postgresql.org/docs/current/functions-string.html#FUNCTIONS-STRING-FORMAT">documentation PostgreSQL</a>.</li>
 <li><code>REVERSE($W)</code> : inverse l&#39;ordre des caractères.</li>
 <li><code>REPLACE($W, $S, $R)</code> : dans <code>$W</code>, remplace <code>$S</code> par <code>$R</code>.</li>
 <li><code>SUBSTR($W, $B[, $L])</code> : retourne la sous-chaîne de <code>$W</code> commençant à l&#39;index <code>$B</code> et de taille <code>$L</code>.</li>
@@ -988,6 +992,8 @@ Cf <a href="https://www.postgresql.org/docs/current/functions-string.html#FUNCTI
 <li><code>MAX($COL)</code> : retourne la valeur maximale.</li>
 </ul>
 <p>💡 Par défaut, en l&#39;absence d&#39;une fonction d&#39;agrégation, SQL retourne la première valeur.</p>
+<p>💡 Par défaut, si une fonction d&#39;agrégation est utilisée sans clause <code>GROUP BY</code>, alors toutes les entrées sont regroupées dans la même ligne.</p>
+<h3 id="compter-les-lignesentrées">Compter les lignes/entrées</h3>
 <p><todo>Improve example</todo></p>
 <p>💡 Il est aussi possible de compter les entrées/valeurs de chaque lignes :</p>
 <sql-interactive>

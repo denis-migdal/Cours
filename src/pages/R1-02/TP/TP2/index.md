@@ -24,8 +24,6 @@
 
 ## Modification des entrées de la table
 
-<todo>Echaper un guillement dans CM ? (type string)</todo>
-
 1. En une seule requête SQL, insérez les chimistes suivant dans table `chimiste` :
    <pre lang="sql" contenteditable></pre>
 <pre style="margin-left: -3em; padding: 0; padding-left: 8px; font-size: 0.85rem; line-height: calc( 1.2 * 0.85rem)">┌────┬─────────────┬─────────┬─────────────────┬────────────┬────────────────┐
@@ -82,8 +80,6 @@ END
 
 ### Formatter des dates
 
-<todo>Add CM</todo>
-
 Il est fréquent qu'on souhaite extraire des informations d'une date, ou l'afficher différemment. Pour cela, on utilise la fonction `DATE_FORMAT($FORMAT, $DATE)` (`STRFTIME` pour SQLite). Comme en Python, le format est une chaîne de caractère qui défini les éléments à afficher :
 - `%F` : la date, équivalant à `%Y-%m-%d`.
     - `%Y` : l'année
@@ -139,8 +135,6 @@ Le format suit la structure suivante : `%[$len][.$prec]$T`
    <pre lang="sql" contenteditable></pre>
 
 ## Agrégat sur une colonne
-
-<todo>Add CM</todo>
 
 Pour rappel, il est possible d'agréger plusieurs entrées au sein d'une même ligne grâce à la clause `GROUP BY $COL[,...]`. Si une fonction d'agrégat est utilisée sans clause `GROUP BY`, toutes les entrées seront regroupées au sein d'une même ligne.
 
