@@ -140,8 +140,6 @@ function updateHeader() {
 
     function make_page_menu(pathprefix: string, path: string, pages: any) {
         const desc = pages.find( (page: any) => page === path || page.path === path )!;
-
-        console.warn(pages, path);
         
         const html = document.createElement("span");
         {
@@ -171,6 +169,14 @@ function updateHeader() {
 
     const desc = pages.find( (page: any) => page.path === curpage[0] )!;
     const type_html   = make_page_menu(root_path + curpage[0] + "/", curpage[1], desc.children);
+
+    //TODO...
+    const desc2          = desc.children.find( (page: any) => page.path === curpage[1] )!;
+    if(desc2 !== undefined && typeof desc2 !== "string") {
+        const session_html   = make_page_menu(root_path + curpage[0] + "/"+ curpage[1] + "/", curpage[2], desc2.children);
+        html[0] = session_html;
+    }
+
 
     header.replaceChildren(module_html, type_html, ...html);
 }

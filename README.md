@@ -59,11 +59,6 @@ Comment bien découper en tables (conception), dépendance fonctionnelle (?).
   - ne pas hésiter à faire des copier/coller (rappeler)
   - history (fleches), si modifier requête prec.
 
-
-#### TP2
-
-Voir les autres pré-traitements
-
 #### TP3
 
 import/export/save table (schema/data)
