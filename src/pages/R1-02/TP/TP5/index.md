@@ -11,15 +11,11 @@
 
 # TP5 : Interface GUI
 
-## Consignes (bis repetitae)
+## Consignes
 
-## Modification des entrées de la table
+<tp-consignes></tp-consignes>
 
-<todo>UPDATE/INSERT/DELETE</todo>
-
-
-
-## Agrégats
+## 
 
 </main>
     </body>

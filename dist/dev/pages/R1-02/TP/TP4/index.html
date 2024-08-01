@@ -10,10 +10,48 @@
         <main>
 
 <h1 id="tp4--">TP4 : ???</h1>
-<h2 id="consignes-bis-repetitae">Consignes (bis repetitae)</h2>
-<h2 id="modification-des-entrées-de-la-table">Modification des entrées de la table</h2>
-<p><todo>UPDATE/INSERT/DELETE</todo></p>
-<h2 id="agrégats">Agrégats</h2>
+<h2 id="consignes">Consignes</h2>
+<p><tp-consignes></tp-consignes></p>
+<ul>
+<li>.timer on (?)
+<a href="https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html">https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html</a></li>
+</ul>
+<h2 id="subqueries-correlated-vs-non-correlated">Subqueries (correlated vs non correlated)</h2>
+<ol>
+<li>Chimiste qui ont fait au moins une expérience (in ID list distinct)</li>
+<li>Chimiste qui ont fait au moins une expérience (correlated, a une entrée - existe)</li>
+</ol>
+<p>=&gt; compare perfs.</p>
+<h2 id="join">JOIN</h2>
+<ul>
+<li><p>IN vs JOIN
+-&gt; join qui retourne plusieurs résultats identique, puis un autre join (=&gt; grosse table avec duplicats).
+-&gt; vs in (subquery).</p>
+<p>==&gt; compter nombre de lignes.
+==&gt; comparer vitesse exec sur tables grosses.</p>
+<p>  =&gt; + avec/sans FK/PK ?</p>
+</li>
+<li><p>attention complexité exo, d&#39;abord 1 seul jointure</p>
+</li>
+<li><p>donner UML...</p>
+</li>
+</ul>
+<ol>
+<li><p>Info chimiste ajouté aux lignes de résultats</p>
+</li>
+<li><p>group by : concat n° exp.</p>
+</li>
+<li><p>somme des masses utilisées par chimistes.</p>
+</li>
+<li><p>chimiste nombre d&#39;exp : trier</p>
+</li>
+<li><p>compter seulement nombre d&#39;oublis : trier</p>
+</li>
+<li><p>group by country : le plus d&#39;xp réussies.</p>
+</li>
+<li><p>Tx de réussite =&gt; count + case...</p>
+</li>
+</ol>
 </main>
     </body>
 </html>

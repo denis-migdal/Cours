@@ -11,15 +11,31 @@
 
 # TP3 : ???
 
-## Consignes (bis repetitae)
+## Consignes
 
-## Modification des entrées de la table
+<tp-consignes></tp-consignes>
 
-<todo>UPDATE/INSERT/DELETE</todo>
+## Création d'une table
 
++ create table
++ .fullschema/.schema/sql CM
 
++ contraintes
 
-## Agrégats
++ (dont clefs primaires)
+- PRAGMA optimize;  / OPTIMIZE => avant chaque fermeture de la database.
+
+- FK + on delete/on update/cascade.
+
+## Export/import
+
+Fréquent CSV (e.g. tableur)
+
+import/export/save table (schema/data)
+  -> as SQL
+  -> as CSV
+  ?
++ .mode (exports) / .dump  // .import
 
 </main>
     </body>

@@ -41,32 +41,6 @@ Motivation/Problematic first.
 Comment bien choisir les clef primaires/étrangères
 Comment bien découper en tables (conception), dépendance fonctionnelle (?).
 
-#### TP3
-
-import/export/save table (schema/data)
-  -> as SQL
-  -> as CSV
-  ?
-+ .mode (exports) / .dump  // .import
-+ .fullschema/.schema
-
-Bonnes pratiques :
-
-- PRAGMA optimize;  / OPTIMIZE => avant chaque fermeture de la database.
-
-- FK : on delete/on update/cascade.
-
-##### TP4
-
-+ .timer on (?)
-  https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html
-
-- IN vs JOIN
-  -> join qui retourne plusieurs résultats identique, puis un autre join (=> grosse table avec duplicats).
-  -> vs in (subquery).
-  ==> compter nombre de lignes.
-  ==> comparer vitesse exec sur tables grosses.
-
 #### TP5
 
 - interfaces pgAdmin / python bindings (injections) ?
