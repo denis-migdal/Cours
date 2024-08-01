@@ -12,6 +12,7 @@
 <h1 id="tp2--">TP2 : ???</h1>
 <p><em>💡 Ce TP est inspiré de sources en partie inconnues.</em></p>
 <h2 id="consignes-bis-repetitae">Consignes (bis repetitae)</h2>
+<p>.changes on</p>
 <h2 id="modification-des-entrées-de-la-table">Modification des entrées de la table</h2>
 <p><todo>Echaper un guillement dans CM ? (type string)</todo></p>
 <ol>
@@ -29,70 +30,113 @@
 <li>Il semblerait que Andrei Markov soit un mathématicien, et non un chimiste, supprimez-le (de la table).<pre lang="sql" contenteditable></pre></li>
 </ol>
 <h2 id="quelques-prétraitements">Quelques prétraitements</h2>
-<p>Qqs prétraitements avant d&#39;afficher...</p>
-<p>Pour rappel, utilisé après vaut mieux faire certains trucs dans le langage de prog.</p>
-<h3 id="assigner-un-label-conditions">Assigner un label (conditions)</h3>
-<p>=&gt; le premier catégories numériques calculée, mais autres ? e.g. textuelles ?</p>
-<ul>
-<li>epoque (cf TP3/8).</li>
-</ul>
-<p>desc.</p>
-<ul>
-<li>vivant mort : status (rappel) [cf ci-dessous]</li>
-</ul>
+<p>Comme vu dans le CM, il est possible de pré-traiter les données avant de les manipuler ou de les afficher. Pour rappel, lorsqu&#39;une interface de programmation est utilisée, il est souvent préférable de faire les prétraitements côté langage de programmation que côté SQL.</p>
 <h3 id="concaténations">Concaténations</h3>
+<ol>
+<li>Affichez le nom (en majuscules) et prénom des chercheurs.<pre lang="sql" contenteditable></pre></li>
+</ol>
+<p>Il est possible de concaténer des valeurs en utilisant l&#39;opérateur de concaténation <code>||</code>. Par exemple <code>a || b</code> retournera <code>ab</code>.</p>
+<ol start="2">
+<li>Affichez le nom (en majuscules) et le prénom, séparés par un espace, dans une même colonne nommée &quot;nom complet&quot;.<pre lang="sql" contenteditable></pre></li>
+</ol>
+<h3 id="assigner-des-valeurs-à-une-catégorie-conditions">Assigner des valeurs à une catégorie (conditions)</h3>
+<p>Un premier pré-traitement possible est d&#39;assigner à un ensemble de valeur, une catégorie. Par exemple, associer à chaque chercheur une &quot;époque&quot;, en :</p>
 <ul>
-<li>Prenom | Nom (maj)</li>
+<li>ajoutant 25 à son année de naissance ;</li>
+<li>effectuant la division entière du résultat par 100 ;</li>
+<li>re-multipliant le résultat par 100.</li>
 </ul>
-<p>descr.</p>
-<ul>
-<li>Concat : nom_complet</li>
-</ul>
-<h3 id="format-numbers">Format numbers</h3>
-<ul>
-<li>(?) <code>ROUND($N, 2)</code>.</li>
-</ul>
-<p>desc.</p>
-<ul>
-<li>round pas beau, printf/format* (like print in python), &quot;%6.2f&quot; (cf ci-dessous)</li>
-</ul>
-<ul>
-<li>print dans SQLite &lt;3.38.
-[L] : %f [type] =&gt; on peut préciser [len] [.pad] / %e (exp) / %g (mix %f et %e)  // pour info: (%x %o : octal et hexa) // %s un texte, on peut aussi utiliser op. de concat.</li>
-</ul>
-<h3 id="format-date">Format date</h3>
+<ol>
+<li>Affichez le nom, prénom, et époque, des chercheurs.<pre lang="sql" contenteditable></pre></li>
+</ol>
+<p>Lorsque la catégorie ne peut être calculée numériquement, il convient alors d&#39;utiliser des <strong>conditions</strong>. Ces dernières s&#39;écrivent sous la forme suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CASE</span>
+    <span class="hljs-keyword">WHEN</span> $COND <span class="hljs-keyword">THEN</span> $VAL_SI_COND_VRAI
+               <span class="hljs-keyword">ELSE</span> $VAL_SI_COND_FAUX
+<span class="hljs-keyword">END</span>
+</code></pre><ol start="2">
+<li>Affichez le nom, prénom, et status (vivant ou mort), des chercheurs.<pre lang="sql" contenteditable></pre></li>
+</ol>
+<h3 id="formatter-des-dates">Formatter des dates</h3>
 <p><todo>Add CM</todo></p>
+<p>Il est fréquent qu&#39;on souhaite extraire des informations d&#39;une date, ou l&#39;afficher différemment. Pour cela, on utilise la fonction <code>DATE_FORMAT($FORMAT, $DATE)</code> (<code>STRFTIME</code> pour SQLite). Comme en Python, le format est une chaîne de caractère qui défini les éléments à afficher :</p>
 <ul>
-<li>instead of 2024 en dur, extraire année actuelle. (obtenir année seule, puis on peut ajouter/soustraire dessus - pas besoin de conversion).</li>
-</ul>
-<p>DATE_FORMAT / STRFTIME (python/sqlite)</p>
-<p>%F 		ISO 8601 date: YYYY-MM-DD
-    %Y 		year: 0000-9999
-    %m 		month: 01-12
-    %d 		day of month: 01-31</p>
-<p>%T 		ISO 8601 time: HH:MM:SS
-    %H 		hour: 00-24
-    %M 		minute: 00-59
-    %S 		seconds: 00-59</p>
-<h2 id="agrégat-sur-une-colonne">Agrégat sur une colonne</h2>
-<p>=&gt; fct agrégat dans les cols =&gt; regroupe toutes les entrées au sein d&#39;une même ligne.</p>
-<ul>
-<li>affichez le nombre de chimistes dans la table (i.e. compter le nombre d&#39;entrées) [give].</li>
-<li>prev. rq + groupez les chimistes par pays (add pays)</li>
-<li>order by + rename</li>
-<li>give where : marche pas explain</li>
-<li>au moins 5</li>
-</ul>
-<h2 id="agrégat-sur-une-expression">Agrégat sur une expression</h2>
-<p>Fct agrégat, pas seulement colonne mais expression autorisé, e.g. agrégat sur formule de calcul d&#39;age du TP précédent.</p>
-<ul>
-<li>age moyen des chimistes dans la base.</li>
-<li><ul>
-<li>arrondir la colonne âge moyen à 2 décimales après la virgule</li>
+<li><code>%F</code> : la date, équivalant à <code>%Y-%m-%d</code>.<ul>
+<li><code>%Y</code> : l&#39;année</li>
+<li><code>%m</code> : le mois</li>
+<li><code>%d</code> : le jour</li>
 </ul>
 </li>
-<li>Idem (même steps), âge moyen des chimistes par pays, classé par ordre croissant, pays &gt; 65 ans.</li>
+<li><code>%T</code> : l&#39;heure, équivalent à <code>%H:%M:%S</code>.<ul>
+<li><code>%H</code> : l&#39;heure</li>
+<li><code>%M</code> : les minutes</li>
+<li><code>%S</code> : les secondes</li>
 </ul>
+</li>
+</ul>
+<ol>
+<li>Exécutez la requête ci-dessous, qu&#39;obtenez-vous ?<div contenteditable></div>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> STRFTIME(<span class="hljs-string">&#x27;%d/%m&#x27;</span>, <span class="hljs-type">DATE</span>());
+</code></pre></li>
+</ol>
+<p>Au TP précédent, pour calculer l&#39;âge des chimistes encore vivant, nous avions noté l&#39;année courante en dur. L&#39;âge retourné ne sera ainsi plus correct l&#39;année prochaine.</p>
+<ol start="2">
+<li>Utilisez <code>STRFTIME</code> pour obtenir l&#39;année actuelle.<pre lang="sql" contenteditable></pre></li>
+<li>Affichez le nom, prénom, et âge des chimistes, cette fois en utilisant <code>STRFTIME</code> pour obtenir l&#39;année actuelle.<pre lang="sql" contenteditable></pre></li>
+</ol>
+<p>💡 Vous constaterez que l&#39;expression permettant de calculer correctement l&#39;âge des chimistes est complexe. Vous verrez plus tard des manières permettant d&#39;améliorer la lisibilité de telles requêtes, et d&#39;éviter la recopie cette expression d&#39;une requête à une autre :</p>
+<ul>
+<li>via des colonnes générées (Cf CM3).</li>
+<li>via des vues (cf BDR2).</li>
+<li>via des fonctions (cf BDR2?).</li>
+</ul>
+<h3 id="formatter-des-nombres">Formatter des nombres</h3>
+<p>Comme vous le remarquez, toutes les colonnes sont alignées à gauche, ce qui rend les nombres peu lisibles. Pour corriger cela, on peut formater les nombres via la fonction <code>FORMAT($FORMAT, $NB)</code> (<code>PRINTF</code> pour SQLite &lt; 3.38), qui s&#39;utilise de manière analogue à <code>DATE_FORMAT()</code>.</p>
+<ol>
+<li>Exécutez les exemples suivants :<pre><code class="hljs language-sql"> <span class="hljs-keyword">SELECT</span> PRINTF(<span class="hljs-string">&#x27;(%d)&#x27;</span>    , <span class="hljs-number">2.3</span>)  <span class="hljs-keyword">as</span> nb;
+ <span class="hljs-keyword">SELECT</span> PRINTF(<span class="hljs-string">&#x27;(%4d)&#x27;</span>   , <span class="hljs-number">2.3</span>)  <span class="hljs-keyword">as</span> nb;
+ <span class="hljs-keyword">SELECT</span> PRINTF(<span class="hljs-string">&#x27;(%4.2f)&#x27;</span> , <span class="hljs-number">2.3</span>)  <span class="hljs-keyword">as</span> nb;
+ <span class="hljs-keyword">SELECT</span> PRINTF( <span class="hljs-string">&#x27;%4.2f&#x27;</span>  , <span class="hljs-number">2.3</span>)  <span class="hljs-keyword">as</span> nb;
+</code></pre></li>
+</ol>
+<p>Le format suit la structure suivante : <code>%[$len][.$prec]$T</code></p>
+<ul>
+<li><code>$T</code> est le format d&#39;affichage :<ul>
+<li><code>d</code> : entier.</li>
+<li><code>x</code> : entier en hexadécimal.</li>
+<li><code>f</code> : réel.</li>
+<li><code>e</code> : réel en notation exponentielle.</li>
+<li><code>s</code> : chaîne de caractères.</li>
+</ul>
+</li>
+<li><code>$len</code> est la longueur minimale (facultatif). Ajoute des espaces en début de chaîne si trop petit.</li>
+<li><code>.$prec</code> est le nombre de chiffres après la virgule à afficher (facultatif).</li>
+</ul>
+<ol start="2">
+<li>Affichez l&#39;âge des chimistes avec une précision de deux chiffres après la virgule, et une longueur minimale telle que les âges soient correctement alignés.<pre lang="sql" contenteditable></pre></li>
+</ol>
+<h2 id="agrégat-sur-une-colonne">Agrégat sur une colonne</h2>
+<p><todo>Add CM</todo></p>
+<p>Pour rappel, il est possible d&#39;agréger plusieurs entrées au sein d&#39;une même ligne grâce à la clause <code>GROUP BY $COL[,...]</code>. Si une fonction d&#39;agrégat est utilisée sans clause <code>GROUP BY</code>, toutes les entrées seront regroupées au sein d&#39;une même ligne.</p>
+<ol>
+<li>Exécutez la requête suivante :<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MIN</span>(annee_naissance) <span class="hljs-keyword">as</span> min,
+       <span class="hljs-built_in">MAX</span>(annee_naissance) <span class="hljs-keyword">as</span> max
+     <span class="hljs-keyword">FROM</span> chimiste;
+</code></pre></li>
+<li>Affichez le nombre de chimistes dans la table (i.e. compter le nombre d&#39;entrées).<pre lang="sql" contenteditable></pre></li>
+<li>Groupez les entrées par pays afin d&#39;afficher le pays et son nombre de chimistes (colonne &quot;nb&quot;).<pre lang="sql" contenteditable></pre></li>
+<li>Ordonnez le résultat par nombre de chimistes décroissant.<pre lang="sql" contenteditable></pre></li>
+<li>Pourquoi ajouter la clause <code>WHERE nb &gt;= 5</code> produira une erreur ?<div contenteditable></div></li>
+<li>Ajoutez la clause permettant de n&#39;afficher que les lignes correspondant aux pays avec au moins 5 chimistes.<pre lang="sql" contenteditable></pre></li>
+</ol>
+<h2 id="fonction-dagrégat-sur-une-expression">Fonction d&#39;agrégat sur une expression</h2>
+<p>Les fonctions d&#39;agrégats peuvent prendre en paramètre une colonne, mais aussi des expressions. Dans ce cas, il évaluera l&#39;expression pour chaque lignes, avant d&#39;exécuter la fonction d&#39;agrégation.</p>
+<ol>
+<li>En repartant de la requête effectuée dans la section &quot;Formatter des nombres&quot;, calculez l&#39;âge moyen des chimistes dans la base dans une colonne &quot;m(age)&quot;.<pre lang="sql" contenteditable></pre></li>
+<li>En ajoutant les clauses une à une, modifiez cette requête pour afficher le pays et l&#39;âge moyen des ses chimistes, classés par ordre croissant d&#39;âge moyen.<pre lang="sql" contenteditable></pre></li>
+<li>Reprenez la requête précédente, mais n&#39;affichez que les lignes correspondant aux pays ayant un âge moyen supérieur à 65 ans.<pre lang="sql" contenteditable></pre></li>
+</ol>
 </main>
     </body>
 </html>
