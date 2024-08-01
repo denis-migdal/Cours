@@ -534,8 +534,26 @@ e.g. <code>LIKE &#39;D%&#39;</code>: une valeur commençant par &quot;D&quot;.</
 
 </script>
 
-
-<h2 id="ordre-dexécution-et-décriture">Ordre d&#39;exécution et d&#39;écriture</h2>
+<h2 id="astuces-pour-rédiger-efficacement-les-requêtes-sql">Astuces pour rédiger efficacement les requêtes SQL</h2>
+<ol>
+<li>Indentez vos requêtes (e.g. en alignant les clauses), elle en devient bien plus lisible (et facile à modifier).</li>
+<li>Lorsque vous ouvrez une parenthèse/guillemet/etc. fermez-la immédiatement, puis remplissez son contenu.</li>
+<li>Évitez autant que possible d&#39;écrire à la main :<ol>
+<li>Utilisez l&#39;auto-complétion pour les mots clefs et noms de colonnes (touche de tabulation <code>⭾</code>).</li>
+<li>Utilisez les flèches (<code>↑</code>/<code>↓</code>) pour remonter l&#39;historique et (<code>←</code>/<code>→</code>) pour modifier une requête.</li>
+<li>Utilisez les copier/coller (<code>^+⇧+C</code>/<code>^+⇧+V</code>).</li>
+</ol>
+</li>
+<li>Comme en programmation, ne <strong>jamais</strong> tout écrire d&#39;un coup, mais procédez par étapes :<ol>
+<li>commencez par un <code>SELECT * FROM $T;</code> basique.</li>
+<li>affichez les colonnes que vous utiliserez.</li>
+<li>ajoutez les nouvelles clauses une par une, en testant à chaque fois.</li>
+<li>idem pour les expressions, commencez simple, puis ajoutez les opérations au fur et à mesure.</li>
+</ol>
+</li>
+</ol>
+<p>💡 Cela vous aidera à écrire plus simplement des requêtes SQL avec méthode, en transformant un problème complexe, en plusieurs petits problèmes simples. De surcroît, en cas d&#39;erreur, vous saurez immédiatement son origine, et sera alors bien plus facile à déboguer et corriger.</p>
+<h3 id="ordre-dexécution-et-décriture">Ordre d&#39;exécution et d&#39;écriture</h3>
 <p>Le différentes <strong>clauses</strong> des requêtes SQL sont généralement écrites dans leur ordre d&#39;exécution, et exécutées dans leur ordre d&#39;écriture, i.e. de gauche à droite.</p>
 <style>
   .later {

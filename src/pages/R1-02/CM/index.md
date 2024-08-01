@@ -604,8 +604,23 @@ SELECT * FROM Users LIMIT $PAGINATION OFFSET $P ;
 
 </script>
 
+## Astuces pour rédiger efficacement les requêtes SQL
 
-## Ordre d'exécution et d'écriture
+1. Indentez vos requêtes (e.g. en alignant les clauses), elle en devient bien plus lisible (et facile à modifier).
+1. Lorsque vous ouvrez une parenthèse/guillemet/etc. fermez-la immédiatement, puis remplissez son contenu.
+1. Évitez autant que possible d'écrire à la main :
+   1. Utilisez l'auto-complétion pour les mots clefs et noms de colonnes (touche de tabulation `⭾`).
+   1. Utilisez les flèches (`↑`/`↓`) pour remonter l'historique et (`←`/`→`) pour modifier une requête.
+   1. Utilisez les copier/coller (`^+⇧+C`/`^+⇧+V`).
+1. Comme en programmation, ne **jamais** tout écrire d'un coup, mais procédez par étapes :
+   1. commencez par un `SELECT * FROM $T;` basique.
+   1. affichez les colonnes que vous utiliserez.
+   1. ajoutez les nouvelles clauses une par une, en testant à chaque fois.
+   1. idem pour les expressions, commencez simple, puis ajoutez les opérations au fur et à mesure.
+
+💡 Cela vous aidera à écrire plus simplement des requêtes SQL avec méthode, en transformant un problème complexe, en plusieurs petits problèmes simples. De surcroît, en cas d'erreur, vous saurez immédiatement son origine, et sera alors bien plus facile à déboguer et corriger.
+
+### Ordre d'exécution et d'écriture
 
 Le différentes **clauses** des requêtes SQL sont généralement écrites dans leur ordre d'exécution, et exécutées dans leur ordre d'écriture, i.e. de gauche à droite.
 

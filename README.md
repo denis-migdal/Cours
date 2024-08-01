@@ -27,7 +27,7 @@ Motivation/Problematic first.
 
 + Slides
 + Cheat sheet
-+ Compléter exo TP avec notions vu en CM.
++ Compléter exo TP3-4 avec notions vu en CM.
 
 #### Cheat sheet
 
@@ -40,24 +40,6 @@ Motivation/Problematic first.
 
 Comment bien choisir les clef primaires/étrangères
 Comment bien découper en tables (conception), dépendance fonctionnelle (?).
-
-#### TP1
-
-- indenter sa ligne : aligner les clauses, plus lisible (et joli).
-
-- Astuce : pas tout écrire en un coup mais par étape :
-  - SELECT cols FROM x; -> add clauses one by one.
-  - idem calculs.
-  -> si erreur il y a permet de voir où.
-
-- tab autocompletion + double tab (possibilités) => pas hésiter à en abuser
-  - keywords, col names
-
-- ouvrir parenthèse/etc. fermer aussi tôt puis revenir en arrière avec les flèches afin d'éditer le contenu.
-
-- éviter de réécrire
-  - ne pas hésiter à faire des copier/coller (rappeler)
-  - history (fleches), si modifier requête prec.
 
 #### TP3
 
