@@ -81,9 +81,6 @@ for(let pre of document.querySelectorAll('pre[lang="sql"][contenteditable]') ) {
             length -= p.childNodes[i].textContent!.length;
         }
 
-        console.log( i, p.childNodes.length );
-        console.log( child, length, child.textContent, child.textContent!.length );
-
         if( child.nodeType !== Node.TEXT_NODE)
             child = child.childNodes[0];
 
@@ -109,15 +106,12 @@ function getAnswersFields() {
 
 const answers_fields = getAnswersFields();
 
-console.warn(answers_fields.length);
-
 for(let i = 0; i < answers_fields.length; ++i ) {
 
     answers_fields[i].addEventListener('input', () => {
         const answer_txt = answers_fields[i].textContent!;
         (answers[i] ??= {}).text = answer_txt;
         localStorage.setItem(`answers:${PAGE}`, JSON.stringify(answers) );
-        console.warn('ok');
     });
 }
 // init...

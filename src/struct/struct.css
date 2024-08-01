@@ -49,6 +49,7 @@ header {
 /* compteurs */
 body {
     counter-reset: h1 h2 h3;
+    counter-set: h1 var(--header_start_id);
 }
 
 h1::before {

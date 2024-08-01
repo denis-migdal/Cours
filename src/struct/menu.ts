@@ -170,13 +170,15 @@ function updateHeader() {
     const desc = pages.find( (page: any) => page.path === curpage[0] )!;
     const type_html   = make_page_menu(root_path + curpage[0] + "/", curpage[1], desc.children);
 
-    //TODO...
-    const desc2          = desc.children.find( (page: any) => page.path === curpage[1] )!;
-    if(desc2 !== undefined && typeof desc2 !== "string") {
-        const session_html   = make_page_menu(root_path + curpage[0] + "/"+ curpage[1] + "/", curpage[2], desc2.children);
+    const desc_type = desc.children.find( (page: any) => page?.path ?? page === curpage[1] )!;
+    if( typeof desc_type !== "string") {
+        // title num
+        const desc2_idx = desc_type.children.findIndex( (page: any) => page?.path ?? page === curpage[2] )!;
+        document.body.style.setProperty("--header_start_id", `${desc2_idx}`);
+        // menu
+        const session_html   = make_page_menu(root_path + curpage[0] + "/"+ curpage[1] + "/", curpage[2], desc_type.children);
         html[0] = session_html;
     }
-
 
     header.replaceChildren(module_html, type_html, ...html);
 }
