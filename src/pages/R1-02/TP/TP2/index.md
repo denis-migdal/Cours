@@ -13,10 +13,14 @@
 
 *💡 Ce TP est inspiré de sources en partie inconnues.*
 
-## Consignes (bis repetitae)
+## Consignes
 
+<tp-consignes></tp-consignes>
 
-.changes on
+💡 Dans ce TP, vous reprendrez la base `chimiste.sqlite` utilisée au TP précédent.
+
+⚠ Vous activerez l'option `.changes on` afin d'afficher le nombre de lignes modifiées lors des insertions/modifications/suppressions.
+
 
 ## Modification des entrées de la table
 

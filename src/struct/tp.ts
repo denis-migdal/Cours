@@ -221,3 +221,17 @@ function highlight(q_id: number) {
     })
     //TODO: scroll2middle...
 }
+
+//TODO: webpack config...
+import LISS from "../../libs/LISS";
+
+const TPConsignesContent = `<p>En vous aidant des supports de cours fournis (CM, slides, et cheat sheet), répondez aux différentes questions dans les champs prévus à cet effet.</p>
+<p>À la fin de la séance de TP, vous exporterez les réponses via le bouton en haut à droite de la page, et déposerez le fichier ainsi obtenu sur Moodle.</p>
+<p>⚠ Les exercices de ce TP ont un objectif pédagogique, rechercher les réponses sur Internet va à l'encontre de cet objectif.</p>
+<p>💡 En cas de difficulté, n'hésitez pas à interroger votre encadrant de TP.</p>`;
+
+class TPConsignes extends LISS({
+    content: TPConsignesContent
+}) {}
+
+LISS.define('tp-consignes', TPConsignes);

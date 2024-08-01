@@ -15,13 +15,7 @@
 
 ## Consignes
 
-En vous aidant des supports de cours fournis (CM, slides, et cheat sheet), répondez aux différentes questions dans les champs prévus à cet effet.
-
-À la fin de la séance de TP, vous exporterez les réponses via le bouton en haut à droite de la page, et déposerez le fichier ainsi obtenu sur Moodle.
-
-⚠ Les exercices de ce TP ont un objectif pédagogique, rechercher les réponses sur Internet va à l'encontre de cet objectif.
-
-💡 En cas de difficulté, n'hésitez pas à interroger votre encadrant de TP.
+<tp-consignes></tp-consignes>
 
 ## SQLite
 

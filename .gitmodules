@@ -4,3 +4,6 @@
 [submodule "libs/TPEngine"]
 	path = libs/TPEngine
 	url = git@github.com:denis-migdal/TPEngine.git
+[submodule "libs/LISS"]
+	path = libs/LISS
+	url = git@github.com:denis-migdal/LISS.git
