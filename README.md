@@ -11,7 +11,14 @@
 
 ## Contenu
 
-- BDR : 4x2h CM + 4x2h TD + 6x2h TP
+- Tableur...
+- Prise en main des outils.
+
+- dev log.
+- BDR (8j) : 4x2h CM + 4x2h TD + 6x2h TP
+
+- Intro cyber : fin de semestre
+- TW/IDN/PWV  : fin de semestre
 
 ## TODO
 
@@ -22,6 +29,80 @@ Motivation/Problematic first.
 - Warnings plus visuels
 - $XXX fix in inline (?) code.
 - scroll too early https://github.com/vercel/next.js/issues/3303
+
+### Tableur
+
+- 9xTP ?
+
+#### Prise en main
+
+	Prise en main, références, et mise en forme
+	1. [cf TP1] Interface + Références + Formules simples (op. maths simples)
+		+ cours BDR comparaison avec tableur.
+		- Où trouver la documentation (aide+site web+Forum libreOffice?)
+
+#### Mise en forme
+
+	2. [cf TP6+2] Plages, mise en forme	
+		- Commentaires
+		- Hyperlien
+		- On peut insérer plein d'autres trucs dont images.
+
+#### Fonctions et graphiques (1/2)
+
+- Statistiques et diagrammes (2 séances)
+	statistiques (MIN/MOY/etc), début diagramme, autres fonctions stats plus avancées (freq, compter etc)
+	3. Graphiques simples (TP6+2?)
+
+#### Fonctions et graphiques (2/2)
+
+	4. [cf TP1+7+6?] Fonctions + NB.SI pour graphiques + complexes.
+
+#### Tableaux (1/2)
+
+- Tableaux (2 séances) - p-e un peu de réorganisation à faire...
+	sous-totaux, filtrer, trier, recherche valeur
+	5. [cf TP2+3] Trier + Formattage conditionnels + validité données / valeurs acceptés ?
+		- scinder/fixer lignes/colonnes.
+  
+#### Tableaux (2/2)
+
+	6. [cf TP2]   filtres, sous-totaux, recherche valeurs, validité données
+		- liens avec SQL ?
+
+#### Tableaux dynamiques (1/2)
+
+- Contenu/Tableaux dynamiques (2 séances)
+	(tableaux croisés dynamiques (son TP8) solveur (son TP4)
+	7. [cf TP4] Scénario et solveurs ? [<= retirer ou juste introduire ???] // Remplacer par données liées ou un truc du genre ? (Accross sheet + docs) + Import/Export ?
+		- Données/Statistiques
+  
+-Data
+	- valeurs liées
+	- importation/exportation de données
+
+#### Tableaux dynamiques (2/2)
+
+	8. [cf TP8] Tableaux croisés dynamique (j'ai noté liens avec SQL ?)
+
+
+#### Scripts et stats avancées ?
+- Scripts (2 séances)
+	9.  Scripts python.
+
+- Stats
+	- Données/Statistiques
+
+#### Fonctionnalités de sécurité
+
+	10. Scripts python (ou plutôt Fonctionnalités de sécurité ?)
+
+- Sécu
+	- protections de cellules
+		- outils/Protéger la feuille
+	- suivi des modifications
+	- signature
+	- caviardage
 
 ### BDR1 (8j)
 

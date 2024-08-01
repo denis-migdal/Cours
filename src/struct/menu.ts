@@ -130,7 +130,7 @@ function updateHeader() {
 
         let href = `${pathprefix}${path}/`;
 
-        if(desc.children?.length) {
+        while(desc.children?.length) {
             desc = desc.children[0];
             href += `${desc.path ?? desc}/`;
         }
