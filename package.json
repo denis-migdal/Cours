@@ -14,7 +14,8 @@
     "license": "[LICENCE]",
     "private": "true",
     "dependencies": {
-        "@types/sqlite3": "^3.1.11"
+        "@types/sqlite3": "^3.1.11",
+        "raw-loader": "^4.0.2"
     },
     "devDependencies": {
         "css-loader": "^7.1.2",

@@ -86,32 +86,41 @@ color: white !important;
 }
 
 @media print {
-todo {
-    display: none !important;
+    todo {
+        display: none !important;
+    }
+
+    body {
+        font-size: unset;
+        line-height: unset;
+    }
+
+    main {
+        overflow-y: unset;
+    }
+
+    header {
+        display: none;
+    }
 }
 
-body {
-    font-size: unset;
-    line-height: unset;
-}
-}
 todo {
-position: absolute;
-right: 50px;
-background: lightblue;
-padding: 1rem;
-display: block;
-border-radius: 5px;
-color: black;
-z-index: 1;
+    position: absolute;
+    right: 50px;
+    background: lightblue;
+    padding: 1rem;
+    display: block;
+    border-radius: 5px;
+    color: black;
+    z-index: 1;
 }
 todo:hover {
-z-index: 2;
+    z-index: 2;
 }
 todo:not(:hover) {
-max-width: 25%;
-max-height: 2rem;
-overflow: hidden;
+    max-width: 25%;
+    max-height: 2rem;
+    overflow: hidden;
 }
 
 @media (max-width: 600px) {

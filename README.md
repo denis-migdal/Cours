@@ -11,7 +11,7 @@
 
 ## Contenu
 
-- Tableur...
+- Tableur : 2x10h TP.
 - Prise en main des outils.
 
 - dev log.
@@ -32,7 +32,38 @@ Motivation/Problematic first.
 
 ### Tableur
 
-- 9xTP ?
+- 10xTP
+- Slides + cheat sheet + TP + CM...
+
+#### WebCalc
+
+- repo
+
+- contenteditable click : fix caret position
+- cursor
+	- keyboard nav + on selections...
+- selection
+	- click hold (select range...)
+	- super
+	- ctrl (composition of selections?)
+	- extend formula
+
+- formula parser + sync from formula
+
+- resize/merge cols/lines
+- ctrl+Z...
+- graphs (outside).
+
+#### Webodf
+
+Test also : https://docs.sheetjs.com/docs/demos/math/summary
+  https://docs.sheetjs.com/docs/ => style dans version payante...
+
+https://github.com/webodf/WebODF?tab=readme-ov-file
+
+- https://github.com/webodf/WebODF/issues/954
+- https://github.com/webodf/WebODF/issues/291 (runtime.js)
+
 
 #### Prise en main
 
@@ -50,6 +81,7 @@ Motivation/Problematic first.
 
 #### Fonctions et graphiques (1/2)
 
+-> vous comprendrez que les diagrammes pas trop possibles actuellement...
 - Statistiques et diagrammes (2 séances)
 	statistiques (MIN/MOY/etc), début diagramme, autres fonctions stats plus avancées (freq, compter etc)
 	3. Graphiques simples (TP6+2?)
@@ -60,6 +92,7 @@ Motivation/Problematic first.
 
 #### Tableaux (1/2)
 
+- idem : trop avancé pour démo.
 - Tableaux (2 séances) - p-e un peu de réorganisation à faire...
 	sous-totaux, filtrer, trier, recherche valeur
 	5. [cf TP2+3] Trier + Formattage conditionnels + validité données / valeurs acceptés ?

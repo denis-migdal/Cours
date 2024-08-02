@@ -13,16 +13,14 @@
 
 # CM1 : Prise en main
 
-[INTRO tableur]
-https://fr.wikipedia.org/wiki/Tableur
+Un tableur est un logiciel permettant :
+- d'organiser des données sous forme de grilles ;
+- d'effectuer des calculs sur des séries de données ;
+- puis de tracer des graphiques à partir de ces données.
 
-<div id='menu'>
-</div>
-
-<todo>
-- Théorie : support CM
-- Usage   : support TP
-</todo>
+<center>
+    <img src="../../../../assets/tableur/img/intro.png"/>
+</center>
 
 ## Feuille de calcul
 
@@ -30,26 +28,45 @@ Une **feuille de calcul** est une grille composée de **lignes** et de **colonne
 - les **lignes** sont horizontales et identifiées par un nombre.
 - les **colonnes** sont verticales et identifiées par une lettre.
 
-L'intersection d'une ligne et d'une colonne est appelée **cellule**, et est identifiée par sa lettre de colonne suivie de son nombre de ligne.
+L'intersection d'une ligne et d'une colonne est appelée **cellule**. Elle est identifiée par sa lettre de colonne, suivie de son numéro de ligne. Les identifiants des lignes et des colonnes sont indiqués par les **en-têtes** gris. 
 
-L'image ci-dessous montre la cellule B2, intersection de la ligne 2 (encadrée en bleu) et de la colonne B (encadrée en vert). Vous noterez la présence des **en-têtes** en gris indiquant les identifiants des lignes et des colonnes.
+### Sélectionner une cellule
+
+Cliquez sur une cellule ci-dessous pour la sélectionner. Vous remarquerez alors que ses coordonnées sont mises en surbrillances, et que son identifiant s'affiche en haut à gauche.
+
 <center>
-    <img src="./img/feuille.png"/>
+    <calc-sheet cols=3 rows=4></calc-sheet>
 </center>
 
-<todo>Exemple interactif ?<br/>
-donne ligne/colonne, met en surbrillance et montre cellule ?<br/>
-clique cellule et donne la ligne/colonne ?
-</todo>
+💡 Vous pouvez aussi sélectionner une cellule en indiquant son identifiant en haut à gauche, puis en appuyant sur la touche `⏎` (entrée).
 
-Chaque cellule peut contenir une donnée qui peut être un texte, un nombre, une date, ou une formule :
+### Remplacer et éditer le contenu d'une cellule
+
+Une cellule peut contenir des valeur de type :
+- **texte** : par défaut aligné à gauche ;
+- **nombre** : par défaut aligné à droite ;
+- **date** : par défaut aligné à droite ;
+- **formule** : calcul la valeur de la cellule à partir d'autres cellules (cf suite).
+
+<todo>et dans l'autre sens...</todo>
+
+Les cellules sont initialement vides. Pour **remplacer** le contenu d'une cellule, sélectionnez-là, puis tapez sa valeur au clavier, avant de valider en appuyant sur la touche `⏎` (entrée). Vous remarquerez que sa valeur s'affiche dans la barre de formule, en haut à droite.
+
 <center>
-    <img src="./img/feuille-remplie.png"/>
+    <calc-sheet id="sheet_types" cols=4 rows=4></calc-sheet>
 </center>
+
+💡 Vous pouvez aussi **éditer** la valeur d'une cellule en double-cliquant dessus, (ou en cliquant sur la barre des formules), puis en appuyant sur la touche `⏎` (entrée).
 
 ## Formules
 
-L'intérêt des tableurs et des feuilles de calculs sont les **formules** permettant d'automatiquement calculer la valeur d'une cellule à partir d'autres cellules. Par exemple, dans l'exemple précédent, la modification des colonnes "Produits unitaire" et "Nombre" entraînera la modification de la colonne "Total".
+Un intérêt majeur des tableurs et des feuilles de calculs sont les **formules** permettant d'automatiquement calculer la valeur d'une cellule à partir d'autres cellules :
+
+<center>
+    <calc-sheet id="sheet_formula" cols=3 rows=4></calc-sheet>
+</center>
+
+Dans l'exemple précédent, la modification des colonnes "Produits unitaire" et "Nombre" entraînera la modification de la colonne "Total".
 
 Cliquer sur une cellule montre son contenu dans la **barre de formule** (encadrée en rouge) :
 

@@ -1,0 +1,40 @@
+<html>
+ <head>
+  <script src="webodf.js" type="text/javascript" charset="utf-8"></script>
+  <!-- use version 0.20.3 -->
+<!--<script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>-->
+ </head>
+ <body>
+ 	<div id="import_btn">[I]</div>
+  <div id="odf"></div>
+    <script type="module" charset="utf-8">
+    //import XLSX from '../node_modules/sheetjs-style/xlsx.js';
+function init(buffer) {
+  const odfelement = document.getElementById("odf");
+  const odfcanvas = new odf.OdfCanvas(odfelement);
+    //odfcanvas.load( new Uint8Array(buffer) );
+  odfcanvas.load("myfile.ods");
+    //const wb = XLSX.read(buffer);
+    //const ws = wb.Sheets[wb.SheetNames[0]];
+
+    /* Generate HTML */
+    //odfelement.innerHTML = XLSX.utils.sheet_to_html(ws);
+}
+
+const file_upload = document.createElement('input');
+file_upload.setAttribute('type', 'file');
+const import_btn = document.querySelector('#import_btn');
+import_btn.addEventListener('click', () => {
+    file_upload.click();
+});
+
+file_upload.addEventListener('change', async () => {
+    
+    let buffer = await file_upload.files[0].arrayBuffer();
+    
+    
+    init(buffer)
+});
+  </script>
+ </body>
+</html>

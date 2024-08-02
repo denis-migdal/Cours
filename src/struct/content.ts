@@ -12,6 +12,13 @@ export default [
                     "CM2"
                 ]
 
+            },
+            {
+                name: "TP",
+                path: "TP",
+                children: [
+                    "TP1"
+                ]
             }
         ]
     },

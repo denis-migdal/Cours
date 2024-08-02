@@ -1,7 +1,6 @@
 import "./menu.ts";
 
 const hljs = require('highlight.js');
-const language = "sql";
 
 for(let field of document.querySelectorAll('[contenteditable]') ) {
 
@@ -37,8 +36,10 @@ for(let field of document.querySelectorAll('[contenteditable]') ) {
 }
 
 // highlight...
-for(let pre of document.querySelectorAll('pre[lang="sql"][contenteditable]') ) {
-    
+for(let pre of document.querySelectorAll('pre[lang][contenteditable]') ) {
+
+    const language = pre.getAttribute('lang');
+
     pre.setAttribute("spellcheck", "false");
 
 

@@ -1,0 +1,118 @@
+:host table {
+    border-collapse: collapse;
+    border-top-color: transparent;
+
+    & > tbody {
+        outline: 0px solid transparent;
+    }
+
+    & > tbody > tr:first-child {
+        border-top-color: transparent;
+        
+        & > th {
+            border-top-color: transparent;
+        }
+    }
+}
+
+:host :is(tr,th,td) {
+    border:1px solid #c0c0c0;
+ }
+
+:host tr {
+    height: 0.45cm;
+    line-height: 0.45cm;
+}
+
+:host :is(td, th) {
+    user-select: none;
+    color: black;
+    width: 2.26cm;
+    height: 0.45cm;
+    font-size: 10pt;
+    box-sizing: border-box;
+    font-family: 'Liberation Sans';
+}
+
+:host tr > th:first-child {
+    width: calc( 2.26cm / 2.5) ;
+}
+
+:host {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+:host div {
+    background-color: #cecece;
+    display: flex;
+    gap: 5px;
+    padding: 4px;
+
+    & > input:not(:first-child) {
+        flex: 1 1 0;
+    }
+    & > input:first-child {
+        width: calc( 1.5 * 2.26cm );
+    }
+}
+
+:host th {
+    background-color: #cecece;
+    border-color: #8a8a8a;
+    font-weight: normal;
+
+    &.highlight {
+        background-color: #398ee7;
+        color: white;
+    }
+}
+
+:host td {
+    background-color: white;
+
+    &:is([data-type="number"],[data-type="date"]) {
+        text-align: right;
+    }
+
+    &[contenteditable] {
+        outline: 0px solid transparent;
+    }
+
+    &.cursor {
+        position: relative;
+
+        &::after {
+            position: absolute;
+            display: block;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #398ee7;
+            content: "";
+            box-sizing: border-box;
+        }
+    }
+
+    &.highlight {
+        background-color: #cde3f9;
+    }
+
+    /** style **/
+    &.italic {
+        font-style: italic;
+    }
+    &.bold {
+        font-weight: bold;
+    }
+    &.align-left {
+        text-align: left;
+    }
+    &.align-center {
+        text-align: center;
+    }
+    &.align-right {
+        text-align: right;
+    }
+}

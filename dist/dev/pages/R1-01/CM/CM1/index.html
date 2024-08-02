@@ -12,15 +12,15 @@
         <main>
 
 <h1 id="cm1--prise-en-main">CM1 : Prise en main</h1>
-<p>[INTRO tableur]
-<a href="https://fr.wikipedia.org/wiki/Tableur">https://fr.wikipedia.org/wiki/Tableur</a></p>
-<div id='menu'>
-</div>
-
-<todo>
-- Théorie : support CM
-- Usage   : support TP
-</todo>
+<p>Un tableur est un logiciel permettant :</p>
+<ul>
+<li>d&#39;organiser des données sous forme de grilles ;</li>
+<li>d&#39;effectuer des calculs sur des séries de données ;</li>
+<li>puis de tracer des graphiques à partir de ces données.</li>
+</ul>
+<center>
+    <img src="../../../../assets/tableur/img/intro.png"/>
+</center>
 
 <h2 id="feuille-de-calcul">Feuille de calcul</h2>
 <p>Une <strong>feuille de calcul</strong> est une grille composée de <strong>lignes</strong> et de <strong>colonnes</strong> :</p>
@@ -28,23 +28,36 @@
 <li>les <strong>lignes</strong> sont horizontales et identifiées par un nombre.</li>
 <li>les <strong>colonnes</strong> sont verticales et identifiées par une lettre.</li>
 </ul>
-<p>L&#39;intersection d&#39;une ligne et d&#39;une colonne est appelée <strong>cellule</strong>, et est identifiée par sa lettre de colonne suivie de son nombre de ligne.</p>
-<p>L&#39;image ci-dessous montre la cellule B2, intersection de la ligne 2 (encadrée en bleu) et de la colonne B (encadrée en vert). Vous noterez la présence des <strong>en-têtes</strong> en gris indiquant les identifiants des lignes et des colonnes.</p>
+<p>L&#39;intersection d&#39;une ligne et d&#39;une colonne est appelée <strong>cellule</strong>. Elle est identifiée par sa lettre de colonne, suivie de son numéro de ligne. Les identifiants des lignes et des colonnes sont indiqués par les <strong>en-têtes</strong> gris. </p>
+<h3 id="sélectionner-une-cellule">Sélectionner une cellule</h3>
+<p>Cliquez sur une cellule ci-dessous pour la sélectionner. Vous remarquerez alors que ses coordonnées sont mises en surbrillances, et que son identifiant s&#39;affiche en haut à gauche.</p>
 <center>
-    <img src="./img/feuille.png"/>
+    <calc-sheet cols=3 rows=4></calc-sheet>
 </center>
 
-<p><todo>Exemple interactif ?<br/>
-donne ligne/colonne, met en surbrillance et montre cellule ?<br/>
-clique cellule et donne la ligne/colonne ?
-</todo></p>
-<p>Chaque cellule peut contenir une donnée qui peut être un texte, un nombre, une date, ou une formule :</p>
+<p>💡 Vous pouvez aussi sélectionner une cellule en indiquant son identifiant en haut à gauche, puis en appuyant sur la touche <code>⏎</code> (entrée).</p>
+<h3 id="remplacer-et-éditer-le-contenu-dune-cellule">Remplacer et éditer le contenu d&#39;une cellule</h3>
+<p>Une cellule peut contenir des valeur de type :</p>
+<ul>
+<li><strong>texte</strong> : par défaut aligné à gauche ;</li>
+<li><strong>nombre</strong> : par défaut aligné à droite ;</li>
+<li><strong>date</strong> : par défaut aligné à droite ;</li>
+<li><strong>formule</strong> : calcul la valeur de la cellule à partir d&#39;autres cellules (cf suite).</li>
+</ul>
+<p><todo>et dans l&#39;autre sens...</todo></p>
+<p>Les cellules sont initialement vides. Pour <strong>remplacer</strong> le contenu d&#39;une cellule, sélectionnez-là, puis tapez sa valeur au clavier, avant de valider en appuyant sur la touche <code>⏎</code> (entrée). Vous remarquerez que sa valeur s&#39;affiche dans la barre de formule, en haut à droite.</p>
 <center>
-    <img src="./img/feuille-remplie.png"/>
+    <calc-sheet id="sheet_types" cols=4 rows=4></calc-sheet>
 </center>
 
+<p>💡 Vous pouvez aussi <strong>éditer</strong> la valeur d&#39;une cellule en double-cliquant dessus, (ou en cliquant sur la barre des formules), puis en appuyant sur la touche <code>⏎</code> (entrée).</p>
 <h2 id="formules">Formules</h2>
-<p>L&#39;intérêt des tableurs et des feuilles de calculs sont les <strong>formules</strong> permettant d&#39;automatiquement calculer la valeur d&#39;une cellule à partir d&#39;autres cellules. Par exemple, dans l&#39;exemple précédent, la modification des colonnes &quot;Produits unitaire&quot; et &quot;Nombre&quot; entraînera la modification de la colonne &quot;Total&quot;.</p>
+<p>Un intérêt majeur des tableurs et des feuilles de calculs sont les <strong>formules</strong> permettant d&#39;automatiquement calculer la valeur d&#39;une cellule à partir d&#39;autres cellules :</p>
+<center>
+    <calc-sheet id="sheet_formula" cols=3 rows=4></calc-sheet>
+</center>
+
+<p>Dans l&#39;exemple précédent, la modification des colonnes &quot;Produits unitaire&quot; et &quot;Nombre&quot; entraînera la modification de la colonne &quot;Total&quot;.</p>
 <p>Cliquer sur une cellule montre son contenu dans la <strong>barre de formule</strong> (encadrée en rouge) :</p>
 <center>
     <img src="./img/barre-calcul-1.png"/>

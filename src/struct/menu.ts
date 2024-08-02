@@ -170,7 +170,7 @@ function updateHeader() {
     const desc = pages.find( (page: any) => page.path === curpage[0] )!;
     const type_html   = make_page_menu(root_path + curpage[0] + "/", curpage[1], desc.children);
 
-    const desc_type = desc.children.find( (page: any) => page?.path ?? page === curpage[1] )!;
+    const desc_type = desc.children.find( (page: any) => (page?.path ?? page) === curpage[1] )!;
     if( typeof desc_type !== "string") {
         // title num
         const desc2_idx = desc_type.children.findIndex( (page: any) => page?.path ?? page === curpage[2] )!;
