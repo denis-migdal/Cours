@@ -78,6 +78,7 @@
 
 :host td {
     background-color: white;
+    white-space: pre;
 
     &:is([data-type="number"],[data-type="date"], [data-type="boolean"]) {
         text-align: right;

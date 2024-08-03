@@ -1,4 +1,4 @@
-import { CalcSheet, ValueType } from "./sheet";
+import { CalcSheet, defaultFormat, ValueType } from "./sheet";
 
 export class Formula {
 
@@ -56,7 +56,7 @@ function extractToken(str: string, offset: number) {
         while( str[offset] === ',' || str[offset] >= '0' && str[offset] <= '9' ) {
 
             if( str[offset] === ',' ) {
-                if(hasComma === false)
+                if(hasComma === true)
                     throw new Error('Formula parsing error');
                 hasComma = true;
             }
@@ -78,6 +78,12 @@ function extractToken(str: string, offset: number) {
             throw new Error('not implemented')
     } else {
         token.type = "op"; // only on char ???
+
+        if( str[offset + 1] === '=') // >= / <=
+            ++offset;
+        else if( str[offset + 1] === '>') // <>
+            ++offset;
+
         ++offset;
     }
 
@@ -107,10 +113,21 @@ class Node {
 }
 
 const op_impl = {
+    '%': (_: CalcSheet, a: number) => a/100,
+    'u.+': (_: CalcSheet, a: number) => +a,
+    'u.-': (_: CalcSheet, a: number) => -a,
     '*': (_: CalcSheet, a: number, b: number) => a*b,
     '/': (_: CalcSheet, a: number, b: number) => a/b,
     '+': (_: CalcSheet, a: number, b: number) => a+b,
     '-': (_: CalcSheet, a: number, b: number) => a-b,
+    '^': (_: CalcSheet, a: number, b: number) => Math.pow(a,b),
+    '&': (_: CalcSheet, a: string, b: string) => `${defaultFormat(a)}${defaultFormat(b)}`,
+    '=':  (_: CalcSheet, a: any, b: any) => a === b,
+    '<>': (_: CalcSheet, a: any, b: any) => a !== b,
+    '>':  (_: CalcSheet, a: any, b: any) => a > b,
+    '>=': (_: CalcSheet, a: any, b: any) => a >= b,
+    '<':  (_: CalcSheet, a: any, b: any) => a < b,
+    '<=': (_: CalcSheet, a: any, b: any) => a <= b,
 } as Record<string, (_: CalcSheet, ...args:ValueType[]) => ValueType>;
 
 // https://help.libreoffice.org/latest/en-US/text/scalc/01/04060199.html
@@ -119,7 +136,7 @@ const op_prio = [
     ['!'], // range intersection
     ['~'], // range union
     ['u.+', 'u.-'], // unary - from right to left...
-    ['p.%'], // postfix, /100
+    ['%'], // postfix, /100
     ['^'], // power
     ['*', '/'],
     ['+', '-'],
@@ -172,7 +189,25 @@ function tokenlist2Tree(tokens: Token[]): Node {
                 break;
             --i;
         }
-        //TODO: unary +/-
+
+        // asserts if unary op.
+        if( tokens[i].value === '-' || tokens[i].value === '+' ) {
+
+            if( i === 0 || tokens[i-1].type === "op" ) {
+
+                const u_op = `u.${tokens[i].value}`;
+                tokens[i].value = u_op;
+                const priority = ops[u_op];
+
+                // priority is reversed + evaluated from right to left.
+                if( priority <= cur.priority) {
+                    cur.priority = priority;
+                    cur.idx      = i;
+                }
+
+                continue;
+            }
+        }
 
         const priority = ops[tokens[i].value];
 
@@ -183,17 +218,35 @@ function tokenlist2Tree(tokens: Token[]): Node {
         }
     }
 
-    console.log(tokens);
-
     if( cur.idx === -1)
         throw new Error('???');
 
-    // TODO: handle unary op...
+    let op_token = tokens[cur.idx];
+    if( op_token.value === '%' ) {
+        const left  = tokens.slice(0, cur.idx);
+        const op = op_impl[op_token.value as keyof typeof op_impl];
+        return new Node(
+            op,
+            tokenlist2Tree(left)
+        );
+    }
+
+    console.warn(op_token.value);
+
+    if( op_token.value === 'u.-' ||  op_token.value === 'u.+' ) {
+
+        const right  = tokens.slice(cur.idx+1);
+        const op = op_impl[op_token.value as keyof typeof op_impl];
+        return new Node(
+            op,
+            tokenlist2Tree(right)
+        );
+    }
 
     const left  = tokens.slice(0, cur.idx);
     const right = tokens.slice(cur.idx+1);
 
-    const op = op_impl[tokens[cur.idx].value as keyof typeof op_impl];
+    const op = op_impl[op_token.value as keyof typeof op_impl];
 
     return new Node(
         op,

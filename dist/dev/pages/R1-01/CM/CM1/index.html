@@ -30,12 +30,17 @@
 </ul>
 <p>L&#39;intersection d&#39;une ligne et d&#39;une colonne est appelée <strong>cellule</strong>. Elle est identifiée par sa lettre de colonne, suivie de son numéro de ligne. Les identifiants des lignes et des colonnes sont indiqués par les <strong>en-têtes</strong> gris. </p>
 <h3 id="sélectionner-une-cellule">Sélectionner une cellule</h3>
-<p>Cliquez sur une cellule ci-dessous pour la sélectionner. Vous remarquerez alors que ses coordonnées sont mises en surbrillances, et que son identifiant s&#39;affiche en haut à gauche.</p>
+<p>Un curseur représenté sous la forme d&#39;un cadre bleu indique la cellule active. Pour sélectionner une cellule, cliquez sur cette dernière. Vous remarquerez alors que ses coordonnées sont mises en surbrillances, et que son identifiant s&#39;affiche en haut à gauche :</p>
 <center>
     <calc-sheet cols=3 rows=4></calc-sheet>
 </center>
 
 <p>💡 Vous pouvez aussi sélectionner une cellule en indiquant son identifiant en haut à gauche, puis en appuyant sur la touche <code>⏎</code> (entrée).</p>
+<p>💡 Vous pouvez aussi déplacer le curseur grâce aux touches directionnelles. Si utilisées avec la touche <code>^</code> (contrôle) appuyée, le curseur se déplacera alors dans la direction indiquée jusqu&#39;à soit la première cellule non-vide, soit la dernière cellule non-vide avant une cellule vide :</p>
+<center>
+    <calc-sheet id='sheet_cursor' cols=8 rows=4></calc-sheet>
+</center>
+
 <h3 id="remplacer-et-éditer-le-contenu-dune-cellule">Remplacer et éditer le contenu d&#39;une cellule</h3>
 <p>Une cellule peut contenir des valeur de type :</p>
 <ul>
@@ -51,29 +56,26 @@
     <calc-sheet id="sheet_types" cols=5 rows=4></calc-sheet>
 </center>
 
-<p>💡 Vous pouvez aussi <strong>éditer</strong> la valeur d&#39;une cellule en double-cliquant dessus (ou en cliquant sur la barre des formules), puis en appuyant sur la touche <code>⏎</code> (entrée) pour valider vos modifications.</p>
+<p>💡 Pour <strong>éditer</strong> la valeur d&#39;une cellule, double-cliquez dessus (ou en cliquant sur la barre des formules), puis appuyez sur la touche <code>⏎</code> (entrée) pour valider vos modifications.</p>
+<p>💡 Pour <strong>supprimer</strong> la valeur d&#39;une cellule, sélectionnez-là puis appuyez sur la touche <code>⌦</code> (supprimer).</p>
 <h2 id="formules">Formules</h2>
-<p>Un intérêt majeur des tableurs et des feuilles de calculs sont les <strong>formules</strong> permettant d&#39;automatiquement calculer la valeur d&#39;une cellule à partir d&#39;autres cellules :</p>
+<p>Un intérêt majeur des tableurs et des feuilles de calculs sont les <strong>formules</strong>. Une formule permet de calculer la valeur d&#39;une cellule à partir d&#39;autres cellules :</p>
 <center>
     <calc-sheet id="sheet_formula" cols=3 rows=4></calc-sheet>
 </center>
 
-<p>Dans l&#39;exemple précédent, la modification des colonnes &quot;Produits unitaire&quot; et &quot;Nombre&quot; entraînera la modification de la colonne &quot;Total&quot;.</p>
-<p>Cliquer sur une cellule montre son contenu dans la <strong>barre de formule</strong> (encadrée en rouge) :</p>
-<center>
-    <img src="./img/barre-calcul-1.png"/>
-    <img src="./img/barre-calcul-2.png"/>
-</center>
-<todo>exemple interactif ?</todo>
-
-<p>Dans l&#39;exemple ci-dessus, la cellule D2 a pour valeur une formule qui calcule le produit entre la cellule B2 et la cellule C2. Cliquer sur la barre de formule permet de mettre en valeur les cellules utilisées dans le calcul.</p>
-<p>Une formule commence toujours par le signe &quot;=&quot; et est suivie d&#39;une <strong>expression</strong>. Comme pour une formule mathématique, vous pouvez utiliser plusieurs <strong>opérateurs</strong> :</p>
+<p>💡 Modifier les cellules des colonnes <code>Quantités</code> ou <code>Prix unitaire</code> mettra automatiquement à jour celles de la colonne <code>Prix total</code>.</p>
+<p>💡 Par défaut, seule la valeur s&#39;affiche dans la cellule. La formule d&#39;une cellule affiche lorsqu&#39;on édite la cellule, ainsi que dans la barre de formule.</p>
+<h3 id="écrire-une-formule">Écrire une formule</h3>
+<p>Une formule commence toujours par le signe <code>=</code> suivi d&#39;une <strong>expression</strong>. Comme pour une formule mathématique, vous pouvez utiliser plusieurs <strong>opérateurs</strong> :</p>
 <ul>
-<li><em>sur les nombres :</em> l&#39;addition (+), la soustraction/négation (-), la multiplication (*), la division (/), la puissance (^), et le pourcentage (%).</li>
-<li><em>sur les textes :</em> la concaténation (&amp;).</li>
+<li><em>de comparaisons</em> : égalité (<code>=</code>), inégalité (<code>&lt;&gt;</code>), <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&gt;</code>.</li>
+<li><em>arithmétiques :</em> l&#39;addition (<code>+</code>), la soustraction/négation (<code>-</code>), la multiplication (<code>*</code>), la division (<code>/</code>), la puissance (<code>^</code>), et le pourcentage (<code>%</code>).</li>
+<li><em>concaténation :</em> <code>&amp;</code>.</li>
 </ul>
-<p>Les opérandes peuvent être un nombre, un texte, une date, ou une <strong>référence</strong> à une autre cellule. Dans une formule, une référence à une cellule (i.e. son identifiant) est remplacée par sa valeur. Par exemple, la formule &quot;=B2*2&quot; indique que la valeur de la cellule actuelle est calculée comme la valeur de la cellule B2 multipliée par 2.</p>
-<p>Bien évidemment, comme en mathématiques vous pouvez utiliser des parenthèses afin de déterminer l&#39;ordre des opérations.</p>
+<p>Les opérandes peuvent être une valeur ou une <strong>référence</strong> à une autre cellule. Chaque référence de cellule (i.e. son identifiant) est remplacée par la valeur de la cellule. Par exemple, la formule <code>=B2*2</code> est calculée comme la valeur de la cellule <code>B2</code> multipliée par <code>2</code>.</p>
+<p>💡 Bien évidemment, comme en mathématiques vous pouvez utiliser des parenthèses afin de déterminer l&#39;ordre des opérations.</p>
+<p>💡 En cas d&#39;erreur dans la formule, la cellule affichera <code>#VALEUR !</code> (<em>non implémenté ici</em>).</p>
 <h2 id="poignée-de-recopie">Poignée de recopie</h2>
 <p>Vous vous doutez bien que si, dans l&#39;exemple précédent, on avait des centaines de lignes, on préférerait éviter d&#39;avoir à recopier la formule des centaines de fois.</p>
 <p>Vous remarquerez que lorsque vous sélectionnez une cellule, un petit carré bleu en bas à droite apparaît. Il s&#39;agit de la <strong>poignée de recopie</strong>. En cliquant dessus puis en déplaçant le curseur tout en maintenant le click, vous pourrez <strong>étendre</strong> son contenu.</p>

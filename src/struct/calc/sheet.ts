@@ -63,8 +63,6 @@ function onInput(ev: Event) {
         length += target.childNodes[i].textContent!.length;
     }
 
-    console.log(length, target.textContent?.slice(0, length) );
-
     // Update innerHTML
     //target.innerHTML = highlight(target.textContent!);
     target.textContent = target.textContent;
@@ -94,7 +92,7 @@ function onInput(ev: Event) {
 export function defaultFormat(value: RawContentType) {
 
     if( typeof value === "number")
-        return `${value}`.replace('.', ',');
+        return `${+value.toPrecision(7)}`.replace('.', ',');
 
     if( typeof value === "boolean")
         return value ? 'VRAI' : 'FAUX';
@@ -291,8 +289,7 @@ export class CalcSheet extends LISS({
             const target = ev.target as HTMLElement;
             if( target === this.#tbody ) {
 
-                if( ev.key === "Control") {
-                    console.warn("ctrl");
+                if( ev.key === "Control" || ev.key === "Shift") {
                     return; // ignore
                 } if( ev.code === "Delete" ) {
 
@@ -362,6 +359,9 @@ export class CalcSheet extends LISS({
                     return;
                 }
             }
+
+            if( target !== this.#tbody && ev.code === 'Enter' && ev.shiftKey )
+                return; // default browser behavior.
 
             if(ev.code === "Enter") { //TODO: Enter is for current plage...
                 ev.preventDefault();
@@ -472,7 +472,8 @@ export class CalcSheet extends LISS({
 
             target.toggleAttribute("contenteditable", false);
 
-            new CellList(this, [cell]).content = target.textContent!; // update...
+            new CellList(this, [cell]).content = target.textContent!;
+            this.update();
 
             // leave
             this.#selection.clear();
@@ -579,6 +580,20 @@ export class CalcSheet extends LISS({
 
             const cells = this.content.querySelectorAll<Cell>('td');
             for(let cell of cells) {
+
+                if( cell.rawContent instanceof Formula ) {
+                    let value = cell.rawContent.exec(this); //TODO...
+
+                    //TODO: factorize...
+                    let type: string = typeof value;
+                    if( type === "object" && value instanceof Date )
+                        type="date";
+
+                    cell.textContent = (cell as any).format(value);
+                    cell.setAttribute('data-type', type);
+                }
+
+                //TODO: remove...
                 if( "formula" in cell)
                     new CellList(this, [cell]).content = (cell as any).formula( ...this.#cellPos(cell) );
             }

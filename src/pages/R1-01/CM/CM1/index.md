@@ -32,13 +32,19 @@ L'intersection d'une ligne et d'une colonne est appelée **cellule**. Elle est i
 
 ### Sélectionner une cellule
 
-Cliquez sur une cellule ci-dessous pour la sélectionner. Vous remarquerez alors que ses coordonnées sont mises en surbrillances, et que son identifiant s'affiche en haut à gauche.
+Un curseur représenté sous la forme d'un cadre bleu indique la cellule active. Pour sélectionner une cellule, cliquez sur cette dernière. Vous remarquerez alors que ses coordonnées sont mises en surbrillances, et que son identifiant s'affiche en haut à gauche :
 
 <center>
     <calc-sheet cols=3 rows=4></calc-sheet>
 </center>
 
 💡 Vous pouvez aussi sélectionner une cellule en indiquant son identifiant en haut à gauche, puis en appuyant sur la touche `⏎` (entrée).
+
+💡 Vous pouvez aussi déplacer le curseur grâce aux touches directionnelles. Si utilisées avec la touche `^` (contrôle) appuyée, le curseur se déplacera alors dans la direction indiquée jusqu'à soit la première cellule non-vide, soit la dernière cellule non-vide avant une cellule vide :
+
+<center>
+    <calc-sheet id='sheet_cursor' cols=8 rows=4></calc-sheet>
+</center>
 
 ### Remplacer et éditer le contenu d'une cellule
 
@@ -57,35 +63,34 @@ Les cellules sont initialement vides. Pour **remplacer** le contenu d'une cellul
     <calc-sheet id="sheet_types" cols=5 rows=4></calc-sheet>
 </center>
 
-💡 Vous pouvez aussi **éditer** la valeur d'une cellule en double-cliquant dessus (ou en cliquant sur la barre des formules), puis en appuyant sur la touche `⏎` (entrée) pour valider vos modifications.
+💡 Pour **éditer** la valeur d'une cellule, double-cliquez dessus (ou en cliquant sur la barre des formules), puis appuyez sur la touche `⏎` (entrée) pour valider vos modifications.
+
+💡 Pour **supprimer** la valeur d'une cellule, sélectionnez-là puis appuyez sur la touche `⌦` (supprimer).
 
 ## Formules
 
-Un intérêt majeur des tableurs et des feuilles de calculs sont les **formules** permettant d'automatiquement calculer la valeur d'une cellule à partir d'autres cellules :
+Un intérêt majeur des tableurs et des feuilles de calculs sont les **formules**. Une formule permet de calculer la valeur d'une cellule à partir d'autres cellules :
 
 <center>
     <calc-sheet id="sheet_formula" cols=3 rows=4></calc-sheet>
 </center>
 
-Dans l'exemple précédent, la modification des colonnes "Produits unitaire" et "Nombre" entraînera la modification de la colonne "Total".
+💡 Modifier les cellules des colonnes `Quantités` ou `Prix unitaire` mettra automatiquement à jour celles de la colonne `Prix total`.
 
-Cliquer sur une cellule montre son contenu dans la **barre de formule** (encadrée en rouge) :
+💡 Par défaut, seule la valeur s'affiche dans la cellule. La formule d'une cellule affiche lorsqu'on édite la cellule, ainsi que dans la barre de formule.
 
-<center>
-    <img src="./img/barre-calcul-1.png"/>
-    <img src="./img/barre-calcul-2.png"/>
-</center>
-<todo>exemple interactif ?</todo>
+### Écrire une formule
 
-Dans l'exemple ci-dessus, la cellule D2 a pour valeur une formule qui calcule le produit entre la cellule B2 et la cellule C2. Cliquer sur la barre de formule permet de mettre en valeur les cellules utilisées dans le calcul.
+Une formule commence toujours par le signe `=` suivi d'une **expression**. Comme pour une formule mathématique, vous pouvez utiliser plusieurs **opérateurs** :
+- *de comparaisons* : égalité (`=`), inégalité (`<>`), `<`, `<=`, `>=`, `>`.
+- *arithmétiques :* l'addition (`+`), la soustraction/négation (`-`), la multiplication (`*`), la division (`/`), la puissance (`^`), et le pourcentage (`%`).
+- *concaténation :* `&`.
 
-Une formule commence toujours par le signe "=" et est suivie d'une **expression**. Comme pour une formule mathématique, vous pouvez utiliser plusieurs **opérateurs** :
-- *sur les nombres :* l'addition (+), la soustraction/négation (-), la multiplication (*), la division (/), la puissance (^), et le pourcentage (%).
-- *sur les textes :* la concaténation (&).
+Les opérandes peuvent être une valeur ou une **référence** à une autre cellule. Chaque référence de cellule (i.e. son identifiant) est remplacée par la valeur de la cellule. Par exemple, la formule `=B2*2` est calculée comme la valeur de la cellule `B2` multipliée par `2`.
 
-Les opérandes peuvent être un nombre, un texte, une date, ou une **référence** à une autre cellule. Dans une formule, une référence à une cellule (i.e. son identifiant) est remplacée par sa valeur. Par exemple, la formule "=B2*2" indique que la valeur de la cellule actuelle est calculée comme la valeur de la cellule B2 multipliée par 2.
+💡 Bien évidemment, comme en mathématiques vous pouvez utiliser des parenthèses afin de déterminer l'ordre des opérations.
 
-Bien évidemment, comme en mathématiques vous pouvez utiliser des parenthèses afin de déterminer l'ordre des opérations.
+💡 En cas d'erreur dans la formule, la cellule affichera `#VALEUR !` (*non implémenté ici*).
 
 ## Poignée de recopie
 

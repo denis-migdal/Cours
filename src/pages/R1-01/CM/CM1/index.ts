@@ -30,13 +30,18 @@ function euros(value: number) {
 s_formula.getCells("A2:A4").content = [23  , 12, 44];
 s_formula.getCells("B2:B4").setFormat(euros).content = [0.2, 0.3, 0.4];
 
+/*
 function add(row: number,col:number) {
     return s_formula.getCells(row, 1).content[0] + s_formula.getCells(row, 2).content[0];
 }
 
-add.toString = (row: number,col:number) => `=A${row}+B${row}`;
+add.toString = (row: number,col:number) => `=A${row}+B${row}`;*/
 
-s_formula.getCells("C2:C4").setRO().formula = add;
+s_formula.getCells("C2:C4").content = [
+    "=A2*B2",
+    "=A3*B3",
+    "=A4*B4"
+]; //TODO...
 //s_formula.getCells("C2").content = () => s_formula.getCells('A2').content + s_formula.getCells('B2').content;
 
 
@@ -62,6 +67,21 @@ s_types.getCells("A2:E2").content = [
     "=B2+2"
 ]
 
+
+const s_cursor = await LISS.qs('#sheet_cursor');
+
+s_cursor.getCells("A1:H1").toggleClass("bold", true)
+.toggleClass("align-center", true).content = "*";
+s_cursor.getCells("A4:H4").toggleClass("bold", true)
+.toggleClass("align-center", true).content = "*";
+
+s_cursor.getCells("D1:E4").toggleClass("bold", true)
+.toggleClass("align-center", true).content = "*";
+
+s_cursor.getCells("A1:A4").toggleClass("bold", true)
+.toggleClass("align-center", true).content = "*";
+s_cursor.getCells("H1:H4", true).toggleClass("bold", true)
+.toggleClass("align-center", true).content = "*";
 
 
 // test
