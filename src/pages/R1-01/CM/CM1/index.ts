@@ -44,25 +44,20 @@ s_formula.getCells("C2:C4").setRO().formula = add;
 const s_types = await LISS.qs('#sheet_types');
 
 
-s_types.getCells("A1:D1").toggleClass("bold")
+s_types.getCells("A1:E1").toggleClass("bold")
                          .toggleClass("align-center")
                          .content = [
                             "Texte",
                             "Nombre",
+                            "Booléen",
                             "Date",
                             "Formule"
                          ];
 
-function plus_deux(row: number,col:number) {
-    return s_formula.getCells(row, 2).content[0] + 2;
-}
-
-plus_deux.toString = (row: number,col:number) => `=B${row}+2`;
-
-s_types.getCells("A2:C2").content = [
+s_types.getCells("A2:E2").content = [
     "Hello",
     2.3,
+    true,
     new Date(),
+    "=B2+2"
 ]
-
-s_types.getCells("D2").formula = plus_deux;

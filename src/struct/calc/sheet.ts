@@ -4,26 +4,121 @@ import LISS from "../../../libs/LISS";
 //@ts-ignore
 import css from "!!raw-loader!./index.css";
 
+export type ValueType = string|number|Date|boolean;
+export type RawContentType = ValueType|Formula;
+
 type Cell = HTMLTableCellElement & {
-    rawContent: string|number|Date,
+    rawContent: RawContentType,
     format: (v: string|number) => string,
-    formula: (r: number, c: number) => string|number,
+    formula: (r: number, c: number) => ValueType,
     is_ro: boolean
 };
 
-export function defaultFormat(value: string|number|Date) {
+const hljs = require('highlight.js');
+function highlight(str: string) {
+    return hljs.highlight(str, { language: "excel" }).value;
+}
+
+function isActive(target: HTMLElement) {
+
+    return target.matches(':focus');
+/*
+    let active = document.activeElement;
+
+    while( active?.shadowRoot instanceof ShadowRoot )
+        active = active.shadowRoot.activeElement;
+
+    return active === target;*/
+}
+
+function onInput(ev: Event) {
+
+    const target = ev.target as HTMLElement;
+
+    /*
+    if( ! isActive(target) ) {
+        target.innerHTML = highlight(target.textContent!);
+        return;
+    }*/
+
+    // https://stackoverflow.com/questions/21234741/place-caret-back-where-it-was-after-changing-innerhtml-of-a-contenteditable-elem
+
+    let rrange = window.getSelection()!.getRangeAt(0);
+    let c = rrange.startOffset;
+
+    //let text = "";
+    let length = 0;
+    for(let i = 0; i < target.childNodes.length; ++i) {
+        if( rrange.startContainer === target.childNodes[i] ) {
+            //text += p.childNodes[i].textContent!.slice(0, c);
+            length += c;
+            break;
+        }
+        //text += p.childNodes[i].textContent;
+        length += target.childNodes[i].textContent!.length;
+    }
+
+    // Update innerHTML
+    //target.innerHTML = highlight(target.textContent!);
+    target.textContent = target.textContent;
+
+    let child!: ChildNode;
+    let i;
+    for(i = 0; i < target.childNodes.length; ++i) {
+        if( length <= target.childNodes[i].textContent!.length ) {
+            child = target.childNodes[i];
+            break;
+        }
+        length -= target.childNodes[i].textContent!.length;
+    }
+
+    if( child.nodeType !== Node.TEXT_NODE)
+        child = child.childNodes[0];
+
+    //ISSUE when new keyword...
+
+    var range = document.createRange();
+    var sel = window.getSelection()!;
+    //TODO: set REAL IDX
+    range.setStart(child, length);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    //console.log( getCaretCharacterOffsetWithin(ev.target)  );
+}
+
+export function defaultFormat(value: RawContentType) {
 
     if( typeof value === "number")
         return `${value}`.replace('.', ',');
 
+    if( typeof value === "boolean")
+        return value ? 'VRAI' : 'FAUX';
+
     if( typeof value === "object" && value instanceof Date) {
         return value.toLocaleDateString("fr-FR");
+    }
+    
+    if( typeof value === "object" && value instanceof Formula) {
+        return value.toString(); //TODO...
     }
 
     return value;
 }
 
-function parseInput( str: string ): Date|number|string {
+function parseInput( str: string ): RawContentType {
+
+    if(str === 'VRAI')
+        return true;
+    if(str === 'FAUX')
+        return false;
+
+    if(str === '')
+        return str;
+
+    if(str[0] === "=") {
+        return parse_formula(str);
+    }
 
     let test_number = Number( str.replace(',', '.') );
     if( ! Number.isNaN( test_number ) )
@@ -60,9 +155,28 @@ export class CalcSheet extends LISS({
         return this.#selection;
     }
 
+    removeHighlights() {
+        for(let h of this.content.querySelectorAll('.range_highlight') )
+            h.remove();
+    }
+
+    highlight(start: Cell, end: Cell, id: number) {
+        const high = document.createElement('div');
+        high.classList.add('range_highlight', `highlight_${id}`);
+
+        const tbl_offset = this.content.querySelector('table')!.offsetTop;
+
+        high.style.setProperty('top'   , `${tbl_offset + start.offsetTop - 1}px`);
+        high.style.setProperty('height', `${end.offsetTop + end.clientHeight - start.offsetTop}px`);
+
+        high.style.setProperty('left'   , `${start.offsetLeft - 1}px`);
+        high.style.setProperty('width', `${end.offsetLeft + end.clientWidth - start.offsetLeft}px`);
+
+        this.content.append(high);
+    }
+
     constructor() {
         super();
-
 
         this.#cursor.addEventListener('change', (ev) => {
 
@@ -80,7 +194,8 @@ export class CalcSheet extends LISS({
 
             for( let cell of this.#selection.cells ) {
 
-                cell.classList.add('highlight');
+                if( this.#selection.cells.length !== 1)
+                    cell.classList.add('highlight');
                 const [row, col] = this.#cellPos(cell);
                 this.#tbody.children[0].children[col].classList.add("highlight");
                 this.#tbody.children[row].children[0].classList.add("highlight");
@@ -120,8 +235,6 @@ export class CalcSheet extends LISS({
             // the cell is being edited...
             if( target.hasAttribute('contenteditable') )
                 return;
-
-            console.warn('?');
 
             const cell = target as Cell;
 
@@ -189,32 +302,97 @@ export class CalcSheet extends LISS({
                 
                 //target.blur();
             }
-        })
+        });
 
+        const onInput2 = (ev: Event) => {
+            this.removeHighlights();
+            onInput(ev);
+        }
+
+        //TODO: here...
         this.content.addEventListener('focusin', (ev) => {
 
-            if( ev.target.tagName !== "TD")
+            const target = ev.target as HTMLElement;
+
+            if( target.tagName !== "TD")
                 return;
 
+            console.warn('f-in');
+
             const cell = ev.target as Cell;
-            cell.textContent = defaultFormat(cell.rawContent);
+
+            if(cell.rawContent instanceof Formula) {
+
+                const str = cell.rawContent.toString();
+                const ranges = cell.rawContent.rangesToken;
+
+                let children: (string|HTMLElement)[] = [str];
+
+                let ranges_colors: Record<string, number> = {};
+                let cur_offset = 0;
+
+                for(let i = 0; i < ranges.length; ++i) {
+                    let str = children[children.length-1] as string;
+
+                    children[children.length-1] = str.slice(0, ranges[i].beg - cur_offset);
+
+                    let s = document.createElement('span');
+
+                    const range_name = ranges[i].value;
+                    if( ! (range_name in ranges_colors) )
+                        ranges_colors[range_name] = i%8;
+
+                    s.classList.add('formula_highlight', `highlight_${ranges_colors[range_name]}`); //TODO...
+                    s.textContent = ranges[i].value;
+                    children.push( s ); // range...
+
+                    children.push( str.slice(ranges[i].end - cur_offset) );
+                    cur_offset = ranges[i].end;
+                }
+
+                for(let range in ranges_colors ) {
+
+                    const cell = this.getCells(range).cells;
+
+                    let beg = cell[0];
+                    let end = cell[cell.length-1];
+
+                    this.highlight(beg, end, ranges_colors[range]);
+                }
+
+                cell.replaceChildren( ...children );
+
+                cell.addEventListener('input', onInput2 ); // remove colors...
+            } else {
+                cell.textContent = defaultFormat(cell.rawContent);
+            }
         });
+        //TODO input + remove (focusout)
 
         this.content.addEventListener("focusout", ev => {
 
-            const target = ev.target as Cell;
+            const target = ev.target as HTMLElement;
 
-            if( ev.target.tagName !== "TD")
+            if( target.tagName !== "TD")
                 return;
+
+            console.warn('f-out');
+
+            const cell = target as Cell;
+
+            this.removeHighlights();
+            cell.removeEventListener("input", onInput2); // to be safe
 
             target.toggleAttribute("contenteditable", false);
 
-            new CellList(this, [target]).content = target.textContent!; // update...
+            new CellList(this, [cell]).content = target.textContent!; // update...
 
             // leave
             this.#selection.clear();
             this.#cursor.clear();
         });
+
+        let t = this.#tbody.querySelectorAll('td');
     }
 
     cellPos(cell: HTMLTableCellElement) {
@@ -312,7 +490,7 @@ export class CalcSheet extends LISS({
 
         window.requestAnimationFrame( () => {
 
-            const cells = this.content.querySelectorAll('td');
+            const cells = this.content.querySelectorAll<Cell>('td');
             for(let cell of cells) {
                 if( "formula" in cell)
                     new CellList(this, [cell]).content = (cell as any).formula( ...this.#cellPos(cell) );
@@ -355,7 +533,7 @@ export class CellList extends EventTarget {
         this.#sheet.update();
     }
 
-    setFormat(format: (raw: string|number) => string) {
+    setFormat(format: (raw: ValueType) => string) {
 
         for(let cell of this.#cells) {
             cell.format = format;
@@ -365,7 +543,7 @@ export class CellList extends EventTarget {
         return this;
     }
 
-    get content(): (string|number)[] {
+    get content(): (RawContentType)[] {
         let content = new Array(this.#cells.length);
         for(let i = 0; i < this.#cells.length; ++i)
             content[i] = this.#cells[i].rawContent!;
@@ -373,7 +551,7 @@ export class CellList extends EventTarget {
         return content;
     }
 
-    set content(content: Date|string|number|(Date|string|number)[]) {
+    set content(content: RawContentType|(RawContentType)[]) {
 
         if( Array.isArray(content) ) {
             for(let i = 0; i < content.length; ++i)
@@ -385,13 +563,18 @@ export class CellList extends EventTarget {
         if( typeof content === 'string')
             content = parseInput(content);
 
-        let type: string = typeof content;
-        if( type === "object" && content instanceof Date )
-            type="date";
-
         for(let cell of this.#cells) {
             cell.rawContent = content;
-            cell.textContent = (cell as any).format(content);
+
+            let value = content;
+            if( content instanceof Formula)
+                value = content.exec(this.#sheet); //TODO...
+
+            let type: string = typeof value;
+            if( type === "object" && value instanceof Date )
+                type="date";
+
+            cell.textContent = (cell as any).format(value);
             cell.setAttribute('data-type', type);
         }
 
@@ -422,5 +605,6 @@ export class CellList extends EventTarget {
 //TODO...
 import "./formula_editor";
 import "./plage_editor";
+import { Formula, parse_formula } from "./formula_parser";
 
 LISS.define('calc-sheet', CalcSheet);

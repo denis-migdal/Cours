@@ -45,6 +45,7 @@ Cliquez sur une cellule ci-dessous pour la sélectionner. Vous remarquerez alors
 Une cellule peut contenir des valeur de type :
 - **texte** : par défaut aligné à gauche ;
 - **nombre** : par défaut aligné à droite ;
+- **booléen** : par défaut aligné à droite (`VRAI` ou `FAUX`);
 - **date** : par défaut aligné à droite ;
 - **formule** : calcul la valeur de la cellule à partir d'autres cellules (cf suite).
 
@@ -53,7 +54,7 @@ Une cellule peut contenir des valeur de type :
 Les cellules sont initialement vides. Pour **remplacer** le contenu d'une cellule, sélectionnez-là, puis tapez sa valeur au clavier, avant de valider en appuyant sur la touche `⏎` (entrée). Vous remarquerez que sa valeur s'affiche dans la barre de formule, en haut à droite.
 
 <center>
-    <calc-sheet id="sheet_types" cols=4 rows=4></calc-sheet>
+    <calc-sheet id="sheet_types" cols=5 rows=4></calc-sheet>
 </center>
 
 💡 Vous pouvez aussi **éditer** la valeur d'une cellule en double-cliquant dessus, (ou en cliquant sur la barre des formules), puis en appuyant sur la touche `⏎` (entrée).

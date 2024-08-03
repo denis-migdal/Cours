@@ -39,7 +39,6 @@ Motivation/Problematic first.
 
 - repo
 
-- contenteditable click : fix caret position
 - cursor
 	- keyboard nav + on selections...
 - selection
@@ -47,9 +46,17 @@ Motivation/Problematic first.
 	- super
 	- ctrl (composition of selections?)
 	- extend formula
+- sync from formula + print formula when editing.
 
-- formula parser + sync from formula
+- Refactors/Bugs
+	- selection : not class but thing over with opacity...
+	- rawValue (after formula eval - cache...) vs rawContent (can be Formula)
+	- contenteditable click : fix caret position
+	- 100% => 100.00% + unary +/-
+	- Range <= (RangeCell/Range_:/Range union/Range intersect) => toCellList (with offset ? or Offset Range to produce new one ?)
 
+- when editing formula : select cell + extend range
+- Ctrl+C/Ctrl+V
 - resize/merge cols/lines
 - ctrl+Z...
 - graphs (outside).
@@ -82,6 +89,8 @@ https://github.com/webodf/WebODF?tab=readme-ov-file
 #### Fonctions et graphiques (1/2)
 
 -> vous comprendrez que les diagrammes pas trop possibles actuellement...
+	-> ou ChartHtml link ?
+
 - Statistiques et diagrammes (2 séances)
 	statistiques (MIN/MOY/etc), début diagramme, autres fonctions stats plus avancées (freq, compter etc)
 	3. Graphiques simples (TP6+2?)
@@ -121,7 +130,33 @@ https://github.com/webodf/WebODF?tab=readme-ov-file
 
 #### Scripts et stats avancées ?
 - Scripts (2 séances)
-	9.  Scripts python.
+	9.  Scripts python & JS. [install package for that...]
+
+https://tech.kibatic.com/divers/macro-python-pour-libreoffice/
+https://wiki.documentfoundation.org/Documentation/DevGuide/Text_Documents (ctrl+F calc)
+https://excel-pratique.com/fr/vba/premiere_macro
+
+Range() = X; / .Value
+[il existe + de trucs de selection]
+
+.Font.prop (quelques unes)
+
+=> qqs events
+	https://excel-pratique.com/fr/vba/evenements_classeur
+
+=> créer une fonction calc.
+
+https://www.youtube.com/watch?v=d5Mga1TibJc&t=797s
+https://www.youtube.com/watch?v=k2e2ADQBOiU
+
+	- obtain doc.
+		- GetValue / SetValue
+		- Offset()
+		- Range() ?
+		- Clear()
+		- Last/First
+		- https://python-ooo-dev-tools.readthedocs.io/en/latest/help/calc/format/direct/cell/font_effects.html
+https://help.libreoffice.org/latest/lo/text/sbasic/shared/03/sf_calc.html
 
 - Stats
 	- Données/Statistiques
