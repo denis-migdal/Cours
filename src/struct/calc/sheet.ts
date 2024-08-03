@@ -49,7 +49,12 @@ function onInput(ev: Event) {
     //let text = "";
     let length = 0;
     for(let i = 0; i < target.childNodes.length; ++i) {
-        if( rrange.startContainer === target.childNodes[i] ) {
+
+        let child = target.childNodes[i];
+        if( child.nodeType !== Node.TEXT_NODE)
+            child = child.childNodes[0];
+
+        if( rrange.startContainer === child ) {
             //text += p.childNodes[i].textContent!.slice(0, c);
             length += c;
             break;
@@ -57,6 +62,8 @@ function onInput(ev: Event) {
         //text += p.childNodes[i].textContent;
         length += target.childNodes[i].textContent!.length;
     }
+
+    console.log(length, target.textContent?.slice(0, length) );
 
     // Update innerHTML
     //target.innerHTML = highlight(target.textContent!);
@@ -75,16 +82,13 @@ function onInput(ev: Event) {
     if( child.nodeType !== Node.TEXT_NODE)
         child = child.childNodes[0];
 
-    //ISSUE when new keyword...
-
     var range = document.createRange();
     var sel = window.getSelection()!;
-    //TODO: set REAL IDX
+
     range.setStart(child, length);
     range.collapse(true);
     sel.removeAllRanges();
     sel.addRange(range);
-    //console.log( getCaretCharacterOffsetWithin(ev.target)  );
 }
 
 export function defaultFormat(value: RawContentType) {
@@ -175,6 +179,27 @@ export class CalcSheet extends LISS({
         this.content.append(high);
     }
 
+    relativeTo(cell: Cell, row_diff: number, col_diff: number) {
+        
+        let [row, col] = this.cellPos(cell);
+
+        row += row_diff;
+        col += col_diff;
+
+        // for normal : get stuck inside grid.
+        if( row < 1)
+            row = 1;
+        if( row >= this.#tbody.children.length )
+            row = this.#tbody.children.length - 1;
+
+        if( col < 1)
+            col = 1;
+        if( col >= this.#tbody.children[row].children.length )
+            col = this.#tbody.children[row].children.length - 1;
+
+        return this.#tbody.children[row].children[col] as Cell;
+    }
+
     constructor() {
         super();
 
@@ -224,10 +249,10 @@ export class CalcSheet extends LISS({
 
             const target = ev.target as HTMLElement;
 
-            // todo: shift key + super key + ?
-
             if( target.tagName === "TH")
                 throw new Error('not implemented');
+
+            // todo: shift key + super key + ?
 
             if( target.tagName !== "TD" )
                 return;
@@ -264,20 +289,81 @@ export class CalcSheet extends LISS({
         this.content.addEventListener('keydown', (ev: KeyboardEvent) => {
 
             const target = ev.target as HTMLElement;
-            if( ev.code !== "Enter" && target === this.#tbody ) {
+            if( target === this.#tbody ) {
 
-                const cur = this.cursor.cells;
+                if( ev.key === "Control") {
+                    console.warn("ctrl");
+                    return; // ignore
+                } if( ev.code === "Delete" ) {
 
-                if( cur.length > 0) {
-                    cur[0].dispatchEvent( new CustomEvent("dblclick", {bubbles: true}) );
-                    cur[0].textContent = "";
+                    this.cursor.deleteContent();
+
+                    this.#cursor.dispatchEvent( new CustomEvent("change") );
+
+                    return;
+                } if( ev.code === "Enter" ) {
+                    // handled elsewhere
+                } else if( ev.code.startsWith('Arrow') ) {
+
+                    ev.preventDefault();
+
+                    const cur = this.cursor.cells;
+                    if( cur.length === 0)
+                        return;
+
+                    let d_row = 0;
+                    let d_col = 0;
+
+                    if( ev.code === 'ArrowLeft')
+                        --d_col;
+                    if( ev.code === 'ArrowRight')
+                        ++d_col;
+                    if( ev.code === 'ArrowUp')
+                        --d_row;
+                    if( ev.code === 'ArrowDown')
+                        ++d_row;
+
+                    let next: Cell;
+                    if( ev.ctrlKey ) {
+
+                        let prev   = cur[0];
+                        let cursor = this.relativeTo(prev, d_row, d_col);
+
+                        if( prev.rawContent !== undefined && cursor.rawContent !== undefined) {
+
+                            while( prev !== cursor && cursor.rawContent !== undefined) { // we reached the end.
+                                prev   = cursor;
+                                cursor = this.relativeTo(prev, d_row, d_col);
+                            }
+                            cursor = prev;
+                        } else {
+                            while( prev !== cursor && cursor.rawContent === undefined) { // we reached the end.
+                                prev   = cursor;
+                                cursor = this.relativeTo(prev, d_row, d_col);
+                            }
+                        }
+
+                        next = cursor;
+                    } else
+                        next = this.relativeTo( cur[0], d_row, d_col);
+
+                    this.#tbody.focus();
+                    next.dispatchEvent( new CustomEvent('click', {bubbles: true}) );
+
+                } else { // we start editing...
+
+                    const cur = this.cursor.cells;
+
+                    if( cur.length > 0) {
+                        cur[0].dispatchEvent( new CustomEvent("dblclick", {bubbles: true}) );
+                        cur[0].textContent = "";
+                    }
+
+                    return;
                 }
-
-                return;
             }
 
-
-            if(ev.code === "Enter") {
+            if(ev.code === "Enter") { //TODO: Enter is for current plage...
                 ev.preventDefault();
 
                 const cur = this.cursor.cells;
@@ -301,6 +387,7 @@ export class CalcSheet extends LISS({
                 next.dispatchEvent( new CustomEvent('click', {bubbles: true}) );
                 
                 //target.blur();
+                return;
             }
         });
 
@@ -549,6 +636,17 @@ export class CellList extends EventTarget {
             content[i] = this.#cells[i].rawContent!;
 
         return content;
+    }
+
+    deleteContent() {
+
+        for(let cell of this.#cells) {
+            cell.rawContent = undefined as any;
+            cell.textContent = "";
+            cell.removeAttribute('data-type');
+        }
+
+        this.#sheet.update();
     }
 
     set content(content: RawContentType|(RawContentType)[]) {

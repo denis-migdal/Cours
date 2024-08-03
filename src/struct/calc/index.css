@@ -24,8 +24,16 @@
     line-height: 0.45cm;
 }
 
-:host :is(td, th) {
+
+:host :is(td, th):not([contenteditable]) {
     user-select: none;
+}
+/*
+:host td[contenteditable] {
+    user-select: text;
+}*/
+
+:host :is(td, th) {
     color: black;
     width: 2.26cm;
     height: 0.45cm;
@@ -83,6 +91,8 @@
         position: relative;
 
         &::after {
+            pointer-events: none;
+
             position: absolute;
             display: block;
             top: 0px;

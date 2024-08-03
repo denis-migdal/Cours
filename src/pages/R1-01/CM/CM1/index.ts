@@ -61,3 +61,34 @@ s_types.getCells("A2:E2").content = [
     new Date(),
     "=B2+2"
 ]
+
+
+
+// test
+const c = `
+<table id="un">
+    <tbody>
+        <tr><td>XXX</td></tr>
+    </tbody>
+</table>`;
+
+const css = `
+    td:not([contenteditable]) {
+        user-select: none;
+    }
+`;
+
+class X extends LISS({
+    content: c, css
+}) {
+    constructor() {
+        super();
+
+        const td = this.content.querySelector<HTMLElement>('#un td')!;
+        td.toggleAttribute('contenteditable');
+        td.focus();
+        td.textContent = "YYY";
+    }
+}
+
+LISS.define('test-test', X);

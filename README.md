@@ -51,7 +51,6 @@ Motivation/Problematic first.
 - Refactors/Bugs
 	- selection : not class but thing over with opacity...
 	- rawValue (after formula eval - cache...) vs rawContent (can be Formula)
-	- contenteditable click : fix caret position
 	- 100% => 100.00% + unary +/-
 	- Range <= (RangeCell/Range_:/Range union/Range intersect) => toCellList (with offset ? or Offset Range to produce new one ?)
 

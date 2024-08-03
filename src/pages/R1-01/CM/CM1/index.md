@@ -57,7 +57,7 @@ Les cellules sont initialement vides. Pour **remplacer** le contenu d'une cellul
     <calc-sheet id="sheet_types" cols=5 rows=4></calc-sheet>
 </center>
 
-💡 Vous pouvez aussi **éditer** la valeur d'une cellule en double-cliquant dessus, (ou en cliquant sur la barre des formules), puis en appuyant sur la touche `⏎` (entrée).
+💡 Vous pouvez aussi **éditer** la valeur d'une cellule en double-cliquant dessus (ou en cliquant sur la barre des formules), puis en appuyant sur la touche `⏎` (entrée) pour valider vos modifications.
 
 ## Formules
 
