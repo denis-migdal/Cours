@@ -139,6 +139,25 @@ Quand la ligne (ou la colonne) change lorsqu'on étend la formule, on dit qu'ell
     <img src="./img/étendre-abs-form-4.png"/>
 </center>
 
+<div style='display: flex'>
+    <div style="text-align:center">
+        <strong>A1</strong>
+        <calc-sheet id="sheet____formula" cols=4 rows=4></calc-sheet>
+    </div>
+    <div style="text-align:center">
+        <strong>$A1</strong>
+    <calc-sheet id="sheet_x__formula" cols=4 rows=4></calc-sheet>
+    </div>
+    <div style="text-align:center">
+        <strong>A$1</strong>
+    <calc-sheet id="sheet__x_formula" cols=4 rows=4></calc-sheet>
+    </div>
+    <div style="text-align:center">
+        <strong>$A$1</strong>
+    <calc-sheet id="sheet_xx_formula" cols=4 rows=4></calc-sheet>
+    </div>
+</div>
+
 ## Libre Office Calc
 
 Dans le cadre des TP, les feuilles de calculs seront enregistrées dans des fichiers d'extension `.ods`. Pour les manipuler, nous utiliserons le logiciel **Libre Office Calc**.

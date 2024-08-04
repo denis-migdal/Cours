@@ -593,6 +593,8 @@ export class CalcSheet extends LISS({
         let row_id = cell_or_rowid;
         if( typeof cell_or_rowid === "string") {
 
+            cell_or_rowid = cell_or_rowid.replaceAll('$', '');
+
             if( cell_or_rowid.includes(':') ) {// range
 
                 let [beg, end] = cell_or_rowid.split(':');

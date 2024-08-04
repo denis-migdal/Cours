@@ -99,6 +99,35 @@ s_cursor.getCells("H1:H4", true).toggleClass("bold", true)
 .toggleClass("align-center", true).content = "*";
 
 
+const s_$formula = [
+    await LISS.qs('#sheet____formula'),
+    await LISS.qs('#sheet_x__formula'),
+    await LISS.qs('#sheet__x_formula'),
+    await LISS.qs('#sheet_xx_formula')
+]
+
+for(let i = 0; i < s_$formula.length; ++i) {
+    const s_$form = s_$formula[i];
+
+    s_$form.getCells("A1:D1").toggleClass("bold")
+                             .content = [0, 1, 2, 3];
+
+    s_$form.getCells("A2:A4").toggleClass("bold")
+                             .content = [1, 2, 3];
+
+    let ref = "=A1";
+    if( i === 1)
+        ref = "=$A1";
+    if( i === 2)
+        ref = "=A$1";
+    if( i === 3)
+        ref = "=$A$1";
+
+    s_$form.getCells("B2").content = ref;
+
+    s_$form.getCells("A1:D4").toggleClass("align-center")
+}
+
 // test
 const c = `
 <table id="un">

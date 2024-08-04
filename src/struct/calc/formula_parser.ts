@@ -19,10 +19,11 @@ export class Formula {
 
             //TODO: if range...
             let pos = [...sheet.cellPos( sheet.getCells(r.value).cells[0] )];
-            
-            //TODO: if $...
-            pos[0] += drow;
-            pos[1] += dcol;
+    
+            if( r.value.lastIndexOf('$') <= 0 )
+                pos[0] += drow;
+            if( r.value[0] !== '$' )
+                pos[1] += dcol;
 
             return `${String.fromCharCode(65+pos[1]-1)}${pos[0]}`;
         });
@@ -143,9 +144,10 @@ class Node {
 }
 
 function toNumber(a: unknown): number {
+
     if(a === undefined)
         return 0;
-    return a;
+    return a as unknown as number;
 }
 
 const op_impl = {
@@ -197,10 +199,15 @@ function tokenlist2Tree(tokens: Token[]): Node {
             const str = tokens[0].value.slice(1,-1);
             return new Node( () => str);
         }
-        if( tokens[0].type === "range") { //TODO offset...
+        if( tokens[0].type === "range") {
             return new Node( (sheet: CalcSheet) => {
-                //TODO: if formula too...
-                return sheet.getCells(tokens[0].value).cells[0].rawContent as ValueType;
+
+                let raw = sheet.getCells(tokens[0].value).cells[0].rawContent;
+
+                if( raw instanceof Formula)
+                    raw = raw.exec(sheet); // TODO: cache result
+
+                return raw as ValueType;
             });
         }
         throw new Error("???");
