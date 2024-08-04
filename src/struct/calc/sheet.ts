@@ -365,6 +365,8 @@ export class CalcSheet extends LISS({
             if(ev.code === "Enter") { //TODO: Enter is for current plage...
                 ev.preventDefault();
 
+                this.removeHighlights();
+
                 const cur = this.cursor.cells;
                 if( cur.length === 0)
                     return;
