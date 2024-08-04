@@ -59,6 +59,7 @@ Motivation/Problematic first.
 	- rawValue (after formula eval - cache...) vs rawContent (can be Formula)
 	- 100% => 100.00%
 	- Range <= (RangeCell/Range_:/Range union/Range intersect) => toCellList (with offset ? or Offset Range to produce new one ?)
+	- Ctrl+C : put data in pastebin ???
 
 - 
 - formula range token
@@ -68,6 +69,7 @@ Motivation/Problematic first.
 - resize/merge cols/lines
 - ctrl+Z...
 - graphs (outside).
+- copy area : animate dashed border.
 
 #### Webodf
 

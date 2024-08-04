@@ -86,7 +86,7 @@ Une formule commence toujours par le signe `=` suivi d'une **expression**. Comme
 
 Les opérandes peuvent être une valeur ou une **référence** à une autre cellule. Chaque référence de cellule (i.e. son identifiant) est remplacée par la valeur de la cellule. Par exemple, la formule `=B2*2` est calculée comme la valeur de la cellule `B2` multipliée par `2`.
 
-💡 Bien évidemment, comme en mathématiques vous pouvez utiliser des parenthèses afin de déterminer l'ordre des opérations.
+💡 Bien évidemment, comme en mathématiques, vous pouvez utiliser des parenthèses afin de déterminer l'ordre des opérations.
 
 💡 En cas d'erreur dans la formule, la cellule affichera `#VALEUR !` (*non implémenté ici*).
 

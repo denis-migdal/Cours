@@ -13,11 +13,6 @@ export type Cell = HTMLTableCellElement & {
     is_ro: boolean
 };
 
-const hljs = require('highlight.js');
-function highlight(str: string) {
-    return hljs.highlight(str, { language: "excel" }).value;
-}
-
 function isActive(target: HTMLElement) {
 
     return target.matches(':focus');
@@ -160,20 +155,29 @@ export class CalcSheet extends LISS({
         for(let h of this.content.querySelectorAll('.range_highlight') )
             h.remove();
     }
+    removeCopyHighlight() {
+        for(let h of this.content.querySelectorAll('.copy_highlight') )
+            h.remove();
+    }
 
-    highlight(start: Cell, end: Cell, id: number) {
+    highlight(start: Cell, end: Cell, id_or_classlist: number|string[]) {
         const high = document.createElement('div');
-        high.classList.add('range_highlight', `highlight_${id}`);
+        if( typeof id_or_classlist === "number")
+            high.classList.add('range_highlight', `highlight_${id_or_classlist}`);
+        else
+            high.classList.add( ...id_or_classlist );
 
         const tbl_offset = this.content.querySelector('table')!.offsetTop;
 
-        high.style.setProperty('top'   , `${tbl_offset + start.offsetTop - 1}px`);
-        high.style.setProperty('height', `${end.offsetTop + end.clientHeight - start.offsetTop}px`);
+        high.style.setProperty('top'   , `${tbl_offset + start.offsetTop}px`);
+        high.style.setProperty('height', `${end.offsetTop + end.clientHeight - start.offsetTop + 1}px`);
 
-        high.style.setProperty('left'   , `${start.offsetLeft - 1}px`);
+        high.style.setProperty('left'   , `${start.offsetLeft}px`);
         high.style.setProperty('width', `${end.offsetLeft + end.clientWidth - start.offsetLeft}px`);
 
         this.content.append(high);
+
+        return high;
     }
 
     relativeTo(cell: Cell, row_diff: number, col_diff: number) {
@@ -196,6 +200,9 @@ export class CalcSheet extends LISS({
 
         return this.#tbody.children[row].children[col] as Cell;
     }
+
+    //TODO: 2D...
+    #pastebin: CellList | null = null;
 
     constructor() {
         super();
@@ -226,6 +233,7 @@ export class CalcSheet extends LISS({
 
         //TODO: move out ?
         const formula_bar = document.createElement('div');
+        formula_bar.classList.add('toolbar');
 
         ( async () => {
 
@@ -253,6 +261,8 @@ export class CalcSheet extends LISS({
 
             if( target.tagName !== "TD" )
                 return;
+
+            this.removeHighlights();
 
             // the cell is being edited...
             if( target.hasAttribute('contenteditable') )
@@ -287,8 +297,44 @@ export class CalcSheet extends LISS({
 
             const target = ev.target as HTMLElement;
             if( target === this.#tbody ) {
+                if( ev.code === "KeyV" && ev.ctrlKey && this.#pastebin !== null) {
+                    ev.preventDefault();
+                    const data = this.#pastebin.cells.map( c => c.rawContent );
+                    this.#selection.content = data;
 
-                if( ev.key === "Control" || ev.key === "Shift") {
+                    if( ! ev.shiftKey || ! ev.altKey ) {
+
+                        //TODO: better
+                        const src = this.#pastebin.cells;
+                        const dst = this.#selection.cells;
+
+                        for(let i = 0; i < src.length; ++i )
+                            dst[i].className = src[i].className;
+                    }
+
+                    return;
+                }
+
+                if( ( ev.key === "c" || ev.key === "x") && ev.ctrlKey ) {
+                    ev.preventDefault();
+
+                    let selection = this.#selection.cells; //TODO: as array...
+                    let h = this.highlight( selection[0], selection[selection.length-1], ['copy_highlight'] );
+                   
+                    // WHY ???
+                    h.style.setProperty('top'   , `${selection[0].offsetTop}px`);
+
+                    this.#pastebin = this.#selection.deepClone();
+
+                    if( ev.key === "x" ) {
+                        this.#selection.deleteFormat();
+                        this.#selection.deleteContent();
+                    }
+
+                    return;
+                }
+
+                if( ev.key === "Control" || ev.key === "Shift" || ev.key === "Alt" ) {
                     return; // ignore
                 } if( ev.code === "Delete" ) {
 
@@ -404,6 +450,8 @@ export class CalcSheet extends LISS({
 
             const target = ev.target as HTMLElement;
 
+            this.removeCopyHighlight();
+
             if( target.tagName !== "TD")
                 return;
 
@@ -460,20 +508,17 @@ export class CalcSheet extends LISS({
         this.content.addEventListener("focusout", ev => {
 
             const target = ev.target as HTMLElement;
+            this.removeHighlights();
 
             if( target.tagName !== "TD")
                 return;
 
-            console.warn('f-out');
-
             const cell = target as Cell;
 
-            this.removeHighlights();
             cell.removeEventListener("input", onInput2); // to be safe
+            cell.toggleAttribute("contenteditable", false);
 
-            target.toggleAttribute("contenteditable", false);
-
-            new CellList(this, [cell]).content = target.textContent!;
+            new CellList(this, [cell]).content = cell.textContent!;
             this.update();
 
             // leave
@@ -642,6 +687,11 @@ export class CellList extends EventTarget {
         return content;
     }
 
+    deleteFormat() {
+        for(let cell of this.#cells) //TODO add hoc format...
+            cell.className = '';
+    }
+
     deleteContent() {
 
         for(let cell of this.#cells) {
@@ -701,6 +751,21 @@ export class CellList extends EventTarget {
         this.#cells.length = 0;
 
         this.dispatchEvent( new CustomEvent("change") );
+    }
+
+
+    deepClone() {
+
+        let cells = this.#cells.map( c => {
+            const clone = c.cloneNode(true) as Cell;
+
+            clone.rawContent = c.rawContent;
+            clone.format     = c.format;
+
+            return clone;
+        })
+
+        return new CellList(this.#sheet, cells);
     }
 }
 
