@@ -249,11 +249,13 @@ export class CalcSheet extends LISS({
 
         this.#cursor.addEventListener('change', (ev) => {
 
+            //TODO: could be better...
             for( let cell of this.content.querySelectorAll('.cursor') )
-                cell.classList.remove('cursor');
+                cell.remove();
 
-            for( let cell of this.#cursor.cells )
-                cell.classList.add('cursor');
+            const cells = this.#cursor.cells;
+            if( cells.length !== 0)
+                this.highlight(cells[0], cells[cells.length-1], ["cursor"]);
         });
 
         this.#selection.addEventListener('change', (ev) => {
@@ -502,7 +504,7 @@ export class CalcSheet extends LISS({
         //@ts-ignore
         this.host.addEventListener("cell_edit_start", (ev: CustomEvent<Cell>) => {
 
-            this.#tbody.classList.toggle("cell_edit", true);
+            this.host.classList.toggle("cell_edit", true);
 
             const cell = ev.detail;
 
@@ -558,7 +560,7 @@ export class CalcSheet extends LISS({
 
             console.warn("edit_end");
 
-            this.#tbody.classList.toggle("cell_edit", false);
+            this.host.classList.toggle("cell_edit", false);
 
             const cell = ev.detail;
 

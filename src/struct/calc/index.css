@@ -76,9 +76,20 @@
     }
 }
 
-/* TODO */
-:host tbody.cell_edit .cursor::after {
-    border: none;
+:host(.cell_edit) .cursor {
+    display: none;
+}
+
+:host {
+
+    .cursor {
+        position: absolute;
+        padding: 0;
+        box-sizing: border-box;
+        background: none;
+        border: 2px solid #398ee7;
+        pointer-events: none;
+    }
 }
 
 :host td {
@@ -91,24 +102,6 @@
 
     &[contenteditable] {
         outline: 0px solid transparent;
-    }
-
-    &.cursor {
-        position: relative;
-
-        &::after {
-            pointer-events: none;
-
-            position: absolute;
-            display: block;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            border: 2px solid #398ee7;
-            content: "";
-            box-sizing: border-box;
-        }
     }
 
     &.highlight {
