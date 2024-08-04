@@ -128,6 +128,28 @@ for(let i = 0; i < s_$formula.length; ++i) {
     s_$form.getCells("A1:D4").toggleClass("align-center")
 }
 
+const sheet_recopie_motivation = await LISS.qs('#sheet_recopie_motivation');
+
+sheet_recopie_motivation.getCells("A1:D4").toggleClass("align-center").content = [
+    "Conso/jour", "Crayons", "Gommes", "Total (jour)",
+    "01/01"  , 2, 3, "=B2+C2", 
+    "02/01"  , 4, 1, "=C3+C3", 
+    "Total (prod)"  , "=B2+B3", "=C2+C3", "=D2+D3", 
+];
+sheet_recopie_motivation.getCells("A1:D1").toggleClass("bold");
+sheet_recopie_motivation.getCells("A2:A4").toggleClass("bold");
+
+const sheet_recopie_motivation_empty = await LISS.qs('#sheet_recopie_motivation_empty');
+
+sheet_recopie_motivation_empty.getCells("A1:D4").toggleClass("align-center").content = [
+    "Conso/jour", "Crayons", "Gommes", "Total (jour)",
+    "01/01"  , 2, 3, undefined, 
+    "02/01"  , 4, 1, undefined, 
+    "Total (prod)"  , undefined, undefined, undefined
+];
+sheet_recopie_motivation_empty.getCells("A1:D1").toggleClass("bold");
+sheet_recopie_motivation_empty.getCells("A2:A4").toggleClass("bold");
+
 // test
 const c = `
 <table id="un">

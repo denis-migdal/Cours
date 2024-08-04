@@ -30,7 +30,7 @@ export class CalcFormula extends LISS({
 }) {
 
     #input = document.createElement('pre');
-    #cursor !: CellList;
+    #sheet  !: CalcSheet;
     #cur_cell: Cell|null = null;
     #onInput: (ev: Event) => void;
 
@@ -39,15 +39,13 @@ export class CalcFormula extends LISS({
 
         this.content.append( this.#input );
 
-        //TODO: focusin  => set textContent too...
-        //TODO: focusout => validate changes...
-
         this.#input.addEventListener('focusout', () => {
 
             if( this.#cur_cell === null )
                 return;
 
-            this.#cursor.content = this.#input.textContent!;
+            this.#sheet.cursor.content = this.#input.textContent!;
+            this.#sheet.states.cell_edit.state = null;
         });
 
         this.#input.addEventListener('focusin', () => {
@@ -55,8 +53,7 @@ export class CalcFormula extends LISS({
             if( this.#cur_cell === null )
                 return;
 
-            this.#cur_cell!.dispatchEvent( new CustomEvent('focusin', {bubbles: true}) );
-
+            this.#sheet.states.cell_edit.state = this.#cur_cell;
             //this.#cur_cell!.textContent = this.#input.textContent!;
         });
 
@@ -70,7 +67,6 @@ export class CalcFormula extends LISS({
 
         this.#onInput = (ev: Event) => {
 
-            console.warn(ev);
             //@ts-ignore
             if( ev.detail === true)
                 return;
@@ -80,8 +76,8 @@ export class CalcFormula extends LISS({
 
     syncTo(sheet: CalcSheet) {
 
-        const cursor = sheet.cursor;
-        this.#cursor = cursor;
+        this.#sheet = sheet;
+        const cursor = this.#sheet.cursor;
 
         cursor.addEventListener('change', (_: any) => {
 

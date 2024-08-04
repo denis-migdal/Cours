@@ -76,6 +76,11 @@
     }
 }
 
+/* TODO */
+:host tbody.cell_edit .cursor::after {
+    border: none;
+}
+
 :host td {
     background-color: white;
     white-space: pre;

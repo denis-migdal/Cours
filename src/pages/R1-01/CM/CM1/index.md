@@ -104,59 +104,62 @@ Lorsque la cellule d'une formule entre en mode édition, les différentes réfé
 
 ## Poignée de recopie
 
-Vous vous doutez bien que si, dans l'exemple précédent, on avait des centaines de lignes, on préférerait éviter d'avoir à recopier la formule des centaines de fois.
+Un tableur permet de faire des calculs sur des séries de données. Il n'est ainsi par rare d'avoir une même formule appliquée sur plusieurs lignes (et/ou colonnes) différentes :
 
-Vous remarquerez que lorsque vous sélectionnez une cellule, un petit carré bleu en bas à droite apparaît. Il s'agit de la **poignée de recopie**. En cliquant dessus puis en déplaçant le curseur tout en maintenant le click, vous pourrez **étendre** son contenu.
+<center>
+    <calc-sheet id="sheet_recopie_motivation" cols=4 rows=4></calc-sheet>
+</center>
 
-Si le contenu est un chiffre, une lettre, ou une date, le tableur essayera de déterminer la valeur suivante :
+Bien évidemment, si notre feuille de calcul comporte de très nombreuses lignes (ou colonnes), on préfère éviter d'avoir à recopier la même formule moult fois. Pour cela on utilise la **poignée de recopie**. La poignée de recopie est un petit carré bleu en bas à droite de votre sélection. En cliquant/glissant dessus, vous recopiez le contenu de votre sélection dans la direction de votre choix.
+
+Si la sélection est une formule, la recopie modifie les coordonnées de ses références, qui sont alors dites **relatives**. Ainsi, si vous écrivez une formule pour calculer la somme d'une ligne (ou d'une colonne) donnée, vous pouvez recopier cette formule (avec la poignée de recopie, ou en copiant/collant) à la ligne (ou colonne) suivante pour calculer la somme de la ligne (ou colonne) suivante :
+
+<center>
+    <calc-sheet id="sheet_recopie_motivation_empty" cols=4 rows=4></calc-sheet>
+</center>
+
+Plus précisément le tableur regarde la différence de lignes et de colonnes entre la cellule source (contenu à copier) et la cellule de destination (là où copier), puis l'applique à chaque références relatives de la formule.
+
+Par exemple, si la source est en `A4`, et la destination en `B1`, il y a `+1` colonne et `-3` lignes de différence. Ainsi si la formule contient `C4`, la référence sera remplacée par `D1` (`C+1=D` et `4-3=1`).
+
+💡 Si vous utilisez la poignée de recopie pour recopier un chiffre, ou une date, le tableur tentera de déterminer la valeur suivante :
+
+<todo></todo>
 
 <center>
     <img src="./img/étendre-1.png"/>
     <img src="./img/étendre-2.png"/>
 </center>
-
-Dans le cas d'une formule, la formule est recopiée, mais les références des cellules modifiées. Si vous étendez :
-- sur la ligne : les lignes des références sont modifiées.
-- sur la colonne : les colonnes des références sont modifiées.
-
 <center>
     <img src="./img/étendre-form-1.png"/>
     <img src="./img/étendre-form-2.png"/>
     <img src="./img/étendre-form-3.png"/>
 </center>
 
-## Références relatives et absolues
+## Références absolues
 
-L'exemple précédent est un tableau d'addition, cependant lorsqu'on étend la formule, toutes les références sont modifiées.
-Par exemple, la cellule D2 contient "=D1+C2" quand on souhaiterait qu'elle contienne "=D1+A2", i.e. sans modifier la colonne de la seconde référence.
-
-Quand la ligne (ou la colonne) change lorsqu'on étend la formule, on dit qu'elle est **relative**. Pour empêcher sa modification, il faut que la ligne (ou la colonne) soit absolue. Pour cela on préfixe l'identifiant de la ligne (ou de la colonne) par "$". Lorsque la ligne et la colonne d'une référence sont absolues, la référence est aussi dite absolue :
-
-<center>
-    <img src="./img/étendre-abs-form-1.png"/>
-    <img src="./img/étendre-abs-form-2.png"/>
-    <img src="./img/étendre-abs-form-3.png"/>
-    <img src="./img/étendre-abs-form-4.png"/>
-</center>
+Dans certains cas, on souhaite **fixer** la ligne et/ou la colonne. À cette fin, on préfixe identifiant de ligne et/ou de colonne par un `$`. Ainsi, la ligne et/ou la colonne ne sera pas modifiée(s) lors de la recopie :
 
 <div style='display: flex'>
     <div style="text-align:center">
-        <strong>A1</strong>
+        <strong>=A1</strong>
         <calc-sheet id="sheet____formula" cols=4 rows=4></calc-sheet>
     </div>
     <div style="text-align:center">
-        <strong>$A1</strong>
+        <strong>=$A1</strong>
     <calc-sheet id="sheet_x__formula" cols=4 rows=4></calc-sheet>
     </div>
     <div style="text-align:center">
-        <strong>A$1</strong>
+        <strong>=A$1</strong>
     <calc-sheet id="sheet__x_formula" cols=4 rows=4></calc-sheet>
     </div>
     <div style="text-align:center">
-        <strong>$A$1</strong>
+        <strong>=$A$1</strong>
     <calc-sheet id="sheet_xx_formula" cols=4 rows=4></calc-sheet>
     </div>
 </div>
+
+💡 Lorsque la ligne et la colonne sont fixée, la référence est dite **absolue**.
 
 ## Libre Office Calc
 

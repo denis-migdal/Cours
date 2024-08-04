@@ -84,55 +84,53 @@
 <p>Pour ajouter la référence d&#39;une cellule à une formule, vous pouvez soit l&#39;écrire à la main, soit cliquer sur la cellule lors de l&#39;édition de la formule (<em>non implémenté ici</em>).</p>
 <p>Lorsque la cellule d&#39;une formule entre en mode édition, les différentes références de cellule utilisées par la cellule sont indiquées par un cadre. Vous pouvez alors modifier une référence en cliquant-glissant son cadre (<em>non implémenté ici</em>).</p>
 <h2 id="poignée-de-recopie">Poignée de recopie</h2>
-<p>Vous vous doutez bien que si, dans l&#39;exemple précédent, on avait des centaines de lignes, on préférerait éviter d&#39;avoir à recopier la formule des centaines de fois.</p>
-<p>Vous remarquerez que lorsque vous sélectionnez une cellule, un petit carré bleu en bas à droite apparaît. Il s&#39;agit de la <strong>poignée de recopie</strong>. En cliquant dessus puis en déplaçant le curseur tout en maintenant le click, vous pourrez <strong>étendre</strong> son contenu.</p>
-<p>Si le contenu est un chiffre, une lettre, ou une date, le tableur essayera de déterminer la valeur suivante :</p>
+<p>Un tableur permet de faire des calculs sur des séries de données. Il n&#39;est ainsi par rare d&#39;avoir une même formule appliquée sur plusieurs lignes (et/ou colonnes) différentes :</p>
+<center>
+    <calc-sheet id="sheet_recopie_motivation" cols=4 rows=4></calc-sheet>
+</center>
+
+<p>Bien évidemment, si notre feuille de calcul comporte de très nombreuses lignes (ou colonnes), on préfère éviter d&#39;avoir à recopier la même formule moult fois. Pour cela on utilise la <strong>poignée de recopie</strong>. La poignée de recopie est un petit carré bleu en bas à droite de votre sélection. En cliquant/glissant dessus, vous recopiez le contenu de votre sélection dans la direction de votre choix.</p>
+<p>Si la sélection est une formule, la recopie modifie les coordonnées de ses références, qui sont alors dites <strong>relatives</strong>. Ainsi, si vous écrivez une formule pour calculer la somme d&#39;une ligne (ou d&#39;une colonne) donnée, vous pouvez recopier cette formule (avec la poignée de recopie, ou en copiant/collant) à la ligne (ou colonne) suivante pour calculer la somme de la ligne (ou colonne) suivante :</p>
+<center>
+    <calc-sheet id="sheet_recopie_motivation_empty" cols=4 rows=4></calc-sheet>
+</center>
+
+<p>Plus précisément le tableur regarde la différence de lignes et de colonnes entre la cellule source (contenu à copier) et la cellule de destination (là où copier), puis l&#39;applique à chaque références relatives de la formule.</p>
+<p>Par exemple, si la source est en <code>A4</code>, et la destination en <code>B1</code>, il y a <code>+1</code> colonne et <code>-3</code> lignes de différence. Ainsi si la formule contient <code>C4</code>, la référence sera remplacée par <code>D1</code> (<code>C+1=D</code> et <code>4-3=1</code>).</p>
+<p>💡 Si vous utilisez la poignée de recopie pour recopier un chiffre, ou une date, le tableur tentera de déterminer la valeur suivante :</p>
+<p><todo></todo></p>
 <center>
     <img src="./img/étendre-1.png"/>
     <img src="./img/étendre-2.png"/>
 </center>
-
-<p>Dans le cas d&#39;une formule, la formule est recopiée, mais les références des cellules modifiées. Si vous étendez :</p>
-<ul>
-<li>sur la ligne : les lignes des références sont modifiées.</li>
-<li>sur la colonne : les colonnes des références sont modifiées.</li>
-</ul>
 <center>
     <img src="./img/étendre-form-1.png"/>
     <img src="./img/étendre-form-2.png"/>
     <img src="./img/étendre-form-3.png"/>
 </center>
 
-<h2 id="références-relatives-et-absolues">Références relatives et absolues</h2>
-<p>L&#39;exemple précédent est un tableau d&#39;addition, cependant lorsqu&#39;on étend la formule, toutes les références sont modifiées.
-Par exemple, la cellule D2 contient &quot;=D1+C2&quot; quand on souhaiterait qu&#39;elle contienne &quot;=D1+A2&quot;, i.e. sans modifier la colonne de la seconde référence.</p>
-<p>Quand la ligne (ou la colonne) change lorsqu&#39;on étend la formule, on dit qu&#39;elle est <strong>relative</strong>. Pour empêcher sa modification, il faut que la ligne (ou la colonne) soit absolue. Pour cela on préfixe l&#39;identifiant de la ligne (ou de la colonne) par &quot;$&quot;. Lorsque la ligne et la colonne d&#39;une référence sont absolues, la référence est aussi dite absolue :</p>
-<center>
-    <img src="./img/étendre-abs-form-1.png"/>
-    <img src="./img/étendre-abs-form-2.png"/>
-    <img src="./img/étendre-abs-form-3.png"/>
-    <img src="./img/étendre-abs-form-4.png"/>
-</center>
-
+<h2 id="références-absolues">Références absolues</h2>
+<p>Dans certains cas, on souhaite <strong>fixer</strong> la ligne et/ou la colonne. À cette fin, on préfixe identifiant de ligne et/ou de colonne par un <code>$</code>. Ainsi, la ligne et/ou la colonne ne sera pas modifiée(s) lors de la recopie :</p>
 <div style='display: flex'>
     <div style="text-align:center">
-        <strong>A1</strong>
+        <strong>=A1</strong>
         <calc-sheet id="sheet____formula" cols=4 rows=4></calc-sheet>
     </div>
     <div style="text-align:center">
-        <strong>$A1</strong>
+        <strong>=$A1</strong>
     <calc-sheet id="sheet_x__formula" cols=4 rows=4></calc-sheet>
     </div>
     <div style="text-align:center">
-        <strong>A$1</strong>
+        <strong>=A$1</strong>
     <calc-sheet id="sheet__x_formula" cols=4 rows=4></calc-sheet>
     </div>
     <div style="text-align:center">
-        <strong>$A$1</strong>
+        <strong>=$A$1</strong>
     <calc-sheet id="sheet_xx_formula" cols=4 rows=4></calc-sheet>
     </div>
 </div>
 
+<p>💡 Lorsque la ligne et la colonne sont fixée, la référence est dite <strong>absolue</strong>.</p>
 <h2 id="libre-office-calc">Libre Office Calc</h2>
 <p>Dans le cadre des TP, les feuilles de calculs seront enregistrées dans des fichiers d&#39;extension <code>.ods</code>. Pour les manipuler, nous utiliserons le logiciel <strong>Libre Office Calc</strong>.</p>
 <p>💡 La documentation de Libre Office Calc est disponible sur <a href="https://help.libreoffice.org/latest/fr/text/swriter/main0000.html">libreoffice.org</a>.</p>

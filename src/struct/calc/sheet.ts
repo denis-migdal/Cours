@@ -136,10 +136,50 @@ function parseInput( str: string ): RawContentType {
     return str;
 }
 
+class State<T> {
+
+    #state : T|null = null;
+    #target: EventTarget;
+    #name  : string;
+
+    constructor(target: EventTarget, name: string) {
+        this.#target = target;
+        this.#name   = name;
+    }
+
+    get state() {
+        return this.#state;
+    }
+
+    set state(state: T|null) {
+
+        console.warn("state", this.#state, state);
+
+        if( this.#state === state)
+            return;
+
+        let prev_state = this.#state;
+        this.#state = state;
+        
+
+        if( prev_state !== null)
+            this.#target.dispatchEvent( new CustomEvent(`${this.#name}_end`, {detail: prev_state}) );            
+
+        if( state !== null )
+            this.#target.dispatchEvent( new CustomEvent(`${this. #name}_start`, {detail: state}) );
+    }
+}
+
+const States = {
+    "cell_edit": State<Cell>
+ } as const;
+
 export class CalcSheet extends LISS({
     css,
     attributes: ["cols", "rows", "ro"]
 }) {
+
+    states = Object.fromEntries( Object.entries(States).map( ([n,s]) => [n, new s(this.host, n)] as const ));
 
     #selection = new CellList(this, []);
     #cursor    = new CellList(this, []);
@@ -451,12 +491,20 @@ export class CalcSheet extends LISS({
 
             const target = ev.target as HTMLElement;
 
-            this.removeCopyHighlight();
+            this.removeCopyHighlight(); // TODO: move to cell_edit_end ?
 
             if( target.tagName !== "TD")
                 return;
 
-            const cell = ev.target as Cell;
+            this.states.cell_edit.state = target as Cell;
+        });
+
+        //@ts-ignore
+        this.host.addEventListener("cell_edit_start", (ev: CustomEvent<Cell>) => {
+
+            this.#tbody.classList.toggle("cell_edit", true);
+
+            const cell = ev.detail;
 
             if(cell.rawContent instanceof Formula) {
 
@@ -503,18 +551,16 @@ export class CalcSheet extends LISS({
             } else {
                 cell.textContent = defaultFormat(cell.rawContent);
             }
-        });
-        //TODO input + remove (focusout)
+        })
 
-        this.content.addEventListener("focusout", ev => {
+        //@ts-ignore
+        this.host.addEventListener("cell_edit_end", (ev: CustomEvent<Cell>) => {
 
-            const target = ev.target as HTMLElement;
-            this.removeHighlights();
+            console.warn("edit_end");
 
-            if( target.tagName !== "TD")
-                return;
+            this.#tbody.classList.toggle("cell_edit", false);
 
-            const cell = target as Cell;
+            const cell = ev.detail;
 
             cell.removeEventListener("input", onInput2); // to be safe
             cell.toggleAttribute("contenteditable", false);
@@ -525,6 +571,20 @@ export class CalcSheet extends LISS({
             // leave
             this.#selection.clear();
             this.#cursor.clear();
+
+        });
+
+        this.content.addEventListener("focusout", ev => {
+
+            console.log("f-out", ev);
+
+            const target = ev.target as HTMLElement;
+            this.removeHighlights(); // TODO: only cell_edit ??
+
+            if( target.tagName !== "TD")
+                return;
+
+            this.states.cell_edit.state = null;
         });
 
         let t = this.#tbody.querySelectorAll('td');
