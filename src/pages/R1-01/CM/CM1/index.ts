@@ -30,21 +30,36 @@ function euros(value: number) {
 s_formula.getCells("A2:A4").content = [23  , 12, 44];
 s_formula.getCells("B2:B4").setFormat(euros).content = [0.2, 0.3, 0.4];
 
-/*
-function add(row: number,col:number) {
-    return s_formula.getCells(row, 1).content[0] + s_formula.getCells(row, 2).content[0];
-}
-
-add.toString = (row: number,col:number) => `=A${row}+B${row}`;*/
-
 s_formula.getCells("C2:C4").content = [
     "=A2*B2",
     "=A3*B3",
     "=A4*B4"
-]; //TODO...
-//s_formula.getCells("C2").content = () => s_formula.getCells('A2').content + s_formula.getCells('B2').content;
+];
+
+/**/
 
 
+const s_complex_formula = await LISS.qs('#sheet_complex_formula');
+
+s_complex_formula.getCells("A1:C1").toggleClass("bold")
+                           .toggleClass("align-center")
+                           .content = [
+                                "X",
+                                "Y",
+                                "Formule"
+                           ];
+
+s_complex_formula.getCells("A2:B4").content = [
+    2, 4,
+    1, 5,
+    4, 6];
+
+s_complex_formula.getCells("C2").content =
+`= A2*B2
+ +A3*B3
+ +A4*B4`;
+
+/**/
 
 const s_types = await LISS.qs('#sheet_types');
 

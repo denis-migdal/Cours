@@ -7,10 +7,9 @@ import css from "!!raw-loader!./index.css";
 export type ValueType = string|number|Date|boolean;
 export type RawContentType = ValueType|Formula;
 
-type Cell = HTMLTableCellElement & {
+export type Cell = HTMLTableCellElement & {
     rawContent: RawContentType,
     format: (v: string|number) => string,
-    formula: (r: number, c: number) => ValueType,
     is_ro: boolean
 };
 
@@ -393,7 +392,9 @@ export class CalcSheet extends LISS({
 
         const onInput2 = (ev: Event) => {
             this.removeHighlights();
-            onInput(ev);
+            // @ts-ignore
+            if(ev.detail !== true)
+                onInput(ev);
         }
 
         //TODO: here...
@@ -403,8 +404,6 @@ export class CalcSheet extends LISS({
 
             if( target.tagName !== "TD")
                 return;
-
-            console.warn('f-in');
 
             const cell = ev.target as Cell;
 
@@ -437,6 +436,8 @@ export class CalcSheet extends LISS({
                     cur_offset = ranges[i].end;
                 }
 
+                cell.replaceChildren( ...children );
+
                 for(let range in ranges_colors ) {
 
                     const cell = this.getCells(range).cells;
@@ -446,8 +447,6 @@ export class CalcSheet extends LISS({
 
                     this.highlight(beg, end, ranges_colors[range]);
                 }
-
-                cell.replaceChildren( ...children );
 
                 cell.addEventListener('input', onInput2 ); // remove colors...
             } else {
@@ -592,10 +591,6 @@ export class CalcSheet extends LISS({
                     cell.textContent = (cell as any).format(value);
                     cell.setAttribute('data-type', type);
                 }
-
-                //TODO: remove...
-                if( "formula" in cell)
-                    new CellList(this, [cell]).content = (cell as any).formula( ...this.#cellPos(cell) );
             }
 
             this.#isUpdating = false;
@@ -625,14 +620,6 @@ export class CellList extends EventTarget {
             cell.classList.toggle(css_class, enforce);
 
         return this;
-    }
-
-    set formula(formula: (row: number, col: number) => (string|number) ) {
-
-        for(let cell of this.#cells)
-            cell.formula = formula;
-
-        this.#sheet.update();
     }
 
     setFormat(format: (raw: ValueType) => string) {

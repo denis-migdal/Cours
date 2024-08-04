@@ -55,15 +55,13 @@ Une cellule peut contenir des valeur de type :
 - **date** : par défaut aligné à droite ;
 - **formule** : calcul la valeur de la cellule à partir d'autres cellules (cf suite).
 
-<todo>et dans l'autre sens...</todo>
-
-Les cellules sont initialement vides. Pour **remplacer** le contenu d'une cellule, sélectionnez-là, puis tapez sa valeur au clavier, avant de valider en appuyant sur la touche `⏎` (entrée). Vous remarquerez que sa valeur s'affiche dans la barre de formule, en haut à droite.
+Les cellules sont initialement vides. Pour **remplacer** le contenu d'une cellule, sélectionnez-là, puis tapez sa valeur au clavier, avant de valider en appuyant sur la touche `⏎` (entrée). Vous remarquerez que sa valeur s'affiche dans la barre de formule, en haut à droite :
 
 <center>
     <calc-sheet id="sheet_types" cols=5 rows=4></calc-sheet>
 </center>
 
-💡 Pour **éditer** la valeur d'une cellule, double-cliquez dessus (ou en cliquant sur la barre des formules), puis appuyez sur la touche `⏎` (entrée) pour valider vos modifications.
+💡 Pour **éditer** la valeur d'une cellule, double-cliquez dessus (ou cliquez sur la barre des formules), puis appuyez sur la touche `⏎` (entrée) pour valider vos modifications.
 
 💡 Pour **supprimer** la valeur d'une cellule, sélectionnez-là puis appuyez sur la touche `⌦` (supprimer).
 
@@ -77,7 +75,7 @@ Un intérêt majeur des tableurs et des feuilles de calculs sont les **formules*
 
 💡 Modifier les cellules des colonnes `Quantités` ou `Prix unitaire` mettra automatiquement à jour celles de la colonne `Prix total`.
 
-💡 Par défaut, seule la valeur s'affiche dans la cellule. La formule d'une cellule affiche lorsqu'on édite la cellule, ainsi que dans la barre de formule.
+💡 Par défaut, seule la valeur s'affiche dans la cellule. La formule d'une cellule s'affiche dans la barre de formule, ainsi que lors de l'édition de la cellule.
 
 ### Écrire une formule
 
@@ -91,6 +89,18 @@ Les opérandes peuvent être une valeur ou une **référence** à une autre cell
 💡 Bien évidemment, comme en mathématiques vous pouvez utiliser des parenthèses afin de déterminer l'ordre des opérations.
 
 💡 En cas d'erreur dans la formule, la cellule affichera `#VALEUR !` (*non implémenté ici*).
+
+⚠ Les formules peuvent très vite devenir complexes et difficiles à lire. N'hésitez donc pas à indenter votre formule en utilisant des retours à la ligne (`⇧+↵`) afin de faciliter sa lecture. Sous Libre Office, vous pouvez cliquer sur le triangle à droite de la barre de formule pour l'étendre :
+
+<center>
+    <calc-sheet id="sheet_complex_formula" cols=3 rows=4></calc-sheet>
+</center>
+
+### Ajouter/modifier la référence d'une cellule dans une formule
+
+Pour ajouter la référence d'une cellule à une formule, vous pouvez soit l'écrire à la main, soit cliquer sur la cellule lors de l'édition de la formule (*non implémenté ici*).
+
+Lorsque la cellule d'une formule entre en mode édition, les différentes références de cellule utilisées par la cellule sont indiquées par un cadre. Vous pouvez alors modifier une référence en cliquant-glissant son cadre (*non implémenté ici*).
 
 ## Poignée de recopie
 
@@ -129,19 +139,36 @@ Quand la ligne (ou la colonne) change lorsqu'on étend la formule, on dit qu'ell
     <img src="./img/étendre-abs-form-4.png"/>
 </center>
 
-## L'interface
+## Libre Office Calc
 
-<todo></todo>
-[Interface ?]
-- sélection / curseur.
-- différentes feuilles.
-+ navigation
+Dans le cadre des TP, les feuilles de calculs seront enregistrées dans des fichiers d'extension `.ods`. Pour les manipuler, nous utiliserons le logiciel **Libre Office Calc**.
 
-+ Ctrl+S / +Ctrl+Z/U
+💡 La documentation de Libre Office Calc est disponible sur [libreoffice.org](https://help.libreoffice.org/latest/fr/text/swriter/main0000.html).
 
-## Documentation
+### Feuilles de calculs
 
-La documentation de Libre Office Calc est disponible sur [libreoffice.org](https://help.libreoffice.org/latest/fr/text/swriter/main0000.html).
+Un fichier contient différentes feuilles de calculs, indiquées en bas à droite :
+
+<center>
+    <img src="../../../../assets/tableur/img/feuilles.png" />
+</center>
+
+ Vous pouvez alors :
+- **changer de feuille**, en cliquant dessus ;
+- **renommer une feuille**, en double-cliquant dessus ;
+- **ajouter une feuille**, en cliquant sur l'icône à gauche ;
+- **déplacer une feuille**, en la glissant-déposant ;
+- **supprimer une feuille**, en cliquant-droit dessus puis sur `Supprimer des feuilles...`.
+
+### Raccourcit claviers
+
+
+- `^+S` : sauvegarder ;
+- `^+Z` : annuler la dernière modification (`^+⇧+Z` annuler l'annulation) ;
+- `^+F` : rechercher ;
+- `^+X`/`^+C`/`^+V` : couper/copier/coller.
+
+⚠ Pensez à sauvegarder **très régulièrement** votre travail, cela doit devenir un réflexe après chaque modification.
 
 </main>
     </body>

@@ -50,13 +50,12 @@
 <li><strong>date</strong> : par défaut aligné à droite ;</li>
 <li><strong>formule</strong> : calcul la valeur de la cellule à partir d&#39;autres cellules (cf suite).</li>
 </ul>
-<p><todo>et dans l&#39;autre sens...</todo></p>
-<p>Les cellules sont initialement vides. Pour <strong>remplacer</strong> le contenu d&#39;une cellule, sélectionnez-là, puis tapez sa valeur au clavier, avant de valider en appuyant sur la touche <code>⏎</code> (entrée). Vous remarquerez que sa valeur s&#39;affiche dans la barre de formule, en haut à droite.</p>
+<p>Les cellules sont initialement vides. Pour <strong>remplacer</strong> le contenu d&#39;une cellule, sélectionnez-là, puis tapez sa valeur au clavier, avant de valider en appuyant sur la touche <code>⏎</code> (entrée). Vous remarquerez que sa valeur s&#39;affiche dans la barre de formule, en haut à droite :</p>
 <center>
     <calc-sheet id="sheet_types" cols=5 rows=4></calc-sheet>
 </center>
 
-<p>💡 Pour <strong>éditer</strong> la valeur d&#39;une cellule, double-cliquez dessus (ou en cliquant sur la barre des formules), puis appuyez sur la touche <code>⏎</code> (entrée) pour valider vos modifications.</p>
+<p>💡 Pour <strong>éditer</strong> la valeur d&#39;une cellule, double-cliquez dessus (ou cliquez sur la barre des formules), puis appuyez sur la touche <code>⏎</code> (entrée) pour valider vos modifications.</p>
 <p>💡 Pour <strong>supprimer</strong> la valeur d&#39;une cellule, sélectionnez-là puis appuyez sur la touche <code>⌦</code> (supprimer).</p>
 <h2 id="formules">Formules</h2>
 <p>Un intérêt majeur des tableurs et des feuilles de calculs sont les <strong>formules</strong>. Une formule permet de calculer la valeur d&#39;une cellule à partir d&#39;autres cellules :</p>
@@ -65,7 +64,7 @@
 </center>
 
 <p>💡 Modifier les cellules des colonnes <code>Quantités</code> ou <code>Prix unitaire</code> mettra automatiquement à jour celles de la colonne <code>Prix total</code>.</p>
-<p>💡 Par défaut, seule la valeur s&#39;affiche dans la cellule. La formule d&#39;une cellule affiche lorsqu&#39;on édite la cellule, ainsi que dans la barre de formule.</p>
+<p>💡 Par défaut, seule la valeur s&#39;affiche dans la cellule. La formule d&#39;une cellule s&#39;affiche dans la barre de formule, ainsi que lors de l&#39;édition de la cellule.</p>
 <h3 id="écrire-une-formule">Écrire une formule</h3>
 <p>Une formule commence toujours par le signe <code>=</code> suivi d&#39;une <strong>expression</strong>. Comme pour une formule mathématique, vous pouvez utiliser plusieurs <strong>opérateurs</strong> :</p>
 <ul>
@@ -76,6 +75,14 @@
 <p>Les opérandes peuvent être une valeur ou une <strong>référence</strong> à une autre cellule. Chaque référence de cellule (i.e. son identifiant) est remplacée par la valeur de la cellule. Par exemple, la formule <code>=B2*2</code> est calculée comme la valeur de la cellule <code>B2</code> multipliée par <code>2</code>.</p>
 <p>💡 Bien évidemment, comme en mathématiques vous pouvez utiliser des parenthèses afin de déterminer l&#39;ordre des opérations.</p>
 <p>💡 En cas d&#39;erreur dans la formule, la cellule affichera <code>#VALEUR !</code> (<em>non implémenté ici</em>).</p>
+<p>⚠ Les formules peuvent très vite devenir complexes et difficiles à lire. N&#39;hésitez donc pas à indenter votre formule en utilisant des retours à la ligne (<code>⇧+↵</code>) afin de faciliter sa lecture. Sous Libre Office, vous pouvez cliquer sur le triangle à droite de la barre de formule pour l&#39;étendre :</p>
+<center>
+    <calc-sheet id="sheet_complex_formula" cols=3 rows=4></calc-sheet>
+</center>
+
+<h3 id="ajoutermodifier-la-référence-dune-cellule-dans-une-formule">Ajouter/modifier la référence d&#39;une cellule dans une formule</h3>
+<p>Pour ajouter la référence d&#39;une cellule à une formule, vous pouvez soit l&#39;écrire à la main, soit cliquer sur la cellule lors de l&#39;édition de la formule (<em>non implémenté ici</em>).</p>
+<p>Lorsque la cellule d&#39;une formule entre en mode édition, les différentes références de cellule utilisées par la cellule sont indiquées par un cadre. Vous pouvez alors modifier une référence en cliquant-glissant son cadre (<em>non implémenté ici</em>).</p>
 <h2 id="poignée-de-recopie">Poignée de recopie</h2>
 <p>Vous vous doutez bien que si, dans l&#39;exemple précédent, on avait des centaines de lignes, on préférerait éviter d&#39;avoir à recopier la formule des centaines de fois.</p>
 <p>Vous remarquerez que lorsque vous sélectionnez une cellule, un petit carré bleu en bas à droite apparaît. Il s&#39;agit de la <strong>poignée de recopie</strong>. En cliquant dessus puis en déplaçant le curseur tout en maintenant le click, vous pourrez <strong>étendre</strong> son contenu.</p>
@@ -107,21 +114,31 @@ Par exemple, la cellule D2 contient &quot;=D1+C2&quot; quand on souhaiterait qu&
     <img src="./img/étendre-abs-form-4.png"/>
 </center>
 
-<h2 id="linterface">L&#39;interface</h2>
-<p><todo></todo>
-[Interface ?]</p>
+<h2 id="libre-office-calc">Libre Office Calc</h2>
+<p>Dans le cadre des TP, les feuilles de calculs seront enregistrées dans des fichiers d&#39;extension <code>.ods</code>. Pour les manipuler, nous utiliserons le logiciel <strong>Libre Office Calc</strong>.</p>
+<p>💡 La documentation de Libre Office Calc est disponible sur <a href="https://help.libreoffice.org/latest/fr/text/swriter/main0000.html">libreoffice.org</a>.</p>
+<h3 id="feuilles-de-calculs">Feuilles de calculs</h3>
+<p>Un fichier contient différentes feuilles de calculs, indiquées en bas à droite :</p>
+<center>
+    <img src="../../../../assets/tableur/img/feuilles.png" />
+</center>
+
+<p> Vous pouvez alors :</p>
 <ul>
-<li>sélection / curseur.</li>
-<li>différentes feuilles.</li>
+<li><strong>changer de feuille</strong>, en cliquant dessus ;</li>
+<li><strong>renommer une feuille</strong>, en double-cliquant dessus ;</li>
+<li><strong>ajouter une feuille</strong>, en cliquant sur l&#39;icône à gauche ;</li>
+<li><strong>déplacer une feuille</strong>, en la glissant-déposant ;</li>
+<li><strong>supprimer une feuille</strong>, en cliquant-droit dessus puis sur <code>Supprimer des feuilles...</code>.</li>
 </ul>
+<h3 id="raccourcit-claviers">Raccourcit claviers</h3>
 <ul>
-<li><p>navigation</p>
-</li>
-<li><p>Ctrl+S / +Ctrl+Z/U</p>
-</li>
+<li><code>^+S</code> : sauvegarder ;</li>
+<li><code>^+Z</code> : annuler la dernière modification (<code>^+⇧+Z</code> annuler l&#39;annulation) ;</li>
+<li><code>^+F</code> : rechercher ;</li>
+<li><code>^+X</code>/<code>^+C</code>/<code>^+V</code> : couper/copier/coller.</li>
 </ul>
-<h2 id="documentation">Documentation</h2>
-<p>La documentation de Libre Office Calc est disponible sur <a href="https://help.libreoffice.org/latest/fr/text/swriter/main0000.html">libreoffice.org</a>.</p>
+<p>⚠ Pensez à sauvegarder <strong>très régulièrement</strong> votre travail, cela doit devenir un réflexe après chaque modification.</p>
 </main>
     </body>
 </html>

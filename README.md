@@ -39,24 +39,31 @@ Motivation/Problematic first.
 
 - repo
 
+- simple
+	- edit formula : click = add ref.
+	- edit formula : move ref when moving it.
+	- `#VALEUR !`.
+	- value % => show as percent
+	- Ctrl+X/C/V : copie format + change formula
+	- Move selection (keep formula + modify other formulas)
+	- extends (repeat or formula or +1 of nbr or +1d for dates)
+
 - selection
 	- click hold (select range...)
 	- super
 	- ctrl+click (composition of selections?)
 	- extend value
-- sync from formula + print formula when editing.
 
 - Refactors/Bugs
-	- remove cell.formula
 	- selection : not class but thing over with opacity...
 	- rawValue (after formula eval - cache...) vs rawContent (can be Formula)
-	- 100% => 100.00% + unary +/-
+	- 100% => 100.00%
 	- Range <= (RangeCell/Range_:/Range union/Range intersect) => toCellList (with offset ? or Offset Range to produce new one ?)
 
-- `#VALEUR !`.
-- value % => show as percent
+- 
 - formula range token
-	- click to add cell + extend range of cell + ?
+	- show when clicking formula bar
+	- extend range of reference + ?
 - Ctrl+C/Ctrl+V
 - resize/merge cols/lines
 - ctrl+Z...

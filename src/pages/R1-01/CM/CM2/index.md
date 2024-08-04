@@ -192,6 +192,11 @@ déplacer sélections vs ajouter/supprimer
 
 <img src="img/barre-outils-edition.png"/>
 
+
+x
+- maj+ctrl+maj+V (CM2) + ctrl+M copier formattage
+- commentaires + liens (cf links)
+
 </main>
     </body>
 </html>
