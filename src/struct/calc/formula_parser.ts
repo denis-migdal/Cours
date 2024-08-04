@@ -12,6 +12,36 @@ export class Formula {
         this.#exec = exec;
         this.#ranges = ranges_token;
     }
+    
+    relativeTo( sheet: CalcSheet, drow: number, dcol: number) {
+        
+        let new_ranges = this.#ranges.map(r => {
+
+            //TODO: if range...
+            let pos = [...sheet.cellPos( sheet.getCells(r.value).cells[0] )];
+            
+            //TODO: if $...
+            pos[0] += drow;
+            pos[1] += dcol;
+
+            return `${String.fromCharCode(65+pos[1]-1)}${pos[0]}`;
+        });
+
+        let new_formula = "";
+
+        let offset = 0;
+        for(let i = 0; i < this.#ranges.length; ++i) {
+
+            new_formula += this.#str.slice(offset, this.#ranges[i].beg);
+            new_formula += new_ranges[i];
+
+            offset = this.#ranges[i].end;
+        }
+        new_formula += this.#str.slice(offset);
+        
+        //can be optimized...
+        return parse_formula( new_formula );
+    }
 
     get rangesToken() {
         return this.#ranges;
@@ -112,15 +142,21 @@ class Node {
     
 }
 
+function toNumber(a: unknown): number {
+    if(a === undefined)
+        return 0;
+    return a;
+}
+
 const op_impl = {
-    '%': (_: CalcSheet, a: number) => a/100,
-    'u.+': (_: CalcSheet, a: number) => +a,
-    'u.-': (_: CalcSheet, a: number) => -a,
-    '*': (_: CalcSheet, a: number, b: number) => a*b,
-    '/': (_: CalcSheet, a: number, b: number) => a/b,
-    '+': (_: CalcSheet, a: number, b: number) => a+b,
-    '-': (_: CalcSheet, a: number, b: number) => a-b,
-    '^': (_: CalcSheet, a: number, b: number) => Math.pow(a,b),
+    '%': (_: CalcSheet, a: unknown) => toNumber(a)/100,
+    'u.+': (_: CalcSheet, a: unknown) => +toNumber(a),
+    'u.-': (_: CalcSheet, a: unknown) => -toNumber(a),
+    '*': (_: CalcSheet, a: unknown, b: unknown) => toNumber(a)*toNumber(b),
+    '/': (_: CalcSheet, a: unknown, b: unknown) => toNumber(a)/toNumber(b),
+    '+': (_: CalcSheet, a: unknown, b: unknown) => toNumber(a)+toNumber(b),
+    '-': (_: CalcSheet, a: unknown, b: unknown) => toNumber(a)-toNumber(b),
+    '^': (_: CalcSheet, a: unknown, b: unknown) => Math.pow(toNumber(a),toNumber(b) ),
     '&': (_: CalcSheet, a: string, b: string) => `${defaultFormat(a)}${defaultFormat(b)}`,
     '=':  (_: CalcSheet, a: any, b: any) => a === b,
     '<>': (_: CalcSheet, a: any, b: any) => a !== b,

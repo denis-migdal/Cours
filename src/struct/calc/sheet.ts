@@ -299,17 +299,18 @@ export class CalcSheet extends LISS({
             if( target === this.#tbody ) {
                 if( ev.code === "KeyV" && ev.ctrlKey && this.#pastebin !== null) {
                     ev.preventDefault();
-                    const data = this.#pastebin.cells.map( c => c.rawContent );
+                    const data = this.#pastebin.cells;
                     this.#selection.content = data;
 
+                    // copy format... TODO utility thingy...
                     if( ! ev.shiftKey || ! ev.altKey ) {
-
-                        //TODO: better
                         const src = this.#pastebin.cells;
                         const dst = this.#selection.cells;
 
-                        for(let i = 0; i < src.length; ++i )
+                        for(let i = 0; i < src.length; ++i ) {
                             dst[i].className = src[i].className;
+                            //TODO: add format...
+                        }
                     }
 
                     return;
@@ -535,6 +536,9 @@ export class CalcSheet extends LISS({
 
     #cellPos(cell: HTMLTableCellElement) {
 
+        if( "pos" in cell)
+            return cell.pos as [number, number];
+
         const col = [...cell.parentElement!.children].findIndex( c => c === cell);
         const row = [...cell.parentElement!.parentElement!.children].findIndex( r => r === cell.parentElement!);
 
@@ -703,7 +707,7 @@ export class CellList extends EventTarget {
         this.#sheet.update();
     }
 
-    set content(content: RawContentType|(RawContentType)[]) {
+    set content(content: Cell|RawContentType|(RawContentType|Cell)[]) {
 
         if( Array.isArray(content) ) {
             for(let i = 0; i < content.length; ++i)
@@ -715,12 +719,28 @@ export class CellList extends EventTarget {
         if( typeof content === 'string')
             content = parseInput(content);
 
-        for(let cell of this.#cells) {
-            cell.rawContent = content;
+        let raw_val = content instanceof HTMLTableCellElement ? content.rawContent
+                                                              : content;
 
-            let value = content;
-            if( content instanceof Formula)
-                value = content.exec(this.#sheet); //TODO...
+        for(let cell of this.#cells) {
+
+            if(content instanceof HTMLTableCellElement && content.rawContent instanceof Formula ) {
+            
+                let v = content.rawContent;
+
+                const dst = this.#sheet.cellPos( cell );
+                const src = this.#sheet.cellPos(content)
+
+                const diff = [ dst[0] - src[0], dst[1] - src[1]] as const;
+
+                raw_val = v.relativeTo( this.#sheet, ...diff );
+            }
+
+            cell.rawContent = raw_val;
+
+            let value = raw_val;
+            if( raw_val instanceof Formula)
+                value = raw_val.exec(this.#sheet); //TODO...
 
             let type: string = typeof value;
             if( type === "object" && value instanceof Date )
@@ -761,6 +781,7 @@ export class CellList extends EventTarget {
 
             clone.rawContent = c.rawContent;
             clone.format     = c.format;
+            (clone as any).pos        = this.#sheet.cellPos(c);
 
             return clone;
         })

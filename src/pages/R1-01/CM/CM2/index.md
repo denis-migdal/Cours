@@ -195,6 +195,7 @@ déplacer sélections vs ajouter/supprimer
 
 x
 - maj+ctrl+maj+V (CM2) + ctrl+M copier formattage
++ astuce ctrl+X
 - commentaires + liens (cf links)
 
 </main>

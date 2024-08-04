@@ -39,12 +39,13 @@ Motivation/Problematic first.
 
 - repo
 
+- doc API...
+
 - simple
 	- edit formula : click = add ref.
 	- edit formula : move ref when moving it.
 	- `#VALEUR !`.
 	- value % => show as percent
-	- Ctrl+X/C/V : copie format + change formula
 	- Move selection (keep formula + modify other formulas)
 	- extends (repeat or formula or +1 of nbr or +1d for dates)
 
@@ -65,7 +66,6 @@ Motivation/Problematic first.
 - formula range token
 	- show when clicking formula bar
 	- extend range of reference + ?
-- Ctrl+C/Ctrl+V
 - resize/merge cols/lines
 - ctrl+Z...
 - graphs (outside).
