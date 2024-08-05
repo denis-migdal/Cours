@@ -36,7 +36,7 @@
 </center>
 
 <p>💡 Vous pouvez aussi sélectionner une cellule en indiquant son identifiant en haut à gauche, puis en appuyant sur la touche <code>⏎</code> (entrée).</p>
-<p>💡 Vous pouvez aussi déplacer le curseur grâce aux touches directionnelles. Si utilisées avec la touche <code>^</code> (contrôle) appuyée, le curseur se déplacera alors dans la direction indiquée jusqu&#39;à soit la première cellule non-vide, soit la dernière cellule non-vide avant une cellule vide :</p>
+<p>💡 Vous pouvez aussi déplacer le curseur grâce aux touches directionnelles. Si utilisées avec la touche <code>^</code> (contrôle) appuyée, le curseur se déplacera alors dans la direction indiquée jusqu&#39;à, soit la première cellule non-vide, soit la dernière cellule non-vide avant une cellule vide :</p>
 <center>
     <calc-sheet id='sheet_cursor' cols=8 rows=4></calc-sheet>
 </center>
@@ -98,15 +98,8 @@
 <p>Plus précisément le tableur regarde la différence de lignes et de colonnes entre la cellule source (contenu à copier) et la cellule de destination (là où copier), puis l&#39;applique à chaque références relatives de la formule.</p>
 <p>Par exemple, si la source est en <code>A4</code>, et la destination en <code>B1</code>, il y a <code>+1</code> colonne et <code>-3</code> lignes de différence. Ainsi si la formule contient <code>C4</code>, la référence sera remplacée par <code>D1</code> (<code>C+1=D</code> et <code>4-3=1</code>).</p>
 <p>💡 Si vous utilisez la poignée de recopie pour recopier un chiffre, ou une date, le tableur tentera de déterminer la valeur suivante :</p>
-<p><todo></todo></p>
 <center>
-    <img src="./img/étendre-1.png"/>
-    <img src="./img/étendre-2.png"/>
-</center>
-<center>
-    <img src="./img/étendre-form-1.png"/>
-    <img src="./img/étendre-form-2.png"/>
-    <img src="./img/étendre-form-3.png"/>
+    <calc-sheet id="sheet_recopie_incr" cols=4 rows=2></calc-sheet>
 </center>
 
 <h2 id="références-absolues">Références absolues</h2>

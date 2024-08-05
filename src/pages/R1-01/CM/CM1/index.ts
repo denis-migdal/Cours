@@ -150,6 +150,11 @@ sheet_recopie_motivation_empty.getCells("A1:D4").toggleClass("align-center").con
 sheet_recopie_motivation_empty.getCells("A1:D1").toggleClass("bold");
 sheet_recopie_motivation_empty.getCells("A2:A4").toggleClass("bold");
 
+const sheet_recopie_incr = await LISS.qs('#sheet_recopie_incr');
+
+sheet_recopie_incr.getCells('A1:A2').content = [ 1, new Date() ];
+
+
 // test
 const c = `
 <table id="un">

@@ -91,12 +91,11 @@ export function defaultFormat(value: RawContentType) {
     if( typeof value === "boolean")
         return value ? 'VRAI' : 'FAUX';
 
-    if( typeof value === "object" && value instanceof Date) {
+    if( value instanceof Date) {
         return value.toLocaleDateString("fr-FR");
     }
-    
-    if( typeof value === "object" && value instanceof Formula) {
-        return value.toString(); //TODO...
+    if( value instanceof Formula) {
+        return value.toString();
     }
 
     return value;
@@ -357,11 +356,11 @@ export class CalcSheet extends LISS({
                         cur = this.relativeTo(cur, d_y, d_x);
 
                         let content: RawContentType|Cell = src;
-                        let type = src.getAttribute('data-type');
-                        if( type === "number")
+                        if( typeof content.rawContent === "number")
                             content = (src.rawContent as number) + nb*(d_x + d_y);
-                        if( type === "date") {
-                            let content = new Date(src.rawContent as Date);
+                        else if( content.rawContent instanceof Date ) {
+                            console.warn("is date", nb, d_x + d_y);
+                            content = new Date(src.rawContent as Date);
                             content.setDate( content.getDate() + nb*(d_x + d_y));
                         }
 
@@ -711,8 +710,6 @@ export class CalcSheet extends LISS({
         //@ts-ignore
         this.host.addEventListener("cell_edit_end", (ev: CustomEvent<Cell>) => {
 
-            console.warn("edit_end");
-
             this.host.classList.toggle("cell_edit", false);
 
             const cell = ev.detail;
@@ -730,8 +727,6 @@ export class CalcSheet extends LISS({
         });
 
         this.content.addEventListener("focusout", ev => {
-
-            console.log("f-out", ev);
 
             const target = ev.target as HTMLElement;
             this.removeHighlights(); // TODO: only cell_edit ??
@@ -853,7 +848,7 @@ export class CalcSheet extends LISS({
 
                     //TODO: factorize...
                     let type: string = typeof value;
-                    if( type === "object" && value instanceof Date )
+                    if( value instanceof Date )
                         type="date";
 
                     cell.textContent = (cell as any).format(value);

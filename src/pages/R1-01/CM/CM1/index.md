@@ -40,7 +40,7 @@ Un curseur représenté sous la forme d'un cadre bleu indique la cellule active.
 
 💡 Vous pouvez aussi sélectionner une cellule en indiquant son identifiant en haut à gauche, puis en appuyant sur la touche `⏎` (entrée).
 
-💡 Vous pouvez aussi déplacer le curseur grâce aux touches directionnelles. Si utilisées avec la touche `^` (contrôle) appuyée, le curseur se déplacera alors dans la direction indiquée jusqu'à soit la première cellule non-vide, soit la dernière cellule non-vide avant une cellule vide :
+💡 Vous pouvez aussi déplacer le curseur grâce aux touches directionnelles. Si utilisées avec la touche `^` (contrôle) appuyée, le curseur se déplacera alors dans la direction indiquée jusqu'à, soit la première cellule non-vide, soit la dernière cellule non-vide avant une cellule vide :
 
 <center>
     <calc-sheet id='sheet_cursor' cols=8 rows=4></calc-sheet>
@@ -124,16 +124,8 @@ Par exemple, si la source est en `A4`, et la destination en `B1`, il y a `+1` co
 
 💡 Si vous utilisez la poignée de recopie pour recopier un chiffre, ou une date, le tableur tentera de déterminer la valeur suivante :
 
-<todo></todo>
-
 <center>
-    <img src="./img/étendre-1.png"/>
-    <img src="./img/étendre-2.png"/>
-</center>
-<center>
-    <img src="./img/étendre-form-1.png"/>
-    <img src="./img/étendre-form-2.png"/>
-    <img src="./img/étendre-form-3.png"/>
+    <calc-sheet id="sheet_recopie_incr" cols=4 rows=2></calc-sheet>
 </center>
 
 ## Références absolues

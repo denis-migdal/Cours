@@ -274,8 +274,6 @@ function tokenlist2Tree(tokens: Token[]): Node {
         );
     }
 
-    console.warn(op_token.value);
-
     if( op_token.value === 'u.-' ||  op_token.value === 'u.+' ) {
 
         const right  = tokens.slice(cur.idx+1);
@@ -315,14 +313,3 @@ export function parse_formula(str:string) {
 
     return new Formula(str, (sheet: CalcSheet) => node.eval(sheet), ranges );
 }
-
-const fake_sheet = null as unknown as CalcSheet;
-
-console.warn('="22"'   , parse_formula('="22"').exec(fake_sheet) );
-console.warn('=22'     , parse_formula('=22').exec(fake_sheet) );
-console.warn('=22*2'   , parse_formula('=22*2').exec(fake_sheet) );
-console.warn('=2+(2*2)', parse_formula('=2+(2*2)').exec(fake_sheet) );
-console.warn('=2+2*2'  , parse_formula('=2+(2*2)').exec(fake_sheet) );
-console.warn('=2*2+2'  , parse_formula('=2+(2*2)').exec(fake_sheet) );
-
-//extractToken("=2*2", 1);

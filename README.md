@@ -56,6 +56,7 @@ Motivation/Problematic first.
 	- extend value
 
 - Refactors/Bugs
+	- getRect/setRect : use bottom instead of top ? update when dim changes/resize ?
 	- selection : not class but thing over with opacity...
 	- rawValue (after formula eval - cache...) vs rawContent (can be Formula)
 	- 100% => 100.00%
