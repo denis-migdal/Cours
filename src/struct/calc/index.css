@@ -80,7 +80,20 @@
     display: none;
 }
 
+:host(.recopy) {
+    cursor: cell;
+}
+
 :host {
+
+    .recopy {
+        position: absolute;
+        padding: 0;
+        box-sizing: border-box;
+        cursor: cell;
+        background-color: #398ee7;
+
+    }
 
     .cursor {
         position: absolute;

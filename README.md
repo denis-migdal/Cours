@@ -62,7 +62,7 @@ Motivation/Problematic first.
 	- Range <= (RangeCell/Range_:/Range union/Range intersect) => toCellList (with offset ? or Offset Range to produce new one ?)
 	- Ctrl+C : put data in pastebin ???
 
-- 
+- poignée de recopie : supprimer quand dst dans sélection.
 - formula range token
 	- show when clicking formula bar
 	- extend range of reference + ?

@@ -171,7 +171,8 @@ class State<T> {
 }
 
 const States = {
-    "cell_edit": State<Cell>
+    "cell_edit": State<Cell>,
+    "recopy"   : State<CellList>
  } as const;
 
 export class CalcSheet extends LISS({
@@ -200,6 +201,33 @@ export class CalcSheet extends LISS({
             h.remove();
     }
 
+    setRect(target: HTMLElement, [x,y,w,h]: readonly [number,number,number,number]) {
+
+        const tbl_offset = this.content.querySelector('table')!.offsetTop;
+
+        target.style.setProperty('top'   , `${tbl_offset + y}px`);
+        target.style.setProperty('height', `${h}px`);
+
+        target.style.setProperty('left'   , `${x}px`);
+        target.style.setProperty('width', `${w}px`);
+
+    }
+
+    getRect(cells: CellList|Cell[]) {
+
+        cells = "cells" in cells ? cells.cells : cells;
+
+        const start = cells[0];
+        const end   = cells[cells.length-1];
+        
+        return [
+            start.offsetLeft,
+            start.offsetTop,
+            end.offsetLeft + end.clientWidth - start.offsetLeft,
+            end.offsetTop + end.clientHeight - start.offsetTop + 1
+        ] as const;
+    }
+
     highlight(start: Cell, end: Cell, id_or_classlist: number|string[]) {
         const high = document.createElement('div');
         if( typeof id_or_classlist === "number")
@@ -207,14 +235,7 @@ export class CalcSheet extends LISS({
         else
             high.classList.add( ...id_or_classlist );
 
-        const tbl_offset = this.content.querySelector('table')!.offsetTop;
-
-        high.style.setProperty('top'   , `${tbl_offset + start.offsetTop}px`);
-        high.style.setProperty('height', `${end.offsetTop + end.clientHeight - start.offsetTop + 1}px`);
-
-        high.style.setProperty('left'   , `${start.offsetLeft}px`);
-        high.style.setProperty('width', `${end.offsetLeft + end.clientWidth - start.offsetLeft}px`);
-
+        this.setRect(high, this.getRect([start, end]) );
         this.content.append(high);
 
         return high;
@@ -247,15 +268,135 @@ export class CalcSheet extends LISS({
     constructor() {
         super();
 
+        const cursor = document.createElement('div');
+        cursor.classList.add("cursor");
+        this.content.append(cursor);
+
+        const recopy = document.createElement('div');
+        recopy.classList.add("recopy");
+        this.content.append(recopy);
+
+        const main = document.querySelector("main")!;  
+
+        let last_recopy_target: Cell|null = null;
+        let last_recopy_dir   : [number, number]|null = null
+
+        const on_recopy_move = (ev: MouseEvent) => {
+
+            let cells = (this.states.recopy.state as CellList).cells;
+            const src = cells[cells.length-1];
+
+            let pos = src.getBoundingClientRect();
+
+            let d_px = ev.clientX - (pos.x + pos.width /2);
+            let d_py = ev.clientY - (pos.y + pos.height/2);
+
+            let d_x = 0;
+            let d_y = Math.sign(d_py);
+
+            if( Math.abs(d_px) > Math.abs(d_py) ) {
+                d_x = Math.sign(d_px);
+                d_y = 0;
+            }
+
+            let prev = src;
+            let cur  = src;
+
+            let diff_x, diff_y;
+
+            do {
+
+                prev= cur;
+                cur = this.relativeTo(prev, d_y, d_x);
+
+                if( cur === prev)
+                    break;
+
+                let pos_cur = cur.getBoundingClientRect();
+                diff_x = ev.clientX - (pos_cur.x + pos_cur.width /2);
+                diff_y = ev.clientY - (pos_cur.y + pos_cur.height/2);
+
+            } while( diff_x * d_x + diff_y * d_y > 0 );
+
+            last_recopy_target = prev;
+            last_recopy_dir    = [d_x,d_y];
+
+            let beg = src;
+            let end = prev;
+            if( src.offsetLeft > prev.offsetLeft || src.offsetTop > prev.offsetTop )
+                [beg, end] = [end, beg];
+
+            //TODO: highlight...
+            this.removeHighlights()    ; //TODO...
+            this.highlight(beg, end, 1); //TODO class...
+        };
+
+        recopy.addEventListener("mousedown", (ev) => {
+            ev.preventDefault();
+
+            this.states.recopy.state = this.#selection;
+
+            // @ts-ignore
+            main.addEventListener("mousemove", on_recopy_move);
+
+            document.addEventListener("mouseup", () => {
+                
+                let [d_x, d_y] =  last_recopy_dir!;
+
+                let cells = (this.states.recopy.state as CellList).cells;
+                const src = cells[cells.length-1];
+
+                let nb = 0;
+
+                if( last_recopy_target !== src) { // copy...
+
+                    let cur = src;
+                    do {
+                        ++nb;
+
+                        cur = this.relativeTo(cur, d_y, d_x);
+
+                        let content: RawContentType|Cell = src;
+                        let type = src.getAttribute('data-type');
+                        if( type === "number")
+                            content = (src.rawContent as number) + nb*(d_x + d_y);
+                        if( type === "date") {
+                            let content = new Date(src.rawContent as Date);
+                            content.setDate( content.getDate() + nb*(d_x + d_y));
+                        }
+
+                        new CellList(this, [cur]).content = content;
+                        cur.className = src.className; //TODO: format...
+
+
+                    } while( cur!== last_recopy_target );
+                }
+
+                this.removeHighlights()    ; //TODO...
+                this.states.recopy.state = null;
+                last_recopy_target = null;
+                last_recopy_dir    = null;
+
+                // @ts-ignore
+                main.removeEventListener("mousemove", on_recopy_move);
+
+            }, {once: true});
+        });
+
+        this.host.addEventListener('recopy_start', () => {
+            this.host.classList.add('recopy');
+        });
+        this.host.addEventListener('recopy_end', () => {
+            this.host.classList.remove('recopy');
+        })
+
         this.#cursor.addEventListener('change', (ev) => {
 
-            //TODO: could be better...
-            for( let cell of this.content.querySelectorAll('.cursor') )
-                cell.remove();
-
             const cells = this.#cursor.cells;
-            if( cells.length !== 0)
-                this.highlight(cells[0], cells[cells.length-1], ["cursor"]);
+            if( cells.length === 0 )
+                return;
+
+            this.setRect(cursor, this.getRect(cells) );
         });
 
         this.#selection.addEventListener('change', (ev) => {
@@ -263,14 +404,26 @@ export class CalcSheet extends LISS({
             for( let cell of this.content.querySelectorAll('.highlight') )
                 cell.classList.remove('highlight');
 
-            for( let cell of this.#selection.cells ) {
+            const cells = this.#selection.cells;
 
-                if( this.#selection.cells.length !== 1)
+            if( cells.length === 0)
+                return;
+
+            for( let cell of cells ) {
+
+                if( cells.length !== 1)
                     cell.classList.add('highlight');
                 const [row, col] = this.#cellPos(cell);
                 this.#tbody.children[0].children[col].classList.add("highlight");
                 this.#tbody.children[row].children[0].classList.add("highlight");
             }
+
+            const [x,y,w,h] = this.getRect(cells);
+
+            this.setRect(recopy, [x+w-2, y+h-2, 5, 5]);
+            // only if simple...
+            // const last = cells[cells.length-1];
+            // pointer...
         });
 
         //TODO: move out ?
