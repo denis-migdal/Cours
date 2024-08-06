@@ -448,25 +448,21 @@ export class CalcSheet extends LISS({
 
             const target = ev.target as HTMLElement;
 
-            if( target.tagName === "TH")
-                throw new Error('not implemented');
+            this.removeHighlights(); //TODO: move...
 
-            // todo: shift key + super key + ?
-
-            if( target.tagName !== "TD" )
+            if( PlageSelector.process_event(this, ev) )
                 return;
-
-            this.removeHighlights();
 
             // the cell is being edited...
             if( target.hasAttribute('contenteditable') )
                 return;
 
+            if( target.tagName !== "TD" )
+                return;
+
             const cell = target as Cell;
 
-            this.#selection.clear();
-            this.#selection.add(cell);
-
+            //TODO: move...
             this.#cursor.clear();
             this.#cursor.add(cell);
 
@@ -756,6 +752,7 @@ export class CalcSheet extends LISS({
     }
 
     #tbody!: HTMLTableSectionElement;
+    get tbody() { return this.#tbody; }
 
     #initGrid(nbrows: number, nbcols: number) {
 
@@ -824,12 +821,30 @@ export class CalcSheet extends LISS({
                 return new CellList(this, cells);
             }
 
+            // this is a full line...
+            if( cell_or_rowid[0] >= '0' && cell_or_rowid[0] <= '9' ) {
+                return this.getCells(`A${cell_or_rowid}:${this.pos2ref(+cell_or_rowid, this.nbCols)}`);
+            } else if( cell_or_rowid[cell_or_rowid.length-1] < '0' || cell_or_rowid[cell_or_rowid.length-1] > '9' ) {
+                console.warn( `${cell_or_rowid}1:${cell_or_rowid}${this.nbRows}` );
+                return this.getCells(`${cell_or_rowid}1:${cell_or_rowid}${this.nbRows}`);
+            }
+
             row_id = +cell_or_rowid[1];
             col_id = cell_or_rowid.charCodeAt(0) + 1 - 65;
         }
 
         const cell = this.#tbody.children[+row_id].children[col_id!] as Cell;
         return new CellList(this, [cell]);
+    }
+
+    pos2ref(row: number, col: number) {
+        return `${String.fromCharCode(65+col-1)}${row}`;
+    }
+    get nbRows() {
+        return this.#tbody.children.length - 1;
+    }
+    get nbCols() {
+        return this.#tbody.firstElementChild!.children.length - 1;
     }
 
     #isUpdating: boolean = false;
@@ -972,6 +987,18 @@ export class CellList extends EventTarget {
         return this;
     }
 
+    has(...cells: Cell[]) {
+        for(let cell of cells)
+            if( ! this.#cells.includes(cell) )
+                return false;
+        return true;
+    }
+
+    remove(...cells: Cell[]) {
+        this.#cells = this.#cells.filter( c => ! cells.includes(c) );
+        this.dispatchEvent( new CustomEvent("change") );
+    }
+
     add(...cells: Cell[]) {
 
         this.#cells.push(...cells)
@@ -1006,5 +1033,6 @@ export class CellList extends EventTarget {
 import "./formula_editor";
 import "./plage_editor";
 import { Formula, parse_formula } from "./formula_parser";
+import { PlageSelector } from "./plage_selector";
 
 LISS.define('calc-sheet', CalcSheet);

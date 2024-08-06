@@ -47,7 +47,6 @@ Motivation/Problematic first.
 	- `#VALEUR !`.
 	- value % => show as percent
 	- Move selection (keep formula + modify other formulas)
-	- extends (repeat or formula or +1 of nbr or +1d for dates)
 
 - selection
 	- click hold (select range...)
@@ -59,6 +58,7 @@ Motivation/Problematic first.
 	- getRect/setRect : use bottom instead of top ? update when dim changes/resize ?
 	- selection : not class but thing over with opacity...
 	- rawValue (after formula eval - cache...) vs rawContent (can be Formula)
+		-> cache on the formula ?
 	- 100% => 100.00%
 	- Range <= (RangeCell/Range_:/Range union/Range intersect) => toCellList (with offset ? or Offset Range to produce new one ?)
 	- Ctrl+C : put data in pastebin ???
