@@ -84,8 +84,26 @@ export class PlageFormula extends LISS({
                 return;
             }
 
-            //TODO...
-            throw new Error('not implemented');
+            let cells = cell.map( c => this.#sheet.cellPos(c) ).sort( (a,b) => {
+                if( a[0] !== b[0] )
+                    return a[0] - b[0];
+                return a[1] - b[1];
+            });
+
+            let min = cells[0];
+            let max = cells[cells.length - 1];
+
+            let nb_cols = max[1] - min[1] + 1;
+
+            for(let i = 0; i < cells.length; ++i) {
+
+                if( cells[i][0] !== Math.floor(i/nb_cols)+min[0] && cells[i][1] !== (i%nb_cols)+ min[1] ) {
+                    this.#input.textContent = "";
+                    return;
+                }
+            }
+
+            this.#input.textContent = `${this.#sheet.pos2ref(...min)}:${this.#sheet.pos2ref(...max)}`;
         });
     }
 }

@@ -13,16 +13,12 @@
 
 # CM2 : Mise en forme
 
-<todo>
-Utiliser webm
-</todo>
-
 ## Barre d'outils
 
-La **barre d'outils** intègre de nombreux raccourcis permettant d'éditer la feuille de calcul sans passer par les menu :
+La **barre d'outils** intègre de nombreux raccourcis permettant d'éditer la feuille de calcul sans passer par les menus :
 
 <center>
-    <img src="./img/barre-outils.png"/>
+    <img src="../../../../assets/tableur/img/barre-outils.png"/>
 </center>
 
 💡 Survoler une icône de la barre d'outil affiche une courte description, ainsi qu'éventuellement un raccourcit clavier. Retenir les raccourcit claviers de fonctionnalités fréquemment utilisés permet à terme d'augmenter sa productivité.
@@ -33,9 +29,11 @@ La **barre d'outils** intègre de nombreux raccourcis permettant d'éditer la fe
 
 Comme dans les logiciels de traitement de texte, il est possible de mettre en forme le contenu d'une cellule, i.e. de modifier sa police d'écriture, la taille de la police, mettre en gras, en italique, souligner, changer la couleur du texte, changer la couleur du fond :
 
-<center>
-    <img src="./img/barre-outils-mise-en-forme-texte.png"/>
-</center>
+<div style="display: flex; align-items: top; gap:5px">
+    <calc-sheet id="sheet_format_content" cols=6 rows=2></calc-sheet>
+    <calc-toolbar id='sheet_toolbar_format_content'></calc-toolbar>
+</div>
+
 
 ### Alignement du contenu
 
@@ -185,7 +183,6 @@ déplacer sélections vs ajouter/supprimer
  [cf TP6+2+1] Plages
 # NEXT
 
--> opérateur de comparaison lors des conditions.
 -> opérateurs de plage lors des plages
 
 # CM1:

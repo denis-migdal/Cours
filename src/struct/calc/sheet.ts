@@ -181,6 +181,9 @@ export class CalcSheet extends LISS({
 
     states = Object.fromEntries( Object.entries(States).map( ([n,s]) => [n, new s(this.host, n)] as const ));
 
+    #plage_selector = new PlageSelector(this);
+
+    //TODO: RO prop ?
     #selection = new CellList(this, []);
     #cursor    = new CellList(this, []);
 
@@ -189,6 +192,10 @@ export class CalcSheet extends LISS({
     }
     get selection() {
         return this.#selection;
+    }
+
+    override get content() {
+        return super.content;
     }
 
     removeHighlights() {
@@ -450,21 +457,24 @@ export class CalcSheet extends LISS({
 
             this.removeHighlights(); //TODO: move...
 
-            if( PlageSelector.process_event(this, ev) )
-                return;
-
             // the cell is being edited...
             if( target.hasAttribute('contenteditable') )
                 return;
 
-            if( target.tagName !== "TD" )
-                return;
+            if( target.tagName === "TD" ) {
 
-            const cell = target as Cell;
+                const cell = target as Cell;
+                //TODO: move...
+                this.#cursor.clear();
+                this.#cursor.add(cell);
+            }
+            if( target.tagName === "TH" && target.textContent !== "") {
+                
+                const cell = this.getCells(target.textContent!).cells[0] as Cell;
 
-            //TODO: move...
-            this.#cursor.clear();
-            this.#cursor.add(cell);
+                this.#cursor.clear();
+                this.#cursor.add(cell);
+            }
 
             // this.#tbody.focus(); // ?
         });
@@ -529,9 +539,8 @@ export class CalcSheet extends LISS({
                     return; // ignore
                 } if( ev.code === "Delete" ) {
 
-                    this.cursor.deleteContent();
-
-                    this.#cursor.dispatchEvent( new CustomEvent("change") );
+                    this.selection.deleteContent();
+                    this.selection.dispatchEvent( new CustomEvent("change") );
 
                     return;
                 } if( ev.code === "Enter" ) {
@@ -793,6 +802,29 @@ export class CalcSheet extends LISS({
         this.content.append(table);
     }
 
+    getRange(from: readonly[number,number], to: readonly[number,number] = from): CellList {
+
+        let beg_row = from[0] || 1;
+        let beg_col = from[1] || 1;
+
+        let end_row = from[0] === 0 ? this.nbRows : to[0];
+        let end_col = from[1] === 0 ? this.nbCols : to[1];
+
+        if( end_row < beg_row )
+            [beg_row, end_row] = [end_row, beg_row];
+        if( end_col < beg_col )
+            [beg_col, end_col] = [end_col, beg_col];
+
+        const cells = new Array<Cell>( (end_row - beg_row + 1) * (end_col - beg_col + 1) );
+
+        let offset = 0;
+        for(let i = beg_row; i <= end_row; ++i )
+            for(let j = beg_col; j <= end_col; ++j )
+                cells[offset++] = this.tbody.children[i].children[j] as Cell;
+
+        return new CellList(this, cells);
+    }
+
     getCells(cell: string): CellList;
     getCells(row_id: number, col_id: number): CellList;
     getCells(cell_or_rowid: number|string, col_id?: number) {
@@ -891,6 +923,19 @@ export class CellList extends EventTarget {
     }
     get sheet(): CalcSheet {
         return this.#sheet;
+    }
+
+    format(f: string|Format|Record<string, any>) {
+
+        if(typeof f === 'string')
+            f = {[f]: true};
+
+        if( ! (f instanceof Format) )
+            f = new Format(f);
+
+        f.applyTo(this);
+
+        return this;
     }
 
     toggleClass(css_class: string, enforce?:boolean) {
@@ -1034,5 +1079,6 @@ import "./formula_editor";
 import "./plage_editor";
 import { Formula, parse_formula } from "./formula_parser";
 import { PlageSelector } from "./plage_selector";
+import { Format } from "./format";
 
 LISS.define('calc-sheet', CalcSheet);

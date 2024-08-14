@@ -38,39 +38,42 @@ Motivation/Problematic first.
 #### WebCalc
 
 - repo
-
 - doc API...
 
-- simple
-	- edit formula : click = add ref.
-	- edit formula : move ref when moving it.
-	- `#VALEUR !`.
-	- value % => show as percent
-	- Move selection (keep formula + modify other formulas)
-
+- misc :
+	- arrow keys change selection...
+	- highlight when resized : recompute...
+	- shows 100.00% when "=100%".
+	- print `#VALEUR !` when error in formula.
+	- Ctrl+C put data in pastebin ?
+	- resize/merge cols/lines
+	- ctrl+Z...
+	- graphs (outside).
+	- copy area : animate dashed border.
+- toolbar
+	- select fonts
+	- font_size is editable.
+	- underline style...
+	- better CSS
+	- color under foreground/background color.
+- formula
+	- move/resize ref plages.
+	- add ref plages.
+	- cache result in the formula ?
 - selection
-	- click hold (select range...)
-	- super
-	- ctrl+click (composition of selections?)
-	- extend value
-
-- Refactors/Bugs
-	- getRect/setRect : use bottom instead of top ? update when dim changes/resize ?
-	- selection : not class but thing over with opacity...
-	- rawValue (after formula eval - cache...) vs rawContent (can be Formula)
-		-> cache on the formula ?
-	- 100% => 100.00%
-	- Range <= (RangeCell/Range_:/Range union/Range intersect) => toCellList (with offset ? or Offset Range to produce new one ?)
-	- Ctrl+C : put data in pastebin ???
-
-- poignée de recopie : supprimer quand dst dans sélection.
-- formula range token
-	- show when clicking formula bar
-	- extend range of reference + ?
-- resize/merge cols/lines
-- ctrl+Z...
-- graphs (outside).
-- copy area : animate dashed border.
+	- test other features
+	- cell should not be highlighted if only one + cursor on it.
+	- cell should not be highlighted when the cell is being edited.
+	- selection highlight should be a div with opacity, not a class.
+	- move selection (requires to modify formulas pointing to it...)
+	- do not move cursor if selection.
+	- super+ctrl+keys (boff)
+		- super+keys  (boff)
+	- nav with tab/enter (boff)
+- recopie
+	- delete data when dest is in original selection.
+	- handle repeat and different shapes.
+	- bad position with selection...
 
 #### Webodf
 

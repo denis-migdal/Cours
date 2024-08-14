@@ -37,7 +37,9 @@
     color: black;
     width: 2.26cm;
     height: 0.45cm;
+
     font-size: 10pt;
+
     box-sizing: border-box;
     font-family: 'Liberation Sans';
 }
@@ -106,7 +108,16 @@
 }
 
 :host td {
-    background-color: white;
+
+    --font_size: 10pt;
+    font-size: var(--font_size);
+    line-height: calc( var(--font_size) * 1.2 );
+
+    --background_color: white;
+    --foreground_color: black;
+    background-color: var(--background_color);
+    color           : var(--foreground_color);
+
     white-space: pre;
 
     &:is([data-type="number"],[data-type="date"], [data-type="boolean"]) {
@@ -127,6 +138,9 @@
     }
     &.bold {
         font-weight: bold;
+    }
+    &.underline {
+        text-decoration: underline;
     }
     &.align-left {
         text-align: left;
