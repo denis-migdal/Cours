@@ -5,6 +5,7 @@ import "../../../../struct/calc/sheet.ts";
 // 1
 
 import LISS from "../../../../../libs/LISS";
+import { Formats } from "struct/calc/format.ts";
 
 const s_formula = await LISS.qs('#sheet_formula');
 
@@ -15,21 +16,10 @@ s_formula.getCells("A1:C1").format("bold", "align_center")
                                 "Prix total"
                            ];
 
-function euros(value: number) {
-    if(value === undefined)
-        return '';
-    return value.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }) + '€';
-    //.toFixed(2) + '€';
-}
-
-
 s_formula.getCells("A2:A4").content = [23  , 12, 44];
-s_formula.getCells("B2:B4").setFormat(euros).content = [0.2, 0.3, 0.4];
+s_formula.getCells("B2:B4").setFormat(Formats.euros).content = [0.2, 0.3, 0.4];
 
-s_formula.getCells("C2:C4").setFormat(euros).content = [
+s_formula.getCells("C2:C4").setFormat(Formats.euros).content = [
     "=A2*B2",
     "=A3*B3",
     "=A4*B4"

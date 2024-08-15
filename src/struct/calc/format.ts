@@ -1,5 +1,43 @@
 import LISS from "../../../libs/LISS";
-import { CalcSheet, Cell, CellList } from "./sheet";
+import { CalcSheet, Cell, CellList, defaultFormat } from "./sheet";
+
+export const Formats = {
+    euros: function(this:Cell, value: number) {
+        if(value === undefined)
+            return '';
+
+        const prec = +(this.getAttribute('precision') ?? 2);
+
+        return value.toLocaleString(undefined, {
+            minimumFractionDigits: prec,
+            maximumFractionDigits: prec
+            }) + '€';
+        //.toFixed(2) + '€';
+    },
+    pourcent: function(this:Cell, value: number) {
+        if(value === undefined)
+            return '';
+
+        const prec = +(this.getAttribute('precision') ?? 2);
+
+        return (value * 100).toLocaleString(undefined, {
+            minimumFractionDigits: prec,
+            maximumFractionDigits: prec
+            }) + '%';
+        //.toFixed(2) + '€';
+    },
+    number: function(this:Cell, value: number) {
+        if(value === undefined)
+            return '';
+
+        const prec = +(this.getAttribute('precision') ?? 2);
+
+        return value.toLocaleString(undefined, {
+            minimumFractionDigits: prec,
+            maximumFractionDigits: prec
+            });
+    }
+}
 
 export class Format {
 
@@ -19,9 +57,30 @@ export class Format {
             return;
         }
 
-
         for(let name in this.#format) {
             let val = this.#format[name];
+
+            if(name === 'format') {
+
+                if( val === null) {
+
+                    cell.format = defaultFormat;
+                    cell.textContent = cell.format( cell.rawContent); //TODO: if fct
+    
+                    continue;
+                }
+
+                cell.format = val;
+                cell.textContent = cell.format( cell.rawContent); //TODO: if fct
+
+                continue;
+            }
+
+            if(name === 'precision') {
+                cell.setAttribute('precision', val);
+                cell.textContent = cell.format?.( cell.rawContent); //TODO: if fct
+                continue;
+            }
 
             if( name === 'span' ) {
 
@@ -126,6 +185,12 @@ export class Format {
 
         if( ! ("font_size" in format) )
             format['font_size'] = '10pt';
+
+        if( "format" in cell)
+            format.format = cell.format;
+
+        if( cell.hasAttribute('precision') )
+            format.precision = cell.getAttribute('precision');
 
         return new Format(format);
     }

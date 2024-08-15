@@ -29,10 +29,10 @@ La **barre d'outils** intègre de nombreux raccourcis permettant d'éditer la fe
 
 Comme dans les logiciels de traitement de texte, il est possible de mettre en forme le contenu d'une cellule, i.e. de modifier sa police d'écriture, la taille de la police, mettre en gras, en italique, souligner, changer la couleur du texte, changer la couleur du fond :
 
-<div style="display: flex; align-items: top; gap:5px">
-    <calc-sheet id="sheet_format_content" cols=6 rows=2></calc-sheet>
+<center>
     <calc-toolbar id='sheet_toolbar_format_content'></calc-toolbar>
-</div>
+    <calc-sheet id="sheet_format_content" cols=6 rows=2></calc-sheet>
+</center>
 
 
 ### Alignement du contenu

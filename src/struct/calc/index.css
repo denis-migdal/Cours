@@ -113,6 +113,9 @@
     font-size: var(--font_size);
     line-height: calc( var(--font_size) * 1.2 );
 
+    --indent: 0;
+
+    --border_color: black;
     --background_color: white;
     --foreground_color: black;
     background-color: var(--background_color);
@@ -154,12 +157,14 @@
         text-decoration: underline;
     }
     &.align_left {
+        padding-left: calc( var(--indent) * 10px);
         text-align: left;
     }
     &.align_center {
         text-align: center;
     }
     &.align_right {
+        padding-right: calc( var(--indent) * 10px);
         text-align: right;
     }
     &.valign_top {
@@ -170,6 +175,19 @@
     }
     &.valign_bottom {
         vertical-align: bottom;
+    }
+    /* https://stackoverflow.com/questions/1241757/applying-borders-to-a-single-table-cell-when-using-border-collapse */
+    &.border_top {
+        border-top: 1px double var(--border_color);
+    }
+    &.border_bottom {
+        border-bottom: 1px double var(--border_color);
+    }
+    &.border_left {
+        border-left: 1px double var(--border_color);
+    }
+    &.border_right {
+        border-right: 1px double var(--border_color);
     }
 }
 

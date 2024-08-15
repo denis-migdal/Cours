@@ -9,7 +9,7 @@ export type RawContentType = ValueType|Formula;
 
 export type Cell = HTMLTableCellElement & {
     rawContent: RawContentType,
-    format: (v: string|number) => string,
+    format: (this: Cell, v: string|number) => string,
     is_ro: boolean
 };
 
@@ -83,7 +83,9 @@ function onInput(ev: Event) {
     sel.addRange(range);
 }
 
-export function defaultFormat(value: RawContentType) {
+export function defaultFormat(value: RawContentType, prec: null|number = null) {
+
+    //TODO...
 
     if( typeof value === "number")
         return `${+value.toPrecision(7)}`.replace('.', ',');
@@ -594,7 +596,8 @@ export class CalcSheet extends LISS({
                         next = this.relativeTo( cur[0], d_row, d_col);
                     
                     this.#tbody.focus();
-                    next.dispatchEvent( new CustomEvent('click', {bubbles: true}) );
+                    next.click();
+                    //next.dispatchEvent( new CustomEvent('click', {bubbles: true}) );
 
                 } else { // we start editing...
 
@@ -635,7 +638,8 @@ export class CalcSheet extends LISS({
                 let next = (this.#tbody.children[row].children[col] as HTMLElement);
 
                 this.#tbody.focus();
-                next.dispatchEvent( new CustomEvent('click', {bubbles: true}) );
+                next.click();
+                //next.dispatchEvent( new CustomEvent('click', {bubbles: true}) );
                 
                 //target.blur();
                 return;
@@ -962,7 +966,7 @@ export class CellList extends EventTarget {
         return this.#sheet;
     }
 
-    format(...f: (string|Format|Record<string, any>)[]) {
+    format(...f: (( (v: any, prec: number|null) => string )|string|Format|Record<string, any>)[]) {
 
         if( f.length > 1 ) {
             
@@ -972,6 +976,9 @@ export class CellList extends EventTarget {
         } else
             f = f[0];
 
+        if( typeof f === "function" )
+            f = {"format": f};
+
         if(typeof f === 'string')
             f = {[f]: true};
 
@@ -980,16 +987,6 @@ export class CellList extends EventTarget {
 
         f.applyTo(this);
 
-        return this;
-    }
-
-    setFormat(format: (raw: ValueType) => string) {
-
-        for(let cell of this.#cells) {
-            cell.format = format;
-            cell.textContent = format( cell.rawContent);
-        }
-    
         return this;
     }
 
