@@ -3,46 +3,46 @@ import { Format, Formats } from "./format";
 import { CalcSheet, CellList } from "./sheet";
 
 const content = `
-    <select disabled><option>Libération Sans</option></select>
-    <select class="font_size"></select>
+    <select disabled title="Nom de police"><option>Libération Sans</option></select>
+    <select class="font_size" title="Taille de police"></select>
     <span class='vbar'></span>
-    <calc-toolbar-item name='bold'></calc-toolbar-item>
-    <calc-toolbar-item name='italic'></calc-toolbar-item>
-    <calc-toolbar-item name='underline'></calc-toolbar-item>
+    <calc-toolbar-item name='bold' title="Gras (Ctrl+B)"></calc-toolbar-item>
+    <calc-toolbar-item name='italic' title="Italique (Ctrl+I)"></calc-toolbar-item>
+    <calc-toolbar-item name='underline' title="Soulignage (Ctrl+U)"></calc-toolbar-item>
     <span class='vbar'></span>
-    <calc-toolbar-item value='black' name='foreground_color'>X</calc-toolbar-item>
-    <calc-toolbar-item value='yellow' name='background_color'>X</calc-toolbar-item>
+    <calc-toolbar-item value='black' name='foreground_color' title="Couleur de police"></calc-toolbar-item>
+    <calc-toolbar-item value='yellow' name='background_color' title="Couleur d'arrière-plan"></calc-toolbar-item>
     <span class='vbar'></span>
-    <calc-toolbar-item name='align_left'></calc-toolbar-item>
-    <calc-toolbar-item name='align_center'></calc-toolbar-item>
-    <calc-toolbar-item name='align_right'></calc-toolbar-item>
+    <calc-toolbar-item name='align_left' title="Aligner à gauche (Ctrl+L)"></calc-toolbar-item>
+    <calc-toolbar-item name='align_center' title="Center (Ctrl+E)"></calc-toolbar-item>
+    <calc-toolbar-item name='align_right' title="Aligner à droite (Ctrl+R)"></calc-toolbar-item>
     <span class='vbar'></span>
-    <calc-toolbar-item name='valign_top'></calc-toolbar-item>
-    <calc-toolbar-item name='valign_middle'></calc-toolbar-item>
-    <calc-toolbar-item name='valign_bottom'></calc-toolbar-item>
+    <calc-toolbar-item name='valign_top' title="Aligner en haut"></calc-toolbar-item>
+    <calc-toolbar-item name='valign_middle' title="Centrer verticalement"></calc-toolbar-item>
+    <calc-toolbar-item name='valign_bottom' title="Aligner en bas"></calc-toolbar-item>
     <span class='vbar'></span>
-    <calc-toolbar-item name='ajuster'></calc-toolbar-item>
+    <calc-toolbar-item name='ajuster' title="Ajuster le texte"></calc-toolbar-item>
     <span class='vbar'></span>
-    <calc-toolbar-item name='merge_center' type='fct'></calc-toolbar-item>
-    <calc-toolbar-item name='merge' type='fct'></calc-toolbar-item>
-    <calc-toolbar-item name='unmerge' type='fct'></calc-toolbar-item>
+    <calc-toolbar-item name='merge_center' type='fct' title="Fusionner et centrer ou défusionner les cellules en inversant leur état actuel"></calc-toolbar-item>
+    <calc-toolbar-item name='merge' type='fct' title="Fusionner les cellules"></calc-toolbar-item>
+    <calc-toolbar-item name='unmerge' type='fct' title="Défusionner les cellules"></calc-toolbar-item>
     <span class='vbar'></span>
-    <calc-toolbar-item name='format_monnaie' type='fct'></calc-toolbar-item>
-    <calc-toolbar-item name='format_pourcent' type='fct'></calc-toolbar-item>
-    <calc-toolbar-item name='format_nb' type='fct'></calc-toolbar-item>
-    <calc-toolbar-item name='format_date' type='fct' disabled></calc-toolbar-item>
+    <calc-toolbar-item name='format_monnaie' type='fct' title="Appliquer le format Monnaie (Maj+Ctrl+4)"></calc-toolbar-item>
+    <calc-toolbar-item name='format_pourcent' type='fct' title="Appliquer le format Pourcentage (Maj+Ctrl+5)"></calc-toolbar-item>
+    <calc-toolbar-item name='format_nb' type='fct'  title="Appliquer le format Nombre (Maj+Ctrl+1)"></calc-toolbar-item>
+    <calc-toolbar-item name='format_date' type='fct' disabled  title="Appliquer le format Date (Maj+Ctrl+3)"></calc-toolbar-item>
     <span class='vbar'></span>
-    <calc-toolbar-item name='format_zero_p1' type='fct'></calc-toolbar-item>
-    <calc-toolbar-item name='format_zero_m1' type='fct'></calc-toolbar-item>
+    <calc-toolbar-item name='format_zero_p1' type='fct' title="Ajouter une décimale"></calc-toolbar-item>
+    <calc-toolbar-item name='format_zero_m1' type='fct' title="Supprimer une décimale"></calc-toolbar-item>
     <span class='vbar'></span>
-    <calc-toolbar-item name='retrait_p1' type='fct'></calc-toolbar-item>
-    <calc-toolbar-item name='retrait_m1' type='fct'></calc-toolbar-item>
+    <calc-toolbar-item name='retrait_p1' type='fct' title="Augmenter le retrait"></calc-toolbar-item>
+    <calc-toolbar-item name='retrait_m1' type='fct' title="Diminuer le retrait"></calc-toolbar-item>
     <span class='vbar'></span>
-    <calc-toolbar-item name='border' type='fct'></calc-toolbar-item>
-    <calc-toolbar-item name='border_style' type='fct' disabled></calc-toolbar-item>
-    <calc-toolbar-item value='black' name='border_color'></calc-toolbar-item>
+    <calc-toolbar-item name='border' type='fct' title="Bordures (Maj pour écraser)"></calc-toolbar-item>
+    <calc-toolbar-item name='border_style' type='fct' disabled title="Style de bordure"></calc-toolbar-item>
+    <calc-toolbar-item value='black' name='border_color' title="Couleur de bordure"></calc-toolbar-item>
     <span class='vbar'></span>
-    <calc-toolbar-item name='format_cond' type='fct' disabled></calc-toolbar-item>
+    <calc-toolbar-item name='format_cond' type='fct' disabled title="Conditionnel"></calc-toolbar-item>
 `;
 
 function merge(celllist: CellList, is_align = false) {

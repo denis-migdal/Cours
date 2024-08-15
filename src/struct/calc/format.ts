@@ -1,6 +1,65 @@
 import LISS from "../../../libs/LISS";
 import { CalcSheet, Cell, CellList, defaultFormat } from "./sheet";
 
+export class FormatManager {
+    constructor(sheet: CalcSheet) {
+
+        // @ts-ignore
+        sheet.content.addEventListener('keydown', (ev: KeyboardEvent) => {
+
+            if( ! ev.ctrlKey )
+                return;
+
+            let changed = false;
+
+            if( ev.key === 'b') {
+                changed = true;
+                sheet.selection.toggleFormat("bold");
+            }
+            if( ev.key === 'i') {
+                changed = true;
+                sheet.selection.toggleFormat("italic");
+            }
+            if( ev.key === 'u') {
+                changed = true;
+                sheet.selection.toggleFormat("underline");
+            }
+            if( ev.key === 'l') {
+                changed = true;
+                sheet.selection.toggleFormat("align_left");
+            }
+            if( ev.key === 'r') {
+                changed = true;
+                sheet.selection.toggleFormat("align_right");
+            }
+            if( ev.key === 'e') {
+                changed = true;
+                sheet.selection.toggleFormat("align_center");
+            }
+            if( ev.key === '4' && ev.shiftKey) {
+                changed = true;
+                sheet.selection.toggleFormat(Formats.euros);
+            }
+            if( ev.key === '5' && ev.shiftKey) {
+                changed = true;
+                sheet.selection.toggleFormat(Formats.pourcent);
+            }
+            if( ev.key === '1' && ev.shiftKey) {
+                changed = true;
+                sheet.selection.toggleFormat(Formats.number);
+            }
+
+            if(changed) {
+                ev.preventDefault();
+                sheet.selection.dispatchEvent(new CustomEvent("change") );
+            }
+
+        });
+        /* TODO listen */
+
+    }
+}
+
 export const Formats = {
     euros: function(this:Cell, value: number) {
         if(value === undefined)

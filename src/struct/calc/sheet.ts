@@ -189,6 +189,8 @@ export class CalcSheet extends LISS({
     #selection = new CellList(this, []);
     #cursor    = new CellList(this, []);
 
+    #format_mngr = new FormatManager(this);
+
     get cursor() {
         return this.#cursor;
     }
@@ -599,7 +601,10 @@ export class CalcSheet extends LISS({
                     next.click();
                     //next.dispatchEvent( new CustomEvent('click', {bubbles: true}) );
 
-                } else { // we start editing...
+                } else if(ev.ctrlKey) { // ignore ctrl
+                    return;
+                }
+                else { // we start editing...
 
                     const cur = this.cursor.cells;
 
@@ -966,6 +971,21 @@ export class CellList extends EventTarget {
         return this.#sheet;
     }
 
+    toggleFormat(name: string|((v: any, prec: number|null) => string) ) {
+        let f = Format.extractFormat(this);
+
+        if( typeof name === "function") {
+
+            let isFormat = f.getProperty("format") === name;
+
+            this.format({format: isFormat ? null : name });
+
+            return;
+        }
+
+        this.format({[name]: f.getProperty(name) !== true});
+    }
+
     format(...f: (( (v: any, prec: number|null) => string )|string|Format|Record<string, any>)[]) {
 
         if( f.length > 1 ) {
@@ -1114,6 +1134,6 @@ import "./formula_editor";
 import "./plage_editor";
 import { Formula, parse_formula } from "./formula_parser";
 import { PlageSelector } from "./plage_selector";
-import { Format } from "./format";
+import { Format, FormatManager } from "./format";
 
 LISS.define('calc-sheet', CalcSheet);
