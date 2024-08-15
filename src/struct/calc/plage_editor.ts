@@ -72,44 +72,9 @@ export class PlageFormula extends LISS({
         const selection = sheet.selection;
 
         selection.addEventListener('change', (_: any) => {
-
-            let cell = selection.cells;
-            if( cell.length === 0) {
-                this.#input.textContent = "";
-                return;
-            }
-
-            if( cell.length === 1 ) {
-                this.#input.textContent = cellpos2cellname( ...sheet.cellPos(cell[0]) );
-                return;
-            }
-
-            let cells = cell.map( c => this.#sheet.cellPos(c) ).sort( (a,b) => {
-                if( a[0] !== b[0] )
-                    return a[0] - b[0];
-                return a[1] - b[1];
-            });
-
-            let min = cells[0];
-            let max = cells[cells.length - 1];
-
-            let nb_cols = max[1] - min[1] + 1;
-
-            for(let i = 0; i < cells.length; ++i) {
-
-                if( cells[i][0] !== Math.floor(i/nb_cols)+min[0] && cells[i][1] !== (i%nb_cols)+ min[1] ) {
-                    this.#input.textContent = "";
-                    return;
-                }
-            }
-
-            this.#input.textContent = `${this.#sheet.pos2ref(...min)}:${this.#sheet.pos2ref(...max)}`;
+            this.#input.textContent = selection.plage_name ?? "";
         });
     }
-}
-
-export function cellpos2cellname(rowid: number, colid: number) {
-    return `${String.fromCharCode(65+colid-1)}${rowid}`;
 }
 
 LISS.define('calc-plage', PlageFormula);

@@ -8,8 +8,7 @@ import LISS from "../../../../../libs/LISS";
 
 const s_formula = await LISS.qs('#sheet_formula');
 
-s_formula.getCells("A1:C1").toggleClass("bold")
-                           .toggleClass("align-center")
+s_formula.getCells("A1:C1").format("bold", "align_center")
                            .content = [
                                 "Quantité",
                                 "Prix unitaire",
@@ -41,8 +40,7 @@ s_formula.getCells("C2:C4").setFormat(euros).content = [
 
 const s_complex_formula = await LISS.qs('#sheet_complex_formula');
 
-s_complex_formula.getCells("A1:C1").toggleClass("bold")
-                           .toggleClass("align-center")
+s_complex_formula.getCells("A1:C1").format("bold", "align_center")
                            .content = [
                                 "X",
                                 "Y",
@@ -64,8 +62,7 @@ s_complex_formula.getCells("C2").content =
 const s_types = await LISS.qs('#sheet_types');
 
 
-s_types.getCells("A1:E1").toggleClass("bold")
-                         .toggleClass("align-center")
+s_types.getCells("A1:E1").format("bold", "align_center")
                          .content = [
                             "Texte",
                             "Nombre",
@@ -85,18 +82,13 @@ s_types.getCells("A2:E2").content = [
 
 const s_cursor = await LISS.qs('#sheet_cursor');
 
-s_cursor.getCells("A1:H1").toggleClass("bold", true)
-.toggleClass("align-center", true).content = "*";
-s_cursor.getCells("A4:H4").toggleClass("bold", true)
-.toggleClass("align-center", true).content = "*";
+s_cursor.getCells("A1:H1").format("bold", "align_center").content = "*";
+s_cursor.getCells("A4:H4").format("bold", "align_center").content = "*";
 
-s_cursor.getCells("D1:E4").toggleClass("bold", true)
-.toggleClass("align-center", true).content = "*";
+s_cursor.getCells("D1:E4").format("bold", "align_center").content = "*";
 
-s_cursor.getCells("A1:A4").toggleClass("bold", true)
-.toggleClass("align-center", true).content = "*";
-s_cursor.getCells("H1:H4", true).toggleClass("bold", true)
-.toggleClass("align-center", true).content = "*";
+s_cursor.getCells("A1:A4").format("bold", "align_center").content = "*";
+s_cursor.getCells("H1:H4", true).format("bold", "align_center").content = "*";
 
 
 const s_$formula = [
@@ -125,12 +117,12 @@ for(let i = 0; i < s_$formula.length; ++i) {
 
     s_$form.getCells("B2").content = ref;
 
-    s_$form.getCells("A1:D4").toggleClass("align-center")
+    s_$form.getCells("A1:D4").format("align_center")
 }
 
 const sheet_recopie_motivation = await LISS.qs('#sheet_recopie_motivation');
 
-sheet_recopie_motivation.getCells("A1:D4").toggleClass("align-center").content = [
+sheet_recopie_motivation.getCells("A1:D4").format("align_center").content = [
     "Conso/jour", "Crayons", "Gommes", "Total (jour)",
     "01/01"  , 2, 3, "=B2+C2", 
     "02/01"  , 4, 1, "=C3+C3", 
@@ -141,7 +133,7 @@ sheet_recopie_motivation.getCells("A2:A4").toggleClass("bold");
 
 const sheet_recopie_motivation_empty = await LISS.qs('#sheet_recopie_motivation_empty');
 
-sheet_recopie_motivation_empty.getCells("A1:D4").toggleClass("align-center").content = [
+sheet_recopie_motivation_empty.getCells("A1:D4").format("align_center").content = [
     "Conso/jour", "Crayons", "Gommes", "Total (jour)",
     "01/01"  , 2, 3, undefined, 
     "02/01"  , 4, 1, undefined, 

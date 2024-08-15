@@ -463,7 +463,11 @@ export class CalcSheet extends LISS({
 
             if( target.tagName === "TD" ) {
 
-                const cell = target as Cell;
+                let cell = target as Cell;
+
+                if("cell" in cell) // for merged cells...
+                    cell = cell.cell as Cell;
+
                 //TODO: move...
                 this.#cursor.clear();
                 this.#cursor.add(cell);
@@ -588,7 +592,7 @@ export class CalcSheet extends LISS({
                         next = cursor;
                     } else
                         next = this.relativeTo( cur[0], d_row, d_col);
-
+                    
                     this.#tbody.focus();
                     next.dispatchEvent( new CustomEvent('click', {bubbles: true}) );
 
@@ -869,6 +873,13 @@ export class CalcSheet extends LISS({
         return new CellList(this, [cell]);
     }
 
+    ref2pos(ref: string): [number, number] {
+        //TODO...
+        const row = +ref[ref.length - 1];
+        const col = ref.charCodeAt(0) - 65 + 1;
+
+        return [row, col];
+    }
     pos2ref(row: number, col: number) {
         return `${String.fromCharCode(65+col-1)}${row}`;
     }
@@ -918,6 +929,32 @@ export class CellList extends EventTarget {
         this.#sheet = sheet;
     }
 
+    get plage_name() {
+
+        if( this.#cells.length === 0)
+            return;
+
+        if( this.#cells.length === 1 )
+            return this.#sheet.pos2ref( ...this.#sheet.cellPos(this.#cells[0]) );
+
+        let cells = this.#cells.map( c => this.#sheet.cellPos(c) ).sort( (a,b) => {
+            if( a[0] !== b[0] )
+                return a[0] - b[0];
+            return a[1] - b[1];
+        });
+
+        let min = cells[0];
+        let max = cells[cells.length - 1];
+
+        let nb_cols = max[1] - min[1] + 1;
+
+        for(let i = 0; i < cells.length; ++i)
+            if( cells[i][0] !== Math.floor(i/nb_cols)+min[0] && cells[i][1] !== (i%nb_cols)+ min[1] )
+                return;
+
+        return `${this.#sheet.pos2ref(...min)}:${this.#sheet.pos2ref(...max)}`;
+    }
+
     get cells(): Cell[] {
         return this.#cells;
     }
@@ -925,7 +962,15 @@ export class CellList extends EventTarget {
         return this.#sheet;
     }
 
-    format(f: string|Format|Record<string, any>) {
+    format(...f: (string|Format|Record<string, any>)[]) {
+
+        if( f.length > 1 ) {
+            
+            //TODO....
+            f = Object.fromEntries( f.map( e => [e, true] ) );
+
+        } else
+            f = f[0];
 
         if(typeof f === 'string')
             f = {[f]: true};
@@ -934,13 +979,6 @@ export class CellList extends EventTarget {
             f = new Format(f);
 
         f.applyTo(this);
-
-        return this;
-    }
-
-    toggleClass(css_class: string, enforce?:boolean) {
-        for(let cell of this.#cells)
-            cell.classList.toggle(css_class, enforce);
 
         return this;
     }

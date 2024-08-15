@@ -91,7 +91,7 @@ export class CalcFormula extends LISS({
                     this.#cur_cell.removeEventListener('input', this.#onInput);
                 this.#cur_cell = null;
 
-                this.#input.value = "";
+                this.#input.textContent = "";
                 return;
             }
 

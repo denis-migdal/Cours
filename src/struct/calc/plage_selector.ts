@@ -22,7 +22,6 @@ export class PlageSelector {
             return;
         }
 
-        console.log(selected_cells);
         this.#sheet.selection.add( ...selected_cells );
     }
 

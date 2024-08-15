@@ -1,19 +1,96 @@
 import LISS from "../../../libs/LISS";
 import { Format } from "./format";
-import { CalcSheet } from "./sheet";
+import { CalcSheet, CellList } from "./sheet";
 
 const content = `
     <select disabled><option>Libération Sans</option></select>
     <select class="font_size"></select>
     <span class='vbar'></span>
     <calc-toolbar-item name='bold'></calc-toolbar-item>
-    <calc-toolbar-item name='italic'>X</calc-toolbar-item>
-    <calc-toolbar-item name='underline'>X</calc-toolbar-item>
+    <calc-toolbar-item name='italic'></calc-toolbar-item>
+    <calc-toolbar-item name='underline'></calc-toolbar-item>
     <span class='vbar'></span>
     <calc-toolbar-item value='black' name='foreground_color'>X</calc-toolbar-item>
     <calc-toolbar-item value='yellow' name='background_color'>X</calc-toolbar-item>
     <span class='vbar'></span>
+    <calc-toolbar-item name='align_left'></calc-toolbar-item>
+    <calc-toolbar-item name='align_center'></calc-toolbar-item>
+    <calc-toolbar-item name='align_right'></calc-toolbar-item>
+    <span class='vbar'></span>
+    <calc-toolbar-item name='valign_top'></calc-toolbar-item>
+    <calc-toolbar-item name='valign_middle'></calc-toolbar-item>
+    <calc-toolbar-item name='valign_bottom'></calc-toolbar-item>
+    <span class='vbar'></span>
+    <calc-toolbar-item name='ajuster'></calc-toolbar-item>
+    <span class='vbar'></span>
+    <calc-toolbar-item name='merge_center' type='fct'></calc-toolbar-item>
+    <calc-toolbar-item name='merge' type='fct'></calc-toolbar-item>
+    <calc-toolbar-item name='unmerge' type='fct'></calc-toolbar-item>
 `;
+
+function merge(celllist: CellList, is_align = false) {
+
+    const sheet = celllist.sheet;
+
+    const [beg,end] = celllist.plage_name!.split(':').map( e => sheet.ref2pos(e) ); // plage can't be undefined
+
+    let rows = end[0] - beg[0] + 1;
+    let cols = end[1] - beg[1] + 1;
+
+    let format: Record<string,any> = {
+        span: [ rows, cols ]
+    }
+
+    if( is_align ) {
+        format.valign_middle = true;
+        format.align_center  = true;
+    }
+
+    sheet.getRange(beg).format(format);
+}
+
+function unmerge(celllist: CellList) {
+
+    celllist.format({
+        span: [ 1, 1 ]
+    }); // unmerge...
+}
+
+const fcts = {
+    "unmerge": {
+        action: unmerge
+    },
+    "merge": {
+        action: merge
+    },
+    "merge_center": {
+        action: function(celllist: CellList) {
+
+            let unmerged = false;
+
+            const sheet = celllist.sheet;
+
+            for(let cell of celllist.cells)
+                if( Format.extractFormat(cell).hasProperty("span") ) {
+                    unmerge( new CellList(sheet, [cell]) );
+                    unmerged = true;
+                }
+
+            if(unmerged)
+                return;
+
+            merge(celllist, true);
+        },
+        enabled: function(celllist: CellList) {
+
+            for(let cell of celllist.cells)
+                if( Format.extractFormat(cell).hasProperty("span") )
+                    return true;
+
+            return false;
+        }
+    }
+}
 
 const css = `
     :host {
@@ -169,7 +246,14 @@ export class CalcToolbar extends LISS({
             if( elem.tagName !== 'CALC-TOOLBAR-ITEM')
                 return;
 
-            const n = elem.getAttribute('name')!;
+            const n = elem.getAttribute('name')! as keyof typeof fcts;
+            if( elem.getAttribute('type') === 'fct') {
+
+                fcts[n].action(this.#sheet.selection);
+                this.#update();
+
+                return;
+            }
 
             const value =  elem.hasAttribute('value')
                             ? elem.getAttribute('value')
@@ -177,7 +261,7 @@ export class CalcToolbar extends LISS({
 
             let format = new Format({[n]: value });
             format.applyTo( this.#sheet.selection );
-
+            this.#update();
         });
 
         font_sizes_select.addEventListener("change", () => {
@@ -185,35 +269,44 @@ export class CalcToolbar extends LISS({
             //TODO...
             let format = new Format({font_size: font_sizes_select.value});
             format.applyTo( this.#sheet.selection );
+            this.#update();
         });
     }
 
     #sheet!:CalcSheet;
 
+
+    #update() {
+
+        if( this.#sheet.selection.cells.length === 0)
+            return;
+
+        const format = Format.extractFormat(this.#sheet.selection);
+
+        for(let name in this.#btns) {
+
+            let enabled = format.getProperty(name) === true;
+            if(name === "merge_center")
+                enabled = fcts["merge_center"].enabled(this.#sheet.selection);
+
+            this.#btns[name].classList.toggle('enabled', enabled )
+        }
+
+        //TODO...
+        const font_sizes_select = this.content.querySelector<HTMLSelectElement>('.font_size')!;
+        font_sizes_select.value = format.getProperty('font_size');
+        //TODO: update...
+    }
+
     syncTo(sheet: CalcSheet) {
 
         this.#sheet = sheet;
 
-        const update = () => {
-
-            if( sheet.selection.cells.length === 0)
-                return;
-
-            const format = Format.extractFormat(sheet.selection);
-
-            for(let name in this.#btns)
-                this.#btns[name].classList.toggle('enabled', format.getProperty(name) === true )
-
-            //TODO...
-            const font_sizes_select = this.content.querySelector<HTMLSelectElement>('.font_size')!;
-            font_sizes_select.value = format.getProperty('font_size');
-            //TODO: update...
-        }
 
         sheet.selection.addEventListener('change', (ev) => {
-            update();
+            this.#update();
         });
-        update();
+        this.#update();
 
     }
 

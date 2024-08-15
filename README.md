@@ -56,6 +56,11 @@ Motivation/Problematic first.
 	- underline style...
 	- better CSS
 	- color under foreground/background color.
+	- disable merge icons when :
+		- merge : can't merge
+		- unmerge : can't unmerge
+		- merge_center : only one selected...
+	- arrow keys/click on merged cells...
 - formula
 	- move/resize ref plages.
 	- add ref plages.

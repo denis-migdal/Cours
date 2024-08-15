@@ -43,6 +43,8 @@ Il est aussi possible d'aligner le contenu d'une cellule horizontalement et vert
     <img src="./img/barre-outils-alignement.png"/>
 </center>
 
++ Ajuster quand ça dépasse (non implémenté ici)
+
 ### Format du contenu
 
 Il est aussi possible de modifier le format des nombres affichés en les affichant comme une monnaie, un pourcentage, une date, en ajoutant ou retirant des décimales :
@@ -57,7 +59,7 @@ Il est aussi possible de modifier le format des nombres affichés en les afficha
 💡 De nombreux autres formats sont disponibles dans le menu "Format => Cellules... => Nombres" :
 
 <center>
-    <img src="./img/format-nombres-menu.png"/>
+    <img src="../../../../assets/tableur/img/format-nombres-menu.png"/>
 </center>
 
 ### Bordures

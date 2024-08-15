@@ -120,12 +120,23 @@
 
     white-space: pre;
 
+    vertical-align: bottom;
+
     &:is([data-type="number"],[data-type="date"], [data-type="boolean"]) {
         text-align: right;
     }
 
     &[contenteditable] {
         outline: 0px solid transparent;
+    }
+
+    &.hidden {
+        display: none;
+    }
+
+    &.ajuster {
+        word-break: break-all;
+        white-space: normal;
     }
 
     &.highlight {
@@ -142,14 +153,23 @@
     &.underline {
         text-decoration: underline;
     }
-    &.align-left {
+    &.align_left {
         text-align: left;
     }
-    &.align-center {
+    &.align_center {
         text-align: center;
     }
-    &.align-right {
+    &.align_right {
         text-align: right;
+    }
+    &.valign_top {
+        vertical-align: top;
+    }
+    &.valign_middle {
+        vertical-align: middle;
+    }
+    &.valign_bottom {
+        vertical-align: bottom;
     }
 }
 

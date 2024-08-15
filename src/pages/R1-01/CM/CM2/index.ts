@@ -9,11 +9,11 @@ import { CalcToolbar } from "../../../../struct/calc/toolbar.ts";
 
 const sheet_format_content = await LISS.qs<CalcSheet>('#sheet_format_content');
 
-sheet_format_content.getCells("A1:F1").toggleClass("bold").toggleClass("align-center").content = [
+sheet_format_content.getCells("A1:F1").format("bold", "align_center").content = [
     "Taille", "Gras", "Italique", "Souligné", "Couleur texte", "Couleur fond"
 ]
 
-sheet_format_content.getCells("A2:F2").toggleClass("align-center").content = "A";
+sheet_format_content.getCells("A2:F2").format("align_center").content = "A";
 sheet_format_content.getCells("A2").format({font_size: '15pt'});
 sheet_format_content.getCells("B2").format('bold');
 sheet_format_content.getCells("C2").format('italic');

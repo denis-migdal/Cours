@@ -1,4 +1,5 @@
-import { Cell, CellList } from "./sheet";
+import LISS from "../../../libs/LISS";
+import { CalcSheet, Cell, CellList } from "./sheet";
 
 export class Format {
 
@@ -6,7 +7,6 @@ export class Format {
 
     constructor(format: Record<string, any>) {
         this.#format = format;
-        console.log(format);
     }
 
     applyTo(cell: Cell|CellList) {
@@ -23,7 +23,56 @@ export class Format {
         for(let name in this.#format) {
             let val = this.#format[name];
 
+            if( name === 'span' ) {
+
+
+                const sheet = LISS.getLISSSync( (cell.getRootNode() as ShadowRoot).host );
+                
+                if( val[0] === 1 && val[1] === 1) { // unmerge
+
+                    let r = +cell.getAttribute('rowspan') ?? 0;
+                    let c = +cell.getAttribute('colspan') ?? 0;
+
+                    for(let i = 0; i < r; ++i)
+                        for(let j = 0; j < c; ++j) {
+                            const target = sheet.relativeTo(cell, i, j);
+                            delete target.cell;
+                            target.classList.remove('hidden');
+                        }
+                    cell.removeAttribute('rowspan');
+                    cell.removeAttribute('colspan');
+
+                    continue;
+                }
+
+                cell.setAttribute('rowspan', `${val[0]}`);
+                cell.setAttribute('colspan', `${val[1]}`);
+
+                for(let i = 0; i < val[0]; ++i)
+                    for(let j = 0; j < val[1]; ++j) {
+                        if(i === 0 && j === 0)
+                            continue;
+
+                        const target = sheet.relativeTo(cell, i, j);
+                        target.cell = cell;
+                        target.classList.add('hidden');
+                    }
+
+                continue;
+            }
+
             if( typeof val === "boolean") {
+
+                if( name.startsWith('align_') ) {
+                    cell.classList.remove('align_left');
+                    cell.classList.remove('align_center');
+                    cell.classList.remove('align_right');
+                }
+                if( name.startsWith('valign_') ) {
+                    cell.classList.remove('valign_top');
+                    cell.classList.remove('valign_middle');
+                    cell.classList.remove('valign_bottom');
+                }
 
                 cell.classList.toggle(name, val);
 
@@ -36,6 +85,9 @@ export class Format {
 
     getProperty(name: string) {
         return this.#format[name];
+    }
+    hasProperty(name: string) {
+        return name in this.#format;
     }
 
     static extractFormat(cell: Cell|CellList): Format {
@@ -65,6 +117,12 @@ export class Format {
                 continue;
             format[name.slice(2)] = cell.style.getPropertyValue(name);
         }
+
+        const colspan = +(cell.getAttribute('colspan') ?? 1);
+        const rowspan = +(cell.getAttribute('rowspan') ?? 1);
+
+        if( colspan > 1 || rowspan > 1 )
+            format.span = [ rowspan, colspan ];
 
         if( ! ("font_size" in format) )
             format['font_size'] = '10pt';
