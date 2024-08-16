@@ -23,11 +23,13 @@ La **barre d'outils** intègre de nombreux raccourcis permettant d'éditer la fe
 
 💡 Survoler une icône de la barre d'outil affiche une courte description, ainsi qu'éventuellement un raccourcit clavier. Retenir les raccourcit claviers de fonctionnalités fréquemment utilisés permet à terme d'augmenter sa productivité.
 
-💡 La barre d'outils est personnalisable via le menu "Affichage => Barre d'outils".
+💡 La barre d'outils est personnalisable via le menu `Affichage => Barre d'outils`.
 
 ### Mise en forme du contenu
 
 Comme dans les logiciels de traitement de texte, il est possible de mettre en forme le contenu d'une cellule, i.e. de modifier sa police d'écriture, la taille de la police, mettre en gras, en italique, souligner, changer la couleur du texte, changer la couleur du fond :
+
+<calc-sheet id="sheet_test"></calc-sheet>
 
 <center>
     <calc-toolbar id='sheet_toolbar_format_content'></calc-toolbar>
@@ -40,23 +42,22 @@ Comme dans les logiciels de traitement de texte, il est possible de mettre en fo
 Il est aussi possible d'aligner le contenu d'une cellule horizontalement et verticalement :
 
 <center>
-    <img src="./img/barre-outils-alignement.png"/>
+    <calc-toolbar id='sheet_toolbar_align'></calc-toolbar>
+    <calc-sheet id="sheet_align" cols=5 rows=4></calc-sheet>
 </center>
 
-+ Ajuster quand ça dépasse (non implémenté ici)
+💡 **Ajuster** le contenu permet de retourner à la ligne lorsque le contenu dépasse la largeur de la cellule.
 
 ### Format du contenu
 
-Il est aussi possible de modifier le format des nombres affichés en les affichant comme une monnaie, un pourcentage, une date, en ajoutant ou retirant des décimales :
+Il est aussi possible de modifier le format des nombres affichés en les affichant comme une monnaie, un pourcentage, une date (*non-implémentée ici*), en ajoutant ou retirant des décimales :
 
 <center>
-    <img src="./img/barre-outils-nombres.png"/>
-</center>
-<center>
-    <img src="./img/format-nombres.png"/>
+    <calc-toolbar id='sheet_toolbar_format'></calc-toolbar>
+    <calc-sheet id="sheet_format" cols=4 rows=4></calc-sheet>
 </center>
 
-💡 De nombreux autres formats sont disponibles dans le menu "Format => Cellules... => Nombres" :
+💡 De nombreux autres formats sont disponibles dans le menu `Format => Cellules... => Nombres` :
 
 <center>
     <img src="../../../../assets/tableur/img/format-nombres-menu.png"/>
@@ -64,16 +65,17 @@ Il est aussi possible de modifier le format des nombres affichés en les afficha
 
 ### Bordures
 
-Il est aussi possible de fixer les bordures des cellules, leur style, ainsi que leur couleur :
+Il est aussi possible de fixer les bordures des cellules, leur style (*non implémenté ici*), ainsi que leur couleur :
 
 <center>
-    <img src="./img/barre-outils-bordures.png"/>
+    <calc-toolbar id='sheet_toolbar_bordures'></calc-toolbar>
+    <calc-sheet id="sheet_bordures" cols=3 rows=3></calc-sheet>
 </center>
 
-💡 Vous pouvez définir l'épaisseur de la bordure dans le menu "Format => Cellules... => Bordures" :
+💡 Vous pouvez définir l'épaisseur de la bordure dans le menu `"Format => Cellules... => Bordures"` :
 
 <center>
-    <img src="./img/menu-bordures.png"/>
+    <img src="../../../../assets/tableur/img/menu-bordures.png"/>
 </center>
 
 ### Retraits
@@ -81,34 +83,42 @@ Il est aussi possible de fixer les bordures des cellules, leur style, ainsi que 
 Les retraits permettent de décaler le contenu des cellules :
 
 <center>
-    <img src="./img/barre-outils-retraits.png"/>
-</center>
-<center>
-    <img src="./img/retraits.png"/>
+    <calc-toolbar id='sheet_toolbar_retraits'></calc-toolbar>
+    <calc-sheet id="sheet_retraits" cols=2 rows=5></calc-sheet>
 </center>
 
+## Opérations de formats sur plusieurs cellules
 
-## Plages
+Motivation...
+
+#### Copie
+
+-> copier/coller => le format.
+    - maj+ctrl+maj+V : copier sans format 
+-> + icon pour dupliquer format (ou dbl cliquer)
+
+#### Effacer le format
+
++ ctrl+M effacer formattage
++ astuce ctrl+X
+
+### Plages
 
 -> [motivation] sélection plage (ctrl+super+ligne/col)
     => e.g. pour formatter plusieurs cellules en même temps.
 
-### Fusionner et scinder des cellules
 
-Il est aussi possible de fusionner des cellules pour n'en faire qu'une. Les cellules fusionnées peuvent être scindées.
+### Style
 
-<center>
-    <img src="./img/barre-outils-fusion.png"/>
-</center>
-<center>
-    <img src="./img/fusion.png"/>
-</center>
+-> utiliser F11...
 
-## Format
+-> Motivation/explication...
 
--> copier/supprimer le format // collage spécial (sans format)
--> définir un format
-        -> format définis / styles ?
+
+-> Liste style prédéfinis.
+-> Nouveau style => appliquer (F11) ?
+    -> + modifier (modifie tout...)
+    -> + highlight
 
 ## Insertions
 
@@ -126,7 +136,6 @@ Un commentaire apparaît comme un carré rouge en haut à droite d'une cellule. 
     <img src="./img/commantaire-1.png"/>
     <img src="./img/commantaire-2.png"/>
 </center>
-
 
 <center>
     <video loop autoplay>
@@ -156,6 +165,17 @@ Il est possible de redimensionner une ligne (ou colonne) en plaçant le curseur 
 </video>
 </center>
 
+
+### Fusionner et scinder des cellules
+
+Il est aussi possible de fusionner des cellules pour n'en faire qu'une. Les cellules fusionnées peuvent être scindées (i.e. défusionnées) :
+
+
+<center>
+    <calc-toolbar id='sheet_toolbar_fusion'></calc-toolbar>
+    <calc-sheet id="sheet_fusion" cols=3 rows=3></calc-sheet>
+</center>
+
 ### Cacher les lignes/colonnes
 
 Certaines lignes (ou colonnes) peuvent être moins importantes que d'autres, e.g. :
@@ -183,19 +203,6 @@ déplacer sélections vs ajouter/supprimer
 # TP
 
  [cf TP6+2+1] Plages
-# NEXT
-
--> opérateurs de plage lors des plages
-
-# CM1:
-
-<img src="img/barre-outils-edition.png"/>
-
-
-x
-- maj+ctrl+maj+V (CM2) + ctrl+M copier formattage
-+ astuce ctrl+X
-- commentaires + liens (cf links)
 
 </main>
     </body>

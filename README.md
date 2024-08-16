@@ -35,8 +35,6 @@ Motivation/Problematic first.
 - 10xTP
 - Slides + cheat sheet + TP + CM...
 
-#### WebCalc
-
 #### Webodf
 
 Test also : https://docs.sheetjs.com/docs/demos/math/summary

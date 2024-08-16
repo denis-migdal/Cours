@@ -15,6 +15,7 @@
     "private": "true",
     "dependencies": {
         "@types/sqlite3": "^3.1.11",
+        "jszip": "^3.10.1",
         "raw-loader": "^4.0.2"
     },
     "devDependencies": {

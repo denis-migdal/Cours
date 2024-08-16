@@ -110,7 +110,7 @@ function parseInput( str: string ): RawContentType {
     if(str === 'FAUX')
         return false;
 
-    if(str === '')
+    if(str.trim() === '')
         return str;
 
     if(str[0] === "=") {
@@ -776,18 +776,13 @@ export class CalcSheet extends LISS({
     #tbody!: HTMLTableSectionElement;
     get tbody() { return this.#tbody; }
 
-    #initGrid(nbrows: number, nbcols: number) {
-
-        const is_ro = this.attrs.ro === "true";
-
-        const table = document.createElement('table');
-        const tbody  = document.createElement('tbody');
-        this.#tbody = tbody;
-
-        this.#tbody.setAttribute('tabindex', '0');
+    resize(nbrows: number, nbcols: number) {
 
         const col_html = document.createElement('tr');
         col_html.append( document.createElement('th') );
+
+        const tbody = this.#tbody;
+        tbody.replaceChildren();
 
         for(let col = 0; col <  nbcols ; ++col) {
             const th = document.createElement('th');
@@ -810,6 +805,19 @@ export class CalcSheet extends LISS({
             }
             tbody.append(row_html);
         }
+    }
+
+    #initGrid(nbrows: number, nbcols: number) {
+
+        const is_ro = this.attrs.ro === "true";
+
+        const table = document.createElement('table');
+        const tbody  = document.createElement('tbody');
+        this.#tbody = tbody;
+
+        this.#tbody.setAttribute('tabindex', '0');
+
+        this.resize(nbrows, nbcols);
 
         table.append(tbody);
         this.content.append(table);

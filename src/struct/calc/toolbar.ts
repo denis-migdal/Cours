@@ -352,6 +352,15 @@ export class CalcToolbar extends LISS({
 
     #btns: Record<string, HTMLElement> = {};
 
+    disableAllExcept(...exception: string[]) {
+        for(let btn_name in this.#btns)
+            if( ! exception.includes(btn_name) )
+                this.#btns[btn_name].toggleAttribute('disabled', true);
+        
+        if( ! exception.includes("font_size") )
+            this.content.querySelector<HTMLSelectElement>('.font_size')!.toggleAttribute('disabled', true);
+    }
+
     constructor() {
         super();
 

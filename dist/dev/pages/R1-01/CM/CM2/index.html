@@ -19,9 +19,10 @@
 </center>
 
 <p>💡 Survoler une icône de la barre d&#39;outil affiche une courte description, ainsi qu&#39;éventuellement un raccourcit clavier. Retenir les raccourcit claviers de fonctionnalités fréquemment utilisés permet à terme d&#39;augmenter sa productivité.</p>
-<p>💡 La barre d&#39;outils est personnalisable via le menu &quot;Affichage =&gt; Barre d&#39;outils&quot;.</p>
+<p>💡 La barre d&#39;outils est personnalisable via le menu <code>Affichage =&gt; Barre d&#39;outils</code>.</p>
 <h3 id="mise-en-forme-du-contenu">Mise en forme du contenu</h3>
 <p>Comme dans les logiciels de traitement de texte, il est possible de mettre en forme le contenu d&#39;une cellule, i.e. de modifier sa police d&#39;écriture, la taille de la police, mettre en gras, en italique, souligner, changer la couleur du texte, changer la couleur du fond :</p>
+<p><calc-sheet id="sheet_test"></calc-sheet></p>
 <center>
     <calc-toolbar id='sheet_toolbar_format_content'></calc-toolbar>
     <calc-sheet id="sheet_format_content" cols=6 rows=2></calc-sheet>
@@ -31,63 +32,63 @@
 <h3 id="alignement-du-contenu">Alignement du contenu</h3>
 <p>Il est aussi possible d&#39;aligner le contenu d&#39;une cellule horizontalement et verticalement :</p>
 <center>
-    <img src="./img/barre-outils-alignement.png"/>
+    <calc-toolbar id='sheet_toolbar_align'></calc-toolbar>
+    <calc-sheet id="sheet_align" cols=5 rows=4></calc-sheet>
 </center>
 
-<ul>
-<li>Ajuster quand ça dépasse (non implémenté ici)</li>
-</ul>
+<p>💡 <strong>Ajuster</strong> le contenu permet de retourner à la ligne lorsque le contenu dépasse la largeur de la cellule.</p>
 <h3 id="format-du-contenu">Format du contenu</h3>
-<p>Il est aussi possible de modifier le format des nombres affichés en les affichant comme une monnaie, un pourcentage, une date, en ajoutant ou retirant des décimales :</p>
+<p>Il est aussi possible de modifier le format des nombres affichés en les affichant comme une monnaie, un pourcentage, une date (<em>non-implémentée ici</em>), en ajoutant ou retirant des décimales :</p>
 <center>
-    <img src="./img/barre-outils-nombres.png"/>
-</center>
-<center>
-    <img src="./img/format-nombres.png"/>
+    <calc-toolbar id='sheet_toolbar_format'></calc-toolbar>
+    <calc-sheet id="sheet_format" cols=4 rows=4></calc-sheet>
 </center>
 
-<p>💡 De nombreux autres formats sont disponibles dans le menu &quot;Format =&gt; Cellules... =&gt; Nombres&quot; :</p>
+<p>💡 De nombreux autres formats sont disponibles dans le menu <code>Format =&gt; Cellules... =&gt; Nombres</code> :</p>
 <center>
     <img src="../../../../assets/tableur/img/format-nombres-menu.png"/>
 </center>
 
 <h3 id="bordures">Bordures</h3>
-<p>Il est aussi possible de fixer les bordures des cellules, leur style, ainsi que leur couleur :</p>
+<p>Il est aussi possible de fixer les bordures des cellules, leur style (<em>non implémenté ici</em>), ainsi que leur couleur :</p>
 <center>
-    <img src="./img/barre-outils-bordures.png"/>
+    <calc-toolbar id='sheet_toolbar_bordures'></calc-toolbar>
+    <calc-sheet id="sheet_bordures" cols=3 rows=3></calc-sheet>
 </center>
 
-<p>💡 Vous pouvez définir l&#39;épaisseur de la bordure dans le menu &quot;Format =&gt; Cellules... =&gt; Bordures&quot; :</p>
+<p>💡 Vous pouvez définir l&#39;épaisseur de la bordure dans le menu <code>&quot;Format =&gt; Cellules... =&gt; Bordures&quot;</code> :</p>
 <center>
-    <img src="./img/menu-bordures.png"/>
+    <img src="../../../../assets/tableur/img/menu-bordures.png"/>
 </center>
 
 <h3 id="retraits">Retraits</h3>
 <p>Les retraits permettent de décaler le contenu des cellules :</p>
 <center>
-    <img src="./img/barre-outils-retraits.png"/>
-</center>
-<center>
-    <img src="./img/retraits.png"/>
+    <calc-toolbar id='sheet_toolbar_retraits'></calc-toolbar>
+    <calc-sheet id="sheet_retraits" cols=2 rows=5></calc-sheet>
 </center>
 
-
-<h2 id="plages">Plages</h2>
+<h2 id="opérations-de-formats-sur-plusieurs-cellules">Opérations de formats sur plusieurs cellules</h2>
+<p>Motivation...</p>
+<h4 id="copie">Copie</h4>
+<p>-&gt; copier/coller =&gt; le format.
+    - maj+ctrl+maj+V : copier sans format 
+-&gt; + icon pour dupliquer format (ou dbl cliquer)</p>
+<h4 id="effacer-le-format">Effacer le format</h4>
+<ul>
+<li>ctrl+M effacer formattage</li>
+<li>astuce ctrl+X</li>
+</ul>
+<h3 id="plages">Plages</h3>
 <p>-&gt; [motivation] sélection plage (ctrl+super+ligne/col)
     =&gt; e.g. pour formatter plusieurs cellules en même temps.</p>
-<h3 id="fusionner-et-scinder-des-cellules">Fusionner et scinder des cellules</h3>
-<p>Il est aussi possible de fusionner des cellules pour n&#39;en faire qu&#39;une. Les cellules fusionnées peuvent être scindées.</p>
-<center>
-    <img src="./img/barre-outils-fusion.png"/>
-</center>
-<center>
-    <img src="./img/fusion.png"/>
-</center>
-
-<h2 id="format">Format</h2>
-<p>-&gt; copier/supprimer le format // collage spécial (sans format)
--&gt; définir un format
-        -&gt; format définis / styles ?</p>
+<h3 id="style">Style</h3>
+<p>-&gt; utiliser F11...</p>
+<p>-&gt; Motivation/explication...</p>
+<p>-&gt; Liste style prédéfinis.
+-&gt; Nouveau style =&gt; appliquer (F11) ?
+    -&gt; + modifier (modifie tout...)
+    -&gt; + highlight</p>
 <h2 id="insertions">Insertions</h2>
 <p>Il est aussi possible d&#39;insérer des images, des diagrammes (cf suite cours), des tables dynamiques (cf suites cours), des caractères spéciaux, des liens hypertextes ainsi que des commentaires :</p>
 <center>
@@ -100,7 +101,6 @@
     <img src="./img/commantaire-1.png"/>
     <img src="./img/commantaire-2.png"/>
 </center>
-
 
 <center>
     <video loop autoplay>
@@ -127,6 +127,14 @@
 </video>
 </center>
 
+
+<h3 id="fusionner-et-scinder-des-cellules">Fusionner et scinder des cellules</h3>
+<p>Il est aussi possible de fusionner des cellules pour n&#39;en faire qu&#39;une. Les cellules fusionnées peuvent être scindées (i.e. défusionnées) :</p>
+<center>
+    <calc-toolbar id='sheet_toolbar_fusion'></calc-toolbar>
+    <calc-sheet id="sheet_fusion" cols=3 rows=3></calc-sheet>
+</center>
+
 <h3 id="cacher-les-lignescolonnes">Cacher les lignes/colonnes</h3>
 <p>Certaines lignes (ou colonnes) peuvent être moins importantes que d&#39;autres, e.g. :</p>
 <ul>
@@ -150,22 +158,6 @@
 <p>déplacer sélections vs ajouter/supprimer</p>
 <h1 id="tp">TP</h1>
 <p> [cf TP6+2+1] Plages</p>
-<h1 id="next">NEXT</h1>
-<p>-&gt; opérateurs de plage lors des plages</p>
-<h1 id="cm1">CM1:</h1>
-<img src="img/barre-outils-edition.png"/>
-
-
-<p>x</p>
-<ul>
-<li>maj+ctrl+maj+V (CM2) + ctrl+M copier formattage</li>
-</ul>
-<ul>
-<li>astuce ctrl+X</li>
-</ul>
-<ul>
-<li>commentaires + liens (cf links)</li>
-</ul>
 </main>
     </body>
 </html>
