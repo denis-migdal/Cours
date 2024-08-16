@@ -91,10 +91,10 @@ const s_$formula = [
 for(let i = 0; i < s_$formula.length; ++i) {
     const s_$form = s_$formula[i];
 
-    s_$form.getCells("A1:D1").toggleClass("bold")
+    s_$form.getCells("A1:D1").format("bold")
                              .content = [0, 1, 2, 3];
 
-    s_$form.getCells("A2:A4").toggleClass("bold")
+    s_$form.getCells("A2:A4").format("bold")
                              .content = [1, 2, 3];
 
     let ref = "=A1";
@@ -118,8 +118,8 @@ sheet_recopie_motivation.getCells("A1:D4").format("align_center").content = [
     "02/01"  , 4, 1, "=C3+C3", 
     "Total (prod)"  , "=B2+B3", "=C2+C3", "=D2+D3", 
 ];
-sheet_recopie_motivation.getCells("A1:D1").toggleClass("bold");
-sheet_recopie_motivation.getCells("A2:A4").toggleClass("bold");
+sheet_recopie_motivation.getCells("A1:D1").format("bold");
+sheet_recopie_motivation.getCells("A2:A4").format("bold");
 
 const sheet_recopie_motivation_empty = await LISS.qs('#sheet_recopie_motivation_empty');
 
@@ -129,8 +129,8 @@ sheet_recopie_motivation_empty.getCells("A1:D4").format("align_center").content 
     "02/01"  , 4, 1, undefined, 
     "Total (prod)"  , undefined, undefined, undefined
 ];
-sheet_recopie_motivation_empty.getCells("A1:D1").toggleClass("bold");
-sheet_recopie_motivation_empty.getCells("A2:A4").toggleClass("bold");
+sheet_recopie_motivation_empty.getCells("A1:D1").format("bold");
+sheet_recopie_motivation_empty.getCells("A2:A4").format("bold");
 
 const sheet_recopie_incr = await LISS.qs('#sheet_recopie_incr');
 
