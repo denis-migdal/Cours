@@ -12,7 +12,7 @@ import { load } from "struct/calc/loader_ods.ts";
 {
     const sheet = await LISS.qs<CalcSheet>('#sheet_test');
 
-    await load(sheet, "assets/tableur/test.ods");
+    //await load(sheet, "assets/tableur/test.ods");
 }
 
 const sheet_format_content = await LISS.qs<CalcSheet>('#sheet_format_content');

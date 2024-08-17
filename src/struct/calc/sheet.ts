@@ -174,11 +174,11 @@ export class CalcSheet extends LISS({
 
     states = Object.fromEntries( Object.entries(States).map( ([n,s]) => [n, new s(this.host, n)] as const ));
 
-    #plage_selector = new PlageSelector(this);
 
     //TODO: RO prop ?
-    #selection = new CellList(this, []);
     #cursor    = new CellList(this, []);
+    #selection: CellList = new CellList(this, []);
+    #plage_selector = new PlageSelector(this);
 
     #format_mngr = new FormatManager(this);
 
@@ -433,8 +433,8 @@ export class CalcSheet extends LISS({
 
         this.#initGrid(+this.attrs.rows!, +this.attrs.cols!);
 
-        this.content.addEventListener('click', (ev) => {
-
+        this.content.addEventListener("mousedown", (ev) => {
+            
             const target = ev.target as HTMLElement;
 
             // the cell is being edited...
@@ -448,9 +448,10 @@ export class CalcSheet extends LISS({
                 if("cell" in cell) // for merged cells...
                     cell = cell.cell as Cell;
 
-                //TODO: move...
                 this.#cursor.replaceAll(cell);
             }
+
+            //TODO: not correct...
             if( target.tagName === "TH" && target.textContent !== "") {
                 
                 const cell = this.getCells(target.textContent!).cells[0];
@@ -458,7 +459,6 @@ export class CalcSheet extends LISS({
                 this.#cursor.replaceAll(cell);
             }
 
-            // this.#tbody.focus(); // ?
         });
 
         this.content.addEventListener("dblclick", (ev) => {
@@ -570,7 +570,7 @@ export class CalcSheet extends LISS({
                         next = this.relativeTo( cur[0], d_row, d_col);
                     
                     this.#tbody.focus();
-                    next.click();
+                    this.cursor.replaceAll(next);
 
                 } else if(ev.ctrlKey) { // ignore ctrl
                     return;
@@ -609,10 +609,10 @@ export class CalcSheet extends LISS({
                     col = 1;
                 }
 
-                let next = (this.#tbody.children[row].children[col] as HTMLElement);
+                let next = this.#tbody.children[row].children[col] as Cell;
 
                 this.#tbody.focus();
-                next.click();
+                this.cursor.replaceAll(next);
                 return;
             }
         });
@@ -716,7 +716,8 @@ export class CalcSheet extends LISS({
             this.states.cell_edit.state = null;
         });
 
-        this.getRange("A1").cells[0].click();
+        if( this.nbRows >= 1 && this.nbCols >= 1)
+            this.cursor.replaceAll( this.getRange("A1") );
     }
 
     cellPos(cell: HTMLTableCellElement) {
@@ -1027,8 +1028,6 @@ export class CellList extends EventTarget {
     }
 
     set content(content: Cell|RawContentType|(RawContentType|Cell)[]) {
-
-        console.trace("set content");
 
         if( Array.isArray(content) ) {
             for(let i = 0; i < content.length; ++i)

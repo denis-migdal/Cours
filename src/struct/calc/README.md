@@ -22,18 +22,10 @@ Sheet
 - repo
 - doc API...
 
-- bug RO... (not fully RO...)
-
 - misc :
-	- arrow keys change selection...
-	- highlight when resized : recompute...
-	- shows 100.00% when "=100%".
+	- bug RO... (not fully RO...)
 	- print `#VALEUR !` when error in formula.
 	- Ctrl+C put data in pastebin ?
-	- resize/merge cols/lines
-	- ctrl+Z...
-	- graphs (outside).
-	- copy area : animate dashed border.
 - toolbar
 	- select fonts
 	- font_size is editable.
@@ -70,3 +62,9 @@ Sheet
 	- delete data when dest is in original selection.
 	- handle repeat and different shapes.
 	- bad position with selection...
+- misc :
+	- shows 100.00% when "=100%".
+	- resize/merge cols/lines
+	- ctrl+Z...
+	- graphs (outside).
+	- copy area : animate dashed border.
