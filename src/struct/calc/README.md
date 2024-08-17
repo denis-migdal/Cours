@@ -25,7 +25,6 @@ Sheet
 	- font_size is editable.
 
 - misc :
-	- bug RO... (not fully RO...)
 	- Ctrl+C put data in pastebin ?
 - toolbar
 	- select fonts

@@ -83,7 +83,7 @@ export class CalcFormula extends LISS({
 
             const cells = cursor.cells;
 
-            this.#input.toggleAttribute('contenteditable', cells.length !== 0);
+            this.#input.toggleAttribute('contenteditable', ! sheet.isRO );
 
             if( cells.length === 0) {
 

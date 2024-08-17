@@ -470,6 +470,61 @@ export class CalcSheet extends LISS({
         // @ts-ignore
         this.content.addEventListener('keydown', (ev: KeyboardEvent) => {
 
+            if( ev.code.startsWith('Arrow') ) {
+
+                ev.preventDefault();
+
+                const cur = this.cursor.cells;
+                if( cur.length === 0)
+                    return;
+
+                let d_row = 0;
+                let d_col = 0;
+
+                if( ev.code === 'ArrowLeft')
+                    --d_col;
+                if( ev.code === 'ArrowRight')
+                    ++d_col;
+                if( ev.code === 'ArrowUp')
+                    --d_row;
+                if( ev.code === 'ArrowDown')
+                    ++d_row;
+
+                let next: Cell;
+                if( ev.ctrlKey ) {
+
+                    let prev   = cur[0];
+                    let cursor = this.relativeTo(prev, d_row, d_col);
+
+                    if( prev.rawContent !== undefined && cursor.rawContent !== undefined) {
+
+                        while( prev !== cursor && cursor.rawContent !== undefined) { // we reached the end.
+                            prev   = cursor;
+                            cursor = this.relativeTo(prev, d_row, d_col);
+                        }
+                        cursor = prev;
+                    } else {
+                        while( prev !== cursor && cursor.rawContent === undefined) { // we reached the end.
+                            prev   = cursor;
+                            cursor = this.relativeTo(prev, d_row, d_col);
+                        }
+                    }
+
+                    next = cursor;
+                } else
+                    next = this.relativeTo( cur[0], d_row, d_col);
+                
+                this.#tbody.focus();
+                this.cursor.replaceAll(next);
+
+                return;
+            }
+
+            // no edition allowed...
+            if( this.attrs.ro === "true") {
+                return;
+            }
+
             const target = ev.target as HTMLElement;
             if( target === this.#tbody ) {
                 if( ev.code === "KeyV" && ev.ctrlKey && this.#pastebin !== null) {
@@ -518,53 +573,6 @@ export class CalcSheet extends LISS({
                     return;
                 } if( ev.code === "Enter" ) {
                     // handled elsewhere
-                } else if( ev.code.startsWith('Arrow') ) {
-
-                    ev.preventDefault();
-
-                    const cur = this.cursor.cells;
-                    if( cur.length === 0)
-                        return;
-
-                    let d_row = 0;
-                    let d_col = 0;
-
-                    if( ev.code === 'ArrowLeft')
-                        --d_col;
-                    if( ev.code === 'ArrowRight')
-                        ++d_col;
-                    if( ev.code === 'ArrowUp')
-                        --d_row;
-                    if( ev.code === 'ArrowDown')
-                        ++d_row;
-
-                    let next: Cell;
-                    if( ev.ctrlKey ) {
-
-                        let prev   = cur[0];
-                        let cursor = this.relativeTo(prev, d_row, d_col);
-
-                        if( prev.rawContent !== undefined && cursor.rawContent !== undefined) {
-
-                            while( prev !== cursor && cursor.rawContent !== undefined) { // we reached the end.
-                                prev   = cursor;
-                                cursor = this.relativeTo(prev, d_row, d_col);
-                            }
-                            cursor = prev;
-                        } else {
-                            while( prev !== cursor && cursor.rawContent === undefined) { // we reached the end.
-                                prev   = cursor;
-                                cursor = this.relativeTo(prev, d_row, d_col);
-                            }
-                        }
-
-                        next = cursor;
-                    } else
-                        next = this.relativeTo( cur[0], d_row, d_col);
-                    
-                    this.#tbody.focus();
-                    this.cursor.replaceAll(next);
-
                 } else if(ev.ctrlKey) { // ignore ctrl
                     return;
                 }
@@ -918,6 +926,10 @@ export class CalcSheet extends LISS({
 
             this.#isUpdating = false;
         })
+    }
+
+    get isRO() {
+        return this.attrs.ro === "true";
     }
 }
 
