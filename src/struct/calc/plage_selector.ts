@@ -64,9 +64,8 @@ export class PlageSelector {
             this.#updateSelection();
         };
 
-        console.log(sheet);
         sheet.cursor.addEventListener('change', () => {
-            sheet.selection.replaceAll(sheet.cursor);
+            sheet.selection.replaceAll( sheet.getVisibleCell(sheet.cursor) );
         });
 
         // @ts-ignore

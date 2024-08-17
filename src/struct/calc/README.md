@@ -22,13 +22,13 @@ Sheet
 - repo
 - doc API...
 
+	- font_size is editable.
+
 - misc :
 	- bug RO... (not fully RO...)
-	- print `#VALEUR !` when error in formula.
 	- Ctrl+C put data in pastebin ?
 - toolbar
 	- select fonts
-	- font_size is editable.
 	- underline style...
 	- better CSS
 	- color under foreground/background color.
@@ -36,18 +36,18 @@ Sheet
 		- merge : can't merge
 		- unmerge : can't unmerge
 		- merge_center : only one selected...
-	- arrow keys/click on merged cells...
 	- format monnaie : select...
 	- top bar...
 	- borders
 	- cond format.
 	- align_* resets indent...
-	- default format prec (hard)
+	- default format digit precision (hard)
 	- cancel number format when clicking on it...
 - formula
 	- move/resize ref plages.
-	- add ref plages.
-	- cache result in the formula ?
+	- add ref plages by clicking.
+	- cache result in the formula ? [require for aleas]
+	- errors in formulas
 - selection
 	- test other features
 	- cell should not be highlighted if only one + cursor on it.
@@ -61,7 +61,6 @@ Sheet
 - recopie
 	- delete data when dest is in original selection.
 	- handle repeat and different shapes.
-	- bad position with selection...
 - misc :
 	- shows 100.00% when "=100%".
 	- resize/merge cols/lines

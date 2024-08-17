@@ -385,7 +385,7 @@ export class CalcSheet extends LISS({
             if( this.#cursor.length !== 1 )
                 throw new Error('Cursor has invalid number of cells');
 
-            cursor.setRange(this.#cursor);
+            cursor.setRange( new CellList(this, [this.getVisibleCell(this.#cursor)]) );
         });
 
         this.#selection.addEventListener('change', (ev) => {
@@ -441,15 +441,8 @@ export class CalcSheet extends LISS({
             if( target.hasAttribute('contenteditable') )
                 return;
 
-            if( target.tagName === "TD" ) {
-
-                let cell = target as Cell;
-
-                if("cell" in cell) // for merged cells...
-                    cell = cell.cell as Cell;
-
-                this.#cursor.replaceAll(cell);
-            }
+            if( target.tagName === "TD" )
+                this.#cursor.replaceAll( target as Cell );
 
             //TODO: not correct...
             if( target.tagName === "TH" && target.textContent !== "") {
@@ -718,6 +711,13 @@ export class CalcSheet extends LISS({
 
         if( this.nbRows >= 1 && this.nbCols >= 1)
             this.cursor.replaceAll( this.getRange("A1") );
+    }
+
+    getVisibleCell(c: Cell|CellList): Cell {
+        if(c instanceof CellList)
+            c = c.firstCell;
+
+        return c.cell ?? c;
     }
 
     cellPos(cell: HTMLTableCellElement) {
@@ -1109,6 +1109,12 @@ export class CellList extends EventTarget {
         this.#cells.push(...cells as Cell[]);
 
         this.dispatchEvent( new CustomEvent("change") );
+    }
+
+    get firstCell() {
+        if( this.#cells.length < 1)
+            throw new Error("nope");
+        return this.#cells[0];
     }
 
     clear() {
