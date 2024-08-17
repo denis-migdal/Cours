@@ -37,9 +37,26 @@ Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
     <img src="./img/TP1.png"/>
 </center>
 
-Formules :
-- B3 : <pre lang="excel" contenteditable></pre>
-- E3 : <input/>
+<strong><em>Réponse :</em></strong>
+
+<style>
+    .sheet_answer {
+        display:flex;
+
+        & > ul {
+            flex: 1 1 0;
+            margin: 0;
+        }
+    }
+</style>
+
+<div class="sheet_answer">
+    <tp-sheet sheet="Exo 1"></tp-sheet>
+
+- <tp-cell_from_sheet sheet="Exo 1" cell="B3"></tp-cell_from_sheet>
+- <tp-cell_from_sheet sheet="Exo 1" cell="E3"></tp-cell_from_sheet>
+
+</div>
 
 ## Exercice 2
 
@@ -66,11 +83,7 @@ Formules :
 
 ## Rendu
 
-<tp-sheet sheet="Feuille1"></tp-sheet>
-
-<tp-cell_from_sheet sheet="Feuille1" cell="B5"></tp-cell_from_sheet>
-
-<tp-file_input></tp-file_input>
+<tp-file_input default="../../../../assets/tableur/sujets/TP1.ods"></tp-file_input>
 
 </main>
     </body>

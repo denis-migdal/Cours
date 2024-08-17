@@ -2,10 +2,19 @@ import LISS from "LISS";
 import { upload } from "struct/utils/upload";
 import { RENDU } from "./rendu";
 
-export class FileInput extends LISS() {
+export class FileInput extends LISS({
+    attributes: ["default"]
+}) {
 
     constructor() {
         super();
+
+        if( this.attrs.default !== null) {
+            fetch(this.attrs.default).then( (e) => {
+                console.log(e);
+                RENDU.updateFile("file", e );
+            });
+        }
 
         const btn = document.createElement("button");
         btn.textContent = "[upload]";

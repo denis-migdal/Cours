@@ -28,11 +28,27 @@
     <img src="./img/TP1.png"/>
 </center>
 
-<p>Formules :</p>
+<p><strong><em>Réponse :</em></strong></p>
+<style>
+    .sheet_answer {
+        display:flex;
+
+        & > ul {
+            flex: 1 1 0;
+            margin: 0;
+        }
+    }
+</style>
+
+<div class="sheet_answer">
+    <tp-sheet sheet="Exo 1"></tp-sheet>
+
 <ul>
-<li>B3 : <pre lang="excel" contenteditable></pre></li>
-<li>E3 : <input/></li>
+<li><tp-cell_from_sheet sheet="Exo 1" cell="B3"></tp-cell_from_sheet></li>
+<li><tp-cell_from_sheet sheet="Exo 1" cell="E3"></tp-cell_from_sheet></li>
 </ul>
+</div>
+
 <h2 id="exercice-2">Exercice 2</h2>
 <p>Vous noterez que la différence entre deux dates est classiquement exprimée en jours.</p>
 <p>Formules :</p>
@@ -54,9 +70,7 @@
 <li>C3 : <input/></li>
 </ul>
 <h2 id="rendu">Rendu</h2>
-<p><tp-sheet sheet="Feuille1"></tp-sheet></p>
-<p><tp-cell_from_sheet sheet="Feuille1" cell="B5"></tp-cell_from_sheet></p>
-<p><tp-file_input></tp-file_input></p>
+<p><tp-file_input default="../../../../assets/tableur/sujets/TP1.ods"></tp-file_input></p>
 </main>
     </body>
 </html>
