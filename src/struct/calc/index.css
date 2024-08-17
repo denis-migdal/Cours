@@ -107,6 +107,10 @@
     }
 }
 
+:host .hidden {
+    display: none;
+}
+
 :host td {
 
     --font_size: 10pt;
@@ -131,10 +135,6 @@
 
     &[contenteditable] {
         outline: 0px solid transparent;
-    }
-
-    &.hidden {
-        display: none;
     }
 
     &.ajuster {

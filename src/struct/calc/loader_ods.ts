@@ -2,7 +2,7 @@ import { CalcSheet } from "./sheet";
 
 const JSZip = require("jszip");
 
-export async function load(target: CalcSheet, file: string|ArrayBuffer) {
+export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: string = "Feuille1") {
 
     if( typeof file === "string")
         file = await (await fetch(file)).arrayBuffer();
@@ -15,8 +15,9 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer) {
 
     const xml = parser.parseFromString(content, "text/xml");
 
-    const table = xml.querySelector('table')!;
+    const tables = [...xml.querySelectorAll('table')];
 
+    const table = tables.find( e => e.getAttribute("table:name") === sheet)!;
     let rows = table.querySelectorAll("table-row");
 
     let nb_cols = 1;

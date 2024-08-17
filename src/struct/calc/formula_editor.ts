@@ -44,7 +44,7 @@ export class CalcFormula extends LISS({
             if( this.#cur_cell === null )
                 return;
 
-            this.#sheet.cursor.content = this.#input.textContent!;
+            //this.#sheet.cursor.content = this.#input.textContent!;
             this.#sheet.states.cell_edit.state = null;
         });
 

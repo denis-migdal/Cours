@@ -29,12 +29,6 @@ function onInput(ev: Event) {
 
     const target = ev.target as HTMLElement;
 
-    /*
-    if( ! isActive(target) ) {
-        target.innerHTML = highlight(target.textContent!);
-        return;
-    }*/
-
     // https://stackoverflow.com/questions/21234741/place-caret-back-where-it-was-after-changing-innerhtml-of-a-contenteditable-elem
 
     let rrange = window.getSelection()!.getRangeAt(0);
@@ -58,7 +52,6 @@ function onInput(ev: Event) {
     }
 
     // Update innerHTML
-    //target.innerHTML = highlight(target.textContent!);
     target.textContent = target.textContent;
 
     let child!: ChildNode;
@@ -154,8 +147,6 @@ class State<T> {
 
     set state(state: T|null) {
 
-        console.warn("state", this.#state, state);
-
         if( this.#state === state)
             return;
 
@@ -202,15 +193,6 @@ export class CalcSheet extends LISS({
         return super.content;
     }
 
-    removeHighlights() {
-        for(let h of this.content.querySelectorAll('.range_highlight') )
-            h.remove();
-    }
-    removeCopyHighlight() {
-        for(let h of this.content.querySelectorAll('.copy_highlight') )
-            h.remove();
-    }
-
     setRect(target: HTMLElement, [x,y,w,h]: readonly [number,number,number,number]) {
 
         const tbl_offset = this.content.querySelector('table')!.offsetTop;
@@ -238,19 +220,6 @@ export class CalcSheet extends LISS({
         ] as const;
     }
 
-    highlight(start: Cell, end: Cell, id_or_classlist: number|string[]) {
-        const high = document.createElement('div');
-        if( typeof id_or_classlist === "number")
-            high.classList.add('range_highlight', `highlight_${id_or_classlist}`);
-        else
-            high.classList.add( ...id_or_classlist );
-
-        this.setRect(high, this.getRect([start, end]) );
-        this.content.append(high);
-
-        return high;
-    }
-
     relativeTo(cell: Cell, row_diff: number, col_diff: number) {
         
         let [row, col] = this.cellPos(cell);
@@ -275,18 +244,30 @@ export class CalcSheet extends LISS({
     //TODO: 2D...
     #pastebin: CellList | null = null;
 
+    #formula_refs = new Array<FormulaRef>();
+    #getFormulaRef(i: number) {
+        while( i >= this.#formula_refs.length)
+            this.#formula_refs.push( new FormulaRef(this) );
+
+        return this.#formula_refs[i];
+    }
+    #clearFormulaRefs() {
+        for(let ref of this.#formula_refs)
+            ref.setRange(null);
+    }
+
     constructor() {
         super();
 
-        const cursor = document.createElement('div');
-        cursor.classList.add("cursor");
-        this.content.append(cursor);
+        const cursor = new RangeOverlay(this, "cursor");
+        const recopy = new RecopyHandle(this);
+        const copy   = new RangeOverlay(this, "copy_highlight");
 
-        const recopy = document.createElement('div');
-        recopy.classList.add("recopy");
-        this.content.append(recopy);
+        const main = document.querySelector("main")!;
 
-        const main = document.querySelector("main")!;  
+        this.host.addEventListener('cell_edit_end', () => {
+            this.#clearFormulaRefs();
+        });
 
         let last_recopy_target: Cell|null = null;
         let last_recopy_dir   : [number, number]|null = null
@@ -337,8 +318,8 @@ export class CalcSheet extends LISS({
                 [beg, end] = [end, beg];
 
             //TODO: highlight...
-            this.removeHighlights()    ; //TODO...
-            this.highlight(beg, end, 1); //TODO class...
+            this.#clearFormulaRefs();
+            this.#getFormulaRef(1).setRange( this.getRange(beg, end) );
         };
 
         recopy.addEventListener("mousedown", (ev) => {
@@ -370,7 +351,6 @@ export class CalcSheet extends LISS({
                         if( typeof content.rawContent === "number")
                             content = (src.rawContent as number) + nb*(d_x + d_y);
                         else if( content.rawContent instanceof Date ) {
-                            console.warn("is date", nb, d_x + d_y);
                             content = new Date(src.rawContent as Date);
                             content.setDate( content.getDate() + nb*(d_x + d_y));
                         }
@@ -382,7 +362,7 @@ export class CalcSheet extends LISS({
                     } while( cur!== last_recopy_target );
                 }
 
-                this.removeHighlights()    ; //TODO...
+                this.#clearFormulaRefs(); // recopy
                 this.states.recopy.state = null;
                 last_recopy_target = null;
                 last_recopy_dir    = null;
@@ -402,11 +382,10 @@ export class CalcSheet extends LISS({
 
         this.#cursor.addEventListener('change', (ev) => {
 
-            const cells = this.#cursor.cells;
-            if( cells.length === 0 )
-                return;
+            if( this.#cursor.length !== 1 )
+                throw new Error('Cursor has invalid number of cells');
 
-            this.setRect(cursor, this.getRect(cells) );
+            cursor.setRange(this.#cursor);
         });
 
         this.#selection.addEventListener('change', (ev) => {
@@ -428,9 +407,8 @@ export class CalcSheet extends LISS({
                 this.#tbody.children[row].children[0].classList.add("highlight");
             }
 
-            const [x,y,w,h] = this.getRect(cells);
+            recopy.setRange(this.#selection);
 
-            this.setRect(recopy, [x+w-2, y+h-2, 5, 5]);
             // only if simple...
             // const last = cells[cells.length-1];
             // pointer...
@@ -459,8 +437,6 @@ export class CalcSheet extends LISS({
 
             const target = ev.target as HTMLElement;
 
-            this.removeHighlights(); //TODO: move...
-
             // the cell is being edited...
             if( target.hasAttribute('contenteditable') )
                 return;
@@ -473,15 +449,13 @@ export class CalcSheet extends LISS({
                     cell = cell.cell as Cell;
 
                 //TODO: move...
-                this.#cursor.clear();
-                this.#cursor.add(cell);
+                this.#cursor.replaceAll(cell);
             }
             if( target.tagName === "TH" && target.textContent !== "") {
                 
-                const cell = this.getCells(target.textContent!).cells[0] as Cell;
+                const cell = this.getCells(target.textContent!).cells[0];
 
-                this.#cursor.clear();
-                this.#cursor.add(cell);
+                this.#cursor.replaceAll(cell);
             }
 
             // this.#tbody.focus(); // ?
@@ -527,11 +501,9 @@ export class CalcSheet extends LISS({
                 if( ( ev.key === "c" || ev.key === "x") && ev.ctrlKey ) {
                     ev.preventDefault();
 
-                    let selection = this.#selection.cells; //TODO: as array...
-                    let h = this.highlight( selection[0], selection[selection.length-1], ['copy_highlight'] );
-                   
+                    copy.setRange(this.#selection);
                     // WHY ???
-                    h.style.setProperty('top'   , `${selection[0].offsetTop}px`);
+                    //h.style.setProperty('top'   , `${selection[0].offsetTop}px`);
 
                     this.#pastebin = this.#selection.deepClone();
 
@@ -599,7 +571,6 @@ export class CalcSheet extends LISS({
                     
                     this.#tbody.focus();
                     next.click();
-                    //next.dispatchEvent( new CustomEvent('click', {bubbles: true}) );
 
                 } else if(ev.ctrlKey) { // ignore ctrl
                     return;
@@ -623,8 +594,6 @@ export class CalcSheet extends LISS({
             if(ev.code === "Enter") { //TODO: Enter is for current plage...
                 ev.preventDefault();
 
-                this.removeHighlights();
-
                 const cur = this.cursor.cells;
                 if( cur.length === 0)
                     return;
@@ -644,15 +613,12 @@ export class CalcSheet extends LISS({
 
                 this.#tbody.focus();
                 next.click();
-                //next.dispatchEvent( new CustomEvent('click', {bubbles: true}) );
-                
-                //target.blur();
                 return;
             }
         });
 
         const onInput2 = (ev: Event) => {
-            this.removeHighlights();
+            this.#clearFormulaRefs();
             // @ts-ignore
             if(ev.detail !== true)
                 onInput(ev);
@@ -663,7 +629,7 @@ export class CalcSheet extends LISS({
 
             const target = ev.target as HTMLElement;
 
-            this.removeCopyHighlight(); // TODO: move to cell_edit_end ?
+            copy.setRange(null);
 
             if( target.tagName !== "TD")
                 return;
@@ -709,16 +675,13 @@ export class CalcSheet extends LISS({
 
                 cell.replaceChildren( ...children );
 
-                for(let range in ranges_colors ) {
-
-                    const cell = this.getCells(range).cells;
-
-                    let beg = cell[0];
-                    let end = cell[cell.length-1];
-
-                    this.highlight(beg, end, ranges_colors[range]);
+                const ranges_names = Object.keys(ranges_colors);
+                for(let i = 0; i < ranges_names.length; ++i) {
+                    const range = ranges_names[i];
+                    const ref = this.#getFormulaRef(i);
+                    ref.setColor( ranges_colors[range] );
+                    ref.setRange( this.getCells(range) );
                 }
-
                 cell.addEventListener('input', onInput2 ); // remove colors...
             } else {
                 cell.textContent = defaultFormat(cell.rawContent);
@@ -735,19 +698,17 @@ export class CalcSheet extends LISS({
             cell.removeEventListener("input", onInput2); // to be safe
             cell.toggleAttribute("contenteditable", false);
 
+            console.warn("leave edit", cell.textContent);
             new CellList(this, [cell]).content = cell.textContent!;
             this.update();
 
             // leave
             this.#selection.clear();
-            this.#cursor.clear();
-
         });
 
         this.content.addEventListener("focusout", ev => {
 
             const target = ev.target as HTMLElement;
-            this.removeHighlights(); // TODO: only cell_edit ??
 
             if( target.tagName !== "TD")
                 return;
@@ -755,7 +716,7 @@ export class CalcSheet extends LISS({
             this.states.cell_edit.state = null;
         });
 
-        let t = this.#tbody.querySelectorAll('td');
+        this.getRange("A1").cells[0].click();
     }
 
     cellPos(cell: HTMLTableCellElement) {
@@ -815,6 +776,11 @@ export class CalcSheet extends LISS({
         const tbody  = document.createElement('tbody');
         this.#tbody = tbody;
 
+        const resizeObs = new ResizeObserver( () => {
+            this.host.dispatchEvent( new CustomEvent('resize') );
+        });
+        resizeObs.observe( this.host );
+
         this.#tbody.setAttribute('tabindex', '0');
 
         this.resize(nbrows, nbcols);
@@ -823,7 +789,25 @@ export class CalcSheet extends LISS({
         this.content.append(table);
     }
 
-    getRange(from: readonly[number,number], to: readonly[number,number] = from): CellList {
+    getRange(from: Cell|string|readonly[number,number], to: Cell|string|readonly[number,number] = from): CellList {
+
+        // process refs...
+        if( from instanceof HTMLTableCellElement)
+            return this.getRange( this.cellPos(from), to );
+        if( to instanceof HTMLTableCellElement)
+            return this.getRange( from, this.cellPos(to) );
+
+        if( typeof from === "string") {
+            if( from.includes(":") )
+                [from, to] = from.split(':');
+
+            from = this.ref2pos(from);
+            return this.getRange( from, to );
+        }
+        if( typeof to === "string")
+            return this.getRange( from, this.ref2pos(to) );
+
+        // get range
 
         let beg_row = from[0] || 1;
         let beg_col = from[1] || 1;
@@ -1044,6 +1028,8 @@ export class CellList extends EventTarget {
 
     set content(content: Cell|RawContentType|(RawContentType|Cell)[]) {
 
+        console.trace("set content");
+
         if( Array.isArray(content) ) {
             for(let i = 0; i < content.length; ++i)
                 new CellList(this.#sheet, [this.#cells[i]] ).content = content[i];
@@ -1095,6 +1081,10 @@ export class CellList extends EventTarget {
         return this;
     }
 
+    get length() {
+        return this.#cells.length;
+    }
+
     has(...cells: Cell[]) {
         for(let cell of cells)
             if( ! this.#cells.includes(cell) )
@@ -1107,9 +1097,17 @@ export class CellList extends EventTarget {
         this.dispatchEvent( new CustomEvent("change") );
     }
 
-    add(...cells: Cell[]) {
+    replaceAll(...cells: Cell[]|[CellList]) {
+        this.#cells.length = 0;
+        this.add(...cells);
+    }
 
-        this.#cells.push(...cells)
+    add(...cells: Cell[]|[CellList]) {
+
+        if( cells[0] instanceof CellList)
+            cells = cells[0].cells;
+
+        this.#cells.push(...cells as Cell[]);
 
         this.dispatchEvent( new CustomEvent("change") );
     }
@@ -1143,5 +1141,6 @@ import "./plage_editor";
 import { Formula, parse_formula } from "./formula_parser";
 import { PlageSelector } from "./plage_selector";
 import { Format, FormatManager } from "./format";
+import { FormulaRef, RangeOverlay, RecopyHandle } from "./RangeOverlay";
 
 LISS.define('calc-sheet', CalcSheet);

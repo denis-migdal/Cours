@@ -1,10 +1,9 @@
-import "../../../../struct/menu.ts";
-
-import "../../../../struct/calc/sheet.ts";
+import "struct/menu.ts";
+import "struct/calc/sheet.ts";
 
 // 1
 
-import LISS from "../../../../../libs/LISS";
+import LISS from "LISS";
 import { Formats } from "struct/calc/format.ts";
 
 const s_formula = await LISS.qs('#sheet_formula');

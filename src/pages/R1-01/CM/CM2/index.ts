@@ -1,10 +1,10 @@
-import LISS from "../../../../../libs/LISS";
-import "../../../../struct/menu.ts";
+import LISS from "LISS";
+import "struct/menu.ts";
 
-import "../../../../struct/calc/sheet.ts";
-import "../../../../struct/calc/toolbar.ts";
+import "struct/calc/sheet.ts";
+import "struct/calc/toolbar.ts";
 import { CalcSheet } from "struct/calc/sheet.ts";
-import { CalcToolbar } from "../../../../struct/calc/toolbar.ts";
+import { CalcToolbar } from "struct/calc/toolbar.ts";
 import { Formats } from "struct/calc/format.ts";
 import { load } from "struct/calc/loader_ods.ts";
 
@@ -12,7 +12,7 @@ import { load } from "struct/calc/loader_ods.ts";
 {
     const sheet = await LISS.qs<CalcSheet>('#sheet_test');
 
-    await load(sheet, "../../../../assets/tableur/test.ods");
+    await load(sheet, "assets/tableur/test.ods");
 }
 
 const sheet_format_content = await LISS.qs<CalcSheet>('#sheet_format_content');

@@ -1,4 +1,7 @@
 import "./menu.ts";
+import "./tp/file_input";
+import "./tp/tableur/cell_from_sheet";
+import "./tp/tableur/sheet";
 
 const hljs = require('highlight.js');
 
@@ -117,20 +120,6 @@ for(let i = 0; i < answers_fields.length; ++i ) {
 }
 // init...
 
-function download(data: any, filename: string, type: string = "plain/text") {
-    const file = new Blob([data], {type});
-    const a   = document.createElement("a");
-    const url = URL.createObjectURL(file);
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function() {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);  
-    }, 0); 
-}
-
 
 const PAGE = window.location.pathname;
 
@@ -138,6 +127,10 @@ let localAnswers = localStorage.getItem(`answers:${PAGE}`);
 
 //TODO get real type...
 let answers = answers_fields.map( e => { return { text: ""} } );
+
+export function getAnswers() {
+    return answers;
+}
 
 importAnswersFromText(localAnswers);
 
@@ -225,6 +218,7 @@ function highlight(q_id: number) {
 
 //TODO: webpack config...
 import LISS from "../../libs/LISS";
+import { download } from "./utils/download.ts";
 
 const TPConsignesContent = `<p>En vous aidant des supports de cours fournis (CM, slides, et cheat sheet), répondez aux différentes questions dans les champs prévus à cet effet.</p>
 <p>À la fin de la séance de TP, vous exporterez les réponses via le bouton en haut à droite de la page, et déposerez le fichier ainsi obtenu sur Moodle.</p>

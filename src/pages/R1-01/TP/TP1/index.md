@@ -64,6 +64,13 @@ Dans cet exercice, vous devez produite une table de multiplication.
 Formules :
 - C3 : <input/>
 
+## Rendu
+
+<tp-sheet sheet="Feuille1"></tp-sheet>
+
+<tp-cell_from_sheet sheet="Feuille1" cell="B5"></tp-cell_from_sheet>
+
+<tp-file_input></tp-file_input>
 
 </main>
     </body>

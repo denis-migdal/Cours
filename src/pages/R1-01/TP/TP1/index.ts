@@ -1,1 +1,3 @@
-import "../../../../struct/tp.ts";
+import "struct/tp.ts";
+
+import "struct/calc/sheet.ts";
