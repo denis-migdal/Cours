@@ -29,7 +29,9 @@ Sur Moodle, vous trouverez le fichier "TP1.ods". Téléchargez-le, puis ouvrez-l
 
 À la fin du TP, vous exporterez vos réponses et les déposerez sur Moodle avec votre fichier de tableur.
 
-## Exercice 1
+## Exercices
+
+### Exercice 1
 
 Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
 
@@ -60,7 +62,7 @@ Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
 
 </div>
 
-## Exercice 2
+### Exercice 2
 
 Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
 
@@ -76,20 +78,32 @@ Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
 
 </div>
 
-## Exercice 3
+### Exercice 3
 
 Le prix TTC (toutes taxes comprises) est calculé à partir du prix HT (hors taxes) auquel on ajoute le montant de la TVA (un certain pourcentage du prix HT).
 
-Formules :
-- D5 : <input/>
-- E5 : <input/>
+<strong><em>Votre réponse :</em></strong>
 
-## Exercice 4
+<div class="sheet_answer">
+    <tp-sheet sheet="Exo 3"></tp-sheet>
+
+- <tp-cell_from_sheet sheet="Exo 3" cell="D5"></tp-cell_from_sheet>
+- <tp-cell_from_sheet sheet="Exo 3" cell="E5"></tp-cell_from_sheet>
+
+</div>
+
+### Exercice 4
 
 Dans cet exercice, vous devez produite une table de multiplication.
 
-Formules :
-- C3 : <input/>
+<strong><em>Votre réponse :</em></strong>
+
+<div class="sheet_answer">
+    <tp-sheet sheet="Exo 4"></tp-sheet>
+
+- <tp-cell_from_sheet sheet="Exo 4" cell="C3"></tp-cell_from_sheet>
+
+</div>
 
 ## Rendu
 

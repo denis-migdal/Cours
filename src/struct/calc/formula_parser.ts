@@ -21,7 +21,7 @@ export class Formula {
         let new_ranges = this.#ranges.map(r => {
 
             //TODO: if range...
-            let pos = [...sheet.cellPos( sheet.getCells(r.value).cells[0] )];
+            let pos = [...sheet.cellPos( sheet.getRange(r.value).firstCell )];
     
             if( r.value.lastIndexOf('$') <= 0 )
                 pos[0] += drow;
@@ -224,7 +224,7 @@ function tokenlist2Tree(tokens: Token[]): Node {
         if( tokens[0].type === "range") {
             return new Node( (sheet: CalcSheet) => {
 
-                let raw = sheet.getCells(tokens[0].value).cells[0].rawContent;
+                let raw = sheet.getRange(tokens[0].value).firstCell.rawContent;
 
                 if( raw instanceof Formula)
                     raw = raw.exec(sheet); // TODO: cache result

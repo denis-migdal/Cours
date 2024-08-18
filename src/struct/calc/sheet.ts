@@ -437,7 +437,7 @@ export class CalcSheet extends LISS({
             //TODO: not correct...
             if( target.tagName === "TH" && target.textContent !== "") {
                 
-                const cell = this.getCells(target.textContent!).cells[0];
+                const cell = this.getRange(target.textContent!).firstCell;
 
                 this.#cursor.replaceAll(cell);
             }
@@ -671,7 +671,7 @@ export class CalcSheet extends LISS({
                     const range = ranges_names[i];
                     const ref = this.#getFormulaRef(i);
                     ref.setColor( ranges_colors[range] );
-                    ref.setRange( this.getCells(range) );
+                    ref.setRange( this.getRange(range) );
                 }
                 cell.addEventListener('input', onInput2 ); // remove colors...
             } else {
@@ -800,11 +800,11 @@ export class CalcSheet extends LISS({
             if( from.includes(":") )
                 [from, to] = from.split(':');
 
-            from = this.ref2pos(from);
+            from = this.ref2pos(from, false);
             return this.getRange( from, to );
         }
         if( typeof to === "string")
-            return this.getRange( from, this.ref2pos(to) );
+            return this.getRange( from, this.ref2pos(to, true) );
 
         // get range
 
@@ -829,62 +829,43 @@ export class CalcSheet extends LISS({
         return new CellList(this, cells);
     }
 
-    getCells(cell: string): CellList;
-    getCells(row_id: number, col_id: number): CellList;
-    getCells(cell_or_rowid: number|string, col_id?: number) {
-
-        let row_id = cell_or_rowid;
-        if( typeof cell_or_rowid === "string") {
-
-            cell_or_rowid = cell_or_rowid.replaceAll('$', '');
-
-            if( cell_or_rowid.includes(':') ) {// range
-
-                let [beg, end] = cell_or_rowid.split(':');
-
-                const b_row_id = +beg[1];
-                const b_col_id = beg.charCodeAt(0) + 1 - 65;
-
-                const e_row_id = +end[1];
-                const e_col_id = end.charCodeAt(0) + 1 - 65;
-
-                const cells = new Array( (e_col_id-b_col_id) * (e_row_id - b_row_id) );
-                let offset = 0;
-                for(let r = b_row_id; r <=  e_row_id; ++r)
-                    for(let c = b_col_id; c <=  e_col_id; ++c)
-                        cells[offset++] = this.#tbody.children[r].children[c] as Cell;
-
-                return new CellList(this, cells);
-            }
-
-            // this is a full line...
-            if( cell_or_rowid[0] >= '0' && cell_or_rowid[0] <= '9' ) {
-                return this.getCells(`A${cell_or_rowid}:${this.pos2ref(+cell_or_rowid, this.nbCols)}`);
-            } else if( cell_or_rowid[cell_or_rowid.length-1] < '0' || cell_or_rowid[cell_or_rowid.length-1] > '9' ) {
-                console.warn( `${cell_or_rowid}1:${cell_or_rowid}${this.nbRows}` );
-                return this.getCells(`${cell_or_rowid}1:${cell_or_rowid}${this.nbRows}`);
-            }
-
-            row_id = +cell_or_rowid[1];
-            col_id = cell_or_rowid.charCodeAt(0) + 1 - 65;
-        }
-
-        const cell = this.#tbody.children[+row_id].children[col_id!] as Cell;
-        return new CellList(this, [cell]);
-    }
-
-    ref2pos(ref: string): [number, number] {
+    ref2pos(ref: string, end_line_col = true): [number, number] {
         
         ref = ref.replaceAll('$', '');
 
-        //TODO...
-        const row = +ref[ref.length - 1];
-        const col = ref.charCodeAt(0) - 65 + 1;
+        let sep = ref.search(/[0-9]/);
+
+        if( sep === 0)  // this is a line...
+            return end_line_col ? this.ref2pos(`A${ref}`) : [this.nbCols, +ref];
+        if( sep === -1) // this is a col...
+            return this.ref2pos(`${ref}${end_line_col ? this.nbRows : 1}`);
+
+        const row = +ref.slice(sep);
+
+        let col = 0;
+        for(let i = 0; i < sep; ++i) {
+            col *= 26;
+            col += ref.charCodeAt(i) - 65;
+        }
+        ++col;
 
         return [row, col];
     }
     pos2ref(row: number, col: number) {
-        return `${String.fromCharCode(65+col-1)}${row}`;
+
+        let col_str = "";
+        do {
+
+            let id = (col-1) % 26;
+
+            col_str = String.fromCharCode(65+id) + col_str;
+
+            col -= id + 1;
+            col /= 26; // should be integer, so ok.
+
+        } while( col > 0 );
+
+        return `${col_str}${row}`;
     }
     get nbRows() {
         return this.#tbody.children.length - 1;

@@ -22,7 +22,8 @@
 <li>compléter les cellules oranges via la poignée de recopie.</li>
 </ul>
 <p>À la fin du TP, vous exporterez vos réponses et les déposerez sur Moodle avec votre fichier de tableur.</p>
-<h2 id="exercice-1">Exercice 1</h2>
+<h2 id="exercices">Exercices</h2>
+<h3 id="exercice-1">Exercice 1</h3>
 <p>Modifiez la feuille de calcul afin d&#39;obtenir le tableau suivant :</p>
 <center>
     <img src="../../../../assets/tableur/img/TP1-1.png"/>
@@ -50,7 +51,7 @@
 </ul>
 </div>
 
-<h2 id="exercice-2">Exercice 2</h2>
+<h3 id="exercice-2">Exercice 2</h3>
 <p>Modifiez la feuille de calcul afin d&#39;obtenir le tableau suivant :</p>
 <p>💡 Vous noterez que la différence entre deux dates est classiquement exprimée en jours.</p>
 <p><strong><em>Votre réponse :</em></strong></p>
@@ -63,19 +64,29 @@
 </ul>
 </div>
 
-<h2 id="exercice-3">Exercice 3</h2>
+<h3 id="exercice-3">Exercice 3</h3>
 <p>Le prix TTC (toutes taxes comprises) est calculé à partir du prix HT (hors taxes) auquel on ajoute le montant de la TVA (un certain pourcentage du prix HT).</p>
-<p>Formules :</p>
+<p><strong><em>Votre réponse :</em></strong></p>
+<div class="sheet_answer">
+    <tp-sheet sheet="Exo 3"></tp-sheet>
+
 <ul>
-<li>D5 : <input/></li>
-<li>E5 : <input/></li>
+<li><tp-cell_from_sheet sheet="Exo 3" cell="D5"></tp-cell_from_sheet></li>
+<li><tp-cell_from_sheet sheet="Exo 3" cell="E5"></tp-cell_from_sheet></li>
 </ul>
-<h2 id="exercice-4">Exercice 4</h2>
+</div>
+
+<h3 id="exercice-4">Exercice 4</h3>
 <p>Dans cet exercice, vous devez produite une table de multiplication.</p>
-<p>Formules :</p>
+<p><strong><em>Votre réponse :</em></strong></p>
+<div class="sheet_answer">
+    <tp-sheet sheet="Exo 4"></tp-sheet>
+
 <ul>
-<li>C3 : <input/></li>
+<li><tp-cell_from_sheet sheet="Exo 4" cell="C3"></tp-cell_from_sheet></li>
 </ul>
+</div>
+
 <h2 id="rendu">Rendu</h2>
 <p><tp-file_input default="../../../../assets/tableur/sujets/TP1.ods"></tp-file_input></p>
 </main>
