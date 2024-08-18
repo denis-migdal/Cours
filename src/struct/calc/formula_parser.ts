@@ -1,4 +1,5 @@
-import { CalcSheet, defaultFormat, ValueType } from "./sheet";
+import { Formats } from "./format";
+import { CalcSheet, ValueType } from "./sheet";
 
 export class Formula {
 
@@ -159,7 +160,7 @@ const op_impl = {
     '+': (_: CalcSheet, a: unknown, b: unknown) => toNumber(a)+toNumber(b),
     '-': (_: CalcSheet, a: unknown, b: unknown) => toNumber(a)-toNumber(b),
     '^': (_: CalcSheet, a: unknown, b: unknown) => Math.pow(toNumber(a),toNumber(b) ),
-    '&': (_: CalcSheet, a: string, b: string) => `${defaultFormat(a)}${defaultFormat(b)}`,
+    '&': (_: CalcSheet, a: string, b: string) => `${Formats.default.call(null, a)}${Formats.default.call(null, b)}`,
     '=':  (_: CalcSheet, a: any, b: any) => a === b,
     '<>': (_: CalcSheet, a: any, b: any) => a !== b,
     '>':  (_: CalcSheet, a: any, b: any) => a > b,

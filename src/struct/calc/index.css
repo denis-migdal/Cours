@@ -129,7 +129,7 @@
 
     vertical-align: bottom;
 
-    &:is([data-type="number"],[data-type="date"], [data-type="boolean"]) {
+    &:is([data-type="number"],[data-type="pourcent"],[data-type="date"], [data-type="boolean"]) {
         text-align: right;
     }
 

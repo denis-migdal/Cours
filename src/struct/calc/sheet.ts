@@ -9,7 +9,7 @@ export type RawContentType = ValueType|Formula;
 
 export type Cell = HTMLTableCellElement & {
     rawContent: RawContentType,
-    format: (this: Cell, v: string|number) => string,
+    format: (this: Cell, v?: number|string|Date) => string,
     is_ro: boolean
 };
 
@@ -76,26 +76,6 @@ function onInput(ev: Event) {
     sel.addRange(range);
 }
 
-export function defaultFormat(value: RawContentType, prec: null|number = null) {
-
-    //TODO...
-
-    if( typeof value === "number")
-        return `${+value.toPrecision(7)}`.replace('.', ',');
-
-    if( typeof value === "boolean")
-        return value ? 'VRAI' : 'FAUX';
-
-    if( value instanceof Date) {
-        return value.toLocaleDateString("fr-FR");
-    }
-    if( value instanceof Formula) {
-        return value.toString();
-    }
-
-    return value;
-}
-
 function parseInput( str: string ): RawContentType {
 
     if(str === 'VRAI')
@@ -113,6 +93,11 @@ function parseInput( str: string ): RawContentType {
     let test_number = Number( str.replace(',', '.') );
     if( ! Number.isNaN( test_number ) )
         return test_number;
+    if( str[str.length-1] === "%") {
+        test_number = Number( str.slice(0,-1).replace(',', '.') );
+        if( ! Number.isNaN( test_number ) )
+            return +(test_number / 100).toPrecision(7);
+    }
 
     const parts = str.split('/');
     if(parts.length <= 3) {
@@ -181,6 +166,10 @@ export class CalcSheet extends LISS({
     #plage_selector = new PlageSelector(this);
 
     #format_mngr = new FormatManager(this);
+
+    static getSheetFromCell(cell: Cell) {
+        return LISS.getLISSSync<CalcSheet>( (cell.getRootNode() as ShadowRoot).host );
+    }
 
     get cursor() {
         return this.#cursor;
@@ -685,7 +674,7 @@ export class CalcSheet extends LISS({
                 }
                 cell.addEventListener('input', onInput2 ); // remove colors...
             } else {
-                cell.textContent = defaultFormat(cell.rawContent);
+                cell.textContent = Formats.default.call(cell);
             }
         })
 
@@ -770,7 +759,7 @@ export class CalcSheet extends LISS({
             for(let col = 0; col <  nbcols ; ++col) {
                 const cell = document.createElement('td') as Cell;
                 //cell.toggleAttribute('contenteditable');
-                cell.format = defaultFormat;
+                cell.format = Formats.default;
                 row_html.append( cell );
             }
             tbody.append(row_html);
@@ -924,6 +913,7 @@ export class CalcSheet extends LISS({
                 }
             }
 
+            this.host.dispatchEvent( new CustomEvent('update') );
             this.#isUpdating = false;
         })
     }
@@ -1048,8 +1038,18 @@ export class CellList extends EventTarget {
             return;
         }
 
-        if( typeof content === 'string')
+        if( typeof content === 'string') {
+
+            let raw = content;
             content = parseInput(content);
+            if( typeof content === "number" && raw[raw.length-1] === "%") {
+                let f = Format.extractFormat(this);
+                if( ! f.hasProperty("format") )
+                    this.format(Formats.pourcent);
+            }
+        }
+
+        
 
         let raw_val = content instanceof HTMLTableCellElement ? content.rawContent
                                                               : content;
@@ -1075,8 +1075,10 @@ export class CellList extends EventTarget {
                 value = raw_val.exec(this.#sheet); //TODO...
 
             let type: string = typeof value;
-            if( type === "object" && value instanceof Date )
+            if( value instanceof Date ) {
                 type="date";
+                cell.format = Formats.date;
+            }
 
             cell.textContent = (cell as any).format(value);
             cell.setAttribute('data-type', type);
@@ -1157,7 +1159,7 @@ import "./formula_editor";
 import "./plage_editor";
 import { Formula, parse_formula } from "./formula_parser";
 import { PlageSelector } from "./plage_selector";
-import { Format, FormatManager } from "./format";
+import { Format, FormatManager, Formats } from "./format";
 import { FormulaRef, RangeOverlay, RecopyHandle } from "./RangeOverlay";
 
 LISS.define('calc-sheet', CalcSheet);

@@ -30,7 +30,7 @@ const content = `
     <calc-toolbar-item name='format_monnaie' type='fct' title="Appliquer le format Monnaie (Maj+Ctrl+4)"></calc-toolbar-item>
     <calc-toolbar-item name='format_pourcent' type='fct' title="Appliquer le format Pourcentage (Maj+Ctrl+5)"></calc-toolbar-item>
     <calc-toolbar-item name='format_nb' type='fct'  title="Appliquer le format Nombre (Maj+Ctrl+1)"></calc-toolbar-item>
-    <calc-toolbar-item name='format_date' type='fct' disabled  title="Appliquer le format Date (Maj+Ctrl+3)"></calc-toolbar-item>
+    <calc-toolbar-item name='format_date' type='fct'  title="Appliquer le format Date (Maj+Ctrl+3)"></calc-toolbar-item>
     <span class='vbar'></span>
     <calc-toolbar-item name='format_zero_p1' type='fct' title="Ajouter une décimale"></calc-toolbar-item>
     <calc-toolbar-item name='format_zero_m1' type='fct' title="Supprimer une décimale"></calc-toolbar-item>
@@ -154,6 +154,19 @@ const fcts: Record<string, { action: (cells: CellList) =>void, enabled?: (cells:
         },
         enabled: function(cells: CellList) {
             return Format.extractFormat(cells).getProperty('format') === Formats.euros;
+        }
+    },
+    "format_date": {
+        action: function(cells: CellList) {
+
+            if( Format.extractFormat(cells).getProperty('format') === Formats.date ) {
+                cells.format({format: null});
+                return;
+            }
+            cells.format(Formats.date);
+        },
+        enabled: function(cells: CellList) {
+            return Format.extractFormat(cells).getProperty('format') === Formats.date;
         }
     },
     "retrait_m1": {

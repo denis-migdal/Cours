@@ -50,11 +50,11 @@ Il est aussi possible d'aligner le contenu d'une cellule horizontalement et vert
 
 ### Format du contenu
 
-Il est aussi possible de modifier le format des nombres affichés en les affichant comme une monnaie, un pourcentage, une date (*non-implémentée ici*), en ajoutant ou retirant des décimales :
+Il est aussi possible de modifier le format des nombres affichés en les affichant comme une monnaie, un pourcentage, une date, en ajoutant ou retirant des décimales :
 
 <center>
     <calc-toolbar id='sheet_toolbar_format'></calc-toolbar>
-    <calc-sheet id="sheet_format" cols=4 rows=4></calc-sheet>
+    <calc-sheet id="sheet_format" cols=5 rows=4></calc-sheet>
 </center>
 
 💡 De nombreux autres formats sont disponibles dans le menu `Format => Cellules... => Nombres` :

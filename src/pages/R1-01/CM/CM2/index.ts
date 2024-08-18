@@ -6,7 +6,6 @@ import "struct/calc/toolbar.ts";
 import { CalcSheet } from "struct/calc/sheet.ts";
 import { CalcToolbar } from "struct/calc/toolbar.ts";
 import { Formats } from "struct/calc/format.ts";
-import { load } from "struct/calc/loader_ods.ts";
 
 
 {
@@ -62,25 +61,26 @@ sheet_toolbar_format_content.disableAllExcept("font_size", "bold", "italic", "un
 {
     const sheet = await LISS.qs<CalcSheet>('#sheet_format');
 
-    sheet.getCells("B1:D1").format("bold", "align_center").content = [
-        "Monnaie", "Pourcent", "Nombre"
+    sheet.getCells("A1:E1").format("bold", "align_center").content = [
+        1, "Monnaie", "Pourcent", "Nombre", "Date"
     ];
 
     sheet.getCells("A2:A4").format("bold", "align_center").content = [
         "Normal", "+1 decimal", "-1 decimal"
     ];
 
-    sheet.getCells("B2:D4").content = 1;
+    sheet.getCells("B2:E4").content = "=$A$1";
     sheet.getCells("B2:B4").format(Formats.euros);
     sheet.getCells("C2:C4").format(Formats.pourcent);
     sheet.getCells("D2:D4").format(Formats.number);
+    sheet.getCells("E2:E4").format(Formats.date);
 
-    sheet.getCells("B3:D3").format({precision: 3});
-    sheet.getCells("B4:D4").format({precision: 1});
+    sheet.getCells("B3:E3").format({precision: 3});
+    sheet.getCells("B4:E4").format({precision: 1});
 
     const sheet_toolbar = await LISS.qs<CalcToolbar>('#sheet_toolbar_format');
     sheet_toolbar.syncTo(sheet);
-    sheet_toolbar.disableAllExcept("format_monnaie", "format_pourcent", "format_nb", "format_zero_p1", "format_zero_m1");
+    sheet_toolbar.disableAllExcept("format_monnaie", "format_pourcent", "format_nb", "format_date", "format_zero_p1", "format_zero_m1");
 }
 
 {

@@ -1,5 +1,6 @@
 import LISS from "../../../libs/LISS";
-import { CalcSheet, Cell, CellList, defaultFormat } from "./sheet";
+import { Formula } from "./formula_parser";
+import { CalcSheet, Cell, CellList } from "./sheet";
 
 export class FormatManager {
     constructor(sheet: CalcSheet) {
@@ -60,10 +61,60 @@ export class FormatManager {
     }
 }
 
+function float2Date(float: number) {
+
+    let content = new Date("1899-12-30");
+
+    content.setDate( content.getDate() + float);
+
+    return content;
+}
+function date2Float(date: Date) {
+    const beg = new Date("1899-12-30");
+    return +((date.getTime() - beg.getTime()) / (24*3600*1000)).toFixed(7);
+}
+
 export const Formats = {
-    euros: function(this:Cell, value: number) {
+
+    default: function(this: Cell|null, value = this?.rawContent) {
+
+        const prec = +(this?.getAttribute('precision') ?? 2);
+
+        if( typeof value === "number") {
+
+            if( this?.getAttribute('type') === "pourcent")
+                return `${+( (+value)*100).toPrecision(7)}`.replace('.', ',') + "%";
+
+            return `${+value.toPrecision(7)}`.replace('.', ',');
+        }
+
+        if( typeof value === "boolean")
+            return value ? 'VRAI' : 'FAUX';
+
+        if( value instanceof Date) {
+            return value.toLocaleDateString("fr-FR");
+        }
+        // @ts-ignore
+        if( value instanceof Formula) {
+            return value.toString();
+        }
+
+        return value;
+    },
+    euros: function(this:Cell, value = this.rawContent) {
+
         if(value === undefined)
             return '';
+        if(typeof value === "string")
+            return value;
+
+        if(value instanceof Date)
+            value = date2Float(value);
+
+        if( this.getAttribute("type") !== "number") {
+            this.setAttribute("type", "number");
+            CalcSheet.getSheetFromCell(this).getRange(this).content = value;
+        }
 
         const prec = +(this.getAttribute('precision') ?? 2);
 
@@ -73,9 +124,43 @@ export const Formats = {
             }) + '€';
         //.toFixed(2) + '€';
     },
-    pourcent: function(this:Cell, value: number) {
+    date: function(this:Cell, value = this.rawContent) {
+        
         if(value === undefined)
             return '';
+        if( typeof value === "string")
+            return value;
+
+        this.setAttribute("type", "date");
+
+        if( value instanceof Date ) {
+            let date = value.toLocaleDateString("fr-FR");
+            return date.slice(0, 6) + date.slice(8);
+        } if( typeof value === "number") {
+            
+            const content = float2Date(value);
+
+            if( ! (this.rawContent instanceof Formula) )
+                CalcSheet.getSheetFromCell(this).getRange( this ).content = content;
+            
+            let date = content.toLocaleDateString("fr-FR");
+            return date.slice(0, 6) + date.slice(8);
+        }
+
+        return value;
+    },
+    pourcent: function(this:Cell, value = this.rawContent) {
+        if(value === undefined)
+            return '';
+        if(typeof value === "string")
+            return value;
+        if(value instanceof Date)
+            value = date2Float(value);
+
+        if( this.getAttribute("type") !== "pourcent") {
+            this.setAttribute("type", "pourcent");
+            CalcSheet.getSheetFromCell(this).getRange(this).content = value;
+        }
 
         const prec = +(this.getAttribute('precision') ?? 2);
 
@@ -83,11 +168,20 @@ export const Formats = {
             minimumFractionDigits: prec,
             maximumFractionDigits: prec
             }) + '%';
-        //.toFixed(2) + '€';
     },
-    number: function(this:Cell, value: number) {
+    number: function(this:Cell, value = this.rawContent) {
         if(value === undefined)
             return '';
+        if(typeof value === "string")
+            return value;
+
+        if(value instanceof Date)
+            value = date2Float(value);
+
+        if( this.getAttribute("type") !== "number") {
+            this.setAttribute("type", "number");
+            CalcSheet.getSheetFromCell(this).getRange(this).content = value;
+        }
 
         const prec = +(this.getAttribute('precision') ?? 2);
 
@@ -123,8 +217,8 @@ export class Format {
 
                 if( val === null) {
 
-                    cell.format = defaultFormat;
-                    cell.textContent = cell.format( cell.rawContent); //TODO: if fct
+                    cell.format = Formats.default;
+                    cell.textContent = cell.format(); //TODO: if fct
     
                     continue;
                 }
@@ -144,12 +238,12 @@ export class Format {
             if( name === 'span' ) {
 
 
-                const sheet = LISS.getLISSSync( (cell.getRootNode() as ShadowRoot).host );
+                const sheet = CalcSheet.getSheetFromCell(cell);
                 
                 if( val[0] === 1 && val[1] === 1) { // unmerge
 
-                    let r = +cell.getAttribute('rowspan') ?? 0;
-                    let c = +cell.getAttribute('colspan') ?? 0;
+                    let r = +(cell.getAttribute('rowspan') ?? 0);
+                    let c = +(cell.getAttribute('colspan') ?? 0);
 
                     for(let i = 0; i < r; ++i)
                         for(let j = 0; j < c; ++j) {

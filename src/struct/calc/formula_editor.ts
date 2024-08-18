@@ -1,6 +1,7 @@
 //TODO: webpack config...
 import LISS from "../../../libs/LISS";
-import { CalcSheet, Cell, CellList, defaultFormat } from "./sheet";
+import { Formats } from "./format";
+import { CalcSheet, Cell } from "./sheet";
 
 const css = `
     :host {
@@ -61,7 +62,7 @@ export class CalcFormula extends LISS({
             if( this.#cur_cell === null )
                 return;
 
-            this.#cur_cell!.textContent = defaultFormat( this.#input.textContent! );
+            this.#cur_cell!.textContent = Formats.default.call(this.#cur_cell, this.#input.textContent! );
             this.#cur_cell.dispatchEvent( new CustomEvent('input', {detail: true}) );
         });
 
@@ -70,7 +71,7 @@ export class CalcFormula extends LISS({
             //@ts-ignore
             if( ev.detail === true)
                 return;
-            this.#input.textContent = defaultFormat( this.#cur_cell!.textContent! );
+            this.#input.textContent = Formats.default.call( this.#cur_cell!, this.#cur_cell!.textContent! );
         };
     }
 
@@ -79,7 +80,12 @@ export class CalcFormula extends LISS({
         this.#sheet = sheet;
         const cursor = this.#sheet.cursor;
 
-        cursor.addEventListener('change', (_: any) => {
+        sheet.host.addEventListener('update', () => {
+            // @ts-ignore
+            this.#input.textContent = Formats.default.call(cursor.firstCell );
+        })
+
+        cursor.addEventListener('change', () => {
 
             const cells = cursor.cells;
 
@@ -98,7 +104,7 @@ export class CalcFormula extends LISS({
             this.#cur_cell = cells[0];
             this.#cur_cell.addEventListener('input', this.#onInput);
             
-            this.#input.textContent = defaultFormat( this.#cur_cell.rawContent );
+            this.#input.textContent = Formats.default.call( this.#cur_cell );
         });
     }
 
