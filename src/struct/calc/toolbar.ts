@@ -122,6 +122,7 @@ const fcts: Record<string, { action: (cells: CellList) =>void, enabled?: (cells:
         action: function(cells: CellList) {
 
             if( Format.extractFormat(cells).getProperty('format') === Formats.pourcent ) {
+                cells.format(Formats.number); // h4ck
                 cells.format({format: null});
                 return;
             }
@@ -160,6 +161,7 @@ const fcts: Record<string, { action: (cells: CellList) =>void, enabled?: (cells:
         action: function(cells: CellList) {
 
             if( Format.extractFormat(cells).getProperty('format') === Formats.date ) {
+                cells.format(Formats.number); // h4ck
                 cells.format({format: null});
                 return;
             }

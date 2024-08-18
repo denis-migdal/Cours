@@ -1,5 +1,5 @@
 import { Formula } from "./formula_parser";
-import { CalcSheet, Cell, CellList } from "./sheet";
+import { CalcSheet, Cell, CellList, RawContentType } from "./sheet";
 
 export class FormatManager {
     constructor(sheet: CalcSheet) {
@@ -73,15 +73,25 @@ export function date2Float(date: Date) {
     return +((date.getTime() - beg.getTime()) / (24*3600*1000)).toFixed(7);
 }
 
+export function formatRaw(pthis: Cell, value = pthis.rawContent) {
+    if( value instanceof Formula)
+        return value.toString();
+    return Formats.default.call(pthis, value);
+}
+
 export const Formats = {
 
     default: function(this: Cell|null, value = this?.rawContent) {
+
+        if( value instanceof Formula)
+            // @ts-ignore
+            value = value.cachedValue();
 
         const prec = +(this?.getAttribute('precision') ?? 2);
 
         if( typeof value === "number") {
 
-            if( this?.getAttribute('type') === "pourcent")
+            if( this?.getAttribute('data-type') === "pourcent")
                 return `${+( (+value)*100).toPrecision(7)}`.replace('.', ',') + "%";
 
             return `${+value.toPrecision(7)}`.replace('.', ',');
@@ -93,14 +103,14 @@ export const Formats = {
         if( value instanceof Date) {
             return value.toLocaleDateString("fr-FR");
         }
-        // @ts-ignore
-        if( value instanceof Formula) {
-            return value.toString();
-        }
 
-        return value;
+        return value!;
     },
-    euros: function(this:Cell, value = this.rawContent) {
+    number: function(this:Cell, value = this.rawContent) {
+
+        if( value instanceof Formula)
+            // @ts-ignore
+            value = value.cachedValue();
 
         if(value === undefined)
             return '';
@@ -110,9 +120,11 @@ export const Formats = {
         if(value instanceof Date)
             value = date2Float(value);
 
-        if( this.getAttribute("type") !== "number") {
-            this.setAttribute("type", "number");
-            CalcSheet.getSheetFromCell(this).getRange(this).content = value;
+        if( this.getAttribute("data-type") !== "number") {
+            this.setAttribute("data-type", "number");
+
+            if( ! (this.rawContent instanceof Formula) )
+                CalcSheet.getSheetFromCell(this).getRange(this).content = value;
         }
 
         const prec = +(this.getAttribute('precision') ?? 2);
@@ -120,17 +132,46 @@ export const Formats = {
         return value.toLocaleString(undefined, {
             minimumFractionDigits: prec,
             maximumFractionDigits: prec
-            }) + '€';
-        //.toFixed(2) + '€';
+            });
+    },
+    pourcent: function(this:Cell, value = this.rawContent) {
+
+        if( value instanceof Formula)
+            // @ts-ignore
+            value = value.cachedValue();
+
+        if(value === undefined)
+            return '';
+        if(typeof value === "string")
+            return value;
+        if(value instanceof Date)
+            value = date2Float(value);
+
+        if( this.getAttribute("data-type") !== "pourcent") {
+            this.setAttribute("data-type", "pourcent");
+            if( ! (this.rawContent instanceof Formula) )
+                CalcSheet.getSheetFromCell(this).getRange(this).content = value;
+        }
+
+        const prec = +(this.getAttribute('precision') ?? 2);
+
+        return (value * 100).toLocaleString(undefined, {
+            minimumFractionDigits: prec,
+            maximumFractionDigits: prec
+            }) + '%';
     },
     date: function(this:Cell, value = this.rawContent) {
         
+        if( value instanceof Formula)
+            // @ts-ignore
+            value = value.cachedValue();
+            
         if(value === undefined)
             return '';
         if( typeof value === "string")
             return value;
 
-        this.setAttribute("type", "date");
+        this.setAttribute("data-type", "date");
 
         if( value instanceof Date ) {
             let date = value.toLocaleDateString("fr-FR");
@@ -148,27 +189,12 @@ export const Formats = {
 
         return value;
     },
-    pourcent: function(this:Cell, value = this.rawContent) {
-        if(value === undefined)
-            return '';
-        if(typeof value === "string")
-            return value;
-        if(value instanceof Date)
-            value = date2Float(value);
+    euros: function(this:Cell, value = this.rawContent) {
 
-        if( this.getAttribute("type") !== "pourcent") {
-            this.setAttribute("type", "pourcent");
-            CalcSheet.getSheetFromCell(this).getRange(this).content = value;
-        }
-
-        const prec = +(this.getAttribute('precision') ?? 2);
-
-        return (value * 100).toLocaleString(undefined, {
-            minimumFractionDigits: prec,
-            maximumFractionDigits: prec
-            }) + '%';
-    },
-    number: function(this:Cell, value = this.rawContent) {
+        if( value instanceof Formula)
+            // @ts-ignore
+            value = value.cachedValue();
+            
         if(value === undefined)
             return '';
         if(typeof value === "string")
@@ -177,9 +203,10 @@ export const Formats = {
         if(value instanceof Date)
             value = date2Float(value);
 
-        if( this.getAttribute("type") !== "number") {
-            this.setAttribute("type", "number");
-            CalcSheet.getSheetFromCell(this).getRange(this).content = value;
+        if( this.getAttribute("data-type") !== "number") {
+            this.setAttribute("data-type", "number");
+            if( ! (this.rawContent instanceof Formula) )
+                CalcSheet.getSheetFromCell(this).getRange(this).content = value;
         }
 
         const prec = +(this.getAttribute('precision') ?? 2);
@@ -187,8 +214,9 @@ export const Formats = {
         return value.toLocaleString(undefined, {
             minimumFractionDigits: prec,
             maximumFractionDigits: prec
-            });
-    }
+            }) + '€';
+        //.toFixed(2) + '€';
+    },
 }
 
 export class Format {

@@ -874,6 +874,9 @@ export class CalcSheet extends LISS({
     }
 
     ref2pos(ref: string): [number, number] {
+        
+        ref = ref.replaceAll('$', '');
+
         //TODO...
         const row = +ref[ref.length - 1];
         const col = ref.charCodeAt(0) - 65 + 1;
@@ -898,7 +901,12 @@ export class CalcSheet extends LISS({
 
         window.requestAnimationFrame( () => {
 
-            const cells = this.content.querySelectorAll<Cell>('td');
+            const cells = [...this.content.querySelectorAll<Cell>('td')].filter( e => e.rawContent instanceof Formula);
+            
+            for(let cell of cells )
+                // @ts-ignore
+                cell.rawContent.resetCache();
+
             for(let cell of cells) {
 
                 if( cell.rawContent instanceof Formula ) {
@@ -1072,8 +1080,26 @@ export class CellList extends EventTarget {
             cell.rawContent = raw_val;
 
             let value = raw_val;
-            if( raw_val instanceof Formula)
-                value = raw_val.exec(this.#sheet); //TODO...
+            if( raw_val instanceof Formula) {
+
+                const formats = Object.values( Formats );
+
+                //If no number format, deduce format.
+                if( cell.format === undefined || cell.format === Formats.default) {
+                    let format = Formats.default;
+                    for(let r of raw_val.rangesToken) {
+                        let f = Format.extractFormat(this.sheet.getRange(r.value) ).getProperty("format");
+                        if( format !== f && formats.indexOf(f) > formats.indexOf(format) )
+                            format = f;
+                    }
+
+                    if(format !== Formats.default)
+                        // @ts-ignore
+                        cell.format = format;
+                }
+
+                value = raw_val.exec(this.#sheet);
+            }
 
             let type: string = typeof value;
             if( value instanceof Date ) {
@@ -1081,7 +1107,16 @@ export class CellList extends EventTarget {
                 cell.format = Formats.date;
             }
 
-            cell.textContent = (cell as any).format(value);
+            // @ts-ignore
+            cell.textContent = cell.format(value);
+
+            if( cell.format === Formats.date)
+                type = 'date';
+            if( cell.format === Formats.pourcent)
+                type = 'pourcent';
+            if( cell.format === Formats.euros || cell.format === Formats.number )
+                type = 'number';
+
             cell.setAttribute('data-type', type);
         }
 

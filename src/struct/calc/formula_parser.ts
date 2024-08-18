@@ -7,6 +7,8 @@ export class Formula {
     #exec: (sheet: CalcSheet) => ValueType;
     #ranges: Token[];
 
+    #cache: ValueType|null = null;
+
     constructor(str: string, exec: (sheet: CalcSheet) => ValueType, ranges_token: Token[] = []) {
 
         this.#str = str;
@@ -49,8 +51,20 @@ export class Formula {
         return this.#ranges;
     }
 
+    resetCache() {
+        this.#cache = null;
+    }
+
+    cachedValue() {
+        return this.#cache!;
+    }
+
     exec(sheet: CalcSheet) {
-        return this.#exec(sheet);
+
+        if( this.#cache !== null)
+            return this.#cache;
+
+        return this.#cache = this.#exec(sheet);
     }
 
     toString() {
