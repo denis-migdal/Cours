@@ -1,4 +1,4 @@
-import { Format } from "./format";
+import { Format, Formats } from "./format";
 import { CalcSheet } from "./sheet";
 
 const JSZip = require("jszip");
@@ -52,14 +52,28 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
             columns_default_style.push(style);
     }
 
+    const nb_styles: Record<string, Record<string, any>> = {};
+    for(let nb_style of xml.querySelectorAll("number-style") ) {
+        const name = nb_style.getAttribute("style:name")!;
+        let format: Record<string, any> = {};
+        nb_styles[name] = format;
+
+        for(let c of nb_style.children) {
+            if( c.getAttribute('number:grouping') === "true" )
+                format.format = Formats.number;
+            if( c.hasAttribute('number:decimal-places') )
+                format.precision = +c.getAttribute('number:decimal-places')!;
+        }
+
+    }
+
     const styles: Record<string, Record<string, any>> = {};
     for(let style of xml.querySelectorAll("style") ) {
 
-        // TODO: number format...
-        /* if( style.hasAttribute('style:data-style-name') )
-            continue; */
-
         let format: Record<string, any> = {};
+
+        if( style.hasAttribute('style:data-style-name') )
+            format = {...nb_styles[style.getAttribute('style:data-style-name')!]};
 
         styles[style.getAttribute("style:name")!] = format;
 
@@ -117,6 +131,18 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
                 
 
                 range.content = content;
+
+                if( rows[i].children[j].hasAttribute("table:number-columns-spanned") || rows[i].children[j].hasAttribute("table:number-rows-spanned") ) {
+
+                    range.format({
+                        span: [ 
+                            +(rows[i].children[j].getAttribute("table:number-rows-spanned")! ?? 1),
+                            +(rows[i].children[j].getAttribute("table:number-columns-spanned")! ?? 1)
+                        ]
+                    });
+
+                    console.log(range.plage_name, rows[i].children[j].getAttribute("table:number-rows-spanned")!, rows[i].children[j].getAttribute("table:number-columns-spanned")!)
+                }
 
                 for(let r = 0; r < nb; ++r) {
 

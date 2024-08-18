@@ -14,7 +14,7 @@
 <h2 id="consignes">Consignes</h2>
 <p><tp-consignes></tp-consignes></p>
 <h2 id="">?</h2>
-<p><todo>Basic/Excel HL ?</todo></p>
+<p><todo>Rewrite</todo></p>
 <p>Sur Moodle, vous trouverez le fichier &quot;TP1.ods&quot;. Téléchargez-le, puis ouvrez-le dans Libre Office Calc.</p>
 <p>À chaque feuille correspond un exercice. Vous devrez :</p>
 <ul>
@@ -25,10 +25,11 @@
 <h2 id="exercice-1">Exercice 1</h2>
 <p>Modifiez la feuille de calcul afin d&#39;obtenir le tableau suivant :</p>
 <center>
-    <img src="./img/TP1.png"/>
+    <img src="../../../../assets/tableur/img/TP1-1.png"/>
 </center>
 
-<p><strong><em>Réponse :</em></strong></p>
+<p>💡 Vous penserez à utiliser la <strong>poignée de recopie</strong>.</p>
+<p><strong><em>Votre réponse :</em></strong></p>
 <style>
     .sheet_answer {
         display:flex;
@@ -50,12 +51,18 @@
 </div>
 
 <h2 id="exercice-2">Exercice 2</h2>
-<p>Vous noterez que la différence entre deux dates est classiquement exprimée en jours.</p>
-<p>Formules :</p>
+<p>Modifiez la feuille de calcul afin d&#39;obtenir le tableau suivant :</p>
+<p>💡 Vous noterez que la différence entre deux dates est classiquement exprimée en jours.</p>
+<p><strong><em>Votre réponse :</em></strong></p>
+<div class="sheet_answer">
+    <tp-sheet sheet="Exo 2"></tp-sheet>
+
 <ul>
-<li>D4 : <input/></li>
-<li>D9 : <input/></li>
+<li><tp-cell_from_sheet sheet="Exo 2" cell="D4"></tp-cell_from_sheet></li>
+<li><tp-cell_from_sheet sheet="Exo 2" cell="D9"></tp-cell_from_sheet></li>
 </ul>
+</div>
+
 <h2 id="exercice-3">Exercice 3</h2>
 <p>Le prix TTC (toutes taxes comprises) est calculé à partir du prix HT (hors taxes) auquel on ajoute le montant de la TVA (un certain pourcentage du prix HT).</p>
 <p>Formules :</p>

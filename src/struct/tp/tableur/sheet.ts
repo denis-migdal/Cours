@@ -20,7 +20,7 @@ export class TPSheet extends LISS({
 
         RENDU.addEventListener('change', async (ev) => {
 
-            await load(this.#sheet, await RENDU.files["file"].file.arrayBuffer(), this.attrs.sheet! );
+            await load(this.#sheet, await RENDU.files["file"].content, this.attrs.sheet! );
             this.host.dispatchEvent(new CustomEvent('change') );
             
         });

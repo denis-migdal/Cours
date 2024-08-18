@@ -10,9 +10,8 @@ export class FileInput extends LISS({
         super();
 
         if( this.attrs.default !== null) {
-            fetch(this.attrs.default).then( (e) => {
-                console.log(e);
-                RENDU.updateFile("file", e );
+            fetch(this.attrs.default).then( async (e) => {
+                RENDU.updateFile("file", await e.arrayBuffer() );
             });
         }
 
@@ -25,7 +24,7 @@ export class FileInput extends LISS({
             if(file === null)
                 return;
 
-            RENDU.updateFile("file", file);
+            RENDU.updateFile("file", await file.arrayBuffer() );
         });
     }
 

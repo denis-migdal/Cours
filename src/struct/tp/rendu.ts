@@ -3,9 +3,7 @@ export type Answer = {
 };
 
 export type TPFile = {
-    file: {
-        arrayBuffer: () => Promise<ArrayBuffer>
-    }
+    content: ArrayBuffer
 };
 
 export class Rendu extends EventTarget {
@@ -13,11 +11,11 @@ export class Rendu extends EventTarget {
     #answers: Answer[] = [];
     readonly files  : Record<string, TPFile> = {};
 
-    updateFile(name: string, file: File|Response) {
+    updateFile(name: string, content: ArrayBuffer) {
 
         //TODO: update dependencies...
         this.files[name] = {
-            file
+            content
         };
 
         this.dispatchEvent( new CustomEvent("change") );

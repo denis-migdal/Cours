@@ -19,7 +19,7 @@
 
 ## ?
 
-<todo>Basic/Excel HL ?</todo>
+<todo>Rewrite</todo>
 
 Sur Moodle, vous trouverez le fichier "TP1.ods". Téléchargez-le, puis ouvrez-le dans Libre Office Calc.
 
@@ -34,10 +34,12 @@ Sur Moodle, vous trouverez le fichier "TP1.ods". Téléchargez-le, puis ouvrez-l
 Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
 
 <center>
-    <img src="./img/TP1.png"/>
+    <img src="../../../../assets/tableur/img/TP1-1.png"/>
 </center>
 
-<strong><em>Réponse :</em></strong>
+💡 Vous penserez à utiliser la **poignée de recopie**.
+
+<strong><em>Votre réponse :</em></strong>
 
 <style>
     .sheet_answer {
@@ -60,11 +62,19 @@ Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
 
 ## Exercice 2
 
-Vous noterez que la différence entre deux dates est classiquement exprimée en jours.
+Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
 
-Formules :
-- D4 : <input/>
-- D9 : <input/>
+💡 Vous noterez que la différence entre deux dates est classiquement exprimée en jours.
+
+<strong><em>Votre réponse :</em></strong>
+
+<div class="sheet_answer">
+    <tp-sheet sheet="Exo 2"></tp-sheet>
+
+- <tp-cell_from_sheet sheet="Exo 2" cell="D4"></tp-cell_from_sheet>
+- <tp-cell_from_sheet sheet="Exo 2" cell="D9"></tp-cell_from_sheet>
+
+</div>
 
 ## Exercice 3
 
