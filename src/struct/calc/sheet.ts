@@ -91,11 +91,11 @@ function parseInput( str: string ): RawContentType {
         return parse_formula(str);
     }
 
-    let test_number = Number( str.replace(',', '.') );
+    let test_number = Number( str.replace(',', '.').replaceAll('\xA0', '') );
     if( ! Number.isNaN( test_number ) )
         return test_number;
     if( str[str.length-1] === "%" || str[str.length-1] === "€" ) {
-        test_number = Number( str.slice(0,-1).replace(',', '.') );
+        test_number = Number( str.slice(0,-1).replaceAll('\xA0', '').replace(',', '.') );
         if( ! Number.isNaN( test_number ) ) {
             if( str[str.length-1] === "€" )
                 return test_number;
@@ -744,13 +744,20 @@ export class CalcSheet extends LISS({
         const col_html = document.createElement('tr');
         col_html.append( document.createElement('th') );
 
+        const colgroup = this.content.querySelector('colgroup')!;
+        colgroup.replaceChildren();
+
         const tbody = this.#tbody;
         tbody.replaceChildren();
 
+        colgroup.append( document.createElement("col") );
+        
         for(let col = 0; col <  nbcols ; ++col) {
             const th = document.createElement('th');
             th.textContent = String.fromCharCode(65 + col);
             col_html.append(th);
+
+            colgroup.append( document.createElement("col") );
         }
         tbody.append(col_html);
 
@@ -770,9 +777,16 @@ export class CalcSheet extends LISS({
         }
     }
 
-    #initGrid(nbrows: number, nbcols: number) {
+    setColSize(col: number|string, size: string) {
+        if( typeof col === "string")
+            col = this.ref2pos(col)[1];
 
-        const is_ro = this.attrs.ro === "true";
+        const html = this.content.querySelector('colgroup')!.children[col] as HTMLElement;
+        html.style.setProperty("width", size);
+        html.style.setProperty('overflow-x', 'hidden');
+    }
+
+    #initGrid(nbrows: number, nbcols: number) {
 
         const table = document.createElement('table');
         const tbody  = document.createElement('tbody');
@@ -785,10 +799,11 @@ export class CalcSheet extends LISS({
 
         this.#tbody.setAttribute('tabindex', '0');
 
-        this.resize(nbrows, nbcols);
-
+        table.append( document.createElement("colgroup") );
         table.append(tbody);
         this.content.append(table);
+
+        this.resize(nbrows, nbcols);
     }
 
     getRange(from: Cell|string|readonly[number,number], to: Cell|string|readonly[number,number] = from): CellList {

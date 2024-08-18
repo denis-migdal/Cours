@@ -22,10 +22,10 @@ Sheet
 - repo
 - doc API...
 
-	- font_size is editable.
 
 - misc :
 	- Ctrl+C put data in pastebin ?
+	- font_size is editable.
 - toolbar
 	- select fonts
 	- underline style...

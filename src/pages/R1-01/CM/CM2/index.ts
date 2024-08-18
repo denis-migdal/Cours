@@ -7,13 +7,6 @@ import { CalcSheet } from "struct/calc/sheet.ts";
 import { CalcToolbar } from "struct/calc/toolbar.ts";
 import { Formats } from "struct/calc/format.ts";
 
-
-{
-    const sheet = await LISS.qs<CalcSheet>('#sheet_test');
-
-    //await load(sheet, "assets/tableur/test.ods");
-}
-
 const sheet_format_content = await LISS.qs<CalcSheet>('#sheet_format_content');
 
 sheet_format_content.getRange("A1:F1").format("bold", "align_center").content = [

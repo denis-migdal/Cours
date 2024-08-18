@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TP2 (Tableur)</title>
+        <link rel="stylesheet" href="./index.css">
+        <script type="module" src="./index.js" defer></script>
+    </head>
+    <body>
+        <header></header>
+        <main>
+
+<h1 id="tp2--mise-en-forme">TP2 : Mise en forme</h1>
+<p><em>💡 Ce TP est inspiré de sources en partie inconnues.</em></p>
+<h2 id="consignes">Consignes</h2>
+<p><tp-consignes></tp-consignes></p>
+<h3 id="consignes-tableur">Consignes tableur</h3>
+<p>Vous créerez un nouveau fichier tableur possédant une unique feuille nommée <code>Facture</code>.</p>
+<p>À la fin du TP vous importerez le fichier dans le sujet de TP.</p>
+<h2 id="exercices">Exercices</h2>
+<h3 id="exercice-1">Exercice 1</h3>
+<p>Modifiez la feuille de calcul afin d&#39;obtenir le tableau suivant :</p>
+<center>
+    <img src="../../../../assets/tableur/img/TP2-1.jpg"/>
+</center>
+
+<p><strong><em>Votre réponse :</em></strong></p>
+<style>
+    .sheet_answer {
+        display:flex;
+
+        & > ul {
+            flex: 1 1 0;
+            margin: 0;
+        }
+    }
+</style>
+
+<div class="sheet_answer">
+    <tp-sheet sheet="Facture"></tp-sheet>
+</div>
+
+<h2 id="rendu">Rendu</h2>
+<p><tp-file_input default="../../../../assets/tableur/sujets/TP2.ods"></tp-file_input></p>
+</main>
+    </body>
+</html>

@@ -37,9 +37,15 @@
     user-select: text;
 }*/
 
+:host colgroup > col {
+    width: 2.26cm;
+}
+:host colgroup > col:first-child {
+    width: calc( 2.26cm / 2.5) ;
+}
+
 :host :is(td, th) {
     color: black;
-    width: 2.26cm;
     height: 0.45cm;
 
     font-size: 10pt;
@@ -48,9 +54,6 @@
     font-family: 'Liberation Sans';
 }
 
-:host tr > th:first-child {
-    width: calc( 2.26cm / 2.5) ;
-}
 
 :host {
     display: inline-flex;

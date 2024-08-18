@@ -29,8 +29,6 @@ La **barre d'outils** intègre de nombreux raccourcis permettant d'éditer la fe
 
 Comme dans les logiciels de traitement de texte, il est possible de mettre en forme le contenu d'une cellule, i.e. de modifier sa police d'écriture, la taille de la police, mettre en gras, en italique, souligner, changer la couleur du texte, changer la couleur du fond :
 
-<calc-sheet id="sheet_test"></calc-sheet>
-
 <center>
     <calc-toolbar id='sheet_toolbar_format_content'></calc-toolbar>
     <calc-sheet id="sheet_format_content" cols=6 rows=2></calc-sheet>
@@ -199,10 +197,6 @@ Pour garder la feuille de calcul lisible, on peut masquer les lignes (ou colonne
 ### Ajouter/Supprimer
 
 déplacer sélections vs ajouter/supprimer
-
-# TP
-
- [cf TP6+2+1] Plages
 
 </main>
     </body>

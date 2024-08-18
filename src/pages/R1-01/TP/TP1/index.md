@@ -9,7 +9,7 @@
         <header></header>
         <main>
 
-# TP1 : ?
+# TP1 : Prise en main
 
 *💡 Ce TP est inspiré de sources en partie inconnues.*
 

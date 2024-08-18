@@ -67,6 +67,7 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
 
     }
 
+    let col_sizes: Record<string, string> = {};
     const styles: Record<string, Record<string, any>> = {};
     for(let style of xml.querySelectorAll("style") ) {
 
@@ -78,6 +79,9 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
         styles[style.getAttribute("style:name")!] = format;
 
         for(let prop of style.children ) {
+
+            if(prop.hasAttribute("style:column-width") )
+                col_sizes[style.getAttribute("style:name")!] = prop.getAttribute("style:column-width")!;
 
             if(prop.hasAttribute('fo:background-color') )
                 format.background_color = prop.getAttribute('fo:background-color');
@@ -145,10 +149,22 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
 
             if( prop.hasAttribute('fo:font-weight') )
                 format.bold = true;
+            if( prop.getAttribute('fo:font-style') === "italic" )
+                format.italic = true;
+            if( prop.hasAttribute('fo:font-size') )
+                format.font_size = prop.getAttribute('fo:font-size')!;
+
+            if( prop.hasAttribute('fo:margin-left') || prop.hasAttribute('fo:margin-right') ) {
+                let margin = +(prop.getAttribute('fo:margin-left') ?? prop.getAttribute('fo:margin-right') )!.slice(0, -2);
+                format.indent = Math.round( margin/0.353 );
+            }
+
             if( prop.hasAttribute('fo:text-align') ) {
                 let align = prop.getAttribute('fo:text-align')!
                 if( align === "end")
                     align = "right";
+                if( align === "start")
+                    align = "left";
                 format[`align_${align}`] = true;
             }
             if( prop.hasAttribute('style:vertical-align') ) {
@@ -161,6 +177,12 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
     }
 
     target.resize(nb_rows + 1, nb_cols + 1);
+    
+    for(let i = 0; i < cols.length; ++i) {
+        const style = cols[i].getAttribute("table:style-name")!;
+        console.log(i+1, col_sizes[style] );
+        target.setColSize( i+1, col_sizes[style] );
+    }
     
     let row_offset = 1;
     for(let i = 0; i < rows.length; ++i) {
@@ -185,8 +207,6 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
                 } else if( cell.getAttribute('office:value-type') === "float") {
                     content = +cell.getAttribute("office:value")!;
                 }
-
-                console.log("!", content);
 
                 let nb = 1;
                 if( cell.hasAttribute('table:number-columns-repeated') )
