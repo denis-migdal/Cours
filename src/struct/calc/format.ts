@@ -1,4 +1,3 @@
-import LISS from "../../../libs/LISS";
 import { Formula } from "./formula_parser";
 import { CalcSheet, Cell, CellList } from "./sheet";
 
@@ -61,7 +60,7 @@ export class FormatManager {
     }
 }
 
-function float2Date(float: number) {
+export function float2Date(float: number) {
 
     let content = new Date("1899-12-30");
 
@@ -69,7 +68,7 @@ function float2Date(float: number) {
 
     return content;
 }
-function date2Float(date: Date) {
+export function date2Float(date: Date) {
     const beg = new Date("1899-12-30");
     return +((date.getTime() - beg.getTime()) / (24*3600*1000)).toFixed(7);
 }

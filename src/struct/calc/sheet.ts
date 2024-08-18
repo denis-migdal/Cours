@@ -10,7 +10,8 @@ export type RawContentType = ValueType|Formula;
 export type Cell = HTMLTableCellElement & {
     rawContent: RawContentType,
     format: (this: Cell, v?: number|string|Date) => string,
-    is_ro: boolean
+    is_ro: boolean,
+    cell ?: Cell
 };
 
 function isActive(target: HTMLElement) {

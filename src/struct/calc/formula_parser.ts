@@ -1,4 +1,4 @@
-import { Formats } from "./format";
+import { date2Float, Formats } from "./format";
 import { CalcSheet, ValueType } from "./sheet";
 
 export class Formula {
@@ -148,6 +148,13 @@ function toNumber(a: unknown): number {
 
     if(a === undefined)
         return 0;
+
+    if( typeof a === "string")
+        return Number(a);
+
+    if( a instanceof Date)
+        return date2Float(a);
+
     return a as unknown as number;
 }
 
