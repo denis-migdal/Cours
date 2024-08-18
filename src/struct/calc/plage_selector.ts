@@ -1,6 +1,14 @@
+import { RangeOverlay } from "./RangeOverlay";
 import { CalcSheet, Cell } from "./sheet";
 
 export class PlageSelector {
+
+    #overlays = new Array<RangeOverlay>();
+    #getOverlay(id: number) {
+        while(id >= this.#overlays.length)
+            this.#overlays.push( new RangeOverlay(this.#sheet, "selection_highlight") );
+        return this.#overlays[id];
+    }
 
     #updateSelection() {
 
@@ -23,6 +31,20 @@ export class PlageSelector {
         }
 
         this.#sheet.selection.add( ...selected_cells );
+
+    }
+
+    #updateSelectionHighlight() {
+
+        const cells = this.#sheet.selection.cells;
+        for(let overlay of this.#overlays)
+            overlay.setRange(null);
+
+        if( cells.length === 1 && this.#sheet.cursor.firstCell === cells[0] )
+            return;
+
+        for(let i = 0; i < cells.length; ++i)
+            this.#getOverlay(i).setRange( this.#sheet.getRange( cells[i] ) );
     }
 
     #isCtrl        !: boolean;
@@ -66,6 +88,10 @@ export class PlageSelector {
 
         sheet.cursor.addEventListener('change', () => {
             sheet.selection.replaceAll( sheet.getVisibleCell(sheet.cursor) );
+        });
+
+        sheet.selection.addEventListener('change', () => {
+            this.#updateSelectionHighlight();
         });
 
         // @ts-ignore

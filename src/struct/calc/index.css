@@ -93,27 +93,33 @@
 :host {
 
     .recopy {
-        position: absolute;
-        padding: 0;
-        box-sizing: border-box;
         cursor: cell;
         background-color: #398ee7;
-
     }
 
     .cursor {
-        position: absolute;
-        padding: 0;
-        box-sizing: border-box;
         background: none;
         border: 2px solid #398ee7;
         pointer-events: none;
     }
 }
 
+:host .overlay {
+    position: absolute;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 :host .hidden {
     display: none;
 }
+
+:host .selection_highlight {
+    background-color: #398ee7; /*#cde3f9;*/
+    opacity: 0.5;
+    pointer-events: none; /* TODO */
+}
+
 
 :host td {
 
@@ -144,10 +150,6 @@
     &.ajuster {
         word-break: break-all;
         white-space: normal;
-    }
-
-    &.highlight {
-        background-color: #cde3f9;
     }
 
     /** style **/
@@ -200,10 +202,6 @@
 }
 
 :host .range_highlight {
-    position: absolute;
-    padding: 0;
-    box-sizing: border-box;
-
     background: none;
     border: 2px solid red;
 
@@ -248,12 +246,9 @@
 
 
 .copy_highlight {
-    position: absolute;
     border: 1px dashed black;
     background: none;
     pointer-events: none;
-    padding: 0;
-    box-sizing: border-box;
 }
 
 /* Tomorrow Theme */

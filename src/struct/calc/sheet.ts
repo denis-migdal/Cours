@@ -205,7 +205,7 @@ export class CalcSheet extends LISS({
         return [
             start.offsetLeft,
             start.offsetTop,
-            end.offsetLeft + end.clientWidth - start.offsetLeft,
+            end.offsetLeft + end.clientWidth - start.offsetLeft + 1,
             end.offsetTop + end.clientHeight - start.offsetTop + 1
         ] as const;
     }
