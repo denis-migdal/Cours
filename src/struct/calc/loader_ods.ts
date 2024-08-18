@@ -82,23 +82,81 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
             if(prop.hasAttribute('fo:background-color') )
                 format.background_color = prop.getAttribute('fo:background-color');
 
+            if(prop.hasAttribute('fo:border-top') ) {
+
+                const border = prop.getAttribute('fo:border-top')!;
+                if(border !== "none") {
+                    format.border_top    = true;
+                    format.border_color  = border.split(' ').slice(-1)[0];
+                } else {
+                    format.border_top    = false;
+                }
+            }
+            if(prop.hasAttribute('fo:border-bottom') ) {
+
+                const border = prop.getAttribute('fo:border-bottom')!;
+                if(border !== "none") {
+                    format.border_bottom    = true;
+                    format.border_color  = border.split(' ').slice(-1)[0];
+                } else {
+                    format.border_bottom    = false;
+                }
+            }
+            if(prop.hasAttribute('fo:border-left') ) {
+
+                const border = prop.getAttribute('fo:border-left')!;
+                if(border !== "none") {
+                    format.border_left    = true;
+                    format.border_color  = border.split(' ').slice(-1)[0];
+                } else {
+                    format.border_left    = false;
+                }
+            }
+            if(prop.hasAttribute('fo:border-right') ) {
+
+                const border = prop.getAttribute('fo:border-right')!;
+                if(border !== "none") {
+                    format.border_right    = true;
+                    format.border_color  = border.split(' ').slice(-1)[0];
+                } else {
+                    format.border_right    = false;
+                }
+            }
+            /*
+            fo:border-left="0.06pt solid #000000" fo:border-right="0.06pt solid #000000" fo:border-top="none"
+            */
             if(prop.hasAttribute('fo:border') ) {
 
-                const border = prop.getAttribute('fo:border');
+                const border = prop.getAttribute('fo:border')!;
                 if(border !== "none") {
 
                     format.border_top    = true;
                     format.border_bottom = true;
                     format.border_left   = true;
                     format.border_right  = true;
-                    format.border_color  = prop.getAttribute('fo:border')?.split(' ').slice(-1)[0];
+                    format.border_color  = border.split(' ').slice(-1)[0];
+                } else {
+                    format.border_top    = false;
+                    format.border_bottom = false;
+                    format.border_left   = false;
+                    format.border_right  = false;
                 }
             }
 
             if( prop.hasAttribute('fo:font-weight') )
                 format.bold = true;
-            if( prop.hasAttribute('fo:text-align') )
-                format[`align_${prop.getAttribute('fo:text-align')}`] = true;
+            if( prop.hasAttribute('fo:text-align') ) {
+                let align = prop.getAttribute('fo:text-align')!
+                if( align === "end")
+                    align = "right";
+                format[`align_${align}`] = true;
+            }
+            if( prop.hasAttribute('style:vertical-align') ) {
+                let align = prop.getAttribute('style:vertical-align')!
+                if( align === "end")
+                    align = "right";
+                format[`valign_${align}`] = true;
+            }
         }
     }
 
@@ -116,7 +174,9 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
             let offset = 0;
             for(let j = 0; j < rows[i].children.length; ++j) {
                 const cell = rows[i].children[j];
-                let content: string|Date|number = cell.textContent!;
+
+                let content: string|Date|number = [...cell.children].map(e => e.textContent).join('\n');
+
                 if( cell.hasAttribute("table:formula")) {
                     content = cell.getAttribute("table:formula")!;
                     content = content.slice(3).replaceAll('[.', '').replaceAll(']', '');
