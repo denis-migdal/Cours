@@ -84,11 +84,15 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
 
             if(prop.hasAttribute('fo:border') ) {
 
-                format.border_top    = true;
-                format.border_bottom = true;
-                format.border_left   = true;
-                format.border_right  = true;
-                format.border_color  = prop.getAttribute('fo:border')?.split(' ').slice(-1)[0];
+                const border = prop.getAttribute('fo:border');
+                if(border !== "none") {
+
+                    format.border_top    = true;
+                    format.border_bottom = true;
+                    format.border_left   = true;
+                    format.border_right  = true;
+                    format.border_color  = prop.getAttribute('fo:border')?.split(' ').slice(-1)[0];
+                }
             }
 
             if( prop.hasAttribute('fo:font-weight') )
