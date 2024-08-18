@@ -421,7 +421,7 @@ export class CalcSheet extends LISS({
         })();
         this.content.append(formula_bar);
 
-        this.#initGrid(+this.attrs.rows!, +this.attrs.cols!);
+        this.#initGrid(+(this.attrs.rows ?? 1), +(this.attrs.cols ?? 1) );
 
         this.content.addEventListener("mousedown", (ev) => {
             
@@ -1087,11 +1087,18 @@ export class CellList extends EventTarget {
                 //If no number format, deduce format.
                 if( cell.format === undefined || cell.format === Formats.default) {
                     let format = Formats.default;
+                    let nb_dates = 0;
                     for(let r of raw_val.rangesToken) {
                         let f = Format.extractFormat(this.sheet.getRange(r.value) ).getProperty("format");
                         if( format !== f && formats.indexOf(f) > formats.indexOf(format) )
                             format = f;
+                        if(f === Formats.date)
+                            ++nb_dates;
                     }
+
+                    // h4ck
+                    if( format === Formats.date && nb_dates > 1 )
+                        format = Formats.default;
 
                     if(format !== Formats.default)
                         // @ts-ignore

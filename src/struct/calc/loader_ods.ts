@@ -229,6 +229,8 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
         row_offset += nb;
     }
 
+    target.cursor.replaceAll( target.getRange('A1') );
+
     /*
     "styles.xml"
     "content.xml"

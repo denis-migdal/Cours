@@ -17,7 +17,11 @@
 
 :host :is(tr,th,td) {
     border:1px solid #c0c0c0;
- }
+}
+
+:host([showgrid="false"]) td {
+    border-color: transparent;
+}
 
 :host tr {
     height: 0.45cm;

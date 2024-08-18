@@ -45,8 +45,8 @@ Sheet
 - formula
 	- move/resize ref plages.
 	- add ref plages by clicking.
-	- cache result in the formula ? [require for aleas]
 	- errors in formulas
+	- better deduce format (per operations and type, LO stupid)
 - selection
 	- test other features
 	- cell should not be highlighted if only one + cursor on it.
