@@ -17,17 +17,15 @@
 
 <tp-consignes></tp-consignes>
 
-## ?
+### Consignes tableur
 
-<todo>Rewrite</todo>
+Vous travaillerez sur un fichier de tableur que vous téléchargerez en cliquant <a href="../../../../assets/tableur/sujets/TP1.ods" target="_blank">ici</a>.
 
-Sur Moodle, vous trouverez le fichier "TP1.ods". Téléchargez-le, puis ouvrez-le dans Libre Office Calc.
-
-À chaque feuille correspond un exercice. Vous devrez :
-- écrire des formules dans les cellules jaunes, que vous renseignerez aussi sur ce sujet.
+Chaque feuille correspond à un exercice. Vous devrez alors :
+- écrire des formules dans les cellules jaunes.
 - compléter les cellules oranges via la poignée de recopie.
 
-À la fin du TP, vous exporterez vos réponses et les déposerez sur Moodle avec votre fichier de tableur.
+À la fin du TP vous importerez le fichier dans le sujet de TP.
 
 ## Exercices
 
@@ -64,7 +62,7 @@ Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
 
 ### Exercice 2
 
-Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
+Complétez la feuille de calcul de sorte à calculer le nombre total de jours de vacances universitaires.
 
 💡 Vous noterez que la différence entre deux dates est classiquement exprimée en jours.
 
@@ -80,7 +78,9 @@ Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
 
 ### Exercice 3
 
-Le prix TTC (toutes taxes comprises) est calculé à partir du prix HT (hors taxes) auquel on ajoute le montant de la TVA (un certain pourcentage du prix HT).
+Complétez la feuille de calcul de sorte à calculer les prix TTC. 
+
+💡 Le prix TTC (toutes taxes comprises) est calculé à partir du prix HT (hors taxes) auquel on ajoute le montant de la TVA (un certain pourcentage du prix HT).
 
 <strong><em>Votre réponse :</em></strong>
 
@@ -94,7 +94,7 @@ Le prix TTC (toutes taxes comprises) est calculé à partir du prix HT (hors tax
 
 ### Exercice 4
 
-Dans cet exercice, vous devez produite une table de multiplication.
+Complétez la feuille de calcul de sorte à produire une table de multiplication.
 
 <strong><em>Votre réponse :</em></strong>
 

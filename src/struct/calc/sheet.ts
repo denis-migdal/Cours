@@ -94,10 +94,13 @@ function parseInput( str: string ): RawContentType {
     let test_number = Number( str.replace(',', '.') );
     if( ! Number.isNaN( test_number ) )
         return test_number;
-    if( str[str.length-1] === "%") {
+    if( str[str.length-1] === "%" || str[str.length-1] === "€" ) {
         test_number = Number( str.slice(0,-1).replace(',', '.') );
-        if( ! Number.isNaN( test_number ) )
+        if( ! Number.isNaN( test_number ) ) {
+            if( str[str.length-1] === "€" )
+                return test_number;
             return +(test_number / 100).toPrecision(7);
+        }
     }
 
     const parts = str.split('/');
@@ -1034,12 +1037,15 @@ export class CellList extends EventTarget {
             content = parseInput(content);
             if( typeof content === "number" && raw[raw.length-1] === "%") {
                 let f = Format.extractFormat(this);
-                if( ! f.hasProperty("format") )
+                if( ! f.hasProperty("format") || f.getProperty("format") === Formats.default )
                     this.format(Formats.pourcent);
             }
+            if( typeof content === "number" && raw[raw.length-1] === "€") {
+                let f = Format.extractFormat(this);
+                if( ! f.hasProperty("format") || f.getProperty("format") === Formats.default )
+                    this.format(Formats.euros);
+            }
         }
-
-        
 
         let raw_val = content instanceof HTMLTableCellElement ? content.rawContent
                                                               : content;
@@ -1185,5 +1191,6 @@ import { Formula, parse_formula } from "./formula_parser";
 import { PlageSelector } from "./plage_selector";
 import { Format, FormatManager, Formats } from "./format";
 import { FormulaRef, RangeOverlay, RecopyHandle } from "./RangeOverlay";
+import { test } from "test/webodf";
 
 LISS.define('calc-sheet', CalcSheet);

@@ -214,8 +214,7 @@ export const Formats = {
         return value.toLocaleString(undefined, {
             minimumFractionDigits: prec,
             maximumFractionDigits: prec
-            }) + '€';
-        //.toFixed(2) + '€';
+            }) + ' €';
     },
 }
 

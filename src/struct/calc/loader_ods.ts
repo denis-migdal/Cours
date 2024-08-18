@@ -186,6 +186,7 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
                     content = +cell.getAttribute("office:value")!;
                 }
 
+                console.log("!", content);
 
                 let nb = 1;
                 if( cell.hasAttribute('table:number-columns-repeated') )
@@ -204,8 +205,6 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
                             +(rows[i].children[j].getAttribute("table:number-columns-spanned")! ?? 1)
                         ]
                     });
-
-                    console.log(range.plage_name, rows[i].children[j].getAttribute("table:number-rows-spanned")!, rows[i].children[j].getAttribute("table:number-columns-spanned")!)
                 }
 
                 for(let r = 0; r < nb; ++r) {
@@ -220,6 +219,7 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
                         console.log(styles);
                         continue;
                     }
+
                     target.getRange([row_id, offset+1+r]).format( styles[style_name] );
                 }
                 
