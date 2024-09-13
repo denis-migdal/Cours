@@ -7,3 +7,6 @@
 [submodule "libs/LISS"]
 	path = libs/LISS
 	url = git@github.com:denis-migdal/LISS.git
+[submodule "libs/WebSlides"]
+	path = libs/WebSlides
+	url = git@github.com:denis-migdal/WebSlides.git

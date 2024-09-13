@@ -22,7 +22,12 @@ Sheet
 - repo
 - doc API...
 
-
+- toolbar refactor
+- force size: requires div in td => overflow + scrollWidth (for the good size).
+	- td is="xxx" ? => no shadowRoot.
+		-> getLiss => requires => getCell() ?
+		-> add properties...
+		-> edit mode...
 - misc :
 	- Ctrl+C put data in pastebin ?
 	- font_size is editable.

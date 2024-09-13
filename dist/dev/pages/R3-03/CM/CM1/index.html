@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CM1 (Web1)</title>
+        <link rel="stylesheet" href="./index.css">
+        <script type="module" src="./index.js" defer></script>
+    </head>
+    <body>
+        <style>
+        </style>
+        <header></header>
+        <main>
+
+<h1 id="cm1--html5">CM1 : HTML5</h1>
+<p>[Motivation? : Pourquoi apprendre à faire des pages Web = utile]</p>
+<h2 id="larbre-dom">L&#39;arbre DOM</h2>
+<p>Page Web : composées de différents éléments (donner e.g. textes, images, bouttons, zones de textes, etc.) / certains éléments peuvent en contenir d&#39;autres / organisé sous la forme d&#39;une hiérarchie.</p>
+<p>Motivation...</p>
+<p>Site Web : affiché dans votre navigateur =&gt; mais comment structuré / keskecé derrière.</p>
+<ul>
+<li></li>
+</ul>
+<h3 id="terminologie">Terminologie</h3>
+<p>C’est comme un arbre g ´en ´ealogique...
+Racine (root)
+...
+...
+La racine : le tout premier noeud
+de l’arbre.
+Parent/P<code>ere (parent/father) Enfant/Fils (child) ... Le p </code>ere/fils : noeud (p <code>ere) contenant d’autres noeuds (fils). Ancˆetre (ancestor) ... Descendant (descendant) L’anc ˆetre/descendant : p </code>ere, ou
+p <code>ere d’un anc ˆetre, (anc ˆetre) d’un noeud (descendant). ... Fr</code>ere (sibling)
+Fr<code>ere (sibling) Les fr </code>eres : noeuds contenus par
+un m ˆeme noeud (parent).</p>
+<p>-&gt; Qst pour introduire section suivante</p>
+<h2 id="le-langage-html">Le langage HTML</h2>
+<p>Comment ´ecrire/repr ´esenter cet ”arbre DOM”
+dans un fichier ?</p>
+<p>Le langage HTML
+Le langage HTML
+L’arbre DOM ”traduit” en HTML
+Page
+Barre d&#39;en-tˆete
+Image UCA
+Image coeur
+Bouton assistance
+Bouton menu
+Zone messagerie
+Texte &quot;Messagerie&quot;
+Bouton rafraˆıchir
+Zone mails
+Image BAL
+Texte
+...</p>
+<body>
+<header>
+<img src='...'/>
+<img src='...'/>
+<button>Assistance</button>
+<button></button>
+</header>
+<div>
+<span>Messagerie</span>
+<button></button>
+<div>
+<img src='...'/>
+<span>87 mail(s)</span>
+</div>
+</div>
+</body>
+7/34
+Le langage HTML
+Les types de noeuds DOM et leur ´equivalent HTML
+▶ 3 diff ´erents types de noeuds DOM :
+DOM HTML
+Texte Le texte
+Commentaire <!-- commentaire -->
+´El ´ement Balise HTML (HTML tag) :
+<tagname></tagname> ou <tagname/>
+8/34
+Le langage HTML
+Les balises HTML
+▶ Balise HTML (vocabulaire) :
+<tagname> <!-- balise ouvrante (opening tag) -->
+<!-- contenu/fils... -->
+</tagname> <!-- balise fermante (closing tag) -->
+<!-- OU -->
+<tagname/> <!-- balise auto-fermante (self-closing) -->
+9/34
+Le langage HTML
+Les balises HTML
+▶ Attributs HTML : <tagname attrname="value"/>
+▶ Permet de personnaliser la ”configuration” d’un ´el ´ement.
+▶ Attributs HTML sp ´eciaux :
+▶ Identifiant : id="identifiant" (s ´electeur : #identifiant).
+▶ Classe(s) : class="c1 c2..." (s ´electeur : .c1).
+▶ Nom : name="nom" (pour les formulaires).
+▶ Info-bulle : title="..." (texte affich ´e au survol).
+▶ Donn ´ees : data-name="value"
+10/34
+
+<p>Les outils
+Les outils
+La documentation
+▶ La documentation :
+▶ <a href="https://developer.mozilla.org/docs/Web/HTML">https://developer.mozilla.org/docs/Web/HTML</a>
+▶ <a href="https://www.w3schools.com/html/">https://www.w3schools.com/html/</a>
+▶ Les cours :
+▶ <a href="https://developer.mozilla.org/docs/Learn/HTML/">https://developer.mozilla.org/docs/Learn/HTML/</a>
+Introduction_to_HTML/Getting_started
+▶ Les exemples :
+▶ <a href="https://www.w3schools.com/html/html_examples.asp">https://www.w3schools.com/html/html_examples.asp</a>
+▶ Les r ´ef ´erences :
+▶ <a href="https://developer.mozilla.org/docs/Web/HTML/Element">https://developer.mozilla.org/docs/Web/HTML/Element</a>
+▶ <a href="https://www.w3schools.com/tags/ref_byfunc.asp">https://www.w3schools.com/tags/ref_byfunc.asp</a>
+26/34
+Les outils
+La documentation
+▶ V ´erifier la compatibilit ´e des navigateurs : <a href="https://caniuse.com/">https://caniuse.com/</a>
+27/34
+Les outils
+La documentation
+▶ Attentions aux ´el ´ements d ´epr ´eci ´es !
+28/34
+Les outils
+Pour ´ecrire de l’HTML
+▶ HTML : fichier texte d’extension .html ;
+▶ On utilisera Visual Studio Code (supporte aussi R/Python) :
+▶ Coloration et auto-compl ´etion ;
+▶ Documentation au survol ;
+▶ Extension HTML Hint : v ´erification de la syntaxe HTML ;
+▶ Extension Live Server : mise `a jour temps r ´eel ;
+▶ ChatGPT INTERDIT !
+29/34
+Les outils
+Navigateur
+▶ Source : fichier HTML (FF/Chr: ctrl + U ).
+▶ Inspecteur : DOM (FF: ctrl + + I / Chr: ctrl + + C ).
+30/34
+R ´esultat
+R ´esultat
+Il manque quelque chose...</p>
+<body>
+<header>
+<img src='...'/>
+<img src='...'/>
+<button>Assistance</button>
+<button></button>
+</header>
+<div>
+<span>Messagerie</span>
+<button></button>
+<div>
+<img src='...'/>
+<span>87 mail(s)</span>
+</div>
+</div>
+</body>
+32/34
+R ´esultat
+Il manque quelque chose...
+▶ HTML : structure de la page Web :
+▶ Quels sont les ´el ´ements de la page ?
+▶ Quelle est la hi ´erarchie des ´el ´ements ?
+▶ Mise en forme de la page ?
+▶ Quelles sont les positions, marges, et tailles des ´el ´ements ?
+▶ Quelles sont les couleurs, polices, d ´ecorations des ´el ´ements ?
+▶ Quels sont les filtres, transformations, transitions, et animations 
+
+</main>
+    </body>
+</html>

@@ -2,7 +2,7 @@ import {db2} from "./SQLite";
 
 // LISS
 
-import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+import LISS from "LISS";
 
 const content = `
     <slot name="select"></slot>
@@ -18,6 +18,10 @@ const content = `
     <slot name="post"></slot>`;
 
 const css = `
+    :host([option]) pre {
+        margin: 0;
+    }
+
     :host {
         font-size: 14px;
         line-height: 19px;
@@ -50,7 +54,7 @@ const css = `
         padding-right: 25px;
 
         &.withdesc {
-            padding-top: 20px;
+            padding-top: 0px;
         }
     }
     .options pre::after {
@@ -75,7 +79,7 @@ const css = `
         display: flex;
         gap: 5px;
     }
-    slot:not([name="post"]) {
+    slot:not([name="post"]):not([name="pre"]) {
         display: none;
     }
     span.value {
@@ -109,14 +113,15 @@ const css = `
     }
 
     :host .desc {
-        position: absolute;
+        margin-left: -0.5em;
+        /*position: absolute;
         top: 0px;
-        left: 0px;
+        left: 0px;*/
 
         font-size: 14px;
         line-height: 19px;
 
-        width: 100%;
+        width: calc(100% + 0.5em);
         border-left: none;
         border-top: none;
         padding-left: 5px;
@@ -223,7 +228,7 @@ const styles = [...document.querySelectorAll('style')].map(s => {
 class SQLInteractive extends LISS({
     content,
     css: [css],
-    attributes: ["full-reset"]
+    attributes: ["full-reset", "option"]
 }) {
 
     #result   = "";
@@ -233,6 +238,27 @@ class SQLInteractive extends LISS({
     #selected = null;
 
     #selectQuery = null;
+
+    onAttrChanged(name, _old, value) {
+        if(name !== "option")
+            return;
+
+        setOption(+value);
+    }
+
+    setOption(idx) {
+
+        for(let i = 0; i < this.#options.children.length; ++i) {
+            const opt = this.#options.children[i];
+            opt.style.setProperty("display", i === idx ? null : "none");
+            if( i === idx)
+                opt.click();
+        }
+        this.#query.style.setProperty("display", "none");
+
+        this.host.style.setProperty("flex-wrap", "wrap");
+
+    }
 
     constructor() {
         super();
@@ -375,10 +401,15 @@ class SQLInteractive extends LISS({
                 desc.classList.add("desc");
                 desc.textContent = option.textContent.trim() + " :";
 
-                opt.append(desc);
+                opt.firstElementChild.before(desc);
             }
 
             this.#options.append( opt );
+        }
+
+        if( this.attrs.option !== null) {
+            this.setOption(+this.attrs.option);
+            return;
         }
 
         if( this.#selectQuery === null)

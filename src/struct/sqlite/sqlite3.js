@@ -34,8 +34,10 @@
 */
 
 var sqlite3InitModule = (() => {
-  var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
-  
+  //var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
+  const ROOT = ["localhost", "127.0.0.1"].includes(location.hostname) ? "/dist/dev/" : "/Cours/dist/dev/";
+  const _scriptDir = `${ROOT}assets/sql/sqlite3.wasm`;
+
   return (
 function(config) {
   var sqlite3InitModule = config || {};

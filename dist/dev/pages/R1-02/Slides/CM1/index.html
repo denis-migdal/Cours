@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BDR CM1</title>
+    <link rel="stylesheet" href="./index.css">
+    <script src="./index.js" type="module" defer></script>
+</head>
+<body>
+<main>
+<frame-uca-title
+    caption   = "R1-02 Bases de Données Relationnelles"
+    subcaption= "CM1 : Requêter une base de données"
+    author    = "Denis MIGDAL"
+    mail      = "denis.migdal@uca.fr">
+</frame-uca-title>
+
+<frame-section>
+    Introduction à SQL
+</frame-section>
+<frame-subsection>
+    Les SGBD
+</frame-subsection>
+
+<frame-uca>
+
+<p><em><strong>Contexte :</strong></em> des milliers/millions de données à manipuler, e.g.</p>
+<!--
+- *pour une entreprise* : des listes de clients, de commandes, de produits, etc.
+- *pour une administration* : des listes d'administrés, de transactions, etc.
+- *pour un site Web* : des logs de consultation de ses différentes pages, etc. -->
+
+<p><em><strong>Problème :</strong></em> les manipuler &quot;à la main&quot; est...</p>
+<ul>
+<li><strong>chronophage</strong> : <em>35 jours pour un million de données (1 donnée/s et 8h/j).</em></li>
+<li><strong>source d&#39;erreurs</strong> : <em>données comptées en double, sautées, etc.</em></li>
+<li><strong>incomplet</strong> : <em>données stockées à plusieurs endroits différents, certaines perdues.</em></li>
+</ul>
+<p><em><strong>Besoins :</strong></em> un logiciel permettant d&#39;efficacement...</p>
+<ul>
+<li><strong>stocker et organiser les données</strong>.</li>
+<li><strong>manipuler les données</strong> : ajouter/modifier/supprimer des données.</li>
+<li><strong>requêter les données</strong> : e.g. compter le nombre de ventes.</li>
+</ul>
+</frame-uca>
+<frame-uca>
+
+<p><em><strong>Solution :</strong></em> les <strong>Systèmes de Gestion de Bases de Données</strong> (SGBD) :</p>
+<ul>
+<li><strong>créer, stocker, manipuler et requêter des bases de données.</strong></li>
+<li><strong>la cohérence des données :</strong> garantie l&#39;absence de données invalides.<br/><!-- *e.g. avoir un âge négatif.* --></li>
+<li><strong>la robustesse :</strong> résister aux pannes.<br/><!-- *e.g. l'ordinateur plante alors qu'on est en train de modifier une donnée.* --></li>
+<li><strong>le contrôle d&#39;accès :</strong> qui peut faire quoi sur quelles données ?.<br/><!-- *e.g. l'administrateur peut modifier et les utilisateurs lire les données.* --></li>
+<li><strong>les logs :</strong> que s&#39;est-il passé ? qui a fait quoi et quand ?<br/><!-- *e.g. après une panne, qu'était-il en train de faire ?*<br/> -->
+<!-- *e.g. le stagiaire a fait une fausse manipulation, qu'a-t-il réellement fait ?* --></li>
+<li><strong>accès concurrent :</strong> modifications simultanées de données.</li>
+</ul>
+</frame-uca>
+
+<frame-subsection>
+    Les SGBD SQL
+</frame-subsection>
+
+<frame-uca>
+
+<p><strong>SQL</strong> (<em>Structured Query Language</em>) : langage pour manipuler des SGBD.</p>
+<p>Exemples de SGBD SQL :</p>
+<ul>
+<li><strong>SQLite</strong> : léger (utilisé en TP)<ul>
+<li>1 base de donnée = 1 fichier.</li>
+<li>utilisation locale.</li>
+<li>pas d&#39;accès concurrents.</li>
+</ul>
+</li>
+<li><strong>PostgreSQL</strong>, <strong>MySQL</strong>, et <strong>MariaDB</strong> : plus complets.</li>
+</ul>
+<p>⚠ SQL est <em>normalisé</em> (ISO/CEI 9075) mais quelques différences entre SGBD.</p>
+</frame-uca>
+
+
+<frame-uca>
+
+<p>Les SGBD (sauf SQLite) suivent une <strong>architecture client-serveur</strong> :</p>
+<ul>
+<li><strong>serveur</strong> : stocke les données et exécute les requêtes.</li>
+<li><strong>client</strong> : envoie les requêtes et réceptionne les résultats.</li>
+</ul>
+<p>Plusieurs types de clients :</p>
+<ul>
+<li><strong>API</strong> utilisée dans le langage de programmation de votre choix.</li>
+<li><strong>application en ligne de commandes</strong> (<em>e.g. psgl, mysql</em>).</li>
+<li><strong>interface graphique de gestion de bases de données</strong> (<em>e.g. pgAdmin</em>).</li>
+<li><strong>interface graphique de requêtage</strong> (<em>e.g.  ???</em>).</li>
+</ul>
+</frame-uca>
+
+<frame-subsection>
+    Les tables SQL
+</frame-subsection>
+
+<frame-uca>
+
+<p>Une <strong>base de donnée</strong> est composée de <strong>tables SQL</strong> (tableau contenant les données) :</p>
+<center>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Prenom</th>
+      <th>Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Doe</td>
+      <td>John</td>
+      <td>32</td>
+    </tr><tr>
+      <td>2</td>
+      <td>Durand</td>
+      <td>John</td>
+      <td>64</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<ul>
+<li>lignes : les <strong>entrées</strong> (ou <strong>enregistrements</strong>);</li>
+<li>colonnes : les <strong>propriétés</strong> des entrées.</li>
+</ul>
+<p>💡 base de données ≈ fichier tableur ; tables ≈ feuilles de calculs.</p>
+<p>💡 Les tables sont aussi appelées <strong>relations</strong>, d&#39;où les <em>base de données relationnelle</em>.</p>
+</frame-uca>
+
+<frame-subsection>
+    Les types SQL
+</frame-subsection>
+
+<frame-uca>
+
+<p><strong>Schéma</strong> de table : décrit la <strong>structure</strong> de la table, e.g. le type des colonnes :</p>
+<ul>
+<li><code>TEXT</code> : une chaîne de caractère (e.g. <code>&#39;Hello&#39;</code> / <code>&#39;J&#39;&#39;ai mangé&#39;</code>).</li>
+<li><code>INT</code>/<code>INTEGER</code> : un nombre entier.</li>
+<li><code>REAL</code> : un nombre décimal.</li>
+<li><code>BLOB</code> : des données binaires.</li>
+<li><code>ANY</code>  : accepte n&#39;importe quelle valeur.</li>
+</ul>
+<p>💡 Par défaut, chaque type accepte la valeur <code>NULL</code> (= absence de données).</p>
+<p>💡 D&#39;autres types disponibles en fonction du SGBD utilisé.</p>
+</frame-uca>
+
+<frame-subsection>
+    Documentation
+</frame-subsection>
+
+<frame-uca>
+
+<p>💡 Vous trouver plus amples documentation via les liens suivants :</p>
+<ul>
+<li>SQL :<ul>
+<li><a href="https://www.w3schools.com/sql/">https://www.w3schools.com/sql/</a></li>
+<li><a href="https://sql.sh">https://sql.sh</a></li>
+</ul>
+</li>
+<li>SGBD :<ul>
+<li>SQLite : <a href="https://www.sqlite.org">https://www.sqlite.org</a></li>
+<li>PostgreSQL : <a href="https://www.postgresql.org/docs/">https://www.postgresql.org/docs/</a></li>
+<li>MySQL : <a href="https://dev.mysql.com/doc/">https://dev.mysql.com/doc/</a></li>
+</ul>
+</li>
+</ul>
+</frame-uca>
+
+<frame-section>
+    Requêtes de bases
+</frame-section>
+<frame-subsection>
+    Les types de requêtes
+</frame-subsection>
+
+<frame-uca>
+
+<p>Plusieurs types de <strong>commandes SQL</strong> pour différent types d&#39;actions :</p>
+<ul>
+<li><code>SELECT</code> : <strong>lire</strong> des données ;</li>
+<li><code>UPDATE</code> : <strong>modifier</strong> des entrées ;</li>
+<li><code>INSERT</code> : <strong>insérer</strong> des entrées ;</li>
+<li><code>DELETE</code> : <strong>supprimer</strong> des entrées.</li>
+</ul>
+<p>💡 Nous allons nous concentrer sur <code>SELECT</code> et verrons les autres par la suite.</p>
+</frame-uca>
+
+<frame-section>
+    Requêtes SELECT
+</frame-section>
+
+<frame-uca>
+
+<p><code>SELECT</code> <strong>récupère</strong> des données d&#39;une table :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS[,...] <span class="hljs-keyword">FROM</span> $<span class="hljs-keyword">TABLE</span>; 
+</code></pre><ul>
+<li><code>$TABLE</code> : nom de la table SQL à requêter.</li>
+<li><code>$COLS[,...]</code> : liste des colonnes à récupérer (séparées par &quot;,&quot;).<br/>
+💡 <code>*</code> correspond à l&#39;ensemble des colonnes.</li>
+</ul>
+<p>⚠ Ne récupérer que les colonnes nécessaires (réduire les données transférées). </p>
+<p>⚠ Le nom de la colonne entre guillemets si caractères non-alphanumériques.</p>
+</frame-uca>
+
+<frame-subsection>
+    Sélection de colonnes
+</frame-subsection>
+
+<frame-uca>
+
+<center>
+    <sql-dymtable id="col-table" table="Users"></sql-dymtable>
+</center>
+
+<sql-interactive id="col-sql">
+  <span onslide="0" slot="options" data-cols="*">Retourner toutes les colonnes</span>
+  <span onslide="1" slot="options" data-cols="Nom">Retourner une seule colonne</span>
+  <span onslide="2" slot="options" data-cols="ID, Prenom">Retourner plusieurs colonnes</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS <span class="hljs-keyword">FROM</span> Users;
+</code></pre></sql-interactive>
+
+<script>
+</script>
+
+<script>
+    async function fct(parent) {
+
+        const coltable = await LISS.qs("#col-table", parent);
+        const colsql   = await LISS.qs("#col-sql"  , parent);
+
+        colsql.host.addEventListener("change", (ev) => {
+            update(ev.detail.datas);
+        });
+        update( colsql.lastDatas );
+
+        function update(datas) {
+
+            const cols = Object.keys(datas[0][0]);
+
+            coltable.highlightCol( (colname) => cols.includes(colname) );
+        }
+    }
+
+    {
+        const parent = document.currentScript.closest("frame-uca");
+        (parent.scripts ??= []).push( fct );
+    }
+    //fct(parent);
+</script>
+
+</frame-uca>
+
+<frame-subsection>
+    Alias de colonnes
+</frame-subsection>
+
+<frame-uca>
+
+<p>💡 Associer (temporairement) un alias à une colonne (<code>as</code>) :</p>
+<sql-interactive>
+  <span onslide="0" slot="options" data-col_as="">Requête normale</span>
+  <span onslide="1" slot="options" data-col_as="as User">Renommer une colonne</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> Nom $COL_AS, Age <span class="hljs-keyword">FROM</span> Users;
+</code></pre></sql-interactive>
+
+</frame-uca>
+
+<frame-subsection>
+    Trier par ordre croissant/décroissant les lignes
+</frame-subsection>
+
+<frame-uca>
+
+<p><code>ORDER BY $COL [DESC|ASC][,...]</code> trier les lignes par ordre croissant (<code>ASC</code>) ou décroissant (<code>DESC</code>).</p>
+<sql-interactive>
+  <span onslide="0" slot="options" data-row_sort="Age ASC">Trier par Age croissant</span>
+  <span onslide="1" slot="options" data-row_sort="Age DESC">Trier par Age décroissant</span>
+  <span onslide="2" slot="options" data-row_sort="Age DESC, Nom ASC">Trier par Age décroissant, puis par Nom croissant</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> Users <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> $ROW_SORT;
+</code></pre></sql-interactive>
+
+</frame-uca>
+
+<frame-section>
+    Selection des lignes
+</frame-section>
+
+<frame-uca>
+
+<p><code>SELECT</code> retourne <em>toutes</em> les entrées =&gt; consommation internet, processeur, RAM, disque.</p>
+<p>Sélectionner lignes pertinentes =&gt; - de ressources :</p>
+<ul>
+<li><strong>filtrer</strong> : <code>WHERE $COND</code>.</li>
+<li><strong>supprimer doublons</strong> : <code>DISTINCT</code>.</li>
+<li><strong>limiter nombre de lignes</strong> : <code>LIMIT $N OFFSET $O</code>.</li>
+</ul>
+</frame-uca>
+
+<frame-subsection>
+    Clause WHERE
+</frame-subsection>
+
+<frame-uca>
+
+<center>
+    <sql-dymtable id="row-table" table="Users"></sql-dymtable>
+</center>
+
+<sql-interactive id="row-sql">
+  <span onslide="0" slot="options" data-cond="Age > 18">Entrées où Age > 18</span>
+  <span onslide="1" slot="options" data-cond="Nom == 'Doe'">Entrées où Nom est "Doe"</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> Users
+         <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre></sql-interactive>
+
+<p><code>WHERE $COND</code> : les lignes où <code>$COND</code> vraie sont retournées.</p>
+<script>
+
+    async function fct(parent) {
+
+        const rowtable = await LISS.qs("#row-table", parent);
+        const rowsql   = await LISS.qs("#row-sql"  , parent);
+
+        rowsql.host.addEventListener("change", (ev) => {
+            update(ev.detail.datas);
+        });
+        update( rowsql.lastDatas );
+
+        function update(datas) {
+
+            const ids = datas[0].map(r => r.ID);
+
+            rowtable.highlightRow( ({ID}) => ids.includes(+ID) );
+        }
+
+    }
+
+    {
+        const parent = document.currentScript.closest("frame-uca");
+        (parent.scripts ??= []).push( fct );
+    }
+
+    //fct(parent);
+</script>
+
+</frame-uca>
+<frame-subsubsection>Opérateurs de comparaisons</frame-subsubsection>
+<frame-uca>
+
+<sql-interactive>
+  <span onslide="0" slot="options" data-cond="ID > 1">Comparaison simple</span>
+  <span onslide="1" slot="options" data-cond="Prenom == Nom">Comparaison entre 2 colonnes</span>
+  <span onslide="2" slot="options" data-cond="0 < Age < 18">Chaîner les opérateurs produit un résultat étrange</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> Age, Nom, Prenom <span class="hljs-keyword">FROM</span> Users <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre></sql-interactive>
+
+<p onslide="0">💡 Opérateurs de comparaison : `>`, `<`, `>=`, `<=`, `!=`.</p>
+
+<p onslide="1">💡 Opérandes peuvent être noms de colonnes, même si non retournée.</p>
+
+<p onslide="2">⚠ <strong>Ne JAMAIS chaîner les opérateurs de comparaisons</strong>.</p>
+<ul onslide="2">
+  <li>soit <code>0 < Age AND Age < 18</code> ;</li>
+  <li>soit <code>Age BETWEEN 0 AND 18</code> .</li>
+</ul>
+
+</frame-uca>
+<frame-subsubsection>Opérateurs logiques</frame-subsubsection>
+<frame-uca>
+
+<p>Opérateurs logiques : <code>AND</code>, <code>OR</code>, <code>NOT</code>.</p>
+<sql-interactive>
+  <span onslide="0" slot="options" data-cond="Age > 18 AND Age < 45">Intersection (et)</span>
+  <span onslide="1" slot="options" data-cond="Age > 18 OR Age < 45">Union (ou)</span>
+  <span onslide="2" slot="options" data-cond="NOT ( Age > 18 )">Négation (non)</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> Age, Nom, Prenom <span class="hljs-keyword">FROM</span> Users <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre></sql-interactive>
+
+<p>💡 Vous pouvez aussi utiliser des parenthèses.</p>
+</frame-uca>
+<frame-subsubsection>Autres opérateurs</frame-subsubsection>
+<frame-uca>
+
+<ul>
+    <li onslide="0"><code>[NOT] IS NULL</code> : la valeur est nulle/n'est pas nulle.<br/>
+  ⚠ En SQL <code>NULL == NULL</code> est généralement évalué à <code>False</code>.</li>
+    <li onslide="1"><code>[NOT] IN ($VALS[,...])</code> : la valeur est/n'est pas dans une liste donnée.</li>
+    <li onslide="2"><code>[NOT] BETWEEN $MIN AND $MAX</code> : la valeur est/n'est pas entre <code>$MIN</code> et <code>$MAX</code>.<br/>
+  💡 Équivalant à <code>$VAL >= $MIN AND $VAL <= $MAX</code><br/>
+  ⚠ Comportement de <code>BETWEEN</code> peut varier, e.g. <code>$VAL > $MIN AND $VAL < $MAX</code>.</li>
+    <li onslide="3"><code>[NOT] LIKE $PATTERN</code> : la valeur correspond/ne correspond pas à <code>$PATTERN</code>.
+    <ul>
+        <li><code>_</code> n'importe quel caractère.</li>
+        <li><code>%</code> nombre indéterminé de `_`.</li>
+    </ul>
+    e.g. <code>LIKE 'D%'</code>: commence par "D".</li>
+</ul>
+
+<sql-interactive>
+  <span onslide="0" slot="options" data-cond="Age IS NULL">Entrées où Age vaut null</span>
+  <span onslide="1" slot="options" data-cond="Nom IN ('Doe', 'Nescio')">Entrées où Nom est dans la liste</span>
+  <span onslide="2" slot="options" data-cond="Age BETWEEN 0 AND 18">Entrées où Age est compris entre 0 et 18</span>
+  <span onslide="3" slot="options" data-cond="Nom LIKE 'D%'">Entrées où Nom commence par "D"</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> Age, Nom, Prenom <span class="hljs-keyword">FROM</span> Users <span class="hljs-keyword">WHERE</span> $COND;
+</code></pre></sql-interactive>
+
+</frame-uca>
+<frame-uca>
+
+<frame-section>
+    Supprimer les doublons
+</frame-section>
+
+<p><code>DISTINCT</code> : supprime les doublons :</p>
+<sql-interactive>
+  <span onslide="0" slot="options" data-row_distinct="">Requête normale</span>
+  <span onslide="1" slot="options" data-row_distinct="DISTINCT">Ne pas retourner les doublons</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $ROW_DISTINCT Age <span class="hljs-keyword">FROM</span> Users;
+</code></pre></sql-interactive>
+
+</frame-uca>
+
+<frame-subsection>
+    Tops et pagination
+</frame-subsection>
+<frame-subsubsection>
+    Tops
+</frame-subsubsection>
+
+<frame-uca>
+
+<p><code>LIMIT $N</code> : récupère les <code>$N</code> premières entrées.</p>
+<sql-interactive>
+  <span onslide="0" slot="options" data-pagination="1">Ne récupérer que la première entrée</span>
+  <span onslide="1" slot="options" data-pagination="2">Ne récupérer que les deux premières entrées</span>
+  <span onslide="2" slot="options" data-orderby="ORDER BY Age" data-pagination="1">Ne récupérer que l'utilisateur le plus jeune</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> Users $ORDERBY LIMIT $PAGINATION;
+</code></pre></sql-interactive>
+
+<p onslide="2">
+
+<p>💡 Avec la clause <code>ORDER BY</code>, génère des tops, e.g. les X utilisateurs les plus jeunes.</p>
+</p>
+
+
+</frame-uca>
+<frame-subsubsection>
+    Pagination
+</frame-subsubsection>
+<frame-uca>
+
+<p><em><strong>Problème</strong></em> :</p>
+<ul>
+<li>Récupérer et afficher milliers de lignes =&gt; coûteux.</li>
+</ul>
+<p><em><strong>Solution</strong></em> :</p>
+<ul>
+<li>Découper la liste en plusieurs pages (e.g. 50 lignes/page).</li>
+</ul>
+<p><em><strong>En SQL</strong></em> :</p>
+<ul>
+<li><code>LIMIT 50</code> : 50 entrées par requêtes.</li>
+<li><code>OFFSET $P*50</code> (<code>$P+1</code> = la page) récupérer à partir de la <code>$P*50</code>-ième entrée.</li>
+</ul>
+</frame-uca>
+<frame-uca>
+
+<center>
+    <sql-dymtable id="pagination-table" table="Users"></sql-dymtable>
+</center>
+
+<sql-interactive id="pagination-sql">
+  <span onslide="0" slot="options" data-pagination="1" data-p="0">Page 1 (1 entrée par page)</span>
+  <span onslide="1" slot="options" data-pagination="1" data-p="1">Page 2 (1 entrée par page)</span>
+  <span onslide="2" slot="options" data-pagination="1" data-p="2">Page 3 (1 entrée par page)</span>
+  <span onslide="3" slot="options" data-pagination="2" data-p="0*2">Page 1 (2 entrée par page)</span>
+  <span onslide="4" slot="options" data-pagination="2" data-p="1*2">Page 2 (2 entrée par page)</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> Users LIMIT  $PAGINATION
+                    <span class="hljs-keyword">OFFSET</span> $P ;
+</code></pre></sql-interactive>
+
+<script>
+    async function fct(parent) {
+
+        const table = await LISS.qs("#pagination-table", parent);
+        const sql   = await LISS.qs("#pagination-sql"  , parent);
+
+        sql.host.addEventListener("change", (ev) => {
+            update(ev.detail.datas);
+        });
+        update( sql.lastDatas );
+
+        function update(datas) {
+
+            const ids = datas[0].map(r => r.ID);
+            table.highlightRow( ({ID}) => ids.includes(+ID) );
+  }
+    }
+
+    {
+        const parent = document.currentScript.closest("frame-uca");
+        (parent.scripts ??= []).push( fct );
+    }
+</script>
+</frame-uca>
+
+<frame-section>
+    Astuces pour rédiger efficacement les requêtes SQL
+</frame-section>
+
+<frame-uca>
+
+<ol>
+<li>Indentez vos requêtes (e.g. aligner les clauses), + lisible + facile à modifier.</li>
+<li>Fermez immédiatement parenthèse/guillemet/etc. avant de la remplir.</li>
+<li>Évitez autant que possible d&#39;écrire à la main :<ol>
+<li>Utilisez l&#39;auto-complétion (touche de tabulation <code>⭾</code>).</li>
+<li>Utilisez (<code>↑</code>/<code>↓</code>) pour remonter l&#39;historique et (<code>←</code>/<code>→</code>) pour modifier une requête.</li>
+<li>Utilisez les copier/coller (<code>^+⇧+C</code>/<code>^+⇧+V</code>).</li>
+</ol>
+</li>
+<li>Ne <strong>jamais</strong> tout écrire d&#39;un coup, mais procédez par étapes :<ol>
+<li><code>SELECT * FROM $T;</code> basique.</li>
+<li>afficher les colonnes pertinentes.</li>
+<li>ajoutez et testez les clauses une par une.</li>
+<li>idem pour les expressions, ajoutez les opérations au fur et à mesure.</li>
+</ol>
+</li>
+</ol>
+<p>Avantages :</p>
+<ul>
+<li>écriture + simple, rigoureux et méthodique.</li>
+<li>1 problème complexe =&gt; petits problèmes simples.</li>
+<li>debug + simple : origine problème tout de suite connu.</li>
+</ul>
+</frame-uca>
+
+<frame-subsection>
+    Ordre d'exécution et d'écriture (de gauche à droite)
+</frame-subsection>
+<frame-uca>
+
+<p><span onslide="7"></span><!-- h4ck --></p>
+<style>
+  .later {
+    color: gray;
+    font-style: italic;
+    opacity: 0.5;
+  }
+  .warning {
+    color: red;
+  }
+
+  #order-list {
+    margin: 0;
+  }
+
+</style>
+
+<div style="display:flex">
+  <ol id="order-list">
+    <li step="1">Récupère table (<code>FROM</code>).</li>
+    <li step="2" class="warning"><em>Alias de colonnes.</em></li>
+    <li step="3">Filtre entrées (<code>WHERE</code>).</li>
+    <li class="later">Groupe entrées (<code>GROUP BY</code>).</li>
+    <li class="later warning"><em>Alias de colonnes d'agrégats.</em></li>
+    <li class="later">Filtre lignes agrégées (<code>HAVING</code>).</li>
+    <li class="warning" step="4">Supprime doublons (<code>SELECT DISTINCT</code>).</li>
+    <li step="5">Trie les lignes (<code>ORDER BY</code>).</li>
+    <li step="6">Limite lignes (<code>LIMIT</code>/<code>OFFSET</code>).</li>
+  </ol>
+  <div>
+    <!--<div style="text-align: center">
+      <anim-player speed="1500" id="order-player"></anim-player>
+    </div>-->
+    <div style="display:flex;height: fit-content;">
+      <style>
+        .notyet {
+          color: gray;
+        }
+        .cur {
+          color: yellow;
+        }
+        .warning.cur {
+          color: orange;
+        }
+      </style>
+      <pre style="margin:0"><code id="order_sql">SELECT <span class="notyet">DISTINCT</span> Date, Ref, Q as Nb
+    FROM Produits
+    WHERE Ref = "Gomme"
+    ORDER BY Q
+    LIMIT 2;</code></pre>
+      <sql-dymtable header="" table="Produits" id="order-table"><sql-dym-table>>
+    </div>
+  </div>
+</div>
+
+<script>
+    async function fct(parent) {
+
+        //const player = await LISS.qs("#order-player", parent);
+        const table  = await LISS.qs("#order-table", parent);
+        const order_sql = parent.querySelector("#order_sql");
+
+        const list = parent.querySelectorAll("#order-list > li");
+
+        const query = [
+        `SELECT `, [4, `DISTINCT `], `Date, Ref, Q `, [2, "as Nb"],
+            [ 1, `\n    FROM Produits`],
+            [ 3, `\n    WHERE Ref = 'Gomme'`],
+            [ 5, `\n    ORDER BY Q`],
+            [ 6, `\n    LIMIT 2`], ';' ];
+
+        function buildQuery(step) {
+            let output = "";
+            for(let elem of query) {
+            if( Array.isArray(elem) ) {
+                if( elem[0] > step && step !== 0 )
+                continue;
+                elem = elem[1];
+            }
+            output += elem;
+            }
+
+            return output;
+        }
+        function buildOutput(step) {
+            let output = [];
+            for(let elem of query) {
+            if( Array.isArray(elem) ) {
+                const html = document.createElement('span');
+                html.textContent = elem[1];
+                html.classList.toggle("cur", elem[0] === step);
+                
+                if( elem[0] > step && step !== 0 )
+                html.classList.add("notyet");
+                elem = html;
+            }
+            output.push(elem);
+            }
+
+            return output;
+        }
+
+        function doStep(i) {
+
+            if( i > 6)
+                return; //return player.reset();
+
+            order_sql.replaceChildren( ...buildOutput(i) ); //TODO highlight
+            for(let li of list)
+                li.classList.toggle("cur", li.getAttribute("step") === `${i}`);
+
+            table.exec( buildQuery(i) );
+        }
+
+        //player.host.addEventListener("reset", ()   => { doStep(0)          });
+        //player.host.addEventListener("step" , (ev) => { console.warn(ev.detail); doStep( ev.detail) });
+
+        //doStep(0);
+        doStep(+parent.getAttribute("slide") );
+    }
+
+    {
+        const parent = document.currentScript.closest("frame-uca");
+        (parent.scripts ??= []).push( fct );
+    }
+</script>
+
+<!-- ⚠ En rouge, les cas d'exceptions (+ dans `UPDATE`, `SET` écrit **avant** `WHERE`). -->
+
+
+</frame-uca>
+
+<frame-uca>
+
+<div class="overlay">
+  <div onslide="0" class="child1">
+  1
+  </div>
+  <div onslide="1" class="child2">
+  2<br/>3
+  </div>
+</div>
+
+</frame-uca>
+
+</html>

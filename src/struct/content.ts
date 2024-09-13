@@ -30,6 +30,13 @@ export default [
         children: [
             "CM",
             {
+                name: "Slides",
+                path: "Slides",
+                children: [
+                    "CM1"
+                ]
+            },
+            {
                 name: "TP" ,
                 path : "TP",
                 children: [
@@ -38,6 +45,20 @@ export default [
                     "TP3",
                     "TP4",
                     "TP5"
+                ]
+            }
+        ]
+    },
+    {
+        name : "R 3-03 Technologies Web",
+        sname: "R3-03 Web1",
+        path : "R3-03",
+        children: [
+            {
+                name: "CM",
+                path: "CM",
+                children: [
+                    "CM1"
                 ]
             }
         ]

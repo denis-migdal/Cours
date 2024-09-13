@@ -30,7 +30,7 @@ Vous créerez un nouveau fichier tableur possédant une unique feuille nommée `
 Modifiez la feuille de calcul afin d'obtenir le tableau suivant :
 
 <center>
-    <img src="../../../../assets/tableur/img/TP2-1.jpg"/>
+    <img src="../../../../assets/tableur/img/TP2-1.png"/>
 </center>
 
 <strong><em>Votre réponse :</em></strong>
