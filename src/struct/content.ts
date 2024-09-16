@@ -34,7 +34,9 @@ export default [
                 path: "Slides",
                 children: [
                     "CM1",
-                    "CM2"
+                    "CM2",
+                    "CM3",
+                    "CM4"
                 ]
             },
             {

@@ -1566,7 +1566,7 @@ INSERT INTO  T VALUES
 
 </sql-interactive>
 
-💡 Certains SGBD crééent automatiquement, pour chaque table, une clef primaire cachée nommée `ROWID`.
+💡 Certains SGBD créent automatiquement, pour chaque table, une clef primaire cachée nommée `ROWID`.
 
 ### Les clefs étrangères (FK)
 

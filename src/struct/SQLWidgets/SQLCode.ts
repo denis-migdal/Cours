@@ -5,6 +5,8 @@ const hljs = require('highlight.js');
 const css = `
 
     :host {
+
+        white-space: pre;
     
         & var {
             background-color: lightgrey;
@@ -18,7 +20,6 @@ const css = `
 `;
 /* 
     font-family: monospace;
-    white-space: pre;
 */
 
 export default class SQLCode extends LISS({

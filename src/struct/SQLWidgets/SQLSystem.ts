@@ -43,7 +43,8 @@ class SQLSystem extends LISS({
         for(let i = 0; i < vars.length; ++i) {
             let results = db2.exec_many(exec_queries[i]);
             this.#output.addResult(vars[i], results);
-            db2.reset(); // or full-reset...
+            //db2.reset();
+            db2.fullReset();
         }
 
         this.#output.setActive(+this.attrs.active!);

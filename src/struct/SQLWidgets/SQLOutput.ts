@@ -116,6 +116,9 @@ export default class SQLOutput extends LISS({
 
         const result = _results[id];
 
+        if( result == null)
+            return "";
+
         const query = this.#queriesTemplates[id];
         
         let sim_to = undefined;
@@ -187,7 +190,7 @@ export default class SQLOutput extends LISS({
             let row = results[j];
 
             let highlights: boolean|Array<number> = false;
-            
+
             if( sim_to !== undefined && cols_highlight.length === 0)
                 highlights = sim_to.find( l => l[key] === result[j][key] ) !== undefined;
 
