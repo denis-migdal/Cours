@@ -33,7 +33,8 @@ export default [
                 name: "Slides",
                 path: "Slides",
                 children: [
-                    "CM1"
+                    "CM1",
+                    "CM2"
                 ]
             },
             {

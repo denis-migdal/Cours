@@ -616,8 +616,6 @@ class SQLInteractive extends LISS({
 
                 let cmp_line = compare_to.find( e => e[key] === data[j][key]); // h4cky
 
-                console.warn(compare_to === datas[i]);
-
                 row = this.#padRow(row, colsizes);
 
                 if( cmp_line === undefined) {
