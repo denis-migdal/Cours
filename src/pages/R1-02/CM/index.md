@@ -523,7 +523,7 @@ SELECT Age, Nom, Prenom FROM Users WHERE $COND;
 
 </sql-interactive>
 
-- `[NOT] IS NULL` : si la valeur est nulle/n'est pas nulle.<br/>
+- `IS [NOT] NULL` : si la valeur est nulle/n'est pas nulle.<br/>
   ⚠ En SQL `NULL == NULL` est généralement évalué à `False`.
 
 - `[NOT] IN ($VALS[,...])` : si la valeur est/n'est pas dans une liste donnée.
@@ -943,7 +943,7 @@ Les chaînes de caractères sont généralement stockées sur des colonnes à ta
   <span slot="options" data-cols="LOWER('Hello'), UPPER('Hello')">Transformer la casse</span>
   <span slot="options" data-cols="LENGTH('23'), LENGTH(32)">Taille</span>
   <span slot="options" data-cols="TRIM(' w '), LTRIM(' w '), RTRIM(' w ')">Retirer les espaces en début/fin</span>
-  <span slot="options" data-cols="PRINTF('{x=%.2f, y=%.2f}', 1.2, 1.)">Formatter des données</span>
+  <span slot="options" data-cols="FORMAT('{x=%.2f, y=%.2f}', 1.2, 1.)">Formatter des données</span>
 
 ```sql
 SELECT $COLS;
@@ -1197,7 +1197,7 @@ Jusqu'à présent, nous utilisions la clause `WHERE` pour sélectionner les entr
   <span slot="options" data-aggr="SUM" data-cond=">=20" data-cols="Q">Fonction d'agrégation génère erreur</span>
 
 ```sql
-SELECT Date, group_concat($COLS) FROM Produits
+SELECT Date, GROUP_CONCAT($COLS) FROM Produits
   WHERE $AGGR($COLS) $COND
   GROUP BY Date;
 ```

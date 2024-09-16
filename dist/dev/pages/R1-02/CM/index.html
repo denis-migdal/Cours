@@ -468,7 +468,7 @@ Vous ne devez ainsi pas écrire, e.g. <code>0 &lt; Age &lt; 18</code>, mais (cf 
 </code></pre></sql-interactive>
 
 <ul>
-<li><p><code>[NOT] IS NULL</code> : si la valeur est nulle/n&#39;est pas nulle.<br/>
+<li><p><code>IS [NOT] NULL</code> : si la valeur est nulle/n&#39;est pas nulle.<br/>
 ⚠ En SQL <code>NULL == NULL</code> est généralement évalué à <code>False</code>.</p>
 </li>
 <li><p><code>[NOT] IN ($VALS[,...])</code> : si la valeur est/n&#39;est pas dans une liste donnée.</p>
@@ -814,7 +814,7 @@ $M_VALS;
   <span slot="options" data-cols="LOWER('Hello'), UPPER('Hello')">Transformer la casse</span>
   <span slot="options" data-cols="LENGTH('23'), LENGTH(32)">Taille</span>
   <span slot="options" data-cols="TRIM(' w '), LTRIM(' w '), RTRIM(' w ')">Retirer les espaces en début/fin</span>
-  <span slot="options" data-cols="PRINTF('{x=%.2f, y=%.2f}', 1.2, 1.)">Formatter des données</span>
+  <span slot="options" data-cols="FORMAT('{x=%.2f, y=%.2f}', 1.2, 1.)">Formatter des données</span>
 
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $COLS;
 </code></pre></sql-interactive>
@@ -1017,7 +1017,7 @@ $M_VALS;
   <span slot="options" data-aggr=""    data-cond=">=20" data-cols="Q">Retirer des entrées avant agrégation</span>
   <span slot="options" data-aggr="SUM" data-cond=">=20" data-cols="Q">Fonction d'agrégation génère erreur</span>
 
-<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-type">Date</span>, group_concat($COLS) <span class="hljs-keyword">FROM</span> Produits
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-type">Date</span>, GROUP_CONCAT($COLS) <span class="hljs-keyword">FROM</span> Produits
   <span class="hljs-keyword">WHERE</span> $AGGR($COLS) $COND
   <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-type">Date</span>;
 </code></pre></sql-interactive>

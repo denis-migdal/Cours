@@ -100,19 +100,28 @@ export default class SQLOutput extends LISS({
 
             //TODO: highlight cells/lines/?
             let result = document.createElement("pre");
-            result.innerHTML = this.#buildResult(results, id);
+
+            let sim_to = undefined;
+            if( result_out.hasAttribute("similar_to") )
+                sim_to = +result_out.getAttribute("similar_to")! - 1;
+
+            result.innerHTML = this.#buildResult(results, id, sim_to);
 
             result_out.append(result);
         }
     }
 
     //TODO: compare...
-    #buildResult(_results: Result[], id: number) {
+    #buildResult(_results: Result[], id: number, similar_to?: number) {
 
         const result = _results[id];
 
         const query = this.#queriesTemplates[id];
         
+        let sim_to = undefined;
+        if( similar_to !== undefined)
+            sim_to = _results[similar_to] as SelectResult;
+
         let compare_to = null;
         if( Array.isArray(result) ) {
             compare_to = _results.filter( (v, i) => {
@@ -120,6 +129,9 @@ export default class SQLOutput extends LISS({
                     return false;
                 return query === this.#queriesTemplates[i];
             }) as SelectResult[];
+
+            if( compare_to.length === 0)
+                compare_to = null;
         }
 
         if(result === null)
@@ -153,20 +165,32 @@ export default class SQLOutput extends LISS({
                     colsizes[i] = row[i].length;
         }
 
-        const output = new OutputBuilder(colsizes);
+        let cols_highlight = [];
+        if( sim_to !== undefined) {
+            for(let i = 0; i < headers.length; ++i)
+                if( headers[i] in sim_to[0])
+                    cols_highlight.push( i );
+
+            if( cols_highlight.length === headers.length)
+                cols_highlight.length = 0;
+        }
+
+        const output = new OutputBuilder(colsizes, cols_highlight);
 
         output.addHLine()
               .addLine (headers)
               .addHLine();
 
-        let key = "ID";
-        if( compare_to !== null && ! (key in result[0]) )
-            key = "name"; // dirty...
+        let key = headers[0]; //dirty...
 
         for(let j = 0; j < results.length; ++j) {
             let row = results[j];
 
             let highlights: boolean|Array<number> = false;
+            
+            if( sim_to !== undefined && cols_highlight.length === 0)
+                highlights = sim_to.find( l => l[key] === result[j][key] ) !== undefined;
+
             if( compare_to !== null) {
 
                 let lines = compare_to.map( res => res!.find( l => l[key] === result[j][key] ) );
@@ -200,14 +224,17 @@ LISS.define("sql-output", SQLOutput);
 // TODO: highlight...
 class OutputBuilder {
 
-    #colsizes: number[];
+    #colsizes : number[];
+    #colshight: number[];
     #html    : string = "";
 
-    constructor(colsizes: number[]) {
+    constructor(colsizes: number[], colshight: number[] = []) {
         this.#colsizes = colsizes;
+        this.#colshight = colshight;
     }
 
     #addPaddedLine(line: string[], vsep = "|") {
+
         this.#html += `${vsep}${line.join(vsep)}${vsep}\n`;
     }
 
@@ -227,6 +254,9 @@ class OutputBuilder {
         if( Array.isArray(highlight) )
             for(let idx of highlight)
                 row[idx] = `<span class="highlight">${row[idx]}</span>`;
+
+        for(let idx of this.#colshight)
+            row[idx] = `<span class="highlight">${row[idx]}</span>`;
 
         let row_txt = `|${row.join('|')}|`;
         

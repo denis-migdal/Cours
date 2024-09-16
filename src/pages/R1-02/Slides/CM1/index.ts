@@ -3,6 +3,8 @@ import "struct/global_liss";
 import "WebSlides/src/index";
 
 //TODO: move 2 repo
+import "struct/SQLWidgets";
+
 import "struct/sql-interactive";
 import "struct/sql-dym-table";
 import "struct/anim-player";
