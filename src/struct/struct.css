@@ -1,3 +1,41 @@
+:root {
+    /* 595px for A4 portrait */
+    --width: calc( 1920 / 2 );
+}
+
+@media screen {
+    main {
+        width: calc( var(--width) * 1px );
+        margin-left: auto;
+        margin-right: auto;
+        /* TODO scale if too small */
+    }
+}
+@media print {
+
+    .toolbar {
+        display: none;
+    }
+
+    body {
+        height: unset !important;
+    }
+
+    main {
+        width: calc( var(--width) * 1px );
+        transform-origin: top left;
+        scale: 0.8;
+        /*scale: calc( 595 / var(--width) ); /* why ??? */
+        contain: size;
+    }
+
+    @page {
+        size: A4;
+        margin: 15px 0;
+    }
+}
+
+
 body {
     display:flex;
     flex-direction: column;
@@ -6,6 +44,7 @@ body {
     padding: 0 !important;
 }
 main {
+    box-sizing: border-box;
     padding: 0 12px;
     position: relative;
     overflow-y: auto;
