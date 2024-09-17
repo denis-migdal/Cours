@@ -1909,7 +1909,7 @@ ALTER TABLE $T ADD|DROP CONSTRAINST PK_$T PRIMARY KEY ($COL[,...]);
 
 ## Opérations d'ensembles
 
-Il est possible d'opérer des opérations d'ensembles sur les **lignes** retournées par deux requête `SELECT`, à conditions qu'elles aient le même nombre de colonnes (et idéalement la même structure) :
+Il est possible d'opérer des opérations d'ensembles sur les **lignes** retournées par deux requêtes `SELECT`, à conditions qu'elles aient le même nombre de colonnes (et idéalement la même structure) :
 
 - `UNION`     : concaténer les lignes.
 - `INTERSECT` : les lignes communes aux deux requêtes.
@@ -1986,7 +1986,7 @@ En effet, une sous-requête non-corrélée n'étant exécutée qu'une seule fois
 En revanche, quand une sous-requête est corrélée, il faudra nécessairement évaluer la sous-requête à chaque entrée de la requête principale. Cependant il n'est alors pas utile de calculer l'ensemble des lignes de la sous-requête, car on peut s'arrêter à :
 
 - la première ligne existante pour `EXISTS`.
-- la première ligne satisfaisant la condition pour `ALL`.
+- la première ligne satisfaisant la condition pour `ANY`.
 - la première ligne ne satisfaisant pas la condition pour `ALL`.
 
 ⚠ Il va de soit qu'il faut éviter les sous-requêtes corrélées autant que possible...

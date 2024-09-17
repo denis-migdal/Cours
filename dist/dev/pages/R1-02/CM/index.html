@@ -1586,7 +1586,7 @@ Pour cela on a UPSERT et INSERT ON DUPLICATE KEYS UPDATE (dépend du SGBD) qui s
 </code></pre><p>⚠ Modifier le schéma et les contraintes d&#39;une table existante/non-vide n&#39;est pas anodin.</p>
 <h1 id="fusions-et-jointures">Fusions et jointures</h1>
 <h2 id="opérations-densembles">Opérations d&#39;ensembles</h2>
-<p>Il est possible d&#39;opérer des opérations d&#39;ensembles sur les <strong>lignes</strong> retournées par deux requête <code>SELECT</code>, à conditions qu&#39;elles aient le même nombre de colonnes (et idéalement la même structure) :</p>
+<p>Il est possible d&#39;opérer des opérations d&#39;ensembles sur les <strong>lignes</strong> retournées par deux requêtes <code>SELECT</code>, à conditions qu&#39;elles aient le même nombre de colonnes (et idéalement la même structure) :</p>
 <ul>
 <li><code>UNION</code>     : concaténer les lignes.</li>
 <li><code>INTERSECT</code> : les lignes communes aux deux requêtes.</li>
@@ -1640,7 +1640,7 @@ $OP
 <p>En revanche, quand une sous-requête est corrélée, il faudra nécessairement évaluer la sous-requête à chaque entrée de la requête principale. Cependant il n&#39;est alors pas utile de calculer l&#39;ensemble des lignes de la sous-requête, car on peut s&#39;arrêter à :</p>
 <ul>
 <li>la première ligne existante pour <code>EXISTS</code>.</li>
-<li>la première ligne satisfaisant la condition pour <code>ALL</code>.</li>
+<li>la première ligne satisfaisant la condition pour <code>ANY</code>.</li>
 <li>la première ligne ne satisfaisant pas la condition pour <code>ALL</code>.</li>
 </ul>
 <p>⚠ Il va de soit qu&#39;il faut éviter les sous-requêtes corrélées autant que possible...</p>
