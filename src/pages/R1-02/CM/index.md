@@ -24,9 +24,6 @@ Contenu:
 
 Détails:
   - split CM into different files.
-  - espace moodle (avec navigation)
-  - slides PDF LaTeX.
-  - cheat-sheet...
 
 <!--
 
@@ -1876,7 +1873,7 @@ On a des choses comme REPLACE (MySQL) supprime l'entrée si elle existe, puis aj
 Il faut ainsi faire cela en une seule opération.
 Pour cela on a UPSERT et INSERT ON DUPLICATE KEYS UPDATE (dépend du SGBD) qui s'utilise comme INSERT et qui sont plutôt simples (vérifient si la clef primaire existe).
  
-Et pour d'autres, MERGE (SQL2003), qui est plus puissant (on peut personnaliser la condition), et l'utiliser pour d'autres usages (on peut aussi supprimer).</todo>
+Et pour d'autres, MERGE (SQL2003), qui est plus puissant (on peut personnaliser la condition), et l'utiliser pour d'autres usages (on peut aussi supprimer).
 
 + évoquer https://sql.sh/cours/merge (à la fin d'un TP ?)
 

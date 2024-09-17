@@ -28,9 +28,6 @@
 <p>Détails:</p>
 <ul>
 <li>split CM into different files.</li>
-<li>espace moodle (avec navigation)</li>
-<li>slides PDF LaTeX.</li>
-<li>cheat-sheet...</li>
 </ul>
 <!--
 
@@ -1561,7 +1558,7 @@ SELECT * FROM Users;</span>
 <p>On a des choses comme REPLACE (MySQL) supprime l&#39;entrée si elle existe, puis ajoute la nouvelle. Sauf que s&#39;il y a des clefs primaires référencées par des clefs étrangères ça casse tout.</p>
 <p>Il faut ainsi faire cela en une seule opération.
 Pour cela on a UPSERT et INSERT ON DUPLICATE KEYS UPDATE (dépend du SGBD) qui s&#39;utilise comme INSERT et qui sont plutôt simples (vérifient si la clef primaire existe).</p>
-<p>Et pour d&#39;autres, MERGE (SQL2003), qui est plus puissant (on peut personnaliser la condition), et l&#39;utiliser pour d&#39;autres usages (on peut aussi supprimer).</todo></p>
+<p>Et pour d&#39;autres, MERGE (SQL2003), qui est plus puissant (on peut personnaliser la condition), et l&#39;utiliser pour d&#39;autres usages (on peut aussi supprimer).</p>
 <ul>
 <li>évoquer <a href="https://sql.sh/cours/merge">https://sql.sh/cours/merge</a> (à la fin d&#39;un TP ?)</li>
 </ul>
