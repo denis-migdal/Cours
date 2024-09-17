@@ -49,6 +49,9 @@ export default [
                     "TP4",
                     "TP5"
                 ]
+            }, {
+                name: "Cheat Sheet",
+                path: "/assets/sql/cheat sheet.svg"
             }
         ]
     },

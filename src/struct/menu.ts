@@ -128,6 +128,10 @@ function updateHeader() {
 
     function make_page_href(pathprefix: string, path: string, desc: any) {
 
+        // h4ck...
+        if( path[0] === "/" )
+            return `${root_path.slice(0,-6)}/${path}`;
+
         let href = `${pathprefix}${path}/`;
 
         while(desc.children?.length) {
@@ -153,6 +157,7 @@ function updateHeader() {
             menu.append( ... pages.map( (page:any) => {
                 const item = document.createElement("a");
                 item.textContent= page.name ?? page;
+
                 item.setAttribute("href", make_page_href(pathprefix, page.path??page, page) );
                 return item;
             }) );
