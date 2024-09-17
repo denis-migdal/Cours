@@ -1,9 +1,12 @@
 import "./menu.ts";
-import "./tp/file_input";
-import "./tp/tableur/cell_from_sheet";
-import "./tp/tableur/sheet";
 
-const hljs = require('highlight.js');
+// pour rendus :
+import Rendu from "pages/TPEngine/Rendu.ts";
+import {SUJET} from "pages/TPEngine/GUI/SujetTP.ts";
+
+import { download } from "./utils/download.ts";
+
+// TODO: fix hljs area (highlight fct ?)
 
 for(let field of document.querySelectorAll('[contenteditable]') ) {
 
@@ -38,13 +41,14 @@ for(let field of document.querySelectorAll('[contenteditable]') ) {
     });
 }
 
+const hljs = require('highlight.js');
+
 // highlight...
 for(let pre of document.querySelectorAll('pre[lang][contenteditable]') ) {
 
     const language = pre.getAttribute('lang');
 
     pre.setAttribute("spellcheck", "false");
-
 
     pre.addEventListener("input", (ev) => {
         
@@ -60,16 +64,19 @@ for(let pre of document.querySelectorAll('pre[lang][contenteditable]') ) {
         let rrange = window.getSelection()!.getRangeAt(0);
         let c = rrange.startOffset;
 
+        console.warn(rrange.startContainer.nodeType, Node.TEXT_NODE);
+
         //let text = "";
         let length = 0;
         for(let i = 0; i < p.childNodes.length; ++i) {
-            if( rrange.startContainer === p.childNodes[i] ) {
-                //text += p.childNodes[i].textContent!.slice(0, c);
+
+            const child = p.childNodes[i];
+
+            if( rrange.startContainer === child || rrange.startContainer === child.firstChild ) {
                 length += c;
                 break;
             }
-            //text += p.childNodes[i].textContent;
-            length += p.childNodes[i].textContent!.length;
+            length += child.textContent!.length;
         }
 
         // Update innerHTML
@@ -92,47 +99,12 @@ for(let pre of document.querySelectorAll('pre[lang][contenteditable]') ) {
 
         var range = document.createRange();
         var sel = window.getSelection()!;
-        //TODO: set REAL IDX
         range.setStart(child, length);
         range.collapse(true);
         sel.removeAllRanges();
         sel.addRange(range);
-        //console.log( getCaretCharacterOffsetWithin(ev.target)  );
     });
 }
-
-
-
-function getAnswersFields() {
-    //TODO...
-    return [ ...document.querySelectorAll<HTMLElement>("[contenteditable]") ];
-}
-
-const answers_fields = getAnswersFields();
-
-for(let i = 0; i < answers_fields.length; ++i ) {
-
-    answers_fields[i].addEventListener('input', () => {
-        const answer_txt = answers_fields[i].textContent!;
-        (answers[i] ??= {}).text = answer_txt;
-        localStorage.setItem(`answers:${PAGE}`, JSON.stringify(answers) );
-    });
-}
-// init...
-
-
-const PAGE = window.location.pathname;
-
-let localAnswers = localStorage.getItem(`answers:${PAGE}`);
-
-//TODO get real type...
-let answers = answers_fields.map( e => { return { text: ""} } );
-
-export function getAnswers() {
-    return answers;
-}
-
-importAnswersFromText(localAnswers);
 
 const toolbar = document.createElement("span");
 toolbar.classList.add("toolbar");
@@ -147,78 +119,31 @@ import_btn.addEventListener('click', () => {
 });
 
 file_upload.addEventListener('change', async () => {
-    
-    let text = await file_upload.files![0].text();
-    answers = JSON.parse(text);
-
-    importAnswersFromText( text );
+    SUJET.rendu = await Rendu.loadFromArrayBuffer( await file_upload.files![0].arrayBuffer() );
 });
 
 
 const export_btn = document.createElement('span');
 export_btn.textContent = "[export]";
-
-export_btn.addEventListener('click', () => {
-    download( JSON.stringify(answers, null, "\t"), `${PAGE}.answers`);
+export_btn.addEventListener('click', async () => {
+    download( await SUJET.rendu.toArrayBuffer(), SUJET.filename);
 });
-
 
 toolbar.append(import_btn, export_btn);
 
 const main = document.querySelector('main')!;
 main.append(toolbar);
 
+addEventListener("message", (e) => {
 
-function importAnswersFromText(text: string|null) {
-    
-    if(text === null)
+    if( typeof e.data !== "number")
         return;
 
-    answers = JSON.parse(text);
-
-    for(let i = 0; i < answers_fields.length; ++i) {
-        if( answers[i] === undefined || answers[i] === null )
-            continue;
-        
-        answers_fields[i].textContent = answers[i].text;
-        answers_fields[i].dispatchEvent( new CustomEvent("input") );
-
-        answers_fields[i].classList.remove('wrong', 'correct', 'comment');
-        if( "grade" in answers[i] )
-            answers_fields[i].classList.add( answers[i].grade === 1 ? "correct" : 'wrong');
-        if( "comments" in answers[i] ) {
-            answers_fields[i].classList.add('comments');
-            console.warn(answers[i].comments);
-            answers_fields[i].setAttribute('comments', answers[i].comments);
-        }
-    }
-}
-
-
-addEventListener("message", (e) => {
-    highlight(e.data);
+    SUJET.highlight(e.data);
 })
-
-function highlight(q_id: number) {
-
-    document.querySelector(".answer_highlight")?.classList.remove("answer_highlight");
-
-    const answer = answers_fields[q_id];
-    answer.classList.add('answer_highlight');
-
-    const vh = document.documentElement.clientHeight;
-    const ah = answer.clientHeight;
-
-    main.scrollTo({
-        top: answer.offsetTop - (document.documentElement.clientHeight / 2 + ah / 2),
-        behavior: "instant"
-    })
-    //TODO: scroll2middle...
-}
 
 //TODO: webpack config...
 import LISS from "../../libs/LISS";
-import { download } from "./utils/download.ts";
 
 const TPConsignesContent = `<p>En vous aidant des supports de cours fournis (CM, slides, et cheat sheet), répondez aux différentes questions dans les champs prévus à cet effet.</p>
 <p>À la fin de la séance de TP, vous exporterez les réponses via le bouton en haut à droite de la page, et déposerez le fichier ainsi obtenu sur Moodle.</p>

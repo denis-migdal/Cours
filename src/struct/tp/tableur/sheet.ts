@@ -1,6 +1,6 @@
 import LISS from "LISS";
 import { CalcSheet } from "struct/calc/sheet";
-import { RENDU } from "../rendu";
+//import { RENDU } from "../rendu";
 import { load } from "struct/calc/loader_ods";
 
 const content = `<calc-sheet ro="true" showgrid="false"></calc-sheet>`;

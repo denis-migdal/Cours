@@ -1,6 +1,8 @@
 import LISS from "LISS";
 import { upload } from "struct/utils/upload";
-import { RENDU } from "./rendu";
+
+//TODO...
+//import { RENDU } from "./rendu";
 
 export class FileInput extends LISS({
     attributes: ["default"]

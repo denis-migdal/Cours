@@ -1,5 +1,4 @@
 import LISS from "LISS";
-import { RENDU } from "../rendu";
 
 const hljs = require('highlight.js');
 
