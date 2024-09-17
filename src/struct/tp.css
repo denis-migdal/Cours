@@ -9,6 +9,7 @@ main {
     top: 0px;
     right: 0px;
     z-index: 2;
+    background-color: black;
 }
 
 .answer_highlight {

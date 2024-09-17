@@ -98,10 +98,11 @@ function updateHeader() {
     let headers = [];
     let cursor  = last;
 
-    while(cursor.html !== main) {
-        headers.push(cursor);
-        cursor = cursor.parent!;
-    }
+    if( cursor !== null)
+        while(cursor.html !== main) {
+            headers.push(cursor);
+            cursor = cursor.parent!;
+        }
 
     const html = headers.reverse().map( (hnode,i) => {
 
@@ -118,7 +119,7 @@ function updateHeader() {
         return h_html;
     });
 
-    if( last.children.length !== 0) {
+    if( last !== null && last.children.length !== 0) {
         const empty = document.createElement("span");
 
         empty.append( buildMenu(last.children) );

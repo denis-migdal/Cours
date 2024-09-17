@@ -1,4 +1,5 @@
 import "./menu.ts";
+import "./struct.ts";
 
 // pour rendus :
 import Rendu from "pages/TPEngine/Rendu.ts";
@@ -131,8 +132,7 @@ export_btn.addEventListener('click', async () => {
 
 toolbar.append(import_btn, export_btn);
 
-const main = document.querySelector('main')!;
-main.append(toolbar);
+document.body.append(toolbar);
 
 addEventListener("message", (e) => {
 
