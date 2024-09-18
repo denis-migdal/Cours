@@ -1,0 +1,35 @@
+header {
+    z-index: 1;
+    margin-left: 50px;
+    font-weight: bold;
+    & > span {
+        position: relative;
+    }
+    & > span:not(:hover) > .menu {
+        display: none;
+    }
+    & > span > .menu {
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        transform: translate(0, 100%);
+        left: 0;
+        background-color: black;
+        border: 1px solid gray;
+        border-top: none;
+        & > a {
+            display: block;
+            white-space: nowrap;
+            padding: 5px 10px;
+            &:hover {
+                background-color: #222;
+            }
+        }
+    }
+    & > span::before {
+        content: " > "
+    }
+    & > span:hover::before {
+        content: " v "
+    }
+}

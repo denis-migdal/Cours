@@ -1,6 +1,7 @@
 import "struct/global_liss";
 
 import "WebSlides/src/index";
+import "struct/menu.ts";
 
 //TODO: move 2 repo
 import "struct/SQLWidgets";
