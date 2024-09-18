@@ -174,23 +174,33 @@ SELECT * FROM T1 WHERE $COND (
 <frame-section>Jointures</frame-section>
 <frame-uca>
 
-Pour rappel, une table (e.g. `Vente`) peut en référencer une autre (e.g. `Vendeur`). Il est alors possible d'obtenir e.g. :
-- la liste des vendeurs ayant au moins 10 ventes ?
-- la liste des ventes des vendeurs embauchés il y a moins de 5 ans.
+<div>
 
-Pour cela il est possible d'utiliser des requêtes corrélées, mais la syntaxe serait lourde et la requête peu performante. Dans ce cas de figure on utilise ce qu'on appelle des **jointures**, qui permettent de fusionner des entrées de tables différentes au sein d'une même ligne.
+***Problème :*** Table <sql-code>Vente</sql-code> référence table <sql-code>Vendeur</sql-code>.
+
+- comment obtenir :
+  - la liste des vendeurs ayant au moins 10 ventes.
+  - la liste des ventes des vendeurs embauchés il y a moins de 5 ans.
+- requêtes corrélées :
+  - syntaxe lourde ;
+  - peu performant.
+</div>
+
+
+***Solution :*** les **jointures** ≈ fusionne des entrées de différentes tables.
 
 </frame-uca>
 <frame-subsection>Produit cartésien</frame-subsection>
 <frame-uca>
 
-Une méthode naïve (**et à ne jamais utiliser**) d'effectuer une jointure est d'utiliser un produit cartésien :
-
-```sql
-SELECT * FROM $T1, $T2 WHERE $T1.$KEY == $T2.$KEY;
-```
-
-Pour exécuter cette requête, le SGDB va construire une table intermédiaire constituée de toutes les combinaisons de lignes possibles entre `$T1` et `$T2`, qu'elle va ensuite parcourir pour filtrer les lignes via la clause `WHERE`.
+<ul>
+  <li><b>Produit cartésien :</b> table intermédiaire, combine toutes les entrées de <sql-code><var>$T1</var></sql-code> et <sql-code><var>$T2</var></sql-code>.
+    <ul>
+      <li><sql-code>SELECT * FROM <var>$T1</var>, <var>$T2</var> WHERE <var>$COND</var>;</sql-code> <i>(e.g. <sql-code>WHERE <var>$T1.ID == $T2.ID</var></sql-code>)</i></li>
+      <li><sql-code>WHERE</sql-code> sur table intermédiaire ⇒ majorité des entrées intermédiaires <b>inutiles</b> !</li>
+    </ul>
+  </li>
+</ul>
 
 <style>
   .color1 {
@@ -206,6 +216,16 @@ Pour exécuter cette requête, le SGDB va construire une table intermédiaire co
     background-color: orange;
   }
 
+  .scale {
+    overflow: hidden;
+    flex-grow: 1;
+
+    & .table_flex {
+      transform-origin: top left;
+      scale: calc( 2/3 );
+    }
+  }
+
   .table_flex {
     display: flex;
     align-items: top;
@@ -213,10 +233,10 @@ Pour exécuter cette requête, le SGDB va construire une table intermédiaire co
   }
 </style>
 
-<div style="text-align: center">
-  <anim-player id="cart_anim"></anim-player>
-</div>
+
+<div class="scale">
 <div class='table_flex'>
+  <span onslide="31"></span><!-- h4ck -->
   <sql-dymtable id="cart_T1" table="T1" header="T1"></sql-dymtable>
     <span><strong>x</strong></span>
   <sql-dymtable id="cart_T2" table="T2" header="T2"></sql-dymtable>
@@ -225,93 +245,102 @@ Pour exécuter cette requête, le SGDB va construire une table intermédiaire co
     <span><strong>-- WHERE T1.ID == T2.ID --></strong></span>
   <sql-dymtable id="cart_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1, T2" header="T1xT2 WHERE T1.ID == T2.ID"></sql-dymtable>
 </div>
+</div>
+
+<script>
+    async function fct(parent) {
+
+        const T1 = await LISS.qs("#cart_T1", parent);
+        const T2 = await LISS.qs("#cart_T2", parent);
+
+        const T1_T2  = await LISS.qs("#cart_T1_T2", parent);
+        const T1_T2W = await LISS.qs("#cart_T1_T2W", parent);
+
+        T1.highlightRow( ({ID}) => `high_${ID}` );
+        T2.highlightRow( ({ID}) => `high_${ID}` );
+
+        T1_T2.highlightCells( (row, colname) => {
+          const id = row[ colname.split('.')[0] + ".ID"];
+          return `high_${id}`;
+        });
+        T1_T2W.highlightCells( (row, colname) => {
+          const id = row[ colname.split('.')[0] + ".ID"];
+          return `high_${id}`;
+        });
+        
+        function doStep(step) {
+
+          let genT1_T2_max_step = T1.nbRows * (T2.nbRows + 2) + 2;
+
+          if( step - genT1_T2_max_step > T1_T2.nbRows )
+            return;
+
+          let T1_rownum;
+          let T2_rownum;
+          let T1_T2_rownum;
+          let T1_T2_generated = step === 0 ? undefined : -1;
+
+          if( step > 1 && step < genT1_T2_max_step ) { // build T1xT2
+            T1_rownum = Math.trunc( (step - 2) / (T2.nbRows + 2) );
+            T2_rownum =             (step - 2) % (T2.nbRows + 2) - 1;
+
+            T1_T2_generated = T1_rownum * T2.nbRows + T2_rownum;
+
+            if( T2_rownum === -1 )
+              T2_rownum = undefined;
+            if( T2_rownum === T2.nbRows ) {
+              T2_rownum = undefined;
+              --T1_T2_generated;
+            }
+
+            T1_T2_rownum = T1_rownum * T2.nbRows + T2_rownum;
+          }
+
+          let T1_T2W_rownum = step === 0 ? T1_T2.nbRows : -1;
+
+          if( step >= genT1_T2_max_step ) { // filter T1xT2
+            T1_T2_generated = T1_T2.nbRows;
+            T1_T2W_rownum = T1_T2_rownum = step - genT1_T2_max_step;
+          }
 
 
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+          T1.highlightRow( (_, row_num) => {
+            return {cur: row_num === T1_rownum}
+          });
+          T2.highlightRow( (_, row_num) => {
+            return {cur: row_num === T2_rownum}
+          });
 
-  const T1 = await LISS.qs("#cart_T1");
-  const T2 = await LISS.qs("#cart_T2");
+          T1_T2.highlightRow( (_, row_num) => {
+            return {
+              cur : row_num === T1_T2_rownum,
+              hide: row_num >   T1_T2_generated
+            }
+          });
+          T1_T2W.highlightRow( (row, row_num) => {
+            return {
+              cur : row_num === T1_T2W_rownum,
+              hide: row_num >   T1_T2W_rownum || row["T1.ID"] !== row["T2.ID"]
+            }
+          });
+        }
 
-  const T1_T2  = await LISS.qs("#cart_T1_T2");
-  const T1_T2W = await LISS.qs("#cart_T1_T2W");
-
-  const anim   = await LISS.qs("#cart_anim");
-
-  T1.highlightRow( ({ID}) => `high_${ID}` );
-  T2.highlightRow( ({ID}) => `high_${ID}` );
-
-  T1_T2.highlightCells( (row, colname) => {
-    const id = row[ colname.split('.')[0] + ".ID"];
-    return `high_${id}`;
-  });
-  T1_T2W.highlightCells( (row, colname) => {
-    const id = row[ colname.split('.')[0] + ".ID"];
-    return `high_${id}`;
-  });
-  
-  function doStep(step) {
-
-    let genT1_T2_max_step = T1.nbRows * (T2.nbRows + 2) + 2;
-
-    if( step - genT1_T2_max_step > T1_T2.nbRows )
-      return anim.reset();
-
-    let T1_rownum;
-    let T2_rownum;
-    let T1_T2_rownum;
-    let T1_T2_generated = step === 0 ? undefined : -1;
-
-    if( step > 1 && step < genT1_T2_max_step ) { // build T1xT2
-      T1_rownum = Math.trunc( (step - 2) / (T2.nbRows + 2) );
-      T2_rownum =             (step - 2) % (T2.nbRows + 2) - 1;
-
-      T1_T2_generated = T1_rownum * T2.nbRows + T2_rownum;
-
-      if( T2_rownum === -1 )
-        T2_rownum = undefined;
-      if( T2_rownum === T2.nbRows ) {
-        T2_rownum = undefined;
-        --T1_T2_generated;
-      }
-
-      T1_T2_rownum = T1_rownum * T2.nbRows + T2_rownum;
+        //doStep(0);
+        doStep(+parent.getAttribute("slide") + 1 );
     }
 
-    let T1_T2W_rownum = step === 0 ? T1_T2.nbRows : -1;
-
-    if( step >= genT1_T2_max_step ) { // filter T1xT2
-      T1_T2_generated = T1_T2.nbRows;
-      T1_T2W_rownum = T1_T2_rownum = step - genT1_T2_max_step;
+    {
+        const parent = document.currentScript.closest("frame-uca");
+        (parent.scripts ??= []).push( fct );
     }
-
-
-    T1.highlightRow( (_, row_num) => {
-      return {cur: row_num === T1_rownum}
-    });
-    T2.highlightRow( (_, row_num) => {
-      return {cur: row_num === T2_rownum}
-    });
-
-    T1_T2.highlightRow( (_, row_num) => {
-      return {
-        cur : row_num === T1_T2_rownum,
-        hide: row_num >   T1_T2_generated
-      }
-    });
-    T1_T2W.highlightRow( (row, row_num) => {
-      return {
-        cur : row_num === T1_T2W_rownum,
-        hide: row_num >   T1_T2W_rownum || row["T1.ID"] !== row["T2.ID"]
-      }
-    });
-  }
-
-  anim.host.addEventListener("step", (ev) => doStep(ev.detail) );
-  doStep(0);
 </script>
 
-Ainsi, le produit cartésien de deux tables de 3 entrées produira une table intermédiaire de 9 lignes, dont la majorité des lignes seront ensuite rejettées par la clause `WHERE`. Même sur de petites tables, la construction de la table intermédiaire explose très vite les capacités du SGDB :
+</frame-uca>
+<frame-uca>
+
+<ul>
+  <li>⚠ Même sur de petites tables, la table intermédiaire explose très vite :</li>
+</ul>
 
 <style>
   .danger {
@@ -399,46 +428,48 @@ Ainsi, le produit cartésien de deux tables de 3 entrées produira une table int
   update();
 </script>
 
-Pour rappel, 1 milliard de lignes correspondent à plusieurs Go en mémoire, et 10^18 à plusieurs Po !!!
-
-⚠ Pour cette raison, on n'utilise **JAMAIS** les produits cartésien en SQL ! **JA-MAIS !**
-
+<ul>
+  <li>⚠ 1 milliard de lignes ≈ plusieurs Go, et 10^18 ≈ plusieurs Po !!!</li>
+  <li>⚠ On n'utilise <b>JAMAIS</b> les produits cartésien en SQL ! <b>JA-MAIS !</b></li>
+</ul>
 
 </frame-uca>
 <frame-subsection>Le principe des jointures</frame-subsection>
 <frame-uca>
 
-La bonne manière de procéder est d'utiliser la clause `JOIN` qui s'utilise usuellement de la sorte :
+<ul>
+  <li><b>Jointure :</b> construit la table intermédiaire plus intelligemment :
+    <ul>
+      <li><sql-code>SELECT * FROM <var>$T1</var> NATURAL JOIN <var>$T2</var>;</sql-code></li>
+      <li>Pour chaque entrée de <sql-code><var>$T2</var></sql-code> (FK), recherche l'entrée de <sql-code><var>$T1</var></sql-code> (PK) correspondant.
+      <ul>
+      <li>bien plus rapide et moins coûteux en mémoire.</li>
+      <li>⚠ basé sur les colonnes de noms identiques entre <sql-code><var>$T1</var></sql-code> et <sql-code><var>$T2</var></sql-code></li>
+      </ul></li>
+    </ul>
+  </li>
+</ul>
 
-```sql
-SELECT * FROM $T1 NATURAL INNER JOIN $T2;
-```
-
-Pour chaque entrée de `$T1`, le SGBD va rechercher les entrées de `$T2` dont les valeurs des colonnes communes sont identiques à celles de l'entrée de `$T1`. Ainsi, contrairement au produit cartésien, le SGBD n'a pas besoin de construire une table intermédiaire colossale, réduisant très fortement la consommation de mémoire vive.
-
-
-<div style="text-align: center">
-  <anim-player id="join_anim"></anim-player>
-</div>
-
+<div class="scale">
 <div class='table_flex'>
+  <span onslide="13"></span><!-- h4ck -->
   <sql-dymtable id="join_T1" table="T1" header="T1"></sql-dymtable>
     <span><strong>JOIN</strong></span>
   <sql-dymtable id="join_T2" table="T2" header="T2"></sql-dymtable>
     <span><strong>=</strong></span>
-  <sql-dymtable id="join_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1 RIGHT JOIN T2 USING(ID)" header="T1 JOIN T2"></sql-dymtable>
+  <sql-dymtable id="join_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1 NATURAL JOIN T2" header="T1 NATURAL JOIN T2"></sql-dymtable>
+</div>
 </div>
 
 
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+<script>
 
-  const T1 = await LISS.qs("#join_T1");
-  const T2 = await LISS.qs("#join_T2");
+  async function fct(parent) {
 
-  const T1_T2W = await LISS.qs("#join_T1_T2W");
+  const T1 = await LISS.qs("#join_T1", parent);
+  const T2 = await LISS.qs("#join_T2", parent);
 
-  const anim   = await LISS.qs("#join_anim");
+  const T1_T2W = await LISS.qs("#join_T1_T2W", parent);
 
   T1.highlightRow( ({ID}) => `high_${ID}` );
   T2.highlightRow( ({ID}) => `high_${ID}` );
@@ -458,10 +489,8 @@ Pour chaque entrée de `$T1`, le SGBD va rechercher les entrées de `$T2` dont l
       substep = (step - 2) % 3;
     }
 
-    if( T2_rownum !== undefined && T2_rownum >= T2.nbRows){
-      anim.reset();
-      return 
-    }
+    if( T2_rownum !== undefined && T2_rownum >= T2.nbRows)
+      return;
 
     T1.highlightRow( ({ID}) => {
 
@@ -479,139 +508,156 @@ Pour chaque entrée de `$T1`, le SGBD va rechercher les entrées de `$T2` dont l
     });
   }
 
-  anim.host.addEventListener("reset", (ev) => doStep(0) );
-  anim.host.addEventListener("step", (ev) => doStep(ev.detail) );
-  doStep(0);
+        //doStep(0);
+        doStep(+parent.getAttribute("slide") + 1 );
+    }
+
+    {
+        const parent = document.currentScript.closest("frame-uca");
+        (parent.scripts ??= []).push( fct );
+    }
 </script>
 
-💡 Si les colonnes en communs constituent un index, la recherche des entrées de `$T2` s'en retrouve grandement accelérée. Si elles constituent une clé primaire/étrangère, la recherche devient quasi instantanée.
-
-⚠ Il est ainsi **plus que fortement recommandé** d'effectuer des jointures sur des clés primaires/étrangères.
-
-💡 Vous pouvez ajouter une clause `WHERE` à vôtre requête SQL. En théorie la clause `WHERE` est appliquée aux entrées **après** jointures. Cependant, les SGBD sont capables d'optimiser la requête en préfiltrant, lorsque possible, les tables **avant** jointures.
+<ul>
+<li>
+💡 Recherche des entrées de <sql-code><var>$T1</var></sql-code> : si index ⇒ rapide, si PK/FK ⇒ <b>quasi instantané</b>.
+<ul><li>
+⚠ <b>Fortement recommandé</b> d'effectuer des jointures sur des PK/FK.
+</li></ul>
+</li>
+<li>⚠ <sql-code>WHERE</sql-code> exécuté <b>après</b> jointure.<ul><li>
+💡  SGBD peuvent optimiser en préfiltrant, lorsque possible, <b>avant</b> jointures.
+</li></ul></li>
+</ul>
 
 </frame-uca>
 <frame-subsection>Les types de jointures</frame-subsection>
 <frame-uca>
 
-En réalité, il existe 3 types de jointures fréquemment utilisées :
-<style>
-.join_table :is(td,th):last-child {
-  border :none;
-  font-style:italic;
-}
-.join_table :is(td,th):first-child {
-  border :none;
-  text-align: right;
-}
-</style>
-<table class="join_table">
-  <thead>
-    <tr>
-      <th></th>
-      <th colspan="3" style="text-align:center">Entries</th>
-      <th style="text-align:center">WHERE</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td>INNER :</td><td>T1</td><td>x</td><td>T2</td><td>T1.ID == T2.ID</td><td></td></tr>
-    <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-    <tr><td>LEFT :</td><td>T1</td><td>x</td><td>NULL</td><td>T1.ID <strong>NOT IN</strong> T2.ID</td><td>(+ entrées INNER)</td></tr>
-    <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-    <tr><td>FULL :</td><td>NULL</td><td>x</td><td>T2</td><td>T2.ID <strong>NOT IN</strong> T1.ID</td><td>(+ entrées LEFT)</td></tr>
-  </tbody>
-</table>
+<div>
+Il existe 3 types de jointures fréquemment utilisées :
 
-- `INNER` : par défaut.
-- `LEFT`  : comme `INNER`, mais ajoute au résultat les entrées de `$T1` dont aucune entrée de `$T2` ne correspond.
-- `FULL` (plus rare) : comme `LEFT`, mais ajoute au résultat les entrées de `$T2` dont aucune entrée de `$T1` ne correspond.<br/>
-  💡 Il est équivalant à l'union de `$T1 LEFT JOIN $T2` et `$T2 LEFT JOIN $T1`.
+<ul>
+  <li><sql-code>INNER</sql-code> : <sql-code><var>$T1</var>.ID == <var>$T2</var>.ID</sql-code>, par défaut.</li>
+  <li onslide="1-"><sql-code>LEFT </sql-code>  : <sql-code>INNER</sql-code> + entrées de <sql-code><var>$T1</var></sql-code> dont aucune entrée de <sql-code><var>$T2</var></sql-code> ne correspond.</li>
+  <li onslide="2-"><sql-code>FULL </sql-code> : <sql-code>LEFT </sql-code> + entrées de <sql-code><var>$T2</var></sql-code> dont aucune entrée de <sql-code><var>$T1</var></sql-code> ne correspond.</li>
+</ul>
 
-<sql-interactive id="join2_sql">
-  <span slot="options" data-jointype='INNER'></span>
-  <span slot="options" data-jointype='LEFT' ></span>
-  <span slot="options" data-jointype='RIGHT'></span>
-  <span slot="options" data-jointype='FULL' ></span>
-  <sql-dymtable slot="post" id="join2_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1 FULL JOIN T2 USING(ID)" header="T1 JOIN T2"></sql-dymtable>
+</div>
 
-```sql
-SELECT * FROM T1 NATURAL $JOINTYPE JOIN T2;
-```
 
-</sql-interactive>
-
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const T1_T2W = await LISS.qs("#join2_T1_T2W");
-  const sql    = await LISS.qs("#join2_sql");
-
-  function update(datas) {
-
-    const t2 = datas[0].map( e => e.T2);
-
-    T1_T2W.highlightRow( (row) => {
-      return { lowlight: ! t2.includes(row["T2.T2"]) }
-    });
+<sql-system>
+  <sql-queries>
+SELECT * FROM T1 NATURAL FULL JOIN T2;
+SELECT * FROM T1 NATURAL $JOIN JOIN T2;
+  </sql-queries>
+  <sql-option onslide="0">
+  {
+    "JOIN": "INNER"
   }
+  </sql-option>
+  <sql-option onslide="1">
+  {
+    "JOIN": "LEFT"
+  }
+  </sql-option>
+  <sql-option onslide="2-">
+  {
+    "JOIN": "FULL"
+  }
+  </sql-option>
+  <sql-output class="flex">
+    <div>
+      <div class="sql_query"  q="1"></div>
+      <div class="sql_result" similar_to="2" q="1"></div>
+    </div>
+    <div>
+      <div class="sql_query"  q="2"></div>
+      <div class="sql_result" q="2"></div>
+    </div>
+  </sql-output>
+</sql-system>
 
-  sql.host.addEventListener("change", (ev) => {
-    update(ev.detail.datas);
-  });
-  update(sql.lastDatas);
+<div onslide="3">
 
-  T1_T2W.highlightCells( (row, colname) => {
-    const id = row[ colname.split('.')[0] + ".ID"];
-    return `high_${id}`;
-  });
-</script>
+⚠ Il existe 2 autres types de jointures, **à éviter** :
 
-⚠ Il existe 2 autres types de jointures, à éviter :
+- <sql-code>RIGHT</sql-code> : <sql-code><var>$T1</var> RIGHT JOIN <var>$T2</var></sql-code> ⇔ <sql-code><var>$T2</var> LEFT JOIN <var>$T1</var></sql-code> (pour raison de ***lisibilité***, préférer <sql-code>LEFT</sql-code>)
+- <sql-code>CROSS</sql-code> : produit cartésien (**à éviter**).
 
-- `RIGHT` : `$T1 RIGHT JOIN $T2` est équivalant à `$T2 LEFT JOIN $T1`<br/>
-  ⚠  Pour des raisons de lisibilité, autant que possible, utilisez `LEFT` à la place.
-- `CROSS` : produit cartésien (**à éviter**).
-
-💡 Vous pourrez aussi trouver `LEFT/RIGHT/FULL OUTER JOIN` dans certaines requêtes SQL. Ils sont en réalité équivalents à `LEFT/RIGHT/FULL JOIN`.
+</div>
 
 </frame-uca>
 <frame-subsection>Préciser la condition de jointure</frame-subsection>
 <frame-uca>
 
-Il se peut que vous souhaitiez expliciter les colonnes sur lesquelles effectuer la jointure pour :
+**Problème :** <sql-code><var>$T1</var></sql-code> et <sql-code><var>$T2</var></sql-code> ont des colonnes identiques, autres que celles de jointures.
 
-- exclure une colonne de la jointure, avec :<br/>
-  `USING($COLS[,...])` indiquant les colonnes à utiliser.
-- utiliser des colonnes de noms différents, avec :<br/>
-  `ON T1.$COL1 == T2.$COL2` indiquant la condition de jointure. 
+<div>
 
-⚠ Dans les deux cas, il vous faudra retirer le mot clef `NATURAL`.
+**Solution :**
+<ul>
+  <li>Éviter les jointures <sql-code>NATURAL</sql-code>, et expliciter les colonnes de jointure :
+  <ul>
+  <li><sql-code><var>$T1</var> JOIN <var>$T2</var> USING(<var>$COLS[,...]</var>)</sql-code> ;</li></ul></li>
+  <li>Renommer les colonnes homonymes :
+  <ul><li><sql-code>SELECT <var>$T2.$COL as $NAME</var></sql-code> ;</li></ul></li>
+</ul>
 
-💡 Il est recommandé d'utiliser `USING` au lieu de jointures naturelles (i.e. avec `NATURAL`) afin d'éviter des jointures accidentelles.
+</div>
 
-<sql-interactive>
-  <span slot="options" data-jointype='NATURAL'>Jointure naturelle (à éviter)</span>
-  <span slot="options" data-joincond='USING(ID)'>Jointure explicite (noms de colonnes identiques)</span>
-  <span slot="options" data-joincond='ON T1.T1 == T2.T2'>Jointure explicite (noms de colonnes différentes)</span>
+<sql-system>
+  <sql-queries>
+SELECT T1.ID as 'T1.ID', T2.ID as 'T2.ID', *
+  FROM T1 FULL JOIN T2 USING($COLS);
+  </sql-queries>
+  <sql-option onslide="0">
+  {
+    "COLS": "ID"
+  }
+  </sql-option>
+  <sql-output class="flex">
+    <div>
+      <div class="sql_query"  q="1"></div>
+      <div class="sql_result" q="1"></div>
+    </div>
+  </sql-output>
+</sql-system>
 
-```sql
-SELECT * FROM T1 $JOINTYPE INNER JOIN T2 $JOINCOND;
-```
+</frame-uca>
+<frame-uca>
 
-</sql-interactive>
+<div>
 
-⚠ Si deux colonnes ont le même nom, seule la première sera affichée. Si vous souhaitez afficher la seconde, il est alors nécessaire de la renommer :
+**Problème :** les colonnes de jointure ont des noms différents dans <sql-code><var>$T1</var></sql-code> et <sql-code><var>$T2</var></sql-code>.
 
-<sql-interactive>
-  <span slot="options" data-cols='*'>Sans renommer les colonnes de même noms</span>
-  <span slot="options" data-cols='*, T2.ID as ID2'>En renommant les colonnes de même noms</span>
+<br/>
 
-```sql
-SELECT $COLS FROM T1 INNER JOIN T2 USING(ID);
-```
+**Solution :** Préciser la condition de jointure :
+<ul>
+  <li><sql-code><var>$T1</var> JOIN <var>$T2</var> ON <var>$COND</var></sql-code> ;</li>
+</ul>
 
-</sql-interactive>
+</div>
+
+<sql-system>
+  <sql-queries>
+SELECT * FROM T1 INNER JOIN T2 ON $COND;
+  </sql-queries>
+  <sql-option onslide="0">
+  {
+    "COND": "T1.T1 == T2.T2"
+  }
+  </sql-option>
+  <sql-output class="flex">
+    <div>
+      <div class="sql_query"  q="1"></div>
+      <div class="sql_result" q="1"></div>
+    </div>
+  </sql-output>
+</sql-system>
+
+</frame-uca>
 
 <!--
   Non-correlated:
@@ -632,7 +678,5 @@ SELECT $COLS FROM T1 INNER JOIN T2 USING(ID);
       - 4 in ([.]...) <- query [4]
     - if found : add line.
 -->
-
-</frame-uca>
 
 </html>

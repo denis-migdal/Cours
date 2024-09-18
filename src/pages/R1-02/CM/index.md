@@ -2127,7 +2127,7 @@ Pour exécuter cette requête, le SGDB va construire une table intermédiaire co
   doStep(0);
 </script>
 
-Ainsi, le produit cartésien de deux tables de 3 entrées produira une table intermédiaire de 9 lignes, dont la majorité des lignes seront ensuite rejettées par la clause `WHERE`. Même sur de petites tables, la construction de la table intermédiaire explose très vite les capacités du SGDB :
+Ainsi, le produit cartésien de deux tables de 3 entrées produira une table intermédiaire de 9 lignes, dont la majorité des lignes seront ensuite rejetées par la clause `WHERE`. Même sur de petites tables, la construction de la table intermédiaire explose très vite les capacités du SGDB :
 
 <style>
   .danger {
