@@ -12,46 +12,6 @@
         <main>
 <div id='menu' style="display:none"></div>
 
-<todo> 
-
-Contenu:
-  - subqueries animations...
-    - T1 table
-    - subquery (updated if correlated)
-    - subquery table
-    -> exec op for cmp
-    - result table.
-
-Détails:
-  - split CM into different files.
-
-<!--
-
-CM4
-
-- exemples dynamiques/animés (jointures/cartésien).
-
-- ss-rq visu (?)
-  - normale : calculée une seule fois.
-
-  - animation : < [P/=] >
-    - X in (....)
-    - 4 in (....) - 1) curseur sur liste 2) when found, next value and add line.
-
-    - X in (QUERY)
-    - 4 in [...] <- (QUERY [replace values ?])
-      - 1) liste construite avec le curseur
-      - 2) when found, next value.
-
-  - normale
-    - X in (liste/value) => once (....). 
-      -> build result table below, one line by one.
-  - corrélée, recalculée à chaque fois.
-    - X in | (value change (car calculé))
-      -> build result table below, one line by one.
--->
-</todo>
-
 # Requêter une base de données
 
 ## Introduction à SQL
@@ -1164,8 +1124,6 @@ SELECT $GRP, $OP
 
 ### Compter les lignes/entrées
 
-<todo>Improve example</todo>
-
 💡 Il est aussi possible de compter les entrées/valeurs de chaque lignes :
 
 <sql-interactive>
@@ -1861,8 +1819,6 @@ DELETE FROM T1 WHERE ID = 2;
 ### Merge : mettre à jour si existe, sinon insérer (en TD ?).
  
 </summary>
-
-<todo>Rédiger</todo>
 
 En gros la problématique est d'ajouter si inexistant, et de modifier si existant.
  

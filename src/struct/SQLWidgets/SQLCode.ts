@@ -7,6 +7,21 @@ const css = `
     :host {
 
         white-space: pre;
+
+        &.block {
+            display: block;
+            padding: 23px;
+            line-height: 19px;
+            border-radius: 3px;
+            overflow: auto;
+            background-color: #333;
+            color: white !important;
+            border: 1px solid #cccccc;
+        }
+
+        &.d4rk var {
+            background-color: #202020;
+        }
     
         & var {
             background-color: lightgrey;
@@ -48,12 +63,10 @@ export default class SQLCode extends LISS({
 
         let content = hljs.highlight(this.host.textContent, { language: "sql" }).value;
         
-        console.warn(content, Object.keys(vars));
         content = content.replaceAll(/(__[A-Z]+[0-9]*)/g, (_, name) => {
-            console.warn("?", name);
             return vars[name].outerHTML
         });
-        code.innerHTML = content.replaceAll(/(\$[A-Z]+[0-9]*)/g, (_, varname) => `<varname>${varname}</varname>`);
+        code.innerHTML = content.replaceAll(/(\$[A-Z_]+[0-9]*)/g, (_, varname) => `<varname>${varname}</varname>`);
 
         this.content.replaceChildren(code);
     }

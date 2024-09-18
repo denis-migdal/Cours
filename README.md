@@ -146,28 +146,6 @@ https://help.libreoffice.org/latest/lo/text/sbasic/shared/03/sf_calc.html
 	- signature
 	- caviardage
 
-### BDR1 (8j)
-
-+ (2j) Slides
-+ (2j) Cheat sheet
-+ (4j) Compléter exo TP3-4 avec notions vu en CM + TP5
-
-#### Cheat sheet
-
-- SELECT/others + clauses
-- constraints/table.
-- Sqlite commands
-- formats + pre-proc functions.
-
-#### TD3
-
-Comment bien choisir les clef primaires/étrangères
-Comment bien découper en tables (conception), dépendance fonctionnelle (?).
-
-#### TP5
-
-- interfaces pgAdmin / python bindings (injections) ?
-
 ### BDR2
 
 - prog interfaces + binds + SQL injections.

@@ -9,7 +9,7 @@
         <header></header>
         <main>
 
-<h1 id="tp1--">TP1 : ?</h1>
+<h1 id="tp1--requêter-une-base-de-données">TP1 : Requêter une base de données</h1>
 <p><em>💡 Ce TP est inspiré de sources en partie inconnues.</em></p>
 <h2 id="consignes">Consignes</h2>
 <p><tp-consignes></tp-consignes></p>
@@ -18,7 +18,7 @@
 <ul>
 <li>interface en lignes de commandes.</li>
 <li>interface graphique.</li>
-<li>interface de programmation <em>(e.g. pour manipuler une base à partir d&#39;un script Python)</em>.</li>
+<li>interface de programmation <em>(e.g. pour manipuler une base à partir de Python)</em>.</li>
 </ul>
 <p>💡 Dans le cadre de ce TP, nous utiliserons SQLite via son interface CLI.</p>
 <h3 id="usage-de-sqlite">Usage de SQLite</h3>
@@ -33,10 +33,10 @@
 <h3 id="explorer-la-base-de-données">Explorer la base de données</h3>
 <ol>
 <li>Téléchargez la base de données &quot;chimiste&quot; via <a href="../../../../assets/sql/chimiste.sqlite">ce lien</a>.</li>
-<li>Dans un terminal, exécutez la commande <code>sqlite3 $FILE</code> afin d&#39;ouvrir le fichier ainsi téléchargé.</li>
-<li>Exécutez la commande <code>.tables</code> pour afficher le(s) nom(s) de(s) table(s) de la base de données.</li>
-<li>Affichez le contenu de la table <code>chimiste</code> grâce à la commande SQL suivante :<br/>
-<code>SELECT * FROM chimiste;</code></li>
+<li>Dans un terminal, exécutez <code>sqlite3 $FILE</code> afin d&#39;ouvrir le fichier téléchargé.</li>
+<li>Exécutez la commande <code>.tables</code> pour afficher la liste des tables de la base.</li>
+<li>Affichez le contenu de la table <code>chimiste</code> grâce à la requête SQL suivante :<br/>
+<sql-code>SELECT * FROM chimiste;</sql-code></li>
 </ol>
 <h3 id="formatter-le-résultat">Formatter le résultat</h3>
 <p>Comme vous pouvez le constater, l&#39;affichage des résultats est, par défaut, un peu austère. Plusieurs commandes SQLite (ou arguments de la commande <code>sqlite3</code>) permettent d&#39;améliorer l&#39;affichage :</p>
@@ -50,33 +50,33 @@
 </li>
 </ul>
 <ol>
-<li>Activez l&#39;affichage des noms des colonnes, puis re-exécutez la requête SQL précédente.</li>
-<li>Testez les affichages <code>.mode box</code>, <code>.mode table</code>, et <code>.mode column</code>, sur la requête SQL précédente.</li>
+<li>Activez l&#39;affichage des noms des colonnes, puis re-exécutez la requête SQL.</li>
+<li>Testez les formats <code>box</code>, <code>table</code>, et <code>column</code> sur la requête SQL précédente.</li>
 </ol>
 <h2 id="sélection-des-colonnes">Sélection des colonnes</h2>
-<p>Les tables SQL peuvent contenir de très nombreuses colonnes. Afin de conserver des résultats succins et lisibles, il convient ainsi de ne récupérer que les colonnes qui nous intéressent.</p>
+<p>Les tables SQL peuvent contenir de nombreuses colonnes. Afin de conserver des résultats succins et lisibles, il convient de n&#39;afficher que celles qui nous intéressent.</p>
 <ol>
 <li>Affichez uniquement les pays de naissance.<pre lang="sql" contenteditable="true"></pre></li>
 <li>Affichez les pays de naissance, cette fois en supprimant les doublons.<pre lang="sql" contenteditable="true"></pre></li>
 <li>Affichez le nom et le prénom de chaque chimistes.<pre lang="sql" contenteditable="true"></pre></li>
-<li>À la requête précédente, ajoutez les années de naissance que vous renommerez &quot;naissance&quot;.<pre lang="sql" contenteditable="true"></pre></li>
+<li>À cette requête, ajoutez les années de naissance que vous nommerez &quot;naissance&quot;.<pre lang="sql" contenteditable="true"></pre></li>
 </ol>
 <h2 id="sélectionner-des-lignes">Sélectionner des lignes</h2>
 <p>De la même manière que les tables SQL peuvent contenir de très nombreuses colonnes, elle peuvent aussi contenir de très nombreuses lignes. Ainsi, comme pour les colonnes, il convient de sélectionner les lignes qui nous intéressent.</p>
 <ol>
 <li>Affichez le nom, prénom, et pays de naissance des chimistes nés en France.<pre lang="sql" contenteditable="true"></pre></li>
 <li>Affichez le nom, prénom des chimistes dont le nom commence par &quot;A&quot;.<pre lang="sql" contenteditable="true"></pre></li>
-<li>Affichez le nom, prénom des chimistes encore vivant (i.e. dont l&#39;année de mort est nulle).<pre lang="sql" contenteditable="true"></pre></li>
-<li>Affichez le nom, prénom des chimistes morts (i.e. dont l&#39;année de mort n&#39;est pas nulle), ainsi que leur date de mort.<pre lang="sql" contenteditable="true"></pre></li>
+<li>Affichez le nom, prénom des chimistes encore vivant (i.e. sans année de mort).<pre lang="sql" contenteditable="true"></pre></li>
+<li>Affichez le nom, prénom des chimistes morts (i.e. ayant une année de mort), avec leur date de mort.<pre lang="sql" contenteditable="true"></pre></li>
 </ol>
 <h2 id="opérations-mathématiques-sur-les-colonnes">Opérations mathématiques sur les colonnes.</h2>
 <p>Il est fréquent que certaines informations soient calculées à partir d&#39;une ou plusieurs colonnes. Par exemple, l&#39;âge est calculée comme la différence entre l&#39;année de mort et l&#39;année de naissance :</p>
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> annee_naissance, annee_mort, annee_mort <span class="hljs-operator">-</span> annee_naissance <span class="hljs-keyword">FROM</span> chimiste;
 </code></pre><ol>
 <li>Exécutez la requête ci-dessus en nommant la 3ème colonne &quot;age&quot;.<pre lang="sql" contenteditable="true"></pre></li>
-<li>Pourquoi, actuellement, certains chimistes n&#39;ont pas d&#39;âge ?<div contenteditable></div></li>
+<li>Pourquoi, dans la requête précédente, certains chimistes n&#39;ont pas d&#39;âge ?<div contenteditable></div></li>
 <li>Affichez le nom, prenom, année de naissance, et âge des chimistes encore vivants.<pre lang="sql" contenteditable="true"></pre></li>
-<li>En vous aidant de <code>COALESCE(a,b)</code> qui retourne <code>b</code> si <code>a</code> est nul, sinon <code>a</code>, affichez le nom, prenom, et âge de tous les chimistes.<pre lang="sql" contenteditable="true"></pre></li>
+<li>En vous aidant de <code>COALESCE(a,b)</code>, qui retourne <code>b</code> si <code>a</code> est nul, sinon <code>a</code>, affichez le nom, prenom, et âge de tous les chimistes.<pre lang="sql" contenteditable="true"></pre></li>
 <li>Affichez le nom, prenom, et âge des chimistes dont l&#39;âge est supérieur à 100 ans.<pre lang="sql" contenteditable="true"></pre></li>
 </ol>
 <h2 id="trier-et-limiter-les-entrées">Trier et limiter les entrées</h2>

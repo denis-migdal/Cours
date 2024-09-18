@@ -12,50 +12,6 @@
         <main>
 <div id='menu' style="display:none"></div>
 
-<todo> 
-
-<p>Contenu:</p>
-<ul>
-<li>subqueries animations...<ul>
-<li>T1 table</li>
-<li>subquery (updated if correlated)</li>
-<li>subquery table
--&gt; exec op for cmp</li>
-<li>result table.</li>
-</ul>
-</li>
-</ul>
-<p>Détails:</p>
-<ul>
-<li>split CM into different files.</li>
-</ul>
-<!--
-
-CM4
-
-- exemples dynamiques/animés (jointures/cartésien).
-
-- ss-rq visu (?)
-  - normale : calculée une seule fois.
-
-  - animation : < [P/=] >
-    - X in (....)
-    - 4 in (....) - 1) curseur sur liste 2) when found, next value and add line.
-
-    - X in (QUERY)
-    - 4 in [...] <- (QUERY [replace values ?])
-      - 1) liste construite avec le curseur
-      - 2) when found, next value.
-
-  - normale
-    - X in (liste/value) => once (....). 
-      -> build result table below, one line by one.
-  - corrélée, recalculée à chaque fois.
-    - X in | (value change (car calculé))
-      -> build result table below, one line by one.
--->
-</todo>
-
 <h1 id="requêter-une-base-de-données">Requêter une base de données</h1>
 <h2 id="introduction-à-sql">Introduction à SQL</h2>
 <h3 id="les-sgbd">Les SGBD</h3>
@@ -991,7 +947,6 @@ $M_VALS;
 <p>💡 Par défaut, en l&#39;absence d&#39;une fonction d&#39;agrégation, SQL retourne la première valeur.</p>
 <p>💡 Par défaut, si une fonction d&#39;agrégation est utilisée sans clause <code>GROUP BY</code>, alors toutes les entrées sont regroupées dans la même ligne.</p>
 <h3 id="compter-les-lignesentrées">Compter les lignes/entrées</h3>
-<p><todo>Improve example</todo></p>
 <p>💡 Il est aussi possible de compter les entrées/valeurs de chaque lignes :</p>
 <sql-interactive>
   <span slot="options" data-op='COUNT(*)' data-grp="Date">Compte le nombre d'entrées</span>
@@ -1552,7 +1507,6 @@ SELECT * FROM Users;</span>
 <h3 id="merge--mettre-à-jour-si-existe-sinon-insérer-en-td-">Merge : mettre à jour si existe, sinon insérer (en TD ?).</h3>
 </summary>
 
-<p><todo>Rédiger</todo></p>
 <p>En gros la problématique est d&#39;ajouter si inexistant, et de modifier si existant.</p>
 <p>On peut faire un select, puis refaire une requête pour update ou insert, mais c&#39;est pas pratique de faire plusieurs requêtes.</p>
 <p>On a des choses comme REPLACE (MySQL) supprime l&#39;entrée si elle existe, puis ajoute la nouvelle. Sauf que s&#39;il y a des clefs primaires référencées par des clefs étrangères ça casse tout.</p>
