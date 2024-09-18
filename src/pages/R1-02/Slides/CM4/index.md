@@ -6,6 +6,7 @@
     <script src="./index.js" type="module" defer></script>
 </head>
 <body>
+<header></header>
 <main>
 <frame-uca-title
     caption   = "R1-02 Bases de Données Relationnelles"
