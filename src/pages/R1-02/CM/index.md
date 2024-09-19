@@ -1504,7 +1504,7 @@ Il est fréquent de vouloir récupérer une entrée à partir d'un identifiant d
 
 Un **index** est une structure permettant de trouver très rapidement la/les entrée(s) associée(s) à un tel identifiant.
 
-💡 Lorsqu'une colonne a la contrainte `UNIQUE`, il est fréquent que le SGBD créé automatiquement un index.
+💡 Lorsqu'une colonne a la contrainte `UNIQUE`, le SGBD créé automatiquement un index.
 
 ### Les clefs primaires (PK)
 
@@ -1556,32 +1556,28 @@ Il est fréquent, dans une base de données, que des entrées fassent référenc
 
 💡 Le terme de "base de données relationnelles" vient en partie de là : on établie des relations entre différentes entrées/données. Ceci constitue une des fonctionnalités majeurs des bases de données SQL.
 
-Pour cela, on utilise une clef étrangère (FK) qui est un moyen léger en mémoire (et en performances) de référencer les données d'une table référencée. Elle est composée d'une ou plusieurs colonnes référençant une ou plusieurs colonnes de contraine `UNIQUE` ou `PRIMARY KEY`. On l'indique via une contrainte de table sous la forme suivante :
+Pour cela, on utilise une clef étrangère (FK) afin de garantir l'existence de la donnée référencée. Elle est composée d'une ou plusieurs colonnes référençant une ou plusieurs colonnes de contrainte `UNIQUE` ou `PRIMARY KEY`. On l'indique soit via une contrainte `REFERENCES $T[($PK)]`, ou via une contrainte de table :
 
 ```sql
-FOREIGN KEY($COLS_FK[,...]) REFERENCES $T
-FOREIGN KEY($COLS_FK[,...]) REFERENCES $T($COLS_PK[,...])
+FOREIGN KEY($FK[,...]) REFERENCES $T
+FOREIGN KEY($FK[,...]) REFERENCES $T($PK[,...])
 ```
 
 - `$T` est la table référencée.
-- `$COL_FK` sont les colonnes constituant la clé étrangère.
-- `$COL_PK` sont les colonnes référencées.
+- `$FK` sont les colonnes constituant la clé étrangère.
+- `$PK` sont les colonnes référencées.
 
 💡 Si la/les colonne(s) de la table référencée ne sont pas spécifiées, la/les colonne(s) de la clef primaire sont utilisée(s).
 
 <sql-interactive>
   <span slot='select'>SELECT * FROM T;
 SELECT * FROM Users;</span>
-  <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(1, 'E')">Clef étrangère existante</span>
-  <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(4, 'E')">Clef étrangère non-existante</span>
-  <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(NULL, 'E')">Clef étrangère nulle</span>
+  <span slot="options" data-fk="REFERENCES Users" data-vals="(1, 'E')">Clef étrangère existante</span>
+  <span slot="options" data-fk="REFERENCES Users" data-vals="(4, 'E')">Clef étrangère non-existante</span>
+  <span slot="options" data-fk="REFERENCES Users" data-vals="(NULL, 'E')">Clef étrangère nulle</span>
 
 ```sql
-CREATE TABLE T (ID INT, C TEXT,
-    $FK
+CREATE TABLE T (ID INT $FK, C TEXT
   ) STRICT;
 INSERT INTO  T VALUES
     $VALS;
@@ -1592,6 +1588,8 @@ INSERT INTO  T VALUES
 💡 La clé étrangère peut être nulle (sauf si contrainte `NOT NULL`).
 
 💡 On préfère souvent nommer la/les colonne(s) de la clef étrangères avec les noms de la/les colonne(s) référencée(s).
+
+⚠ Les clefs étrangères ne sont qu'une contrainte garantissant l'existence de la valeur référencée. Elle ne sont pas une optimisation en soit (mais peuvent aider le SGBD à optimiser la requête).
 
 ⚠ La vérification des clefs étrangères n'est pas activé par défaut sur SQLite. La commande `PRAGMA foreign_keys = ON` permet de l'activer.
 
@@ -2281,9 +2279,9 @@ Pour chaque entrée de `$T1`, le SGBD va rechercher les entrées de `$T2` dont l
   doStep(0);
 </script>
 
-💡 Si les colonnes en communs constituent un index, la recherche des entrées de `$T2` s'en retrouve grandement accelérée. Si elles constituent une clé primaire/étrangère, la recherche devient quasi instantanée.
+💡 Si les colonnes en communs constituent un index (`UNIQUE` ou clef primaire), la recherche des entrées de `$T2` est quasi instantanée.
 
-⚠ Il est ainsi **plus que fortement recommandé** d'effectuer des jointures sur des clés primaires/étrangères.
+⚠ Il est ainsi **plus que fortement recommandé** d'effectuer des jointures sur des clés primaires.
 
 💡 Vous pouvez ajouter une clause `WHERE` à vôtre requête SQL. En théorie la clause `WHERE` est appliquée aux entrées **après** jointures. Cependant, les SGBD sont capables d'optimiser la requête en préfiltrant, lorsque possible, les tables **avant** jointures.
 

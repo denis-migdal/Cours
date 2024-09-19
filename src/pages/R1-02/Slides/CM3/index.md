@@ -603,12 +603,12 @@ INSERT INTO  T VALUES $VALS;
 <div>
 
 ***Solution*** : les index (contrainte de colonne ou de table).
-- permet de rapidement trouver les entrées associées à un identifiant <O(log2(N)).
+- permet de rapidement trouver les entrées associées à un identifiant ≤O(log2(N)).
 - comme un "annuaire".
 
 </div>
 
-💡 Il est fréquent que les SGBD créent automatiquement un index sur les colonnes <sql-code>UNIQUE</sql-code>. 
+💡 Les SGBD créent automatiquement un index sur les colonnes <sql-code>UNIQUE</sql-code>. 
 
 </frame-uca>
 <frame-subsection>Les clefs primaires (PK)</frame-subsection>
@@ -618,7 +618,7 @@ INSERT INTO  T VALUES $VALS;
   <li><b>Clef primaire :</b> un index <sql-code>UNIQUE NOT NULL</sql-code>, encore plus rapide, un seul par table.
     <ul>
       <!-- <li>💡 Certains SGBD créent une clef primaire cachée nommée <sql-code>ROWID</sql-code>.</li> -->
-      <li onslide="3-"><sql-code>AUTOINCREMENT</sql-code> : incrémente automatiquement la clef primaire (recherche 0(1)).
+      <li onslide="3-"><sql-code>AUTOINCREMENT</sql-code> : incrémente automatiquement la clef primaire.
       <ul><li>⚠ que sur <sql-code>INTEGER PRIMARY KEY</sql-code>.</li></ul></lu>
     </ul>
   </li>
@@ -708,43 +708,38 @@ SELECT * FROM T;
 
 <div>
 
-***Solution :*** les **clefs étrangères** (FK) <sql-code>FOREIGN KEY(<var>$FK[,...]</var>) REFERENCES <var>$T[($PK[,...])]</var></sql-code>
-
-- référence un/des colonne(s) <sql-code>UNIQUE</sql-code> d'une autre table (léger en mémoire et en perfs).
-
-<ul class="flex-2">
-  <li><sql-code><var>$FK</var></sql-code> colonnes de la clef étrangère.</li>
-  <li><sql-code><var>$T($PK)</var></sql-code> table (et colonnes) référencée.</li>
-</ul>
+***Solution :*** les contraintes de **clefs étrangères** (FK)
+- <sql-code>REFERENCES <var>$T[($PK)]</var></sql-code> : référence la colonne <sql-code><var>$PK</var></sql-code> (doit être <sql-code>UNIQUE</sql-code>) de la table <sql-code><var>$T</var></sql-code>.
+- ⚠ Les FK sont une contrainte (garanti l'existence de la PK), pas une optimisation.
 
 </div>
 
 <sql-system class="flex">
   <sql-queries>
-CREATE TABLE T (ID INT, $FK) STRICT;
+CREATE TABLE T (ID INT $FK) STRICT;
 INSERT INTO  T VALUES $VALS;
   </sql-queries>
   <sql-option onslide="0">
   {
-    "FK": "FOREIGN KEY(ID) REFERENCES Users(ID)",
+    "FK": "REFERENCES Users(ID)",
     "VALS": "(1)"
   }
   </sql-option>
   <sql-option onslide="1">
   {
-    "FK": "FOREIGN KEY(ID) REFERENCES Users",
+    "FK": "REFERENCES Users",
     "VALS": "(1)"
   }
   </sql-option>
   <sql-option onslide="2">
   {
-    "FK": "FOREIGN KEY(ID) REFERENCES Users",
+    "FK": "REFERENCES Users",
     "VALS": "(4)"
   }
   </sql-option>
   <sql-option onslide="3">
   {
-    "FK": "FOREIGN KEY(ID) REFERENCES Users",
+    "FK": "REFERENCES Users",
     "VALS": "(NULL)"
   }
   </sql-option>
@@ -761,6 +756,7 @@ INSERT INTO  T VALUES $VALS;
 </sql-system>
 
 <ul class="overlay">
+  <li onslide="0">💡 En contrainte de table : <sql-code>FOREIGN KEY(<var>$FK[,...]</var>) REFERENCES <var>$T</var>[(<var>$PK[,...]</var>)]</sql-code>.</li>
   <li onslide="1">💡 Si les colonnes référencées ne sont pas spécifiées, la clef primaire est utilisée.</li>
   <li onslide="2">
 ⚠ <sql-code>PRAGMA foreign_keys = ON</sql-code> pour activer la vérification des clefs étrangères sur SQLite.</li>

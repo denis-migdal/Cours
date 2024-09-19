@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>TP2 (BDR1)</title>
+        <title>TP4 (BDR1)</title>
         <link rel="stylesheet" href="./index.css">
         <script type="module" src="./index.js" defer></script>
     </head>

@@ -1223,7 +1223,7 @@ SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
 <h2 id="les-index">Les index</h2>
 <p>Il est fréquent de vouloir récupérer une entrée à partir d&#39;un identifiant donné. Cependant, s&#39;il faut à chaque fois parcourir toutes les entrées de la table unes à unes, cela peut s&#39;avérer relativement lent sur de grandes tables.</p>
 <p>Un <strong>index</strong> est une structure permettant de trouver très rapidement la/les entrée(s) associée(s) à un tel identifiant.</p>
-<p>💡 Lorsqu&#39;une colonne a la contrainte <code>UNIQUE</code>, il est fréquent que le SGBD créé automatiquement un index.</p>
+<p>💡 Lorsqu&#39;une colonne a la contrainte <code>UNIQUE</code>, le SGBD créé automatiquement un index.</p>
 <h3 id="les-clefs-primaires-pk">Les clefs primaires (PK)</h3>
 <p>Une clef primaire est un index un peu spécial accélérant encore plus les recherches d&#39;entrées à partir d&#39;un identifiant. Il est un champ (ou un ensemble de champs) identifiant de manière unique une entrée.</p>
 <p>Elle est créée via une contrainte <code>PRIMARY KEY</code> et implique les contraintes <code>UNIQUE NOT NULL</code>. Il ne peut y avoir qu&#39;une clef primaire par table.</p>
@@ -1259,27 +1259,23 @@ SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
 <h3 id="les-clefs-étrangères-fk">Les clefs étrangères (FK)</h3>
 <p>Il est fréquent, dans une base de données, que des entrées fassent référence à des entrées d&#39;une autre table. Par exemple, une table <code>Vente</code> pourra mettre en relation une table <code>Vendeur</code> et une table <code>Client</code>.</p>
 <p>💡 Le terme de &quot;base de données relationnelles&quot; vient en partie de là : on établie des relations entre différentes entrées/données. Ceci constitue une des fonctionnalités majeurs des bases de données SQL.</p>
-<p>Pour cela, on utilise une clef étrangère (FK) qui est un moyen léger en mémoire (et en performances) de référencer les données d&#39;une table référencée. Elle est composée d&#39;une ou plusieurs colonnes référençant une ou plusieurs colonnes de contraine <code>UNIQUE</code> ou <code>PRIMARY KEY</code>. On l&#39;indique via une contrainte de table sous la forme suivante :</p>
-<pre><code class="hljs language-sql"><span class="hljs-keyword">FOREIGN</span> KEY($COLS_FK[,...]) <span class="hljs-keyword">REFERENCES</span> $T
-<span class="hljs-keyword">FOREIGN</span> KEY($COLS_FK[,...]) <span class="hljs-keyword">REFERENCES</span> $T($COLS_PK[,...])
+<p>Pour cela, on utilise une clef étrangère (FK) afin de garantir l&#39;existence de la donnée référencée. Elle est composée d&#39;une ou plusieurs colonnes référençant une ou plusieurs colonnes de contrainte <code>UNIQUE</code> ou <code>PRIMARY KEY</code>. On l&#39;indique soit via une contrainte <code>REFERENCES $T[($PK)]</code>, ou via une contrainte de table :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">FOREIGN</span> KEY($FK[,...]) <span class="hljs-keyword">REFERENCES</span> $T
+<span class="hljs-keyword">FOREIGN</span> KEY($FK[,...]) <span class="hljs-keyword">REFERENCES</span> $T($PK[,...])
 </code></pre><ul>
 <li><code>$T</code> est la table référencée.</li>
-<li><code>$COL_FK</code> sont les colonnes constituant la clé étrangère.</li>
-<li><code>$COL_PK</code> sont les colonnes référencées.</li>
+<li><code>$FK</code> sont les colonnes constituant la clé étrangère.</li>
+<li><code>$PK</code> sont les colonnes référencées.</li>
 </ul>
 <p>💡 Si la/les colonne(s) de la table référencée ne sont pas spécifiées, la/les colonne(s) de la clef primaire sont utilisée(s).</p>
 <sql-interactive>
   <span slot='select'>SELECT * FROM T;
 SELECT * FROM Users;</span>
-  <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(1, 'E')">Clef étrangère existante</span>
-  <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(4, 'E')">Clef étrangère non-existante</span>
-  <span slot="options" data-fk="FOREIGN KEY(ID)
-    REFERENCES Users" data-vals="(NULL, 'E')">Clef étrangère nulle</span>
+  <span slot="options" data-fk="REFERENCES Users" data-vals="(1, 'E')">Clef étrangère existante</span>
+  <span slot="options" data-fk="REFERENCES Users" data-vals="(4, 'E')">Clef étrangère non-existante</span>
+  <span slot="options" data-fk="REFERENCES Users" data-vals="(NULL, 'E')">Clef étrangère nulle</span>
 
-<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (ID <span class="hljs-type">INT</span>, C TEXT,
-    $FK
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> T (ID <span class="hljs-type">INT</span> $FK, C TEXT
   ) STRICT;
 <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span>  T <span class="hljs-keyword">VALUES</span>
     $VALS;
@@ -1287,6 +1283,7 @@ SELECT * FROM Users;</span>
 
 <p>💡 La clé étrangère peut être nulle (sauf si contrainte <code>NOT NULL</code>).</p>
 <p>💡 On préfère souvent nommer la/les colonne(s) de la clef étrangères avec les noms de la/les colonne(s) référencée(s).</p>
+<p>⚠ Les clefs étrangères ne sont qu&#39;une contrainte garantissant l&#39;existence de la valeur référencée. Elle ne sont pas une optimisation en soit (mais peuvent aider le SGBD à optimiser la requête).</p>
 <p>⚠ La vérification des clefs étrangères n&#39;est pas activé par défaut sur SQLite. La commande <code>PRAGMA foreign_keys = ON</code> permet de l&#39;activer.</p>
 <h3 id="uml">UML</h3>
 <p>Les bases de données ont généralement de très nombreuses tables. Il est alors difficile de se faire une idée de sa structure, du schéma des tables et de leurs relations, sans une représentation appropriée. Pour cela on utilise soit un diagramme UML, soit un diagramme Merise. Le dernier étant très franco-français, nous nous concentrerons sur le premier.</p>
@@ -1911,8 +1908,8 @@ $OP
   doStep(0);
 </script>
 
-<p>💡 Si les colonnes en communs constituent un index, la recherche des entrées de <code>$T2</code> s&#39;en retrouve grandement accelérée. Si elles constituent une clé primaire/étrangère, la recherche devient quasi instantanée.</p>
-<p>⚠ Il est ainsi <strong>plus que fortement recommandé</strong> d&#39;effectuer des jointures sur des clés primaires/étrangères.</p>
+<p>💡 Si les colonnes en communs constituent un index (<code>UNIQUE</code> ou clef primaire), la recherche des entrées de <code>$T2</code> est quasi instantanée.</p>
+<p>⚠ Il est ainsi <strong>plus que fortement recommandé</strong> d&#39;effectuer des jointures sur des clés primaires.</p>
 <p>💡 Vous pouvez ajouter une clause <code>WHERE</code> à vôtre requête SQL. En théorie la clause <code>WHERE</code> est appliquée aux entrées <strong>après</strong> jointures. Cependant, les SGBD sont capables d&#39;optimiser la requête en préfiltrant, lorsque possible, les tables <strong>avant</strong> jointures.</p>
 <h3 id="les-types-de-jointures">Les types de jointures</h3>
 <p>En réalité, il existe 3 types de jointures fréquemment utilisées :</p>

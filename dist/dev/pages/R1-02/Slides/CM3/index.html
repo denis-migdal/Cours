@@ -603,12 +603,12 @@ INSERT INTO  T VALUES $VALS;
 
 <p><em><strong>Solution</strong></em> : les index (contrainte de colonne ou de table).</p>
 <ul>
-<li>permet de rapidement trouver les entrées associées à un identifiant &lt;O(log2(N)).</li>
+<li>permet de rapidement trouver les entrées associées à un identifiant ≤O(log2(N)).</li>
 <li>comme un &quot;annuaire&quot;.</li>
 </ul>
 </div>
 
-<p>💡 Il est fréquent que les SGBD créent automatiquement un index sur les colonnes <sql-code>UNIQUE</sql-code>. </p>
+<p>💡 Les SGBD créent automatiquement un index sur les colonnes <sql-code>UNIQUE</sql-code>. </p>
 </frame-uca>
 <frame-subsection>Les clefs primaires (PK)</frame-subsection>
 <frame-uca>
@@ -617,7 +617,7 @@ INSERT INTO  T VALUES $VALS;
   <li><b>Clef primaire :</b> un index <sql-code>UNIQUE NOT NULL</sql-code>, encore plus rapide, un seul par table.
     <ul>
       <!-- <li>💡 Certains SGBD créent une clef primaire cachée nommée <sql-code>ROWID</sql-code>.</li> -->
-      <li onslide="3-"><sql-code>AUTOINCREMENT</sql-code> : incrémente automatiquement la clef primaire (recherche 0(1)).
+      <li onslide="3-"><sql-code>AUTOINCREMENT</sql-code> : incrémente automatiquement la clef primaire.
       <ul><li>⚠ que sur <sql-code>INTEGER PRIMARY KEY</sql-code>.</li></ul></lu>
     </ul>
   </li>
@@ -705,43 +705,39 @@ SELECT * FROM T;
 <p><em><strong>Problématique :</strong></em> dans <sql-code>Vente</sql-code>, comment représenter <sql-code>ID_Vendeur</sql-code> et <sql-code>ID_Client</sql-code> ?</p>
 <div>
 
-<p><em><strong>Solution :</strong></em> les <strong>clefs étrangères</strong> (FK) <sql-code>FOREIGN KEY(<var>$FK[,...]</var>) REFERENCES <var>$T[($PK[,...])]</var></sql-code></p>
+<p><em><strong>Solution :</strong></em> les contraintes de <strong>clefs étrangères</strong> (FK)</p>
 <ul>
-<li>référence un/des colonne(s) <sql-code>UNIQUE</sql-code> d&#39;une autre table (léger en mémoire et en perfs).</li>
+<li><sql-code>REFERENCES <var>$T[($PK)]</var></sql-code> : référence la colonne <sql-code><var>$PK</var></sql-code> (doit être <sql-code>UNIQUE</sql-code>) de la table <sql-code><var>$T</var></sql-code>.</li>
+<li>⚠ Les FK sont une contrainte (garanti l&#39;existence de la PK), pas une optimisation.</li>
 </ul>
-<ul class="flex-2">
-  <li><sql-code><var>$FK</var></sql-code> colonnes de la clef étrangère.</li>
-  <li><sql-code><var>$T($PK)</var></sql-code> table (et colonnes) référencée.</li>
-</ul>
-
 </div>
 
 <sql-system class="flex">
   <sql-queries>
-CREATE TABLE T (ID INT, $FK) STRICT;
+CREATE TABLE T (ID INT $FK) STRICT;
 INSERT INTO  T VALUES $VALS;
   </sql-queries>
   <sql-option onslide="0">
   {
-    "FK": "FOREIGN KEY(ID) REFERENCES Users(ID)",
+    "FK": "REFERENCES Users(ID)",
     "VALS": "(1)"
   }
   </sql-option>
   <sql-option onslide="1">
   {
-    "FK": "FOREIGN KEY(ID) REFERENCES Users",
+    "FK": "REFERENCES Users",
     "VALS": "(1)"
   }
   </sql-option>
   <sql-option onslide="2">
   {
-    "FK": "FOREIGN KEY(ID) REFERENCES Users",
+    "FK": "REFERENCES Users",
     "VALS": "(4)"
   }
   </sql-option>
   <sql-option onslide="3">
   {
-    "FK": "FOREIGN KEY(ID) REFERENCES Users",
+    "FK": "REFERENCES Users",
     "VALS": "(NULL)"
   }
   </sql-option>
@@ -758,6 +754,7 @@ INSERT INTO  T VALUES $VALS;
 </sql-system>
 
 <ul class="overlay">
+  <li onslide="0">💡 En contrainte de table : <sql-code>FOREIGN KEY(<var>$FK[,...]</var>) REFERENCES <var>$T</var>[(<var>$PK[,...]</var>)]</sql-code>.</li>
   <li onslide="1">💡 Si les colonnes référencées ne sont pas spécifiées, la clef primaire est utilisée.</li>
   <li onslide="2">
 ⚠ <sql-code>PRAGMA foreign_keys = ON</sql-code> pour activer la vérification des clefs étrangères sur SQLite.</li>

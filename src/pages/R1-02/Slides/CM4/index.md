@@ -522,9 +522,9 @@ SELECT * FROM T1 WHERE $COND (
 
 <ul>
 <li>
-💡 Recherche des entrées de <sql-code><var>$T1</var></sql-code> : si index ⇒ rapide, si PK/FK ⇒ <b>quasi instantané</b>.
+💡 Recherche des entrées de <sql-code><var>$T1</var></sql-code> : si index (<sql-code>UNIQUE</sql-code> ou PK) ⇒ <b>quasi instantané</b>.
 <ul><li>
-⚠ <b>Fortement recommandé</b> d'effectuer des jointures sur des PK/FK.
+⚠ <b>Fortement recommandé</b> d'effectuer des jointures sur des index.
 </li></ul>
 </li>
 <li>⚠ <sql-code>WHERE</sql-code> exécuté <b>après</b> jointure.<ul><li>
