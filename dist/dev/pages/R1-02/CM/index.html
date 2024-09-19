@@ -640,9 +640,25 @@ e.g. <code>LIKE &#39;D%&#39;</code>: une valeur commençant par &quot;D&quot;.</
 <li><code>DELETE</code> : supprimer des entrées.</li>
 </ul>
 <p>Nous allons désormais nous intéresser aux 3 dernières.</p>
-<h3 id="insérer-des-lignes">Insérer des lignes</h3>
+<h3 id="créer-des-entrées">Créer des entrées</h3>
+<p>La requête SQL <code>VALUES</code> permet de créer des entrées, et se présente sous la forme suivante :</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">VALUES</span> ($VALS[,...])[,...];
+</code></pre><ul>
+<li><code>($VALS[,...])</code> représente une entrée. Les différentes valeurs de l&#39;entrée sont séparées par une virgule.<br/>
+💡 Vous pouvez créer plusieurs entrées à la fois en les séparant par une virgule.</li>
+</ul>
+<sql-interactive>
+  <span slot="options" data-m_vals="(NULL, 'Doe', 'Jon', 32)">Écrire une entrée</span>
+  <span slot="options" data-m_vals="(NULL, 'Doe',    'Jon', 32),
+       (NULL, 'Sawyer', 'Tom', 15)">Écrire plusieurs entrées</span>
+
+<pre><code class="hljs language-sql"><span class="hljs-keyword">VALUES</span> $M_VALS;
+</code></pre></sql-interactive>
+
+
+<h3 id="insérer-des-entrées">Insérer des entrées</h3>
 <p>La requête SQL <code>INSERT</code> permet d&#39;insérer des entrées dans une table, et se présente usuellement sous la forme suivante :</p>
-<pre><code class="hljs language-sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> $TABLENAME <span class="hljs-keyword">VALUES</span> ($VALS[,...])[,...];
+<pre><code class="hljs language-sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> $TABLENAME $VALUES_OR_SELECT;
 </code></pre><ul>
 <li><code>($VALS[,...])</code> représente une entrée à insérer. Les différentes valeurs de l&#39;entrée sont séparées par une virgule.<br/>
 💡 Vous pouvez insérer plusieurs entrées à la fois en les séparant par une virgule.</li>
@@ -658,8 +674,8 @@ e.g. <code>LIKE &#39;D%&#39;</code>: une valeur commençant par &quot;D&quot;.</
 $M_VALS;
 </code></pre></sql-interactive>
 
-<p>💡 Vous pouvez aussi ne renseigner les valeurs que pour certaines colonnes dont vous indiquez les noms avant <code>VALUES</code>. Dans ce cas, les colonnes non renseignées vaudront <code>NULL</code>.</p>
-<h3 id="modifier-des-lignes">Modifier des lignes</h3>
+<p>💡 Vous pouvez aussi ne renseigner les valeurs que pour certaines colonnes dont vous indiquez les noms avant <code>$VALUES_OR_SELECT</code>. Dans ce cas, les colonnes non renseignées vaudront <code>NULL</code>.</p>
+<h3 id="modifier-des-entrées">Modifier des entrées</h3>
 <p>La requête SQL <code>UPDATE</code> de modifier des entrées dans une table, et se présente usuellement sous la forme suivante :</p>
 <pre><code class="hljs language-sql"><span class="hljs-keyword">UPDATE</span> $TABLENAME <span class="hljs-keyword">SET</span> $COL <span class="hljs-operator">=</span> $VAL[,...] <span class="hljs-keyword">WHERE</span> $COND;
 </code></pre><ul>
@@ -682,7 +698,7 @@ $M_VALS;
 
 <p>💡 Vous pouvez calculer les nouvelles valeurs à partir des valeurs initiales de l&#39;entrée.</p>
 <p>⚠ Il est possible d&#39;avoir des utilisateurs avec le même nom et/ou prénoms. Il est ainsi préférable, autant que possible, d&#39;effectuer la condition <code>$COND</code> les ID pour s&#39;assurer de modifier les bonnes entrées, et non celles d&#39;homonymes.</p>
-<h3 id="supprimer-des-lignes">Supprimer des lignes</h3>
+<h3 id="supprimer-des-entrées">Supprimer des entrées</h3>
 <p>La requête SQL <code>DELETE</code> de supprimer des entrées dans une table, et se présente usuellement sous la forme suivante :</p>
 <pre><code class="hljs language-sql"><span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> $TABLENAME <span class="hljs-keyword">WHERE</span> $COND;
 </code></pre><ul>
@@ -701,7 +717,11 @@ $M_VALS;
 <h2 id="prétraitements">Prétraitements</h2>
 <p>Il est bien souvent important de pré-traiter les données avant de les utiliser (e.g. comparaisons, insertions), ce afin de s&#39;assurer que les informations soient bien représentées de la même manière. Par exemple, un nom de famille peut s&#39;écrire de plusieurs manières : <code>&quot;Nom&quot;</code>, &quot;<code>NOM</code>&quot;, ou &quot;<code>nom</code>&quot;. Si ces trois chaînes de caractères représentent bien la même information, elles ne sont pas égales pour autant. Ainsi, aucune entrée ne sera retournée si on recherche <code>&quot;Nom&quot;</code> dans la base de données, alors qu&#39;il est stocké en majuscules (i.e. <code>&quot;NOM&quot;</code>).</p>
 <p>Pré-traiter les données permet alors de s&#39;assurer de l&#39;uniformité des données, i.e. que les données manipulées suivent le même format, facilitant e.g. leur comparaisons. Pré-traiter les données avant insertions permet aussi de s&#39;assurer de la cohérence et consistance de la base de données.</p>
-<p>💡 Il est possible de <strong>tester</strong> les différentes fonctions de prétraitements en effectuant une requête <code>SELECT</code> sans la clause <code>FROM</code> (ou avec <code>FROM DUAL</code> pour certains SGBD) :</p>
+<p>💡 Il est possible de <strong>tester</strong> les différentes fonctions de prétraitements en effectuant soit une requête :</p>
+<ul>
+<li><code>SELECT</code> <strong>sans</strong> la clause <code>FROM</code> (ou avec <code>FROM DUAL</code> pour certains SGBD) :</li>
+<li><code>SELECT</code> <strong>avec</strong> la clause <code>FROM (VALUES $VALUES)</code>.</li>
+</ul>
 <sql-interactive>
   <span slot="options" data-col1="'nom'" data-col2="UPPER('nom')">Mettre en majuscules</span>
   <span slot="options" data-col1="1.2" data-col2="ROUND(1.2)">Arrondir</span>
@@ -1079,7 +1099,8 @@ pragma_table_xinfo($TABLENAME);
 </code></pre></sql-interactive>
 
 <h4 id="create-table-as">CREATE TABLE AS</h4>
-<p>💡 Vous pouvez aussi créer et remplir une nouvelle table à partir du résultat d&#39;une requête <code>SELECT</code>.</p>
+<p>💡 Vous pouvez aussi créer et remplir une nouvelle table à partir d&#39;entrées grâce à la clause <code>AS $VALUES_OR_SELECT</code>.</p>
+<p>⚠ Cette méthode ne permet pas de préciser les contraintes de la table ainsi créez. Ainsi, il est préférable de d&#39;abord créer une table vide (avec ses contraintes) avec <code>CREATE TABLE</code>, puis de la remplir avec <code>INSERT INTO</code>.</p>
 <sql-interactive>
   <span slot="select">SELECT * FROM T;</span>
   <span slot="options" data-cols="*" data-tablename="Produits" data-cond="1==1"></span>
@@ -1537,16 +1558,16 @@ Pour cela on a UPSERT et INSERT ON DUPLICATE KEYS UPDATE (dépend du SGBD) qui s
 </code></pre><p>⚠ Modifier le schéma et les contraintes d&#39;une table existante/non-vide n&#39;est pas anodin.</p>
 <h1 id="fusions-et-jointures">Fusions et jointures</h1>
 <h2 id="opérations-densembles">Opérations d&#39;ensembles</h2>
-<p>Il est possible d&#39;opérer des opérations d&#39;ensembles sur les <strong>lignes</strong> retournées par deux requêtes <code>SELECT</code>, à conditions qu&#39;elles aient le même nombre de colonnes (et idéalement la même structure) :</p>
+<p>Il est possible d&#39;opérer des opérations sur deux ensembles d&#39;entrées, à conditions qu&#39;elles aient le même nombre de colonnes (et idéalement la même structure) :</p>
 <ul>
-<li><code>UNION</code>     : concaténer les lignes.</li>
-<li><code>INTERSECT</code> : les lignes communes aux deux requêtes.</li>
-<li><code>EXCEPT</code>    : les lignes de la première requête absentes de la seconde.</li>
+<li><code>UNION [ALL]</code>: concaténer les lignes [avec les doublons].</li>
+<li><code>INTERSECT</code>  : les lignes communes aux deux requêtes.</li>
+<li><code>EXCEPT</code>     : les lignes de la première requête absentes de la seconde.</li>
 </ul>
 <p>Les opérations d&#39;ensembles sont en pratique relativement rares. Elles peuvent toutefois être pertinentes quand une table a été divisée en plusieurs tables pour des raisons de performances. Par exemple, une table <code>Vente</code> contenant de très nombreuses entrées, et dont la manipulation se fait quasi-exclusivement en précisant une année de vente, pourrait être découpée en vue d&#39;obtenir une table par année.</p>
 <p>Ces opérations s&#39;utilisent sous la forme suivante :</p>
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> $QUERY_1
-<span class="hljs-keyword">UNION</span><span class="hljs-operator">|</span><span class="hljs-keyword">INTERSECT</span><span class="hljs-operator">|</span><span class="hljs-keyword">EXCEPT</span> [<span class="hljs-keyword">ALL</span>]
+<span class="hljs-keyword">UNION</span> [<span class="hljs-keyword">ALL</span>]<span class="hljs-operator">|</span><span class="hljs-keyword">INTERSECT</span><span class="hljs-operator">|</span><span class="hljs-keyword">EXCEPT</span>
 <span class="hljs-keyword">SELECT</span> $QUERY_2
 </code></pre><sql-interactive>
   <span slot="options" data-op='UNION'></span>
@@ -1559,9 +1580,14 @@ $OP
 <span class="hljs-keyword">SELECT</span> Nom, Prenom, Age <span class="hljs-keyword">FROM</span> Users;
 </code></pre></sql-interactive>
 
-<p>💡 Par défaut, les lignes en doublons sont supprimées. L&#39;option <code>ALL</code> permet de conserver l&#39;ensemble des lignes.</p>
 <h2 id="sous-requêtes">Sous requêtes</h2>
-<p>Vous pouvez utiliser le résultat d&#39;une requête <code>SELECT</code> (alors appelée &quot;sous-requête&quot;) comme valeur dans une autre requête. Par exemple, pour utiliser une sous-requête dans une condition <code>WHERE</code>, il suffit de l&#39;ajouter entre parenthèses :</p>
+<p>Vous pouvez utiliser le résultat d&#39;une requête <code>SELECT</code> (alors appelée &quot;sous-requête&quot;) dans une autre requête. En effet, un ensemble d&#39;entrées placées entre parenthèses peuvent remplacer :</p>
+<ul>
+<li>une <strong>table</strong> dans une clause <code>FROM</code> ;</li>
+<li>une <strong>liste</strong> (si une seule colonne) ;</li>
+<li>un <strong>scalaire</strong> (si une seule ligne et colonne).</li>
+</ul>
+<p>Par exemple, pour utiliser une sous-requête dans une condition <code>WHERE</code> :</p>
 <sql-interactive>
   <span slot="options" data-cond='>' data-subquery='SELECT AVG(ID) FROM T2'>Sous-requête (op. de comparaison sur une valeur)</span>
   <span slot="options" data-cond='>' data-subquery='SELECT ID FROM T2'>Sous-requête (op. de comparaison sur une liste)</span>
@@ -1570,7 +1596,6 @@ $OP
 <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> T1 <span class="hljs-keyword">WHERE</span> ID $COND ( $SUBQUERY );
 </code></pre></sql-interactive>
 
-<p>⚠ La sous-requête doit retourner une liste (i.e. une seule colonne).</p>
 <p>💡 Les opérateurs de comparaisons utilisés sur une liste retourneront vrai si la condition est vraie pour au moins un élément de la liste.</p>
 <p>⚠ Certains SGBD requièrent d&#39;ajouter <code>ANY</code> entre l&#39;opérateur de comparaison et la liste.</p>
 <h3 id="sous-requête-corrélée">Sous-requête corrélée</h3>

@@ -29,25 +29,61 @@
 
 <p>Rappel : plusieurs types de <strong>commandes SQL</strong> pour différent types d&#39;actions :</p>
 <ul>
-<li><code>SELECT</code> : <strong>lire des</strong> données ;</li>
-<li><code>UPDATE</code> : <strong>modifier</strong> des entrées ;</li>
-<li><code>INSERT</code> : <strong>insérer</strong> des entrées ;</li>
-<li><code>DELETE</code> : <strong>supprimer</strong> des entrées.</li>
+<li><sql-code>SELECT</sql-code> : <strong>lire des</strong> données ;</li>
+<li><sql-code>UPDATE</sql-code> : <strong>modifier</strong> des entrées ;</li>
+<li><sql-code>INSERT</sql-code> : <strong>insérer</strong> des entrées ;</li>
+<li><sql-code>DELETE</sql-code> : <strong>supprimer</strong> des entrées.</li>
 </ul>
 </div>
 
 <p>Nous allons désormais nous intéresser aux 3 dernières.</p>
 </frame-uca>
-<frame-subsection>Insérer des lignes</frame-subsection>
+<frame-subsection>Créer des entrées</frame-subsection>
+<frame-subsection>VALUES</frame-subsection>
 <frame-uca>
 
 <div>
-  <sql-code>INSERT INTO <var>$TABLE</var> <var onslide="2">($COLS[,...])</var> VALUES <var>($VALS[,...])<span onslide="1-">[,...]</span></var>;</sql-code>
+  <sql-code>VALUES <var>($VALS[,...])<span onslide="1-">[,...]</span></var>;</sql-code>
   <ul>
-    <li onslide="0-"><sql-code><var>($VALS[,...])</var></sql-code> : une entrée à insérer (valeurs séparées par une virgule).<br/>
-    <span onslide="1-">💡 pour insérer plusieurs entrées, les séparer par une virgule.</span>
+    <li onslide="0-"><sql-code><var>($VALS[,...])</var></sql-code> : une entrée (valeurs séparées par une virgule).</li>
+    <li><span onslide="1">💡 pour représenter plusieurs entrées, les séparer par une virgule.</span></li>
     </li>
+  </ul>
+</div>
+
+<sql-system>
+  <sql-queries>
+VALUES $VALUES;
+  </sql-queries>
+  <sql-option onslide="0">
+  {
+    "VALUES": "(NULL, 'Doe',    'Jon', 32)"
+  }
+  </sql-option>
+  <sql-option onslide="1">
+  {
+    "VALUES": "(NULL, 'Doe',    'Jon', 32),\n       (NULL, 'Sawyer', 'Tom', 15)"
+  }
+  </sql-option>
+  <sql-output>
+    <div class="flex">
+      <div>
+        <div class="sql_query"  q="1"></div>
+        <div class="sql_result" q="1"></div>
+      </div>
+    </div>
+  </sql-output>
+</sql-system>
+
+</frame-uca>
+<frame-subsection>Insérer des entrées</frame-subsection>
+<frame-uca>
+
+<div>
+  <sql-code>INSERT INTO <var>$TABLE</var> <var onslide="2">($COLS[,...])</var> <var>$VALUES_OR_SELECT</var>;</sql-code>
+  <ul>
     <li onslide="2-"><sql-code><var>($COLS[,...])</var></sql-code> : les colonnes à remplir (les autres vaudront <code>NULL</code>).</li>
+  </ul>
   </ul>
 </div>
 
@@ -94,12 +130,13 @@ SELECT * FROM Users;
       </div>
     </div>
   </sql-output>
-</sql-system></frame-uca>
-<frame-subsection>Modifier des lignes</frame-subsection>
+</sql-system>
+</frame-uca>
+<frame-subsection>Modifier des entrées</frame-subsection>
 <frame-uca>
 
 <div>
-  <sql-code>UPDATE <var>$TABLE</var> SET <var>$COL=$VAL<span onslide="2">[,...]</span></var> WHERE <var>$COND</var>;</sql-code>
+  <sql-code>UPDATE <var>$TABLE</var> SET <var>$COL=$VAL<span onslide="2-">[,...]</span></var> WHERE <var>$COND</var>;</sql-code>
   <ul>
     <li><sql-code><var>$COND</var></sql-code> : les entrées à modifier.</li>
     <li><sql-code><var>$COL=$VAL</var></sql-code> : la colonne <sql-code><var>$COL</var></sql-code> prend la valeur <sql-code><var>$VAL</var></sql-code>.<br/>
@@ -168,7 +205,7 @@ SELECT * FROM Users;
 </div>
 
 </frame-uca>
-<frame-subsection>Supprimer des lignes</frame-subsection>
+<frame-subsection>Supprimer des entrées</frame-subsection>
 <frame-uca>
 
 <div>
@@ -256,12 +293,20 @@ SELECT * FROM Users;
 </frame-uca>
 <frame-uca>
 
-<p>💡 <code>SELECT</code> sans <code>FROM</code> pour tester les pré-traitements (<code>FROM DUAL</code> pour certains SGBD).</p>
+<div>
+💡 Pour tester les pré-traitements :
+<ul>
+  <li><sql-code>SELECT</sql-code> sans <sql-code>FROM</sql-code> (ou <sql-code>FROM DUAL</sql-code> pour certains SGBD).</li>
+  <li><sql-code>SELECT</sql-code> avec <sql-code>FROM (VALUES <var>$LINES</var>)</sql-code>.</li>
+</ul>
+</div>
+
 <div class="flex">
   <sql-system>
     <sql-queries>
 SELECT $COL1,
-       $COL2;
+       $COL2
+       $FROM;
     </sql-queries>
     <sql-option onslide="0">
     {
@@ -269,10 +314,17 @@ SELECT $COL1,
       "COL2": "UPPER('nom')"
     }
     </sql-option>
-    <sql-option onslide="1-">
+    <sql-option onslide="1">
     {
       "COL1": "'nom'        as BEFORE",
       "COL2": "UPPER('nom') as AFTER"
+    }
+    </sql-option>
+    <sql-option onslide="2-">
+    {
+      "COL1": "column1        as BEFORE",
+      "COL2": "UPPER(column1) as AFTER",
+      "FROM": "FROM (VALUES ('toto'), ('titi'))"
     }
     </sql-option>
     <sql-output>

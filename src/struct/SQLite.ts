@@ -129,7 +129,7 @@ class DB {
 
     exec_one(sql: string) {
 
-        if( sql.startsWith("SELECT ") )
+        if( sql.startsWith("VALUES ") || sql.startsWith("SELECT ") )
             return this.#db.selectObjects(sql);
 
         this.#db.exec(sql);

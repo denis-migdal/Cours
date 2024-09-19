@@ -457,7 +457,7 @@ class SQLInteractive extends LISS({
         for(let i = 0; i < queries.length; ++i) {
             const query = queries[i];
 
-            if( query.startsWith("SELECT ") ) {
+            if( query.startsWith("SELECT ") || query.startsWith("VALUES ") ) {
                 exec_queries.push(query);
                 continue;
             }

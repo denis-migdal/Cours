@@ -8,7 +8,17 @@
 - CM4 Slides : refaire animations
 - CM4 Slides : ss-rqt corrélée : mieux expliquer la différence avec une animation.
 
+### TP3
+
+- Create table + test contraintes + import/export.
+
+### TP5
+
+- test postgres GUI (plateforme UCA BDD)
+
 ## Idées TD
+
+### TD1 lire doc SQLite
 
 ### TD3
 

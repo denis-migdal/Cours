@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>TP2 (BDR1)</title>
+        <title>TP3 (BDR1)</title>
         <link rel="stylesheet" href="./index.css">
         <script type="module" src="./index.js" defer></script>
     </head>
@@ -9,19 +9,17 @@
         <header></header>
         <main>
 
-<h1 id="tp3--">TP3 : ???</h1>
+<h1 id="tp3--tables-et-contraintes">TP3 : Tables et contraintes</h1>
 <h2 id="consignes">Consignes</h2>
 <p><tp-consignes></tp-consignes></p>
 <h2 id="création-dune-table">Création d&#39;une table</h2>
 <ul>
-<li><p>create table</p>
-</li>
-<li><p>.fullschema/.schema/sql CM</p>
-</li>
-<li><p>contraintes</p>
-</li>
-<li><p>(dont clefs primaires)</p>
-</li>
+<li>create table</li>
+<li>.fullschema/.schema/sql CM</li>
+</ul>
+<h2 id="contraintes">Contraintes</h2>
+<ul>
+<li>(dont clefs primaires)</li>
 </ul>
 <ul>
 <li><p>PRAGMA optimize;  / OPTIMIZE =&gt; avant chaque fermeture de la database.</p>
@@ -38,6 +36,62 @@
 <ul>
 <li>.mode (exports) / .dump  // .import</li>
 </ul>
+<h2 id="mesurer-la-performance-des-index">Mesurer la performance des index</h2>
+<p>Nous allons désormais voir à quel point les index sont vitaux lors de requêtes SQL sur de très larges tables. Pour cela nous suivrons le protocole suivant :</p>
+<ul>
+<li>créer 3 tables avec une colonne <sql-code>ID INTEGER NOT NULL</sql-code> avec :<ul>
+<li><code>U_NC</code> : table sans contrainte.</li>
+<li><code>U_PK</code> : table avec <sql-code>PRIMARY KEY</sql-code>.</li>
+<li><code>U_UN</code> : table avec <sql-code>UNIQUE</sql-code>.</li>
+</ul>
+</li>
+<li>remplir ces tables de manière identique, avec <code>10 000 000</code> entrées unique.</li>
+<li>pour chaque, mesurer la durée de recherche de l&#39;entrée où <sql-code class="d4rk">ID == 42</sql-code>.</li>
+</ul>
+<h3 id="création-et-remplissage-des-tables">Création et remplissage des tables</h3>
+<p>Dans un premier temps, nous créons une table contenant nos <code>10 000 000</code> entrées :</p>
+<sql-code class='block d4rk'>
+CREATE TABLE U_NC (ID INTEGER NOT NULL);
+WITH gen(rowid) AS (
+  VALUES (0)
+  UNION ALL
+    SELECT rowid+1 FROM gen
+  LIMIT <var>$NB</var>)
+INSERT INTO U_NC SELECT rowid FROM gen ORDER BY RANDOM();</sql-code>
+
+<p>💡 On ne vous demandera pas de comprendre le fonctionnement de <sql-code>gen</sql-code>.</p>
+<ol>
+<li>Créez les tables <code>U_PK</code> et <code>U_UN</code> que vous remplirez ensuite à partir de <code>U_NC</code>.<pre lang="sql" contenteditable></pre></li>
+</ol>
+<h3 id="mesurer-la-durée-dexécution-dune-requête">Mesurer la durée d&#39;exécution d&#39;une requête</h3>
+<ol>
+<li>Activez la mesure de la durée d&#39;exécution des requêtes via <code>.timer on</code>.</li>
+<li>Activez l&#39;explication des requêtes via <code>.eqp on</code>.<ul>
+<li><code>SCAN $T</code> : lis les lignes de la table <code>$T</code> unes à unes ;</li>
+<li><code>SEARCH $T USING</code> : recherche des entrées dans la table <code>$T</code> via un index,</li>
+</ul>
+</li>
+<li>Sur <code>U_NC</code>, <code>U_PK</code>, et <code>U_UN</code>, mesurez la durée d&#39;exécution de la requête suivante : <sql-code class="d4rk">SELECT * FROM <var>$T</var> WHERE ID == 42;</sql-code><br/><pre contenteditable></pre></li>
+<li>Comment expliquez-vous la différence de résultats entre <code>U_NC</code>, et <code>U_PK</code>/<code>U_UN</code> ?<br/><pre contenteditable></pre></li>
+</ol>
+<p>💡 Préfixer une requête SQL par <sql-code>EXPLAIN QUERY PLAN </sql-code> permet de l&#39;expliquer sans l&#39;exécuter.</p>
+<h3 id="créer-un-index">Créer un INDEX</h3>
+<p>Comme nous l&#39;avons vu en CM, les SGBD ajoutent un index sur les contraintes <sql-code>UNIQUE</sql-code>. Cela s&#39;explique par le fait qu&#39;à chaque insertions, le SGBD doit vérifier la contrainte, et donc rechercher si la valeur existe déjà dans la(les) colonne(s).</p>
+<p>💡 La commande <code>.indexes $T</code> permet d&#39;afficher la liste des index de la table <code>$T</code>.</p>
+<ol>
+<li>Vérifiez que <code>U_UN</code> possède bien un index, et que <code>U_NC</code> n&#39;en possède pas.</li>
+<li>Créez un index sur <code>U_NC</code> via <sql-code class="d4rk">CREATE INDEX _<var>$T</var>_<var>$COL</var> ON <var>$T</var>(<var>$COL</var>);</sql-code>.<pre lang="sql" contenteditable></pre></li>
+<li>Listez les index de <code>U_NC</code>, puis exécutez la requête <sql-code>SELECT</sql-code> précédente.</li>
+<li>Qu&#39;observez-vous quant à la vitesse d&#39;exécution ?<pre contenteditable></pre></li>
+<li>Créez une table <code>D(ID INTEGER NOT NULL)</code>.<pre lang="sql" contenteditable></pre></li>
+<li>Remplissez cette table via la requête SQL suivante (insère duplicats) :
+<sql-code class="block">INSERT INTO D SELECT RANDOM()%10000000 FROM U_NC;</sql-code></li>
+<li>Mesurez la vitesse d&#39;execution de la requête <sql-code>SELECT</sql-code> sur cette table :<pre contenteditable></pre></li>
+<li>Créez un index sur cette table.<pre lang="sql" contenteditable></pre></li>
+<li>Mesurez à nouveau la vitesse d&#39;execution, qu&#39;observez-vous ?<pre contenteditable></pre></li>
+</ol>
+<p>⚠ Les index ont un coût sur les insertions/modifications. Il ne faut ainsi pas en abuser.</p>
+<p>💡 En réalité, il est rare de devoir créer des index manuellement.</p>
 </main>
     </body>
 </html>

@@ -722,12 +722,35 @@ Pour rappel, il existe plusieurs types de commandes SQL permettant d'effectuer d
 
 Nous allons désormais nous intéresser aux 3 dernières.
 
-### Insérer des lignes
+### Créer des entrées
+
+La requête SQL `VALUES` permet de créer des entrées, et se présente sous la forme suivante :
+
+```sql
+VALUES ($VALS[,...])[,...];
+```
+
+- `($VALS[,...])` représente une entrée. Les différentes valeurs de l'entrée sont séparées par une virgule.<br/>
+  💡 Vous pouvez créer plusieurs entrées à la fois en les séparant par une virgule.
+
+<sql-interactive>
+  <span slot="options" data-m_vals="(NULL, 'Doe', 'Jon', 32)">Écrire une entrée</span>
+  <span slot="options" data-m_vals="(NULL, 'Doe',    'Jon', 32),
+       (NULL, 'Sawyer', 'Tom', 15)">Écrire plusieurs entrées</span>
+
+```sql
+VALUES $M_VALS;
+```
+
+</sql-interactive>
+
+
+### Insérer des entrées
 
 La requête SQL `INSERT` permet d'insérer des entrées dans une table, et se présente usuellement sous la forme suivante :
 
 ```sql
-INSERT INTO $TABLENAME VALUES ($VALS[,...])[,...];
+INSERT INTO $TABLENAME $VALUES_OR_SELECT;
 ```
 
 - `($VALS[,...])` représente une entrée à insérer. Les différentes valeurs de l'entrée sont séparées par une virgule.<br/>
@@ -747,9 +770,9 @@ $M_VALS;
 
 </sql-interactive>
 
-💡 Vous pouvez aussi ne renseigner les valeurs que pour certaines colonnes dont vous indiquez les noms avant `VALUES`. Dans ce cas, les colonnes non renseignées vaudront `NULL`.
+💡 Vous pouvez aussi ne renseigner les valeurs que pour certaines colonnes dont vous indiquez les noms avant `$VALUES_OR_SELECT`. Dans ce cas, les colonnes non renseignées vaudront `NULL`.
 
-### Modifier des lignes
+### Modifier des entrées
 
 La requête SQL `UPDATE` de modifier des entrées dans une table, et se présente usuellement sous la forme suivante :
 
@@ -782,7 +805,7 @@ UPDATE Users
 
 ⚠ Il est possible d'avoir des utilisateurs avec le même nom et/ou prénoms. Il est ainsi préférable, autant que possible, d'effectuer la condition `$COND` les ID pour s'assurer de modifier les bonnes entrées, et non celles d'homonymes.
 
-### Supprimer des lignes
+### Supprimer des entrées
 
 La requête SQL `DELETE` de supprimer des entrées dans une table, et se présente usuellement sous la forme suivante :
 
@@ -812,7 +835,9 @@ Il est bien souvent important de pré-traiter les données avant de les utiliser
 
 Pré-traiter les données permet alors de s'assurer de l'uniformité des données, i.e. que les données manipulées suivent le même format, facilitant e.g. leur comparaisons. Pré-traiter les données avant insertions permet aussi de s'assurer de la cohérence et consistance de la base de données.
 
-💡 Il est possible de **tester** les différentes fonctions de prétraitements en effectuant une requête `SELECT` sans la clause `FROM` (ou avec `FROM DUAL` pour certains SGBD) :
+💡 Il est possible de **tester** les différentes fonctions de prétraitements en effectuant soit une requête :
+- `SELECT` **sans** la clause `FROM` (ou avec `FROM DUAL` pour certains SGBD) :
+- `SELECT` **avec** la clause `FROM (VALUES $VALUES)`.
 
 <sql-interactive>
   <span slot="options" data-col1="'nom'" data-col2="UPPER('nom')">Mettre en majuscules</span>
@@ -1300,7 +1325,9 @@ CREATE TABLE $IFEXISTS T
 
 #### CREATE TABLE AS
 
-💡 Vous pouvez aussi créer et remplir une nouvelle table à partir du résultat d'une requête `SELECT`.
+💡 Vous pouvez aussi créer et remplir une nouvelle table à partir d'entrées grâce à la clause `AS $VALUES_OR_SELECT`.
+
+⚠ Cette méthode ne permet pas de préciser les contraintes de la table ainsi créez. Ainsi, il est préférable de d'abord créer une table vide (avec ses contraintes) avec `CREATE TABLE`, puis de la remplir avec `INSERT INTO`.
 
 <sql-interactive>
   <span slot="select">SELECT * FROM T;</span>
@@ -1862,11 +1889,11 @@ ALTER TABLE $T ADD|DROP CONSTRAINST PK_$T PRIMARY KEY ($COL[,...]);
 
 ## Opérations d'ensembles
 
-Il est possible d'opérer des opérations d'ensembles sur les **lignes** retournées par deux requêtes `SELECT`, à conditions qu'elles aient le même nombre de colonnes (et idéalement la même structure) :
+Il est possible d'opérer des opérations sur deux ensembles d'entrées, à conditions qu'elles aient le même nombre de colonnes (et idéalement la même structure) :
 
-- `UNION`     : concaténer les lignes.
-- `INTERSECT` : les lignes communes aux deux requêtes.
-- `EXCEPT`    : les lignes de la première requête absentes de la seconde.
+- `UNION [ALL]`: concaténer les lignes [avec les doublons].
+- `INTERSECT`  : les lignes communes aux deux requêtes.
+- `EXCEPT`     : les lignes de la première requête absentes de la seconde.
 
 
 Les opérations d'ensembles sont en pratique relativement rares. Elles peuvent toutefois être pertinentes quand une table a été divisée en plusieurs tables pour des raisons de performances. Par exemple, une table `Vente` contenant de très nombreuses entrées, et dont la manipulation se fait quasi-exclusivement en précisant une année de vente, pourrait être découpée en vue d'obtenir une table par année.
@@ -1875,7 +1902,7 @@ Ces opérations s'utilisent sous la forme suivante :
 
 ```sql
 SELECT $QUERY_1
-UNION|INTERSECT|EXCEPT [ALL]
+UNION [ALL]|INTERSECT|EXCEPT
 SELECT $QUERY_2
 ```
 
@@ -1893,11 +1920,14 @@ SELECT Nom, Prenom, Age FROM Users;
 
 </sql-interactive>
 
-💡 Par défaut, les lignes en doublons sont supprimées. L'option `ALL` permet de conserver l'ensemble des lignes.
-
 ## Sous requêtes
 
-Vous pouvez utiliser le résultat d'une requête `SELECT` (alors appelée "sous-requête") comme valeur dans une autre requête. Par exemple, pour utiliser une sous-requête dans une condition `WHERE`, il suffit de l'ajouter entre parenthèses :
+Vous pouvez utiliser le résultat d'une requête `SELECT` (alors appelée "sous-requête") dans une autre requête. En effet, un ensemble d'entrées placées entre parenthèses peuvent remplacer :
+- une **table** dans une clause `FROM` ;
+- une **liste** (si une seule colonne) ;
+- un **scalaire** (si une seule ligne et colonne).
+
+Par exemple, pour utiliser une sous-requête dans une condition `WHERE` :
 
 <sql-interactive>
   <span slot="options" data-cond='>' data-subquery='SELECT AVG(ID) FROM T2'>Sous-requête (op. de comparaison sur une valeur)</span>
@@ -1909,8 +1939,6 @@ SELECT * FROM T1 WHERE ID $COND ( $SUBQUERY );
 ```
 
 </sql-interactive>
-
-⚠ La sous-requête doit retourner une liste (i.e. une seule colonne).
 
 💡 Les opérateurs de comparaisons utilisés sur une liste retourneront vrai si la condition est vraie pour au moins un élément de la liste.
 

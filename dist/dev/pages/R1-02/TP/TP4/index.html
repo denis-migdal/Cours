@@ -9,13 +9,61 @@
         <header></header>
         <main>
 
-<h1 id="tp4--">TP4 : ???</h1>
+<h1 id="tp4--fusions-et-jointures">TP4 : Fusions et jointures</h1>
 <h2 id="consignes">Consignes</h2>
 <p><tp-consignes></tp-consignes></p>
+<p><todo>SQL speed (.timer on) : requires big databases...<br/>
+<a href="https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html">https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html</a>
+.stats on (+ de détails et conso mémoire : osef)</p>
+<p>.progress 1 --reset =&gt; avec EXPLAIN (mais compliqué).</p>
 <ul>
-<li>.timer on (?)
-<a href="https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html">https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html</a></li>
+<li><p>cartesian doesn&#39;t work ? : SQLite opti...</p>
+</li>
+<li><p>SELECT * FROM A, B WHERE A.INT+1 == B.INT+1 (disable opti)</p>
+</li>
+<li><p>CREATE TABLE T2 ( ID INTEGER PRIMARY KEY AUTOINCREMENT, V TEXT);</p>
+</li>
+<li><p>INSERT INTO TABLE (V) VALUES (&#39;A&#39;); // repeat many...</p>
+</li>
+<li><p>INSERT INTO T0 SELECT * FROM T2 ORDER BY RANDOM();
+-&gt; ADD slides CM1 + CM2...</p>
+</li>
 </ul>
+<p>SELECT STATUS risposta, DATETIME(&#39;now&#39;) data_ins 
+FROM   sourceTable</p>
+<ul>
+<li>USING + rapide ON</li>
+<li>cartesian pas possible de tester tel quel -&gt; SGBD optimise !!!<ul>
+<li>mais bonne pratique de ne pas l&#39;utiliser quand même...</li>
+</ul>
+</li>
+</ul>
+<p>EXPLAIN QUERY (plus de détail et moins compréhensible)
+EXPLAIN QUERY PLAN (.eqp on)
+  -&gt; explique la requête
+  -&gt; aucune idée de ce que ça fait, mais on note que c&#39;est identique... SGBD fait opti....</p>
+<p>.eqp on ?
+  -&gt; execution plan</p>
+<ul>
+<li><p>PK vs no PK in JOIN/WHERE : ok.</p>
+</li>
+<li><p>PK on PK vs PK on FK vs FK on PK
+-&gt; PK/FK / FK/PK : SGBD réorganise.</p>
+<p>-&gt; cartesian : scan et scan : produit cartésien
+-&gt; WHERE ID == ID : scan et search : SGBD optimise, transforme en jointure</p>
+</li>
+<li><p>SELECT COUNT(*) FROM T3 WHERE ID IN ( SELECT ID FROM T4 );</p>
+</li>
+<li><p>SELECT COUNT(*) FROM T3 WHERE ID IN ( SELECT ID FROM T4 WHERE T3.ID == T4.ID );
+( 100,000 entries... ) [too much].</p>
+</li>
+<li><p>vs SELECT COUNT(*) FROM T3 WHERE EXISTS ( SELECT ID FROM T4 WHERE T3.ID == T4.ID ); ?</p>
+</li>
+</ul>
+<p>-&gt; [CORRELATED] / Scalar/list</p>
+<p>-&gt; ORDER BY RANDOM()</p>
+</todo>
+
 <h2 id="subqueries-correlated-vs-non-correlated">Subqueries (correlated vs non correlated)</h2>
 <ol>
 <li>Chimiste qui ont fait au moins une expérience (in ID list distinct)</li>

@@ -9,14 +9,59 @@
         <header></header>
         <main>
 
-# TP4 : ???
+# TP4 : Fusions et jointures
 
 ## Consignes
 
 <tp-consignes></tp-consignes>
 
-+ .timer on (?)
-  https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html
+<todo>SQL speed (.timer on) : requires big databases...<br/>
+https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html
+.stats on (+ de détails et conso mémoire : osef)
+
+.progress 1 --reset => avec EXPLAIN (mais compliqué).
+
+- cartesian doesn't work ? : SQLite opti...
+- SELECT * FROM A, B WHERE A.INT+1 == B.INT+1 (disable opti)
+
+
+- CREATE TABLE T2 ( ID INTEGER PRIMARY KEY AUTOINCREMENT, V TEXT);
+- INSERT INTO TABLE (V) VALUES ('A'); // repeat many...
+- INSERT INTO T0 SELECT * FROM T2 ORDER BY RANDOM();
+  -> ADD slides CM1 + CM2...
+
+SELECT STATUS risposta, DATETIME('now') data_ins 
+FROM   sourceTable
+
+- USING + rapide ON
+- cartesian pas possible de tester tel quel -> SGBD optimise !!!
+  - mais bonne pratique de ne pas l'utiliser quand même...
+
+EXPLAIN QUERY (plus de détail et moins compréhensible)
+EXPLAIN QUERY PLAN (.eqp on)
+  -> explique la requête
+  -> aucune idée de ce que ça fait, mais on note que c'est identique... SGBD fait opti....
+
+.eqp on ?
+  -> execution plan
+
+- PK vs no PK in JOIN/WHERE : ok.
+- PK on PK vs PK on FK vs FK on PK
+  -> PK/FK / FK/PK : SGBD réorganise.
+
+  -> cartesian : scan et scan : produit cartésien
+  -> WHERE ID == ID : scan et search : SGBD optimise, transforme en jointure
+
+- SELECT COUNT(*) FROM T3 WHERE ID IN ( SELECT ID FROM T4 );
+- SELECT COUNT(*) FROM T3 WHERE ID IN ( SELECT ID FROM T4 WHERE T3.ID == T4.ID );
+( 100,000 entries... ) [too much].
+- vs SELECT COUNT(*) FROM T3 WHERE EXISTS ( SELECT ID FROM T4 WHERE T3.ID == T4.ID ); ?
+
+-> [CORRELATED] / Scalar/list
+
+-> ORDER BY RANDOM()
+
+</todo>
 
 ## Subqueries (correlated vs non correlated)
 

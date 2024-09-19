@@ -172,16 +172,16 @@
 
 <p><strong>Schéma</strong> de table : décrit la <strong>structure</strong> de la table, e.g. le type des colonnes :</p>
 <ul>
-<li><code>TEXT</code> : une chaîne de caractère (e.g. <code>&#39;Hello&#39;</code> / <code>&#39;J&#39;&#39;ai mangé&#39;</code>).</li>
-<li><code>INT</code>/<code>INTEGER</code> : un nombre entier.</li>
-<li><code>REAL</code> : un nombre décimal.</li>
-<li><code>BLOB</code> : des données binaires.</li>
-<li><code>ANY</code>  : accepte n&#39;importe quelle valeur.</li>
+<li><sql-code>TEXT</sql-code> : une chaîne de caractère (e.g. <sql-code>&#39;Hello&#39;</sql-code> / <sql-code>&#39;J&#39;&#39;ai mangé&#39;</sql-code>).</li>
+<li><sql-code>INT</sql-code>/<sql-code>INTEGER</sql-code> : un nombre entier.</li>
+<li><sql-code>REAL</sql-code> : un nombre décimal.</li>
+<li><sql-code>BLOB</sql-code> : des données binaires.</li>
+<li><sql-code>ANY</sql-code>  : accepte n&#39;importe quelle valeur.</li>
 </ul>
 </div>
 <div>
 
-<p>💡 Par défaut, chaque type accepte la valeur <code>NULL</code> (= absence de données).</p>
+<p>💡 Par défaut, chaque type accepte la valeur <sql-code>NULL</sql-code> (= absence de données).</p>
 <p>💡 D&#39;autres types disponibles en fonction du SGBD utilisé.</p>
 </div>
 
@@ -226,14 +226,14 @@
 
 <p>Plusieurs types de <strong>commandes SQL</strong> pour différent types d&#39;actions :</p>
 <ul>
-<li><code>SELECT</code> : <strong>lire</strong> des données ;</li>
-<li><code>UPDATE</code> : <strong>modifier</strong> des entrées ;</li>
-<li><code>INSERT</code> : <strong>insérer</strong> des entrées ;</li>
-<li><code>DELETE</code> : <strong>supprimer</strong> des entrées.</li>
+<li><sql-code>SELECT</sql-code> : <strong>lire</strong> des données ;</li>
+<li><sql-code>UPDATE</sql-code> : <strong>modifier</strong> des entrées ;</li>
+<li><sql-code>INSERT</sql-code> : <strong>insérer</strong> des entrées ;</li>
+<li><sql-code>DELETE</sql-code> : <strong>supprimer</strong> des entrées.</li>
 </ul>
 </div>
 
-<p>💡 Nous allons nous concentrer sur <code>SELECT</code> et verrons les autres par la suite.</p>
+<p>💡 Nous allons nous concentrer sur <sql-code>SELECT<sql-code> et verrons les autres par la suite.</p>
 </frame-uca>
 
 <frame-section>
@@ -712,7 +712,7 @@ SELECT * FROM Users LIMIT $N OFFSET $O;
 </ol>
 </li>
 <li>Ne <strong>jamais</strong> tout écrire d&#39;un coup, mais procédez par étapes :<ol>
-<li><code>SELECT * FROM $T;</code> basique.</li>
+<li><sql-code>SELECT * FROM <var>$T</var>;</sql-code> basique.</li>
 <li>afficher les colonnes pertinentes.</li>
 <li>ajoutez et testez les clauses une par une.</li>
 <li>idem pour les expressions, ajoutez les opérations au fur et à mesure.</li>

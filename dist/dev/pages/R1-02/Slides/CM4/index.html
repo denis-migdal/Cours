@@ -29,12 +29,11 @@
 </div>
 
 <ul>
-  <li>Opérations d'ensembles sur 2 requêtes <sql-code>SELECT</sql-code> (idéalement même colonnes) :
+  <li>Opérations d'ensembles sur ensemble d'entrées (idéalement même colonnes) :
     <ul>
-      <li><sql-code>UNION</sql-code>     : <b>concaténer</b> les lignes.</li>
+      <li><sql-code>UNION <var onslide="1-">[ALL]</var></sql-code> : <b>concaténer</b> les lignes <span onslide="1-">[avec doublons]</span>.</li>
       <li onslide="2-"><sql-code>INTERSECT</sql-code> : les lignes <b>communes</b> aux deux requêtes.</li>
       <li onslide="3-"><sql-code>EXCEPT</sql-code>    : les lignes de la première requête <b>absentes</b> de la seconde.</li>
-      <li onslide="1-">💡 Par défaut, sans <sql-code>ALL</sql-code> n'inclue pas les lignes en doublons.</li>
     </ul>
   </li>
 </ul>
@@ -80,10 +79,13 @@ SELECT NULL, Nom, Age FROM Users;
 <frame-uca>
 
 <ul>
-  <li><b>Sous requête :</b> utiliser une requête <sql-code>SELECT</sql-code> comme valeur dans une autre requête.
-    <ul>
-      <li>⚠ La sous-requête doit retourner une liste (i.e. une seule colonne).</li>
-    </ul>
+  <li><b>sous requête :</b> utiliser une requête <sql-code>SELECT</sql-code> dans une autre requête.
+  <li>💡 Un ensemble d'entrées (placées entre parenthèses) peuvent remplacer :
+  <ul>
+    <li>une <b>table</b> dans une clause <sql-code>FROM</sql-code> ;</li>
+    <li>une <b>liste</b> (si une seule colonne) ;</li>
+    <li>un <b>scalaire</b> (si une seule ligne et colonne).</li>
+  </ul>
   </li>
 </ul>
 

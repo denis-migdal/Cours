@@ -27,7 +27,6 @@ Motivation/Problematic first.
 ### Structure
 
 - Warnings plus visuels
-- $XXX fix in inline (?) code.
 - scroll too early https://github.com/vercel/next.js/issues/3303
 
 ### Tableur
@@ -146,19 +145,16 @@ https://help.libreoffice.org/latest/lo/text/sbasic/shared/03/sf_calc.html
 	- signature
 	- caviardage
 
-### BDR2
+### BDR2 ?
 
-- prog interfaces + binds + SQL injections.
-- fonctions
+=> decl fonctions ?
 
-Teasing BDR2 ?
+=> CREATE INDEX (+ PARTIAL INDEX)
 
-- TP ou BDR2 : https://sql.sh/fonctions/soundex
-  - soundex ? (détecter fautes de frappes ?) / levenstein ?
-- BDR2 : vues, droits d'accès, pl/sql/procédures ? / transactions / prepare / injections et protection ? / chiffrer BDD entière / hooks
-  algèbre relationnelle [TD ou BR2] ?
+=> use API / prepare / binds / injections
+	=> VIRTUAL TABLE
 
-avec transactions : gestion des erreurs
+=> transactions : gestion des erreurs
     ON CONFLICT 
       => que faire si erreur.
         => ROLLBACK (default ?)
@@ -166,7 +162,20 @@ avec transactions : gestion des erreurs
         => FAIL : echec seulement sur la ligne concernée (autres lignes modifiée requête pas annulée)
         => IGNORE
         => REPLACE : idx/unique thing.
+	+ INSERT/UPDATE OR
+	=> temp table
+=> procédure / pl/sql ?
 
 => Vues (+ INSERT/DELETE/UPDATE on views ???)
+=> WITH (=> créé une table temporaire, un peu comme view)
 
-=> Triggers (reject some SQL queries ???)
+=> Triggers (reject some SQL queries ???) / hooks
+
+=> OVER / PARTITION / WINDOW / FILTER ?
+
+=> droits d'accès
+	=> chiffrer db / table / col ?
+
+=> Mics
+	- soundex ? (détecter fautes de frappes ?) / levenstein ? https://sql.sh/fonctions/soundex
+	- algèbre relationnelle [TD ou BR2] ?

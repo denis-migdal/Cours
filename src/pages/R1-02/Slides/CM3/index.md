@@ -151,18 +151,29 @@ CREATE TABLE T ($COLS);
 <frame-subsubsection>CREATE TABLE AS</frame-subsubsection>
 <frame-uca>
 
-💡 <sql-code>AS <var>$SELECT</var></sql-code> : créer et remplir une table à partir du résultat d'une requête <sql-code><var>$SELECT</var></sql-code> :
+<ul>
+  <li>💡 <sql-code>AS <var>$VALUES_OR_SELECT</var></sql-code> : créer et remplir une table à partir d'entrées :
+  <ul>
+    <li>⚠ Préférez <sql-code>CREATE TABLE</sql-code> + <sql-code>INSERT INTO</sql-code> (permet d'indiquer les contraintes).</li>
+    </ul>
+  </li>
+</ul>
 
   <sql-system class="flex">
     <sql-queries>
 CREATE TABLE T AS
-$SELECT;
+$VALUES_OR_SELECT;
 SELECT * FROM T;
 SELECT * FROM pragma_table_xinfo('T');
     </sql-queries>
     <sql-option onslide="0">
     {
-      "SELECT": "SELECT * FROM Produits WHERE Ref == 'Gomme'"
+      "VALUES_OR_SELECT": "VALUES (1, 'A'), (2, 'B')"
+    }
+    </sql-option>
+    <sql-option onslide="1">
+    {
+      "VALUES_OR_SELECT": "SELECT * FROM Produits WHERE Ref == 'Gomme'"
     }
     </sql-option>
     <sql-output>
@@ -597,7 +608,7 @@ INSERT INTO  T VALUES $VALS;
 
 </div>
 
-💡 Il est fréquent que les SGBD créent automatiquement un index sur les colonnes `UNIQUE`. 
+💡 Il est fréquent que les SGBD créent automatiquement un index sur les colonnes <sql-code>UNIQUE</sql-code>. 
 
 </frame-uca>
 <frame-subsection>Les clefs primaires (PK)</frame-subsection>

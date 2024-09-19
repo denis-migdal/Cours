@@ -180,16 +180,16 @@ Une **base de donnée** est composée de **tables SQL** (tableau contenant les d
 
 **Schéma** de table : décrit la **structure** de la table, e.g. le type des colonnes :
 
-- `TEXT` : une chaîne de caractère (e.g. `'Hello'` / `'J''ai mangé'`).
-- `INT`/`INTEGER` : un nombre entier.
-- `REAL` : un nombre décimal.
-- `BLOB` : des données binaires.
-- `ANY`  : accepte n'importe quelle valeur.
+- <sql-code>TEXT</sql-code> : une chaîne de caractère (e.g. <sql-code>'Hello'</sql-code> / <sql-code>'J''ai mangé'</sql-code>).
+- <sql-code>INT</sql-code>/<sql-code>INTEGER</sql-code> : un nombre entier.
+- <sql-code>REAL</sql-code> : un nombre décimal.
+- <sql-code>BLOB</sql-code> : des données binaires.
+- <sql-code>ANY</sql-code>  : accepte n'importe quelle valeur.
 
 </div>
 <div>
 
-💡 Par défaut, chaque type accepte la valeur `NULL` (= absence de données).
+💡 Par défaut, chaque type accepte la valeur <sql-code>NULL</sql-code> (= absence de données).
 
 💡 D'autres types disponibles en fonction du SGBD utilisé.
 
@@ -232,14 +232,14 @@ Une **base de donnée** est composée de **tables SQL** (tableau contenant les d
 
 Plusieurs types de **commandes SQL** pour différent types d'actions :
 
-- `SELECT` : **lire** des données ;
-- `UPDATE` : **modifier** des entrées ;
-- `INSERT` : **insérer** des entrées ;
-- `DELETE` : **supprimer** des entrées.
+- <sql-code>SELECT</sql-code> : **lire** des données ;
+- <sql-code>UPDATE</sql-code> : **modifier** des entrées ;
+- <sql-code>INSERT</sql-code> : **insérer** des entrées ;
+- <sql-code>DELETE</sql-code> : **supprimer** des entrées.
 
 </div>
 
-💡 Nous allons nous concentrer sur `SELECT` et verrons les autres par la suite.
+💡 Nous allons nous concentrer sur <sql-code>SELECT<sql-code> et verrons les autres par la suite.
 
 </frame-uca>
 
@@ -716,7 +716,7 @@ SELECT * FROM Users LIMIT $N OFFSET $O;
    1. Utilisez (`↑`/`↓`) pour remonter l'historique et (`←`/`→`) pour modifier une requête.
    1. Utilisez les copier/coller (`^+⇧+C`/`^+⇧+V`).
 1. Ne **jamais** tout écrire d'un coup, mais procédez par étapes :
-   1. `SELECT * FROM $T;` basique.
+   1. <sql-code>SELECT * FROM <var>$T</var>;</sql-code> basique.
    1. afficher les colonnes pertinentes.
    1. ajoutez et testez les clauses une par une.
    1. idem pour les expressions, ajoutez les opérations au fur et à mesure.
