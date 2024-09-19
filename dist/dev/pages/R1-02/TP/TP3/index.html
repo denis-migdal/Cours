@@ -36,13 +36,14 @@
 <ul>
 <li>.mode (exports) / .dump  // .import</li>
 </ul>
+<p>=&gt; mesure perfs db in memory.</p>
 <h2 id="mesurer-la-performance-des-index">Mesurer la performance des index</h2>
 <p>Nous allons désormais voir à quel point les index sont vitaux lors de requêtes SQL sur de très larges tables. Pour cela nous suivrons le protocole suivant :</p>
 <ul>
-<li>créer 3 tables avec une colonne <sql-code>ID INTEGER NOT NULL</sql-code> avec :<ul>
-<li><code>U_NC</code> : table sans contrainte.</li>
-<li><code>U_PK</code> : table avec <sql-code>PRIMARY KEY</sql-code>.</li>
-<li><code>U_UN</code> : table avec <sql-code>UNIQUE</sql-code>.</li>
+<li>créer 3 tables (<sql-code>ID INTEGER NOT NULL, Data TEXT</sql-code>) :<ul>
+<li>table <code>U_NC</code> : <sql-code>ID</sql-code> sans contraintes supplémentaires.</li>
+<li>table <code>U_PK</code> : <sql-code>ID</sql-code> <sql-code>PRIMARY KEY</sql-code>.</li>
+<li>table <code>U_UN</code> : <sql-code>ID</sql-code> <sql-code>UNIQUE</sql-code>.</li>
 </ul>
 </li>
 <li>remplir ces tables de manière identique, avec <code>10 000 000</code> entrées unique.</li>
@@ -51,13 +52,13 @@
 <h3 id="création-et-remplissage-des-tables">Création et remplissage des tables</h3>
 <p>Dans un premier temps, nous créons une table contenant nos <code>10 000 000</code> entrées :</p>
 <sql-code class='block d4rk'>
-CREATE TABLE U_NC (ID INTEGER NOT NULL);
+CREATE TABLE U_NC (ID INTEGER NOT NULL, Data TEXT);
 WITH gen(rowid) AS (
   VALUES (0)
   UNION ALL
     SELECT rowid+1 FROM gen
   LIMIT <var>$NB</var>)
-INSERT INTO U_NC SELECT rowid FROM gen ORDER BY RANDOM();</sql-code>
+INSERT INTO U_NC SELECT rowid, '='||rowid FROM gen ORDER BY RANDOM();</sql-code>
 
 <p>💡 On ne vous demandera pas de comprendre le fonctionnement de <sql-code>gen</sql-code>.</p>
 <ol>
@@ -73,6 +74,9 @@ INSERT INTO U_NC SELECT rowid FROM gen ORDER BY RANDOM();</sql-code>
 </li>
 <li>Sur <code>U_NC</code>, <code>U_PK</code>, et <code>U_UN</code>, mesurez la durée d&#39;exécution de la requête suivante : <sql-code class="d4rk">SELECT * FROM <var>$T</var> WHERE ID == 42;</sql-code><br/><pre contenteditable></pre></li>
 <li>Comment expliquez-vous la différence de résultats entre <code>U_NC</code>, et <code>U_PK</code>/<code>U_UN</code> ?<br/><pre contenteditable></pre></li>
+<li>Exécutez <sql-code class="d4rk">SELECT * FROM <var>$T</var> LIMIT 20;</sql-code> sur <code>U_PK</code> et <code>U_UN</code>, qu&#39;observez-vous ?<pre contenteditable></pre></li>
+<li>Exécutez la requête suivante sur <code>U_PK</code> et <code>U_UN</code> :<br/><sql-code class="d4rk">SELECT COUNT(Data) FROM <var>$T</var> WHERE ID BETWEEN 200000 AND 400000;</sql-code></li>
+<li>Comment pourriez-vous expliquer la différence sur les temps d&#39;exécution ?<br/><pre contenteditable></pre></li>
 </ol>
 <p>💡 Préfixer une requête SQL par <sql-code>EXPLAIN QUERY PLAN </sql-code> permet de l&#39;expliquer sans l&#39;exécuter.</p>
 <h3 id="créer-un-index">Créer un INDEX</h3>
@@ -90,7 +94,7 @@ INSERT INTO U_NC SELECT rowid FROM gen ORDER BY RANDOM();</sql-code>
 <li>Créez un index sur cette table.<pre lang="sql" contenteditable></pre></li>
 <li>Mesurez à nouveau la vitesse d&#39;execution, qu&#39;observez-vous ?<pre contenteditable></pre></li>
 </ol>
-<p>⚠ Les index ont un coût sur les insertions/modifications. Il ne faut ainsi pas en abuser.</p>
+<p>⚠ Les index ont un coût lors des <sql-code>INSERT</sql-code>/<sql-code>UPDATE</sql-code>/<sql-code>DELETE</sql-code>, il ne faut pas en abuser.</p>
 <p>💡 En réalité, il est rare de devoir créer des index manuellement.</p>
 </main>
     </body>

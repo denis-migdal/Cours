@@ -37,13 +37,15 @@ import/export/save table (schema/data)
   ?
 + .mode (exports) / .dump  // .import
 
+=> mesure perfs db in memory.
+
 ## Mesurer la performance des index
 
 Nous allons désormais voir à quel point les index sont vitaux lors de requêtes SQL sur de très larges tables. Pour cela nous suivrons le protocole suivant :
-- créer 3 tables avec une colonne <sql-code>ID INTEGER NOT NULL</sql-code> avec :
-  - `U_NC` : table sans contrainte.
-  - `U_PK` : table avec <sql-code>PRIMARY KEY</sql-code>.
-  - `U_UN` : table avec <sql-code>UNIQUE</sql-code>.
+- créer 3 tables (<sql-code>ID INTEGER NOT NULL, Data TEXT</sql-code>) :
+  - table `U_NC` : <sql-code>ID</sql-code> sans contraintes supplémentaires.
+  - table `U_PK` : <sql-code>ID</sql-code> <sql-code>PRIMARY KEY</sql-code>.
+  - table `U_UN` : <sql-code>ID</sql-code> <sql-code>UNIQUE</sql-code>.
 - remplir ces tables de manière identique, avec `10 000 000` entrées unique.
 - pour chaque, mesurer la durée de recherche de l'entrée où <sql-code class="d4rk">ID == 42</sql-code>.
 
@@ -52,13 +54,13 @@ Nous allons désormais voir à quel point les index sont vitaux lors de requête
 Dans un premier temps, nous créons une table contenant nos `10 000 000` entrées :
 
 <sql-code class='block d4rk'>
-CREATE TABLE U_NC (ID INTEGER NOT NULL);
+CREATE TABLE U_NC (ID INTEGER NOT NULL, Data TEXT);
 WITH gen(rowid) AS (
   VALUES (0)
   UNION ALL
     SELECT rowid+1 FROM gen
   LIMIT <var>$NB</var>)
-INSERT INTO U_NC SELECT rowid FROM gen ORDER BY RANDOM();</sql-code>
+INSERT INTO U_NC SELECT rowid, '='||rowid FROM gen ORDER BY RANDOM();</sql-code>
 
 💡 On ne vous demandera pas de comprendre le fonctionnement de <sql-code>gen</sql-code>.
 
@@ -74,6 +76,11 @@ INSERT INTO U_NC SELECT rowid FROM gen ORDER BY RANDOM();</sql-code>
 1. Sur `U_NC`, `U_PK`, et `U_UN`, mesurez la durée d'exécution de la requête suivante : <sql-code class="d4rk">SELECT * FROM <var>$T</var> WHERE ID == 42;</sql-code><br/>
    <pre contenteditable></pre>
 1. Comment expliquez-vous la différence de résultats entre `U_NC`, et `U_PK`/`U_UN` ?<br/>
+   <pre contenteditable></pre>
+1. Exécutez <sql-code class="d4rk">SELECT * FROM <var>$T</var> LIMIT 20;</sql-code> sur `U_PK` et `U_UN`, qu'observez-vous ?
+   <pre contenteditable></pre>
+1. Exécutez la requête suivante sur `U_PK` et `U_UN` :<br/><sql-code class="d4rk">SELECT COUNT(Data) FROM <var>$T</var> WHERE ID BETWEEN 200000 AND 400000;</sql-code>
+1. Comment pourriez-vous expliquer la différence sur les temps d'exécution ?<br/>
    <pre contenteditable></pre>
 
 💡 Préfixer une requête SQL par <sql-code>EXPLAIN QUERY PLAN </sql-code> permet de l'expliquer sans l'exécuter.
@@ -101,7 +108,7 @@ Comme nous l'avons vu en CM, les SGBD ajoutent un index sur les contraintes <sql
 3. Mesurez à nouveau la vitesse d'execution, qu'observez-vous ?
    <pre contenteditable></pre>
 
-⚠ Les index ont un coût sur les insertions/modifications. Il ne faut ainsi pas en abuser.
+⚠ Les index ont un coût lors des <sql-code>INSERT</sql-code>/<sql-code>UPDATE</sql-code>/<sql-code>DELETE</sql-code>, il ne faut pas en abuser.
 
 💡 En réalité, il est rare de devoir créer des index manuellement.
 

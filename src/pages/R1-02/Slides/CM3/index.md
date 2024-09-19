@@ -617,7 +617,7 @@ INSERT INTO  T VALUES $VALS;
 <ul>
   <li><b>Clef primaire :</b> un index <sql-code>UNIQUE NOT NULL</sql-code>, encore plus rapide, un seul par table.
     <ul>
-      <li>💡 Certains SGBD créent une clef primaire cachée nommée <sql-code>ROWID</sql-code>.</li>
+      <!-- <li>💡 Certains SGBD créent une clef primaire cachée nommée <sql-code>ROWID</sql-code>.</li> -->
       <li onslide="3-"><sql-code>AUTOINCREMENT</sql-code> : incrémente automatiquement la clef primaire (recherche 0(1)).
       <ul><li>⚠ que sur <sql-code>INTEGER PRIMARY KEY</sql-code>.</li></ul></lu>
     </ul>
