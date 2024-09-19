@@ -12,58 +12,6 @@
 <h1 id="tp4--fusions-et-jointures">TP4 : Fusions et jointures</h1>
 <h2 id="consignes">Consignes</h2>
 <p><tp-consignes></tp-consignes></p>
-<p><todo>SQL speed (.timer on) : requires big databases...<br/>
-<a href="https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html">https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html</a>
-.stats on (+ de détails et conso mémoire : osef)</p>
-<p>.progress 1 --reset =&gt; avec EXPLAIN (mais compliqué).</p>
-<ul>
-<li><p>cartesian doesn&#39;t work ? : SQLite opti...</p>
-</li>
-<li><p>SELECT * FROM A, B WHERE A.INT+1 == B.INT+1 (disable opti)</p>
-</li>
-<li><p>CREATE TABLE T2 ( ID INTEGER PRIMARY KEY AUTOINCREMENT, V TEXT);</p>
-</li>
-<li><p>INSERT INTO TABLE (V) VALUES (&#39;A&#39;); // repeat many...</p>
-</li>
-<li><p>INSERT INTO T0 SELECT * FROM T2 ORDER BY RANDOM();
--&gt; ADD slides CM1 + CM2...</p>
-</li>
-</ul>
-<p>SELECT STATUS risposta, DATETIME(&#39;now&#39;) data_ins 
-FROM   sourceTable</p>
-<ul>
-<li>USING + rapide ON</li>
-<li>cartesian pas possible de tester tel quel -&gt; SGBD optimise !!!<ul>
-<li>mais bonne pratique de ne pas l&#39;utiliser quand même...</li>
-</ul>
-</li>
-</ul>
-<p>EXPLAIN QUERY (plus de détail et moins compréhensible)
-EXPLAIN QUERY PLAN (.eqp on)
-  -&gt; explique la requête
-  -&gt; aucune idée de ce que ça fait, mais on note que c&#39;est identique... SGBD fait opti....</p>
-<p>.eqp on ?
-  -&gt; execution plan</p>
-<ul>
-<li><p>PK vs no PK in JOIN/WHERE : ok.</p>
-</li>
-<li><p>PK on PK vs PK on FK vs FK on PK
--&gt; PK/FK / FK/PK : SGBD réorganise.</p>
-<p>-&gt; cartesian : scan et scan : produit cartésien
--&gt; WHERE ID == ID : scan et search : SGBD optimise, transforme en jointure</p>
-</li>
-<li><p>SELECT COUNT(*) FROM T3 WHERE ID IN ( SELECT ID FROM T4 );</p>
-</li>
-<li><p>SELECT COUNT(*) FROM T3 WHERE ID IN ( SELECT ID FROM T4 WHERE T3.ID == T4.ID );
-( 100,000 entries... ) [too much].</p>
-</li>
-<li><p>vs SELECT COUNT(*) FROM T3 WHERE EXISTS ( SELECT ID FROM T4 WHERE T3.ID == T4.ID ); ?</p>
-</li>
-</ul>
-<p>-&gt; [CORRELATED] / Scalar/list</p>
-<p>-&gt; ORDER BY RANDOM()</p>
-</todo>
-
 <h2 id="subqueries-correlated-vs-non-correlated">Subqueries (correlated vs non correlated)</h2>
 <ol>
 <li>Chimiste qui ont fait au moins une expérience (in ID list distinct)</li>
@@ -99,6 +47,65 @@ EXPLAIN QUERY PLAN (.eqp on)
 </li>
 <li><p>Tx de réussite =&gt; count + case...</p>
 </li>
+</ol>
+<h2 id="mesurer-la-performance-des-sous-requêtes-et-jointures">Mesurer la performance des sous-requêtes et jointures</h2>
+<ol>
+<li>Re-créez les tables <code>U_NC</code>, <code>U_PK</code>, et <code>D</code> du TP3, mais cette fois avec <sql-code class='d4rk'><var>$NB</var></sql-code> = <code>1000000</code>, et sans manuellement créer d&#39;index.</li>
+<li>Activez <code>.timer on</code> et <code>.eqp on</code>.</li>
+</ol>
+<h3 id="sous-requêtes">Sous-requêtes</h3>
+<ol>
+<li>Exécutez la requête suivante (sous-requête avec clef primaire) :
+<sql-code>SELECT SUM(ID) FROM U_PK WHERE ID IN (SELECT ID FROM D);</sql-code></li>
+<li>Exécutez la requête suivante (sous-requête corrélée avec <sql-code>IN</sql-code>) :
+<sql-code class="block">SELECT ID FROM U_PK
+ WHERE ID IN ( SELECT ID FROM D WHERE ID == U_PK.ID )
+ LIMIT 100;</sql-code></li>
+<li>La requête précédente limite le résultat aux 100 premières entrées, calculez le temps qu&#39;il faudrait sans cette limite.<pre contenteditable></pre></li>
+<li>Transformez cette requête pour utiliser <sql-code>EXISTS</sql-code>.<pre lang="sql" contenteditable></pre></li>
+<li>Calculez son temps d&#39;exécution sans limite, expliquer l&#39;avantage de <sql-code>EXISTS</sql-code>.<pre contenteditable></pre></li>
+</ol>
+<h3 id="join-1">JOIN</h3>
+<ol>
+<li>Exécutez, une à une, les requêtes suivantes (JOIN avec clef primaire) :
+<sql-code class="block">SELECT SUM(U_PK.ID) FROM U_PK INNER JOIN D    USING(ID);
+SELECT SUM(U_PK.ID) FROM D    INNER JOIN U_PK USING(ID);</sql-code></li>
+<li>D&#39;après l&#39;explication de la requête, l&#39;ordre des tables dans une jointure <sql-code>INNER</sql-code> a-t-il un impact sur l&#39;exécution ?<pre contenteditable></pre></li>
+<li>Testez la même jointure avec <sql-code>NATURAL</sql-code>, puis avec <sql-code>ON</sql-code>.<pre lang="sql" contenteditable></pre></li>
+<li>Cela impacte-t-il l&#39;exécution ?<pre contenteditable></pre></li>
+<li>Exécutez unes à unes les requêtes suivantes :
+<sql-code>SELECT SUM(U_NC.ID) FROM U_NC INNER JOIN D    USING(ID);
+SELECT SUM(U_NC.ID) FROM D    INNER JOIN U_NC USING(ID);</sql-code></li>
+<li>Comment expliquer le <code>USING AUTOMATIC COVERING INDEX</code> dans l&#39;explication de la requête, bien qu&#39;aucune de ces 2 tables n&#39;ont d&#39;index ?<pre contenteditable></pre></li>
+</ol>
+<h3 id="produit-cartésien">Produit cartésien</h3>
+<ol>
+<li>Exécutez la requête suivante (produit cartésien avec clef primaire) :
+<sql-code>SELECT SUM(U_PK.ID) FROM U_PK, D WHERE U_PK.ID == D.ID;</sql-code></li>
+<li>Comment expliquer qu&#39;une telle requête soit aussi rapide ?<pre contenteditable></pre></li>
+<li>Exécutez la requête ci-dessous, puis calculez son temps d&#39;exécution sans limites.
+<sql-code>SELECT U_PK.ID FROM U_PK, D
+              WHERE U_PK.ID - D.ID == 0 LIMIT 100;</li>
+</ol>
+</sql-code>
+
+
+<h3 id="sous-requêtes-vs-jointures">Sous-requêtes vs jointures</h3>
+<sql-code class="block d4rk">
+SELECT <var>$FCT</var>(ID) FROM U_PK WHERE ID IN (SELECT ID FROM D);
+SELECT <var>$FCT</var>(U_PK.ID) FROM U_PK INNER JOIN D USING(ID);
+</sql-code>
+
+<ol>
+<li>Exécutez une à une les requêtes ci-dessus avec :<ul>
+<li><sql-code>SUM()</sql-code></li>
+<li><sql-code>MAX()</sql-code></li>
+<li><sql-code>COUNT(DISTINCT )</sql-code></li>
+</ul>
+</li>
+<li>Pourquoi <sql-code>DISTINCT</sql-code> n&#39;est pas nécessaire pour la requête avec sous-requête ?<pre contenteditable></pre></li>
+<li>Pourquoi des différence dans les explications de requêtes des jointures ?<pre contenteditable></pre></li>
+<li>Vaut-il mieux utiliser des sous-requêtes ou des jointures ? Argumentez.<pre contenteditable></pre></li>
 </ol>
 </main>
     </body>

@@ -46,7 +46,7 @@
 <li>table <code>U_UN</code> : <sql-code>ID</sql-code> <sql-code>UNIQUE</sql-code>.</li>
 </ul>
 </li>
-<li>remplir ces tables de manière identique, avec <code>10 000 000</code> entrées unique.</li>
+<li>remplir ces tables de manière identique, avec <sql-code class="d4rk"><var>$NB</var></sql-code> = <code>10000000</code> entrées unique.</li>
 <li>pour chaque, mesurer la durée de recherche de l&#39;entrée où <sql-code class="d4rk">ID == 42</sql-code>.</li>
 </ul>
 <h3 id="création-et-remplissage-des-tables">Création et remplissage des tables</h3>
@@ -58,7 +58,7 @@ WITH gen(rowid) AS (
   UNION ALL
     SELECT rowid+1 FROM gen
   LIMIT <var>$NB</var>)
-INSERT INTO U_NC SELECT rowid, '='||rowid FROM gen ORDER BY RANDOM();</sql-code>
+INSERT INTO U_NC SELECT rowid, '('||rowid||')' FROM gen ORDER BY RANDOM();</sql-code>
 
 <p>💡 On ne vous demandera pas de comprendre le fonctionnement de <sql-code>gen</sql-code>.</p>
 <ol>
@@ -89,7 +89,7 @@ INSERT INTO U_NC SELECT rowid, '='||rowid FROM gen ORDER BY RANDOM();</sql-code>
 <li>Qu&#39;observez-vous quant à la vitesse d&#39;exécution ?<pre contenteditable></pre></li>
 <li>Créez une table <code>D(ID INTEGER NOT NULL)</code>.<pre lang="sql" contenteditable></pre></li>
 <li>Remplissez cette table via la requête SQL suivante (insère duplicats) :
-<sql-code class="block">INSERT INTO D SELECT RANDOM()%10000000 FROM U_NC;</sql-code></li>
+<sql-code class="block d4rk">INSERT INTO D SELECT ABS(RANDOM())%<var>$NB</var> FROM U_NC;</sql-code></li>
 <li>Mesurez la vitesse d&#39;execution de la requête <sql-code>SELECT</sql-code> sur cette table :<pre contenteditable></pre></li>
 <li>Créez un index sur cette table.<pre lang="sql" contenteditable></pre></li>
 <li>Mesurez à nouveau la vitesse d&#39;execution, qu&#39;observez-vous ?<pre contenteditable></pre></li>

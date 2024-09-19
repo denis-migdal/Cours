@@ -15,54 +15,6 @@
 
 <tp-consignes></tp-consignes>
 
-<todo>SQL speed (.timer on) : requires big databases...<br/>
-https://manpages.ubuntu.com/manpages/bionic/en/man1/sqlite3.1.html
-.stats on (+ de détails et conso mémoire : osef)
-
-.progress 1 --reset => avec EXPLAIN (mais compliqué).
-
-- cartesian doesn't work ? : SQLite opti...
-- SELECT * FROM A, B WHERE A.INT+1 == B.INT+1 (disable opti)
-
-
-- CREATE TABLE T2 ( ID INTEGER PRIMARY KEY AUTOINCREMENT, V TEXT);
-- INSERT INTO TABLE (V) VALUES ('A'); // repeat many...
-- INSERT INTO T0 SELECT * FROM T2 ORDER BY RANDOM();
-  -> ADD slides CM1 + CM2...
-
-SELECT STATUS risposta, DATETIME('now') data_ins 
-FROM   sourceTable
-
-- USING + rapide ON
-- cartesian pas possible de tester tel quel -> SGBD optimise !!!
-  - mais bonne pratique de ne pas l'utiliser quand même...
-
-EXPLAIN QUERY (plus de détail et moins compréhensible)
-EXPLAIN QUERY PLAN (.eqp on)
-  -> explique la requête
-  -> aucune idée de ce que ça fait, mais on note que c'est identique... SGBD fait opti....
-
-.eqp on ?
-  -> execution plan
-
-- PK vs no PK in JOIN/WHERE : ok.
-- PK on PK vs PK on FK vs FK on PK
-  -> PK/FK / FK/PK : SGBD réorganise.
-
-  -> cartesian : scan et scan : produit cartésien
-  -> WHERE ID == ID : scan et search : SGBD optimise, transforme en jointure
-
-- SELECT COUNT(*) FROM T3 WHERE ID IN ( SELECT ID FROM T4 );
-- SELECT COUNT(*) FROM T3 WHERE ID IN ( SELECT ID FROM T4 WHERE T3.ID == T4.ID );
-( 100,000 entries... ) [too much].
-- vs SELECT COUNT(*) FROM T3 WHERE EXISTS ( SELECT ID FROM T4 WHERE T3.ID == T4.ID ); ?
-
--> [CORRELATED] / Scalar/list
-
--> ORDER BY RANDOM()
-
-</todo>
-
 ## Subqueries (correlated vs non correlated)
 
 1. Chimiste qui ont fait au moins une expérience (in ID list distinct)
@@ -92,6 +44,73 @@ EXPLAIN QUERY PLAN (.eqp on)
 1. group by country : le plus d'xp réussies.
 
 1. Tx de réussite => count + case...
+
+## Mesurer la performance des sous-requêtes et jointures
+
+1. Re-créez les tables `U_NC`, `U_PK`, et `D` du TP3, mais cette fois avec <sql-code class='d4rk'><var>$NB</var></sql-code> = `1000000`, et sans manuellement créer d'index.
+1. Activez `.timer on` et `.eqp on`.
+
+### Sous-requêtes
+
+1. Exécutez la requête suivante (sous-requête avec clef primaire) :
+   <sql-code>SELECT SUM(ID) FROM U_PK WHERE ID IN (SELECT ID FROM D);</sql-code>
+1. Exécutez la requête suivante (sous-requête corrélée avec <sql-code>IN</sql-code>) :
+   <sql-code class="block">SELECT ID FROM U_PK
+ WHERE ID IN ( SELECT ID FROM D WHERE ID == U_PK.ID )
+ LIMIT 100;</sql-code>
+1. La requête précédente limite le résultat aux 100 premières entrées, calculez le temps qu'il faudrait sans cette limite.
+   <pre contenteditable></pre>
+1. Transformez cette requête pour utiliser <sql-code>EXISTS</sql-code>.
+   <pre lang="sql" contenteditable></pre>
+1.  Calculez son temps d'exécution sans limite, expliquer l'avantage de <sql-code>EXISTS</sql-code>.
+    <pre contenteditable></pre>
+
+### JOIN
+
+1. Exécutez, une à une, les requêtes suivantes (JOIN avec clef primaire) :
+   <sql-code class="block">SELECT SUM(U_PK.ID) FROM U_PK INNER JOIN D    USING(ID);
+   SELECT SUM(U_PK.ID) FROM D    INNER JOIN U_PK USING(ID);</sql-code>
+1. D'après l'explication de la requête, l'ordre des tables dans une jointure <sql-code>INNER</sql-code> a-t-il un impact sur l'exécution ?
+   <pre contenteditable></pre>
+1. Testez la même jointure avec <sql-code>NATURAL</sql-code>, puis avec <sql-code>ON</sql-code>.
+   <pre lang="sql" contenteditable></pre>
+1. Cela impacte-t-il l'exécution ?
+   <pre contenteditable></pre>
+1. Exécutez unes à unes les requêtes suivantes :
+   <sql-code>SELECT SUM(U_NC.ID) FROM U_NC INNER JOIN D    USING(ID);
+SELECT SUM(U_NC.ID) FROM D    INNER JOIN U_NC USING(ID);</sql-code>
+1. Comment expliquer le `USING AUTOMATIC COVERING INDEX` dans l'explication de la requête, bien qu'aucune de ces 2 tables n'ont d'index ?
+   <pre contenteditable></pre>
+
+### Produit cartésien
+
+1. Exécutez la requête suivante (produit cartésien avec clef primaire) :
+   <sql-code>SELECT SUM(U_PK.ID) FROM U_PK, D WHERE U_PK.ID == D.ID;</sql-code>
+1. Comment expliquer qu'une telle requête soit aussi rapide ?
+   <pre contenteditable></pre>
+1. Exécutez la requête ci-dessous, puis calculez son temps d'exécution sans limites.
+   <sql-code>SELECT U_PK.ID FROM U_PK, D
+                     WHERE U_PK.ID - D.ID == 0 LIMIT 100;
+</sql-code>
+
+
+### Sous-requêtes vs jointures
+
+<sql-code class="block d4rk">
+SELECT <var>$FCT</var>(ID) FROM U_PK WHERE ID IN (SELECT ID FROM D);
+SELECT <var>$FCT</var>(U_PK.ID) FROM U_PK INNER JOIN D USING(ID);
+</sql-code>
+
+1. Exécutez une à une les requêtes ci-dessus avec :
+   - <sql-code>SUM()</sql-code>
+   - <sql-code>MAX()</sql-code>
+   - <sql-code>COUNT(DISTINCT )</sql-code>
+1. Pourquoi <sql-code>DISTINCT</sql-code> n'est pas nécessaire pour la requête avec sous-requête ?
+   <pre contenteditable></pre>
+1. Pourquoi des différence dans les explications de requêtes des jointures ?
+   <pre contenteditable></pre>
+1. Vaut-il mieux utiliser des sous-requêtes ou des jointures ? Argumentez.
+   <pre contenteditable></pre>
 
 </main>
     </body>

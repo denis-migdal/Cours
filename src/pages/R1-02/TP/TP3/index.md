@@ -46,7 +46,7 @@ Nous allons désormais voir à quel point les index sont vitaux lors de requête
   - table `U_NC` : <sql-code>ID</sql-code> sans contraintes supplémentaires.
   - table `U_PK` : <sql-code>ID</sql-code> <sql-code>PRIMARY KEY</sql-code>.
   - table `U_UN` : <sql-code>ID</sql-code> <sql-code>UNIQUE</sql-code>.
-- remplir ces tables de manière identique, avec `10 000 000` entrées unique.
+- remplir ces tables de manière identique, avec <sql-code class="d4rk"><var>$NB</var></sql-code> = `10000000` entrées unique.
 - pour chaque, mesurer la durée de recherche de l'entrée où <sql-code class="d4rk">ID == 42</sql-code>.
 
 ### Création et remplissage des tables
@@ -60,7 +60,7 @@ WITH gen(rowid) AS (
   UNION ALL
     SELECT rowid+1 FROM gen
   LIMIT <var>$NB</var>)
-INSERT INTO U_NC SELECT rowid, '='||rowid FROM gen ORDER BY RANDOM();</sql-code>
+INSERT INTO U_NC SELECT rowid, '('||rowid||')' FROM gen ORDER BY RANDOM();</sql-code>
 
 💡 On ne vous demandera pas de comprendre le fonctionnement de <sql-code>gen</sql-code>.
 
@@ -100,7 +100,7 @@ Comme nous l'avons vu en CM, les SGBD ajoutent un index sur les contraintes <sql
 5. Créez une table `D(ID INTEGER NOT NULL)`.
    <pre lang="sql" contenteditable></pre>
 6. Remplissez cette table via la requête SQL suivante (insère duplicats) :
-   <sql-code class="block">INSERT INTO D SELECT RANDOM()%10000000 FROM U_NC;</sql-code>
+   <sql-code class="block d4rk">INSERT INTO D SELECT ABS(RANDOM())%<var>$NB</var> FROM U_NC;</sql-code>
 1. Mesurez la vitesse d'execution de la requête <sql-code>SELECT</sql-code> sur cette table :
    <pre contenteditable></pre>
 2. Créez un index sur cette table.
