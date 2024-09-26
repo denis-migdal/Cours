@@ -239,7 +239,7 @@ Plusieurs types de **commandes SQL** pour différent types d'actions :
 
 </div>
 
-💡 Nous allons nous concentrer sur <sql-code>SELECT<sql-code> et verrons les autres par la suite.
+💡 Nous allons nous concentrer sur <sql-code>SELECT</sql-code> et verrons les autres par la suite.
 
 </frame-uca>
 

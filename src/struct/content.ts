@@ -68,6 +68,20 @@ export default [
                 ]
             }
         ]
+    },
+    {
+        name : "R 5-06-VCOD Développement Logiciel",
+        sname: "R5-06-VCOD Dev Log",
+        path : "R5-06-VCOD",
+        children: [
+            {
+                name: "CM",
+                path: "CM",
+                children: [
+                    "CM1"
+                ]
+            }
+        ]
     }
 ];
 

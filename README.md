@@ -9,6 +9,8 @@
 - `npm run build`
 - `npm run watch`
 
+/!\ Print PDF on Chromium ? (PDF size x32 less than FF) ?
+
 ## Contenu
 
 - Tableur : 2x10h TP.
