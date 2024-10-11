@@ -10,3 +10,6 @@
 [submodule "libs/WebSlides"]
 	path = libs/WebSlides
 	url = git@github.com:denis-migdal/WebSlides.git
+[submodule "libs/LISS2"]
+	path = libs/LISS2
+	url = git@github.com:denis-migdal/LISS.git

@@ -1,12 +1,35 @@
 
 ## Supports
 
+- CM: 1h suffisant ?
+
 - CM : séparer support en 1 support/CM.
 - CM : améliorer les exemples.
 - CM : certaines parties (details) non-rédigée.
 - CM : refaire sql-interactive + animations + initial scrollTo.
 - CM4 Slides : refaire animations
 - CM4 Slides : ss-rqt corrélée : mieux expliquer la différence avec une animation.
+
+### Autres
+
+=> chimiste.sqlite : mélanger les lignes !!!
+=> -- commentaires en sql (TP4 ?)
+
+-> mieux expliquer agrégats
+-> fonction d'agrégat ou d'agrégation
+-> HAVING lignes pas entrées.
+
+### TP1
+
+
+- reformuler TP BDR : a si non null sinon b.
+- qqs tests de coalesce ?
+- + de questions pour ceux qui finissent en avance ?
+- rappel : relire questions (pas de cols en trop), relire reps, copier/coller pour éviter coquilles.
+- " vs '
+- casse
+- espaces
+- ne pas renommer les fichiers !!!
 
 ### TP3
 

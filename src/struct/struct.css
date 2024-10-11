@@ -171,3 +171,16 @@ pre > code.hljs {
 a:visited {
   color: blue;
 }
+
+
+/* utils */
+
+.flex {
+    display: flex;
+    justify-content: space-evenly;
+}
+.flex-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px 10px;
+}

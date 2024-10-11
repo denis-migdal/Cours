@@ -291,8 +291,52 @@ https://fr.wikipedia.org/wiki/Patron_de_conception
 
 ============================================================
 
+code doc vs code comment
+https://www.youtube.com/watch?v=Bf7vDBBOBUA
+
+Opti can be less performant.
+
+If vs composition
+https://www.youtube.com/watch?v=J1f5b4vcxCQ
+
+- careful float (use int when possible / fixed decimals, etc)
+
+============================================================
+
 https://thucnc.medium.com/how-to-show-current-git-branch-with-colors-in-bash-prompt-380d05a24745
 
+
+UML [beaucoup de bêtises) https://www.urbanisation-si.com/que-faut-il-garder-d-uml-quelles-seraient-les-evolutions-va-t-on-vers-un-reboot-d-uml-les-alternatives-a-uml
+
+Compo vs Héritage.
+as a : is a
+
+
+Fragile base class problem
+	-> super class change -> impact children
+	-> one subdivision ok : mani-subdivision = break
+	-> child that doesn't have all base property : intermediate prop.
+
+DevLOG : corrigé + Fiche 2 <2h ?
+
+Etat-transition vs activité :
+- Etat transition : node = état, vs activité node = action.
+- Etat transition : 1 élément vs activité = système ou ss-system
+
+DevLog
+------
+
+memoization : cacher les résultats e.g. Fibbo
++ initialize
+
+-> graph/subproblem.
+
+- greedy solution
+
+-> trier souvent simplifie problèmes
+-> start from the end
+
+https://www.youtube.com/watch?v=Hdr64lKQ3e4
 
 </main>
     </body>
