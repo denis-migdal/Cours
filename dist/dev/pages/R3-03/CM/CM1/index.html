@@ -11,6 +11,36 @@
         <header></header>
         <main>
 
+<h2 id="tw-html">TW HTML</h2>
+<ul>
+<li><p>URL : nom de domaine : à quel serveur s&#39;adresser + URI : quelle page demander, le serveur donne la page qui s&#39;affiche dans le navigateur. URI ~= chemin =&gt; absolu/relatif/../etc.</p>
+</li>
+<li><p>transmettre image à afficher :
+  -&gt; lourd, différentes tailles d&#39;écrans.
+  -&gt; pas pratique pour intéractions.
+  -&gt; page composée de différent éléments, comme un fichier de traitements de textes.</p>
+</li>
+<li><p>sélecteur + CSS : voir + tôt ?
+  -&gt; inspecteur.</p>
+</li>
+</ul>
+<p>Opti : HTTP2/HTTP3 + lazy load, etc.
+    -&gt; network throttling
+    -&gt; performances
+    -&gt; lighthouse
+    -&gt; etc.</p>
+<h2 id="tw-css">TW CSS</h2>
+<p>Cours, pas résumé =&gt; cheat sheet mais étu doivent aussi faire efforts de synthèse.</p>
+<p>CSS : ~800 keywords...
+JS : <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">https://developer.mozilla.org/en-US/docs/Web/JavaScript</a></p>
+<p>-&gt; meta
+-&gt; fix length &amp; scale : e.g. for print A4/A5/etc.
+    /!\ ZOOM vs scale...
+-&gt; grid
+-&gt; flex-box
+-&gt; media queries : redimentionner, etc.</p>
+<p>-&gt; optimisations : inert+other stuff : draw/reflow [FUCK]</p>
+<h1 id="--fixed-vs-sticky--height-bug-vs-absolute-vs-float-vs-grid-vs-flexbox">-&gt; fixed vs sticky (! height bug) vs absolute vs float vs grid vs flexbox.</h1>
 <p>-&gt; DOM, comment le représenter ?
 -&gt; on peut le voir avec l&#39;inspecteur -&gt; c&#39;est du HTML (h4ck cf US)
     -&gt; body vs head (méta-donnée vs contenu)
@@ -47,7 +77,21 @@
     -&gt; pre-load ( &lt;link rel=&quot;preload&quot;&gt; )
         https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload
 -&gt; pas beau, mis en page ? -&gt; avant tables, et plein de trucs moches, maintenant CSS \o/
-</code></pre><h1 id="cm1--html5">CM1 : HTML5</h1>
+</code></pre><p>Is it usefull ?
+  <template shadowrootmode="open">
+    <style>
+      p {
+        padding: 8px;
+        background-color: plum;
+      }
+    </style>
+    <p>I&#39;m in the shadow DOM.</p>
+  </template></p>
+<p> =&gt; FAST
+ =&gt; insérer des éléments sans passer par un CustomElement.
+ =&gt; géré par le customElement actuel =&gt; evite de longs create...</p>
+<p>[CM3 ?]</p>
+<h1 id="cm1--html5">CM1 : HTML5</h1>
 <p>[Motivation? : Pourquoi apprendre à faire des pages Web = utile]</p>
 <h2 id="les-pages-web">Les pages Web</h2>
 <h3 id="url-et-uri">URL et URI</h3>
