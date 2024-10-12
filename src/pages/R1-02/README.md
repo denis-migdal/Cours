@@ -2,6 +2,9 @@
 ## Supports
 
 - CM: 1h suffisant ?
+-> backtic ` => noms colonnes
+           ' => str
+	   " => can be both à éviter.
 
 - CM : séparer support en 1 support/CM.
 - CM : améliorer les exemples.
