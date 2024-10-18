@@ -19,7 +19,7 @@
 => -- commentaires en sql (TP4 ?)
 
 -> mieux expliquer agrégats
--> fonction d'agrégat ou d'agrégation
+-> fonction d'agrégat ou d'agrégation ?
 -> HAVING lignes pas entrées.
 
 ### TP1
@@ -36,7 +36,7 @@
 
 ### TP3
 
-- Create table + test contraintes + import/export.
+- Create table + test contraintes + import/export (TP5 ?)
 
 ### TP5
 
@@ -54,6 +54,21 @@ Comment bien découper en tables (conception), dépendance fonctionnelle (?).
 ### TP5
 
 - interfaces pgAdmin / python bindings (injections) ?
+
+
+- PRAGMA optimize;  / OPTIMIZE => avant chaque fermeture de la database. (?)
+
+## Export/import
+
+Fréquent CSV (e.g. tableur)
+
+import/export/save table (schema/data)
+  -> as SQL
+  -> as CSV
+  ?
++ .mode (exports) / .dump  // .import
+
+=> mesure perfs db in memory.
 
 ## Idée animation sous-requête
 

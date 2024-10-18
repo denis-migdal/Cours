@@ -12,31 +12,46 @@
 <h1 id="tp3--tables-et-contraintes">TP3 : Tables et contraintes</h1>
 <h2 id="consignes">Consignes</h2>
 <p><tp-consignes></tp-consignes></p>
-<h2 id="création-dune-table">Création d&#39;une table</h2>
-<ul>
-<li>create table</li>
-<li>.fullschema/.schema/sql CM</li>
+<h2 id="création-dune-table-et-contraintes-de-colonnes">Création d&#39;une table et contraintes de colonnes</h2>
+<ol>
+<li>Créez une table <code>T_PK</code> ayant pour colonnes :<ul>
+<li><code>ID</code> : une clef primaire auto-increment.</li>
+<li><code>A</code>  : un texte dont la valeur par défaut sera <code>N/A</code>.</li>
+<li><code>B</code>  : un entier qui ne peut être <code>NULL</code>.</li>
+<li><code>C</code>  : un entier impair (utilisez <code>CHECK</code>).<pre lang="sql" contenteditable></pre></li>
 </ul>
-<h2 id="contraintes">Contraintes</h2>
-<ul>
-<li>(dont clefs primaires)</li>
-</ul>
-<ul>
-<li><p>PRAGMA optimize;  / OPTIMIZE =&gt; avant chaque fermeture de la database.</p>
 </li>
-<li><p>FK + on delete/on update/cascade.</p>
+<li>Via une requête SQL affichez le schéma de la table <code>T_PK</code><pre lang="sql" contenteditable></pre></li>
+<li>Via une requête SQL affichez la requête SQL de création de la table <code>T_PK</code><pre lang="sql" contenteditable></pre></li>
+<li>Insérez 3 entrées dans la table <code>T_PK</code> en ne renseignant que les colonnes <code>B</code> et <code>C</code>.<pre lang="sql" contenteditable></pre></li>
+<li>Affichez les entrées de la table <code>T_PK</code>.</li>
+</ol>
+<h2 id="contraintes-de-tables">Contraintes de tables</h2>
+<ol>
+<li>Créez une table <code>T_TCSTR</code> ayant pour colonnes :<ul>
+<li><code>A</code>  : un entier qui ne peut être <code>NULL</code>.</li>
+<li><code>B</code>  : un entier qui doit être supérieur à <code>A</code><pre lang="sql" contenteditable></pre></li>
+</ul>
 </li>
+</ol>
+<h2 id="clefs-étrangères">Clefs étrangères</h2>
+<ol>
+<li>Créez une table <code>T_FK</code> ayant pour colonnes :<ul>
+<li><code>A</code>  : une clef étrangère non-nulle vers la table <code>T_PK</code>.<pre lang="sql" contenteditable></pre></li>
 </ul>
-<h2 id="exportimport">Export/import</h2>
-<p>Fréquent CSV (e.g. tableur)</p>
-<p>import/export/save table (schema/data)
-  -&gt; as SQL
-  -&gt; as CSV
-  ?</p>
-<ul>
-<li>.mode (exports) / .dump  // .import</li>
-</ul>
-<p>=&gt; mesure perfs db in memory.</p>
+</li>
+<li>Insérez une entrée dans <code>T_FK</code> référençant la première entrée de <code>T_PK</code>.<pre lang="sql" contenteditable></pre></li>
+<li>Incrémentez la colonne <code>ID</code> de l&#39;entrée référencée. Que se passe-t-il ? Pourquoi ?<pre contenteditable></pre></li>
+<li>Supprimez l&#39;entrée référencée. Que se passe-t-il ? Pourquoi ?<pre contenteditable></pre></li>
+<li>Supprimez la table <code>T_FK</code>.<pre lang="sql" contenteditable></pre></li>
+<li>Recommencez les opérations précédentes, cette fois de sorte à ce que la clef étrangères soit supprimée/modifiée lors de la suppression/modification de la clef primaire.<br/>
+a. Création de <code>T_FK</code><pre lang="sql" contenteditable></pre>
+b. Que se passe-t-il lors de la modification ? Pourquoi ?<pre contenteditable></pre>
+a. Que se passe-t-il lors de la suppression ? Pourquoi ?<pre contenteditable></pre></li>
+<li>Recommencez les opérations précédentes, cette fois de sorte à ce que la clef étrangères soit mise à <code>NULL</code> lors de la suppression de la clef primaire, et modifiée lors de la modification de la clef primaire.<br/>
+a. Création de <code>T_FK</code><pre lang="sql" contenteditable></pre>
+b. Que se passe-t-il lors de la suppression ? Pourquoi ?<pre contenteditable></pre></li>
+</ol>
 <h2 id="mesurer-la-performance-des-index">Mesurer la performance des index</h2>
 <p>Nous allons désormais voir à quel point les index sont vitaux lors de requêtes SQL sur de très larges tables. Pour cela nous suivrons le protocole suivant :</p>
 <ul>

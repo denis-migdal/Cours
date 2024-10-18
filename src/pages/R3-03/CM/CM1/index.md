@@ -11,45 +11,164 @@
         <header></header>
         <main>
 
-TW HTML
--------
 
-- URL : nom de domaine : à quel serveur s'adresser + URI : quelle page demander, le serveur donne la page qui s'affiche dans le navigateur. URI ~= chemin => absolu/relatif/../etc.
+# CM1 : HTML5
 
-- transmettre image à afficher :
-	-> lourd, différentes tailles d'écrans.
-	-> pas pratique pour intéractions.
-		-> page composée de différent éléments, comme un fichier de traitements de textes.
+## Introduction
 
-- sélecteur + CSS : voir + tôt ?
-	-> inspecteur.
+### Pourquoi apprendre le Web ?
 
-Opti : HTTP2/HTTP3 + lazy load, etc.
-	-> network throttling
-	-> performances
-	-> lighthouse
-	-> etc.
+Le Web est de nos jours omniprésent, que ce soit via des :
+- **sites Web** servant d'outils de communication (e.g. portefolio, vitrine, documentation en ligne, etc.) ;
+- **applications Web** fournissant des services à des utilisateurs sans requérir d'installation, et sans se soucier de la plateforme utilisée.
 
-TW CSS
-------
+En Sciences des Données, vous utilisez déjà (ou utiliserez) du Web pour des :
+- formulaires en lignes (e.g. via Google form) ;
+- exports Web de tableaux de bords ;
+- productions de graphiques interactifs via Plotly, RShiny, etc.
 
-Cours, pas résumé => cheat sheet mais étu doivent aussi faire efforts de synthèse.
+Il existe une pléthore d'outils pour le Web. En tout premier lieu, il convient donc de choisir les bons outils pour les bons besoins, en fonction des contraintes du projet. Ces outils étant si nombreux, et en constante évolution, qu'il n'est pas possible de les étudier dans le cadre de cette formation.
 
-CSS : ~800 keywords...
-JS : https://developer.mozilla.org/en-US/docs/Web/JavaScript
+Il est ainsi nécessaire d'apprendre les bases du Web afin que vous puissiez plus aisément vous adapter à de nouveaux outils, et les adapter (configurations, plugins, etc) à vos besoins et contraintes spécifiques.
 
--> meta
--> fix length & scale : e.g. for print A4/A5/etc.
-	/!\ ZOOM vs scale...
--> grid
--> flex-box
--> media queries : redimentionner, etc.
+La formation ayant une coloration Cybersécurité, nous verrons aussi quelques notions de sécurité Web, vous permettant d'avoir un recul critique.
 
--> optimisations : inert+other stuff : draw/reflow [FUCK]
+### D'où vient le Web ?
 
--> fixed vs sticky (! height bug) vs absolute vs float vs grid vs flexbox.
-============
--> DOM, comment le représenter ?
+#### La problématique
+
+Nous sommes en 1990, Tim Berners-Lee travaille au CERN. À l'époque, la documentation technique du CERN était rédigée via SGML, un méta-langage. SGML découpe les documents en 3 parties :
+- le **DTD** (Document Type Definition) : la structure/le format du document.
+- le **contenu** : les informations contenues dans le document.
+- les **feuilles de styles** : comment afficher les informations.
+
+Le DTD permet l'uniformisation des documents, permettant alors d'aisément traiter des lots de documents, notamment pour des opérations d'indexations, et de recherche.
+
+Les feuilles de styles, quant à elles permettent de séparer le contenu de la présentation. Les ingénieurs peuvent ainsi écrire plus efficacement le contenu technique sans se soucier de la mise en forme. On ajoute ensuite une feuille de style permettant un affichage uniformisé des informations, mais différencié en fonction du support (écran, feuille A4, livre, etc).
+
+À l'époque, les chercheurs au CERN travaillaient sur plusieurs lieux géographiques différents. Il était alors nécessaire de partager de la documentation, à distance. Pour cela ils utilisaient un protocole d'échange de fichiers à distance appelé **FTP** (File Transfert Protocol).
+
+Le problème est que certains documents faisaient référence à d'autres. Pour cela les liens hypertextes sont très pratiques : dans le document, il suffit de cliquer sur le lien pour ouvrir le document référencé.
+
+Sauf que... les liens hypertextes ne marchent que pour des documents locaux, comment ouvrir des documents à distance ?
+
+Tim Berners-Lee va alors créer tout un ensemble d'outils et de concepts afin de résoudre ce problème.
+
+#### Le début du Web
+
+En tout premier lieu, il faut pouvoir indiquer la ressource distante référencée, donc avoir un moyen de l'identifier. Pour cela Tim Berners-Lee va créer le concept d'**URL** (Unique Resource Locator), une chaîne de caractère référençant une ressource distante et structurée de la sorte :
+`$PROTO://$SERVER/$FILEPATH`. 
+
+Il faut ensuite pouvoir récupérer cette ressource. Le problème est que FTP a été conçu pour télécharger/uploader des fichiers par lots. Il n'est alors pas très adapté à des téléchargements ponctuels et temporaires de fichiers uniques. Tim Berners-Lee va alors créer **HTTP** (HyperText Transfert Protocol) qui permet d'obtenir très simplement une ressource à partir de son URL.
+
+Tim Berners-Lee créée aussi le tout premier navigateur Web (`WorldWideWeb`) capable d'accéder à des ressources distantes à partir de son URL. Il supporte alors les protocoles suivants :
+- `http`
+- `ftp`
+- `file` : pour lire des ressources locales.
+- `news` : un ancêtre des forums en ligne.
+
+Il ne reste alors plus qu'à définir un type de document SGML qui pourra contenir des liens hypertextes URL, et qui s'affichera dans le navigateur. Pour cela Tim Berners-Lee créée le langage `HTML` (HyperText Markup Langage), une application de SGML.
+
+<!--
+https://en.wikipedia.org/wiki/File_Transfer_Protocol#Differences_from_HTTP
+https://en.wikipedia.org/wiki/World_Wide_Web#History
+https://en.wikipedia.org/wiki/WorldWideWeb#History
+-->
+
+## HTML
+
+
+
+# X
+
+
+Échange données XML/JSON/text/binaire/etc.
+CMS + Brython + Flask + etc.
+
+## Les pages Web
+
+### Les pages Web
+
+💡 Dans un premier temps, nous pourrons assimiler les page Web à un document Word.
+
+Lorsque vous rédigez un document word, usuellement, votre document contient des chapitres, qui eux-même contiennent des sections, qui peuvent contenir des paragraphes, des images, etc.
+
+<div class="flex">
+    <div>
+        <b><i>Chapitre 1</b></i><br/>
+        <i>Section 1.1</i><br/>
+        Un peu de texte...<br/>
+        <i>Section 1.2</i><br/>
+        Une petite image...<br/>
+    </div>
+    <div>
+<pre><code>Document
+└── Chapitre 1
+    ├── Section 1.1
+    │   └── Un peu de texte...
+    └── Section 1.2
+        └── Une petite image...
+</code></pre>
+    </div>
+</div>
+
+Cela constitue une **hiérarchie** qui peut être représentée sous la forme d'un arbre :
+- le **noeud racine** est le document.
+- le document contient 1 chapitre.
+- le chapitre contient 2 sections.
+- etc.
+
+Une page Web... c'est la même chose.
+
+
+### L'arbre DOM
+
+Dans le cadre d'une page Web, cet arbre est appelé **arbre DOM**, il est assimilable à un arbre généalogique :
+
+<div class="flex-2">
+    <div><b>Racine</b> (root) : le tout premier noeud de l’arbre.</div>
+    <div><pre>Racine
+├── ...
+...
+</pre>
+    </div>
+    <div><b>Parent/Fils</b> (parent/child) : noeud (père/parent) contenant d'autres noeuds (enfant/fils).</div>
+    <div><pre>Parent
+├── Enfant
+...
+</pre>
+    </div>
+    <div><b>Ancêtre/descendant</b> (ancestor/descendant) : père, ou père d'un ancêtre, (ancêtre) d'un autre noeud (descendant).</div>
+    <div><pre>Ancêtre
+├── Descendant
+... ├── Descendant
+   ...
+</pre>
+    </div>
+    <div><b>Frères</b> (siblings) : noeuds de même père.</div>
+    <div><pre>...
+├── Frère
+└── Frère
+</pre>
+    </div>
+</div>
+
+### L'inspecteur et le langage HTML
+
+Lorsqu'on souhaite éditer un document Word, on ne modifie pas directement le fichier .odt/.docx. Pour cela, on utilise un logiciel de traitement de texte qui fournit une interface graphique permettant d'aisément manipuler de tels fichiers.
+
+Pour une page Web, bien que de tels outils existent, e.g. les **systèmes de gestions de contenus** (CMS), il est fréquent, au contraire, d'aller directement modifier les fichiers Web, ou d'en générer dynamiquement le contenu.
+
+Il est ainsi nécessaire de pouvoir représenter l'arbre DOM dans un format aisément lisible et modifiable par un humain. Pour ce faire on utilise le langage **HTML** dont la structure est très simple.
+
+[+inspecteur]
+
+Chaque élément de la page Web est représentée sous la forme d'une **balise HTML** (html tag) : <html-code><<var>$tagname</var>/></html-code>. Le nom de la balise (tagname) représente le type de l'élément, par exemple :
+- <html-code>&lt;input/&gt;</html-code> est un élément de saisie.
+- <html-code>&lt;img/&gt;</html-code> est une image.
+
+# OLD
+
 -> on peut le voir avec l'inspecteur -> c'est du HTML (h4ck cf US)
     -> body vs head (méta-donnée vs contenu)
     -> c'est des tags
@@ -87,6 +206,38 @@ JS : https://developer.mozilla.org/en-US/docs/Web/JavaScript
             https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload
     -> pas beau, mis en page ? -> avant tables, et plein de trucs moches, maintenant CSS \o/
 
+TW HTML
+-------
+
+- URL : nom de domaine : à quel serveur s'adresser + URI : quelle page demander, le serveur donne la page qui s'affiche dans le navigateur. URI ~= chemin => absolu/relatif/../etc.
+- sélecteur + CSS : voir + tôt ?
+	-> inspecteur.
+
+Opti : HTTP2/HTTP3 + lazy load, etc.
+	-> network throttling
+	-> performances
+	-> lighthouse
+	-> etc.
+
+TW CSS
+------
+
+Cours, pas résumé => cheat sheet mais étu doivent aussi faire efforts de synthèse.
+
+CSS : ~800 keywords...
+JS : https://developer.mozilla.org/en-US/docs/Web/JavaScript
+
+-> meta
+-> fix length & scale : e.g. for print A4/A5/etc.
+	/!\ ZOOM vs scale...
+-> grid
+-> flex-box
+-> media queries : redimentionner, etc.
+
+-> optimisations : inert+other stuff : draw/reflow [FUCK]
+
+-> fixed vs sticky (! height bug) vs absolute vs float vs grid vs flexbox.
+============
 
 Is it usefull ?
   <template shadowrootmode="open">
@@ -121,82 +272,6 @@ Is it usefull ?
 + "#" `#` permet de scroller jusqu'à l'élément indiqué.
 + "?"
 
-### L'arbre DOM
-
-Lorsque vous rédigez un document word, usuellement, votre document contient des chapitres, qui eux-même contiennent des sections, qui peuvent contenir des paragraphes, des images, etc.
-
-<div class="flex">
-    <div>
-        <b><i>Chapitre 1</b></i><br/>
-        <i>Section 1.1</i><br/>
-        Un peu de texte...<br/>
-        <i>Section 1.2</i><br/>
-        Une petite image...<br/>
-    </div>
-    <div>
-<pre><code>Document
-└── Chapitre 1
-    ├── Section 1.1
-    │   └── Un peu de texte...
-    └── Section 1.2
-        └── Une petite image...
-</code></pre>
-    </div>
-</div>
-
-Cela constitue une **hiérarchie** qui peut être représentée sous la forme d'un arbre :
-- le **noeud racine** est le document.
-- le document contient 1 chapitre.
-- le chapitre contient 2 sections.
-- etc.
-
-Une page Web... c'est la même chose.
-
-💡 Dans un premier temps, vous pourrez considérer les pages Web comme équivalentes à un document Word.
-
-#### Terminologie
-
-Dans le cadre d'une page Web, cet arbre est appelé **arbre DOM**, il est assimilable à un arbre généalogique :
-
-<div class="flex-2">
-    <div><b>Racine</b> (root) : le tout premier noeud de l’arbre.</div>
-    <div><pre>Racine
-├── ...
-...
-</pre>
-    </div>
-    <div><b>Parent/Fils</b> (parent/child) : noeud (père/parent) contenant d'autres noeuds (enfant/fils).</div>
-    <div><pre>Parent
-├── Enfant
-...
-</pre>
-    </div>
-    <div><b>Ancêtre/descendant</b> (ancestor/descendant) : père, ou père d'un ancêtre, (ancêtre) d'un autre noeud (descendant).</div>
-    <div><pre>Ancêtre
-├── Descendant
-... ├── Descendant
-   ...
-</pre>
-    </div>
-    <div><b>Frères</b> (siblings) : noeuds de même père.</div>
-    <div><pre>...
-├── Frère
-└── Frère
-</pre>
-    </div>
-</div>
-
-### Le langage HTML
-
-Lorsqu'on souhaite éditer un document Word, on ne modifie pas directement le fichier .odt/.docx. Pour cela, on utilise un logiciel de traitement de texte qui fournit une interface graphique permettant d'aisément manipuler de tels fichiers.
-
-Pour une page Web, bien que de tels outils existent, e.g. les **systèmes de gestions de contenus** (CMS), il est fréquent, au contraire, d'aller directement modifier les fichiers Web, ou d'en générer dynamiquement le contenu.
-
-Il est ainsi nécessaire de pouvoir représenter l'arbre DOM dans un format aisément lisible et modifiable par un humain. Pour ce faire on utilise le langage **HTML** dont la structure est très simple.
-
-Chaque élément de la page Web est représentée sous la forme d'une **balise HTML** (html tag) : <html-code><<var>$tagname</var>/></html-code>. Le nom de la balise (tagname) représente le type de l'élément, par exemple :
-- <html-code>&lt;input/&gt;</html-code> est un élément de saisie.
-- <html-code>&lt;img/&gt;</html-code> est une image.
 
 #### Les fils
 
@@ -514,7 +589,7 @@ Les pages Web peuvent aussi inclure des ressources multimédia (images, vidéos,
 - hr
 - label
 
-### Obsoletes
+### Obsoletes (car à l'époque pas CSS et stylesheet dégueux)
 
 - embed
 - b / i / u

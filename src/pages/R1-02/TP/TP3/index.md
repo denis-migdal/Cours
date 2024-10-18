@@ -15,29 +15,54 @@
 
 <tp-consignes></tp-consignes>
 
-## Création d'une table
+## Création d'une table et contraintes de colonnes
 
-+ create table
-+ .fullschema/.schema/sql CM
+1. Créez une table `T_PK` ayant pour colonnes :
+   - `ID` : une clef primaire auto-increment.
+   - `A`  : un texte dont la valeur par défaut sera `N/A`.
+   - `B`  : un entier qui ne peut être `NULL`.
+   - `C`  : un entier impair (utilisez `CHECK`).
+   <pre lang="sql" contenteditable></pre>
+1. Via une requête SQL affichez le schéma de la table `T_PK`
+   <pre lang="sql" contenteditable></pre>
+1. Via une requête SQL affichez la requête SQL de création de la table `T_PK`
+   <pre lang="sql" contenteditable></pre>
+1. Insérez 3 entrées dans la table `T_PK` en ne renseignant que les colonnes `B` et `C`.
+   <pre lang="sql" contenteditable></pre>
+1. Affichez les entrées de la table `T_PK`.
 
-## Contraintes
+## Contraintes de tables
 
-+ (dont clefs primaires)
-- PRAGMA optimize;  / OPTIMIZE => avant chaque fermeture de la database.
+1. Créez une table `T_TCSTR` ayant pour colonnes :
+   - `A`  : un entier qui ne peut être `NULL`.
+   - `B`  : un entier qui doit être supérieur à `A`
+   <pre lang="sql" contenteditable></pre>
 
-- FK + on delete/on update/cascade.
+## Clefs étrangères
 
-## Export/import
-
-Fréquent CSV (e.g. tableur)
-
-import/export/save table (schema/data)
-  -> as SQL
-  -> as CSV
-  ?
-+ .mode (exports) / .dump  // .import
-
-=> mesure perfs db in memory.
+1. Créez une table `T_FK` ayant pour colonnes :
+   - `A`  : une clef étrangère non-nulle vers la table `T_PK`.
+   <pre lang="sql" contenteditable></pre>
+2. Insérez une entrée dans `T_FK` référençant la première entrée de `T_PK`.
+   <pre lang="sql" contenteditable></pre>
+3. Incrémentez la colonne `ID` de l'entrée référencée. Que se passe-t-il ? Pourquoi ?
+   <pre contenteditable></pre>
+3. Supprimez l'entrée référencée. Que se passe-t-il ? Pourquoi ?
+   <pre contenteditable></pre>
+4. Supprimez la table `T_FK`.
+   <pre lang="sql" contenteditable></pre>
+5. Recommencez les opérations précédentes, cette fois de sorte à ce que la clef étrangères soit supprimée/modifiée lors de la suppression/modification de la clef primaire.<br/>
+   a. Création de `T_FK`
+   <pre lang="sql" contenteditable></pre>
+   b. Que se passe-t-il lors de la modification ? Pourquoi ?
+   <pre contenteditable></pre>
+   a. Que se passe-t-il lors de la suppression ? Pourquoi ?
+   <pre contenteditable></pre>
+5. Recommencez les opérations précédentes, cette fois de sorte à ce que la clef étrangères soit mise à `NULL` lors de la suppression de la clef primaire, et modifiée lors de la modification de la clef primaire.<br/>
+   a. Création de `T_FK`
+   <pre lang="sql" contenteditable></pre>
+   b. Que se passe-t-il lors de la suppression ? Pourquoi ?
+   <pre contenteditable></pre>
 
 ## Mesurer la performance des index
 
