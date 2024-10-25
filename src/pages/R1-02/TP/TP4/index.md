@@ -15,7 +15,7 @@
 
 <tp-consignes></tp-consignes>
 
-Dans le cadre de ce TP, vous utiliserez la base "chimie" disponible via [ce lien](../../../../assets/sql/chimiste.sqlite).
+Dans le cadre de ce TP, vous utiliserez la base "chimie" disponible via [ce lien](../../../../assets/sql/chimie.sqlite).
 
 ## Sous-requêtes
 
