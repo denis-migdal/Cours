@@ -15,40 +15,46 @@
 
 <tp-consignes></tp-consignes>
 
-## Subqueries (correlated vs non correlated)
+Dans le cadre de ce TP, vous utiliserez la base "chimie" disponible via [ce lien](../../../../assets/sql/chimiste.sqlite).
 
-1. Chimiste qui ont fait au moins une expérience (in ID list distinct)
-1. Chimiste qui ont fait au moins une expérience (correlated, a une entrée - existe)
+## Sous-requêtes
 
-=> compare perfs.
+[TODO: resultats.resultat => CHECK IN()].
+
+1. Déterminez la structure de la base de donnée et de ses tables.<br/>
+   [TODO: champ pour déposer image du schéma.]
+1. Écrivez les requêtes SQL permettant d'obtenir les chimistes ayant au moins un résultat d'expérience.<br/>
+   a. En utilisant une sous-requête non-corrélée.
+   <pre lang=sql contenteditable></pre>
+   b. En utilisant une sous-requête corrélée.
+   <pre lang=sql contenteditable></pre>
 
 ## JOIN
 
-- IN vs JOIN
-  -> join qui retourne plusieurs résultats identique, puis un autre join (=> grosse table avec duplicats).
-  -> vs in (subquery).
-
-  ==> compter nombre de lignes.
-  ==> comparer vitesse exec sur tables grosses.
-
-    => + avec/sans FK/PK ?
-
-- attention complexité exo, d'abord 1 seul jointure
-- donner UML...
-
-1. Info chimiste ajouté aux lignes de résultats
-1. group by : concat n° exp.
-1. somme des masses utilisées par chimistes.
-1. chimiste nombre d'exp : trier
-1. compter seulement nombre d'oublis : trier
-1. group by country : le plus d'xp réussies.
-
-1. Tx de réussite => count + case...
+1. Pour chaque résultats, affichez le numéro d'expérience et le nom, prénom du chimiste l'ayant réalisé.
+   <pre lang=sql contenteditable></pre>
+1. Modifiez la requête précédente afin d'afficher le nom, prénom des chimistes suivis des numéro, concaténés, des expériences qu'ils ont réalisés (colonne `exps`).
+   <pre lang=sql contenteditable></pre>
+1. Modifiez la requête précédente afin d'afficher le nom, prénom des chimistes suivis du nombre d'expériences *différentes* qu'ils ont réalisés.  (colonne `nb_exps`)
+   <pre lang=sql contenteditable></pre>
+1. Modifiez la requête précédente afin de n'afficher que ceux qui n'ont pas effectué d'expérience.
+   <pre lang=sql contenteditable></pre>
+1. Vous remarquerez que la requête ne retourne aucun résultats, pourquoi ?
+   <pre contenteditable></pre>
+1. Modifiez la requête précédente pour afficher *tous* les chimistes avec leur nombre d'expériences distinctes.
+   <pre contenteditable lang="sql"></pre>
+1. Modifiez la requête précédente pour afficher les chimistes avec leur moyenne des températures des expériences qu'ils ont réalisés (colonne `avg_temp`).
+   <pre contenteditable lang="sql"></pre>
+1. Pourquoi utiliser `LEFT JOIN` pour la seconde jointure ?
+   <pre contenteditable></pre>
+1. En repartant de la requête 6, et en utilisant la structure ci-dessous, affichez le nom, prénom des chimistes suivis de leur taux de réussite :
+   <sql-code class="d4rk block">AVG( CASE WHEN $COND THEN 1 ELSE 0 END ) as taux</sql-code>
+   <pre contenteditable lang="sql"></pre>
 
 ## Mesurer la performance des sous-requêtes et jointures
 
-1. Re-créez les tables `U_NC`, `U_PK`, et `D` du TP3, mais cette fois avec <sql-code class='d4rk'><var>$NB</var></sql-code> = `1000000`, et sans manuellement créer d'index.
 1. Activez `.timer on` et `.eqp on`.
+1. Re-créez les tables `U_NC`, `U_PK`, et `D` du TP3, mais cette fois avec <sql-code class='d4rk'><var>$NB</var></sql-code> = `1000000`, et sans manuellement créer d'index.
 
 ### Sous-requêtes
 

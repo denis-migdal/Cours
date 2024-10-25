@@ -84,6 +84,7 @@ export class WebSystem extends LISS({css, shadow: ShadowCfg.NONE}) {
 
         // https://stackoverflow.com/questions/8240101/set-content-of-iframe
         iframe.src = "about:blank";
+        // iframe.srcdoc also possible
         iframe.contentWindow!.document.open();
         iframe.contentWindow!.document.write( getHTMLCode() );
         iframe.contentWindow!.document.close();
