@@ -16,7 +16,7 @@
 
 ## Introduction
 
-### Pourquoi apprendre le Web ?
+### Pourquoi apprendre le Web ?
 
 Le Web est de nos jours omniprésent, que ce soit via des :
 - **sites Web** servant d'outils de communication (e.g. portefolio, vitrine, documentation en ligne, etc.) ;
@@ -27,11 +27,11 @@ En Sciences des Données, vous utilisez déjà (ou utiliserez) du Web pour des :
 - exports Web de tableaux de bords ;
 - productions de graphiques interactifs via Plotly, RShiny, etc.
 
-Il existe une pléthore d'outils pour le Web. En tout premier lieu, il convient donc de choisir les bons outils pour les bons besoins, en fonction des contraintes du projet. Ces outils étant si nombreux, et en constante évolution, qu'il n'est pas possible de les étudier dans le cadre de cette formation.
+Il existe une pléthore d'outils pour le Web. En tout premier lieu, il convient donc de choisir les bons outils pour les bons besoins, en fonction des contraintes du projet. Ces outils étant si nombreux, et en constante évolution, qu'il n'est pas possible de tous les étudier dans le cadre de cette formation.
 
-Il est ainsi nécessaire d'apprendre les bases du Web afin que vous puissiez plus aisément vous adapter à de nouveaux outils, et les adapter (configurations, plugins, etc) à vos besoins et contraintes spécifiques.
+Il est ainsi nécessaire d'apprendre les bases du Web afin que vous puissiez plus aisément vous adapter à de nouveaux outils, et les adapter à vos besoins et contraintes spécifiques (configurations, plugins, etc).
 
-La formation ayant une coloration Cybersécurité, nous verrons aussi quelques notions de sécurité Web, vous permettant d'avoir un recul critique.
+La formation ayant une coloration Cybersécurité, nous verrons aussi quelques notions de sécurité Web, vous permettant d'avoir un recul critique sur le Web.
 
 ### D'où vient le Web ?
 
@@ -67,7 +67,7 @@ Tim Berners-Lee créée aussi le tout premier navigateur Web (`WorldWideWeb`) ca
 - `file` : pour lire des ressources locales.
 - `news` : un ancêtre des forums en ligne.
 
-Il ne reste alors plus qu'à définir un type de document SGML qui pourra contenir des liens hypertextes URL, et qui s'affichera dans le navigateur. Pour cela Tim Berners-Lee créée le langage `HTML` (HyperText Markup Langage), une application de SGML.
+Il ne reste alors plus qu'à définir un type de document SGML qui pourra contenir des liens hypertextes URL, et qui s'affichera dans le navigateur. Pour cela Tim Berners-Lee créée `HTML` (HyperText Markup Langage), une application de SGML.
 
 <!--
 https://en.wikipedia.org/wiki/File_Transfer_Protocol#Differences_from_HTTP
@@ -77,68 +77,276 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 
 ## HTML
 
+### Les balises HTML
+
+HTML est un langage permettant de décrire une **structure** via des **balises**, e.g. :
+- <html-code>[br/]</html-code> correspond à un retour à la ligne (*<u>br</u>eak line*).
+- <html-code>[p]texte[/p]</html-code> correspond à un paragraphe (*<u>p</u>aragraph*).
+
+Les éléments qui ne peuvent avoir de contenu s'écrivent avec une balise **auto-fermante** (*self-closing tag*) qui se présente sous la forme suivante : <html-code>[<var>$NAME</var>/]</html-code>.<br/>
+<html-code><var>$NAME</var></html-code> est le **nom de la balise** (*tag name*), il indique le type de l'élément HTML.
+
+Les éléments qui peuvent avoir du contenu, e.g. un paragraphe peut contenir du texte, s'écrivent sous la forme suivante : <html-code>[<var>$NAME</var>]<var>$CONTENT</var>[/<var>$NAME</var>]</html-code>
+- <html-code>[<var>$NAME</var>]</html-code> est la **balise ouvrante** (*opening tag*).
+- <html-code>[/<var>$NAME</var>]</html-code> est la **balise fermante** (*closing tag*).
+- <html-code><var>$CONTENT</var></html-code> est le contenu de la balise.
+
+Vous remarquerez que HTML utilise <html-code>[</html-code> et <html-code>]</html-code> pour marquer le début et la fin d'une balise. Ainsi, <html-code>soit y[x et y]0</html-code> est interprété par HTML comme étant une balise.
+
+Pour éviter cela, on va échapper les caractères utilisés par HTML via des entités HTML (*HTML entities*) :
+- <html-code>[</html-code> devient <html-code>£lt;</html-code> (*<u>l</u>esser <u>t</u>han*) ;
+- <html-code>]</html-code> devient <html-code>£gt;</html-code> (*<u>g</u>reater <u>t</u>han*) ;
+- <html-code>"</html-code> devient <html-code>£quot;</html-code> (*<u>quot</u>e*) ;
+- <html-code>&</html-code> devient <html-code>£amp;</html-code> (*<u>amp</u>ersand*).
+
+💡 En HTML, les **commentaires** s'écrivent ainsi : <html-code>[!-- <var>$COMMENT</var> --]</html-code>
+
+### Les attributs HTML
+
+Les **attributs HTML** (*HTML attribute*) permettent de configurer les éléments HTML :
+- <html-code>[img src="<var>$URL</var>"/]</html-code> affiche l'<u>im</u>a<u>g</u>e présente à l'URL indiquée par l'attribut <html-code>src</html-code>.
+- <html-code>[a href="<var>$URL</var>"]lien[/a]</html-code> est un lien hypertexte pointant sur l'URL indiqué par l'attribut <html-code>href</html-code>.
+
+Les attributs HTML sont indiqués dans la balise ouvrante (ou auto-fermante) de l'élément HTML. Le nom de l'attribut est précédé d'un <html-code>=</html-code> suivi de sa valeur entre guillements.
+
+💡 Une même balise HTML peut contenir plusieurs attributs, séparés par un espace :
+- <html-code>[a href="..." target="_blank"]lien[/a]</html-code> : ouvrir dans un nouvel onglet.
+- <html-code>[a href="..." type="text/csv" download="data.csv"]lien[/a]</html-code>
+  - <html-code>type</html-code> est le **type MIME** du fichier.
+  - <html-code>download</html-code> au clic, télécharge la ressource.
+  - <html-code>download="<var>FILENAME</var>"</html-code> indique le nom par défaut du fichier téléchargé.
+
+💡 Certains attributs n'ont pas besoin de valeur et configurent l'élément par leur seule présence. Ce sont les **attributs booléens** (*boolean attributes*), e.g. :
+- <html-code>[a href="..." type="text/csv" download]lien[/a]</html-code>
 
 
-# X
+Chaque type d'élément HTML a sa propre liste d'attributs qui permettent de le configurer. Il existe cependant des attributs appelés **attributs universels** (*global attributes*) communs à tous les éléments HTML, e.g. :
+- <html-code>title</html-code> permet d'afficher une bulle d'information (*tooltip*) au survol de l'élément.
 
+## Données structurées
 
-Échange données XML/JSON/text/binaire/etc.
-CMS + Brython + Flask + etc.
+### Listes
 
-## Les pages Web
+Une liste est un élément HTML qui contient plusieurs sous éléments (*<u>l</u>ist <u>i</u>tem*). Les listes peuvent être ordonnées (*<u>o</u>rdered <u>l</u>ist*) ou non (*<u>u</u>nordered <u>l</u>ist*).
 
-### Les pages Web
-
-💡 Dans un premier temps, nous pourrons assimiler les page Web à un document Word.
-
-Lorsque vous rédigez un document word, usuellement, votre document contient des chapitres, qui eux-même contiennent des sections, qui peuvent contenir des paragraphes, des images, etc.
-
-<div class="flex">
+<div class="flex-2">
     <div>
-        <b><i>Chapitre 1</b></i><br/>
-        <i>Section 1.1</i><br/>
-        Un peu de texte...<br/>
-        <i>Section 1.2</i><br/>
-        Une petite image...<br/>
+<html-code class="block">
+[ul]
+    [li]Item A[/li]
+    [li]Item B[/li]
+[/ul]
+</html-code>
     </div>
     <div>
+<ul>
+    <li>Item A</li>
+    <li>Item B</li>
+</ul>
+    </div>
+</div>
+
+<div class="flex-2">
+    <div>
+<html-code class="block">
+[ol]
+    [li]Item A[/li]
+    [li]Item B[/li]
+[/ol]
+</html-code>
+    </div>
+    <div>
+<ol>
+    <li>Item A</li>
+    <li>Item B</li>
+</ol>
+    </div>
+</div>
+
+### Tableaux
+
+Les tableaux (*table*) sont composés d'un (ou plusieurs) corps (*<u>t</u>able <u>b</u>ody*) contenant des lignes (*<u>t</u>able <u>r</u>ow*), elles-même composée de cellules (*<u>t</u>able <u>d</u>ata*) :
+
+<div class="flex-2">
+    <div>
+<html-code class="block">
+[table]
+    [tbody]
+        [tr][td]A[/td][td]B[/td][/tr]
+        [tr][td]C[/td][td]C[/td][/tr]
+    [/tbody]
+[/table]
+</html-code>
+    </div>
+    <div>
+<table>
+    <tbody>
+        <tr><td>A</td><td>B</td></tr>
+        <tr><td>C</td><td>C</td></tr>
+    </tbody>
+</table>
+    </div>
+</div>
+
+💡 Il est possible d'ajouter les cellules d'en-têtes (<u>t</u>able <u>h</u>eader), dans le corps de la table, mais aussi dans une en-tête (<u>t</u>able <u>head</u>er) ou un pied (<u>t</u>able <u>foot</u>er) :
+
+<div class="flex-2">
+    <div>
+<html-code class="block">
+[table]
+    [thead]
+        [tr][th]ID[/th][th]Nom[/th][/tr]
+    [/thead]
+    [tbody]
+        [tr][th]1[/th][td]Pierre[/td][/tr]
+        [tr][th]2[/th][td]Paul[/td][/tr]
+    [/tbody]
+[/table]
+</html-code>
+    </div>
+    <div>
+<table>
+    <thead>
+        <tr><th>ID</th><th>Nom</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>1</td><td>Pierre</td></tr>
+        <tr><td>2</td><td>Paul</td></tr>
+    </tbody>
+</table>
+    </div>
+</div>
+
+### Structure et sémantique
+
+Par défaut, certains éléments HTML modifient l'affichage du texte :
+
+<table>
+    <thead>
+        <tr><td>HTML</td><td>Affichage</td><td>Sens</td></tr>
+    </thead>
+    <tbody>
+        <tr><td><html-code>[strong]A[/strong]</html-code></td><td><strong>A</strong></td><td>important (<i><u>strong</u> importance</i>)</td></tr>
+        <tr><td><html-code>[em]A[/em]</html-code></td><td><em>A</em></td><td>mis en valeur (<i><u>em</u>phasis</i>)</td></tr>
+        <tr><td><html-code>[mark]A[/mark]</html-code></td><td><mark>A</mark></td><td>marqué</td></tr>
+        <tr><td><html-code>[ins]A[/ins]</html-code></td><td><ins>A</ins></td><td>inséré (<i><u>ins</u>erted</i>)</td></tr>
+        <tr><td><html-code>[del]A[/del]</html-code></td><td><del>A</del></td><td>supprimé  (<i><u>del</u>eted</i>)</td></tr>
+    </tbody>
+</table>
+
+De la même manière, les balises <html-code>[h1]A[/h1]</html-code> à <html-code>[h6]A[/h6]</html-code> permettent d'indiquez différents niveaux de titres.
+
+<table>
+    <thead>
+        <tr><td>HTML</td><td>Affichage</td><td>Sens</td></tr>
+    </thead>
+    <tbody>
+        <tr><td><html-code>[h1]A[/h1]</html-code></td><td><h1>A</h1></td><td>titre de niveau 1</td></tr>
+        <tr><td><html-code>[h2]A[/h2]</html-code></td><td><h2>A</h2></td><td>titre de niveau 2</td></tr>
+        <tr><td><html-code>[h3]A[/h3]</html-code></td><td><h3>A</h3></td><td>titre de niveau 3</td></tr>
+        <tr><td><html-code>[h4]A[/h4]</html-code></td><td><h4>A</h4></td><td>titre de niveau 4</td></tr>
+        <tr><td><html-code>[h5]A[/h5]</html-code></td><td><h5>A</h5></td><td>titre de niveau 5</td></tr>
+        <tr><td><html-code>[h6]A[/h6]</html-code></td><td><h6>A</h6></td><td>titre de niveau 6</td></tr>
+    </tbody>
+</table>
+
+⚠ Ils ne doivent pas être utilisés pour leur affichage par défaut, qui peut être modifié, mais pour leur **sémantique**, i.e. le *sens* qu'ils donnent. 
+
+⚠ Il ne doit y avoir qu'un seul <html-code>[h1]A[/h1]</html-code> par page.
+
+### Sémantique vs affichage
+
+Pour rappel, HTML décrit la **structure** d'une page Web, mais pas la manière dont les éléments doivent être affichés dans la page Web.
+
+Il est notamment possible d'intégrer e.g. des données sous la forme de listes ou de tableaux. Cependant, les listes et les tableaux ne doivent être utilisés que pour décrire la structure des données. Ils ne doivent pas être utilisés pour positionner des éléments sur une page Web.
+
+Par exemple, pour afficher une liste d'utilisateurs avec différentes propriétés (e.g. ID, nom, prénom, mails) on utilisera un tableau. En revanche, on évitera de l'utiliser pour un ensemble d'images s'affichant sous la forme d'une grille.
+
+Un tableau a un nombre de colonnes et de lignes fixe. Une grille quant à elle peut avoir un nombre de colonnes et de lignes variables afin d'adapter l'affichage à l'espace disponible, e.g. lié à la largeur de l'écran.
+
+## Structure d'une page Web
+
+### L'arbre DOM
+
+Comme nous l'avons vu, un élément HTML peut contenir du texte ou d'autres éléments HTML. Il est d'ailleurs très fréquent d'utiliser les **conteneurs génériques** :
+- <html-code>[div]...[/div]</html-code> pour grouper un contenu dans un "bloc".
+- <html-code>[span]...[/span]</html-code> se comporte comme du texte inséré à la ligne courante.
+
+<div class="flex-2">
+<html-code class="block">
+[div]
+    A
+    [div]B[/div]
+    C
+[/div]
+[div]
+    D
+    [span]E[/span]
+    F
+[/div]
+</html-code>
+    <div>
+        <div>
+            A
+            <div>B</div>
+            C
+        </div>
+        <div>
+            D
+            <span>E</span>
+            F
+        </div>
+    </div>
+</div>
+
+On peut représenter cette hiérarchie sous la forme d'un arbre, appelé **arbre DOM** où chaque élément HTML est associé à un noeud (*node*), et a pour fils son contenu :
+
+<div class="flex-2">
+<html-code class="block">
+[div]
+    A
+    [div]B[/div]
+    C
+[/div]
+[div]
+    D
+    [span]E[/span]
+    F
+[/div]
+</html-code>
+    <div>
 <pre><code>Document
-└── Chapitre 1
-    ├── Section 1.1
-    │   └── Un peu de texte...
-    └── Section 1.2
-        └── Une petite image...
+├── div
+│   ├── A
+│   ├── div
+│   │   └── B
+│   └── C
+└── div
+    ├── D
+    ├── span
+    │   └── E
+    └── F
 </code></pre>
     </div>
 </div>
 
-Cela constitue une **hiérarchie** qui peut être représentée sous la forme d'un arbre :
-- le **noeud racine** est le document.
-- le document contient 1 chapitre.
-- le chapitre contient 2 sections.
-- etc.
-
-Une page Web... c'est la même chose.
+On utilise alors la terminologie suivante :
 
 
-### L'arbre DOM
-
-Dans le cadre d'une page Web, cet arbre est appelé **arbre DOM**, il est assimilable à un arbre généalogique :
-
-<div class="flex-2">
-    <div><b>Racine</b> (root) : le tout premier noeud de l’arbre.</div>
+<div>
+    <div><b>Racine</b> (<i>root</i>) : le tout premier noeud de l’arbre.</div>
     <div><pre>Racine
 ├── ...
 ...
 </pre>
     </div>
-    <div><b>Parent/Fils</b> (parent/child) : noeud (père/parent) contenant d'autres noeuds (enfant/fils).</div>
+    <div><b>Père/Fils</b> (<i>parent/child</i>) : noeud (père) contenant d'autres noeuds (fils).</div>
     <div><pre>Parent
 ├── Enfant
 ...
 </pre>
     </div>
-    <div><b>Ancêtre/descendant</b> (ancestor/descendant) : père, ou père d'un ancêtre, (ancêtre) d'un autre noeud (descendant).</div>
+    <div><b>Ancêtre/descendant</b> (<i>ancestor/descendant</i>) : père, ou père d'un ancêtre, (ancêtre) d'un autre noeud (descendant).</div>
     <div><pre>Ancêtre
 ├── Descendant
 ... ├── Descendant
@@ -153,461 +361,132 @@ Dans le cadre d'une page Web, cet arbre est appelé **arbre DOM**, il est assimi
     </div>
 </div>
 
-### L'inspecteur et le langage HTML
+### Inspecter une page Web
 
-Lorsqu'on souhaite éditer un document Word, on ne modifie pas directement le fichier .odt/.docx. Pour cela, on utilise un logiciel de traitement de texte qui fournit une interface graphique permettant d'aisément manipuler de tels fichiers.
+- inspecteur / sélectors
 
-Pour une page Web, bien que de tels outils existent, e.g. les **systèmes de gestions de contenus** (CMS), il est fréquent, au contraire, d'aller directement modifier les fichiers Web, ou d'en générer dynamiquement le contenu.
+Afficher/inspecter l'arbre DOM de la page
 
-Il est ainsi nécessaire de pouvoir représenter l'arbre DOM dans un format aisément lisible et modifiable par un humain. Pour ce faire on utilise le langage **HTML** dont la structure est très simple.
+- attributs globaux class/id
+- sélecteurs (#, .)
 
-[+inspecteur]
+Attributes
+        => id et #id (unique)
+        => class : pas besoin unique, séparés par un espace.
+    => selecteurs + outils ? (inspecteur : all vs clic element - TP?)
+        => + tagname + #id + .class (+ de choses + tard)
+        => + attr [attr] / [attr=""] + plein d'autres, pas la peine de retenir par coeur.
+        => sémantique (e.g. <article>)
 
-Chaque élément de la page Web est représentée sous la forme d'une **balise HTML** (html tag) : <html-code><<var>$tagname</var>/></html-code>. Le nom de la balise (tagname) représente le type de l'élément, par exemple :
-- <html-code>&lt;input/&gt;</html-code> est un élément de saisie.
-- <html-code>&lt;img/&gt;</html-code> est une image.
+### Le format d'une page Web
 
-# OLD
+Jusqu'à présent, nous avons vu des éléments HTML permettant de définir le **corps** (contenu) d'une page Web. Cependant une page Web est composée de :
+- une **en-tête** (*head*) définissant les *méta-données* de la page Web.
+- un **corps** (*body*) définissant le *contenu* de la page Web.
 
--> on peut le voir avec l'inspecteur -> c'est du HTML (h4ck cf US)
-    -> body vs head (méta-donnée vs contenu)
-    -> c'est des tags
-        -> <!-- ... --> : commentaire.
-        -> body/p : fils.
-        -> br/ auto-fermant
-        -> entités : < > : confondre avec un tag ?
-    -> en-tête (méta-donnée) 
-            -> meta charset (autres méta-données)
-            [onglet] :
-            -> title
-            -> link favicon
-            + juste évoquer + preview (discord/fb/google) -> pas normalisé
-                - "og:" (Discord) [title/desc/image/type/url]
-                - "twitter:"
-                - "description" : google
-        -> attrs.
-        -> global attr
-            -> title/lang (required for HTML)
-            -> id vs class (+ sélecteur)
-            -> inspecter élément + tagname ?
+Les pages Web suivent ainsi la structure suivante :
 
-    -> plusieurs pages Web
-        -> URL/URI + base (sous-sites)
-        -> robots.txt + meta robots
-    -> pas possible de tout savoir doc + s'inspirer sans copier.
-    -> sémantique
-    -> autres composants : svg/math/object
-    -> ses propres composants
-        -> pas des milliers de lignes
-        -> répétitions
-        -> LISS
-    -> network : lazy-load / multi-src. (pas inclus dans page HTML)
-        -> pre-load ( <link rel="preload"> )
-            https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload
-    -> pas beau, mis en page ? -> avant tables, et plein de trucs moches, maintenant CSS \o/
-
-TW HTML
--------
-
-- URL : nom de domaine : à quel serveur s'adresser + URI : quelle page demander, le serveur donne la page qui s'affiche dans le navigateur. URI ~= chemin => absolu/relatif/../etc.
-- sélecteur + CSS : voir + tôt ?
-	-> inspecteur.
-
-Opti : HTTP2/HTTP3 + lazy load, etc.
-	-> network throttling
-	-> performances
-	-> lighthouse
-	-> etc.
-
-TW CSS
-------
-
-Cours, pas résumé => cheat sheet mais étu doivent aussi faire efforts de synthèse.
-
-CSS : ~800 keywords...
-JS : https://developer.mozilla.org/en-US/docs/Web/JavaScript
-
--> meta
--> fix length & scale : e.g. for print A4/A5/etc.
-	/!\ ZOOM vs scale...
--> grid
--> flex-box
--> media queries : redimentionner, etc.
-
--> optimisations : inert+other stuff : draw/reflow [FUCK]
-
--> fixed vs sticky (! height bug) vs absolute vs float vs grid vs flexbox.
-============
-
-Is it usefull ?
-  <template shadowrootmode="open">
-    <style>
-      p {
-        padding: 8px;
-        background-color: plum;
-      }
-    </style>
-    <p>I'm in the shadow DOM.</p>
-  </template>
-  
- => FAST
- => insérer des éléments sans passer par un CustomElement.
- => géré par le customElement actuel => evite de longs create...
-
-[CM3 ?]
-
-# CM1 : HTML5
-
-[Motivation? : Pourquoi apprendre à faire des pages Web = utile]
-
-## Les pages Web
-
-### URL et URI
-
-
-=> lien URL, comment ça fonctionne ???
--> TODO: CM4 ? lien : nom de domaine, fichier...
-    => structure serveur, distribue des fichiers (simple) [dans l'intro]
-
-+ "#" `#` permet de scroller jusqu'à l'élément indiqué.
-+ "?"
-
-
-#### Les fils
-
-La forme : <html-code>&lt;tagname/&gt;</html-code> est appelée **balise auto-fermante** (self-closing). Elle est utilisée pour les éléments ne contenant pas de fils.
-
-Si l'élément contient des fils, les fils sont alors inclus entre : 
-- une **balise ouvrante** (opening tag) <html-code>&lt;tagname&gt;</html-code>
-- une **balise fermante** (closing tag) <html-code>&lt;/tagname&gt;</html-code>
-
-<html-code>
-&lt;tagname&gt;
-    &lt;img/&gt;
-    &lt;div&gt;
-        &lt;img/&gt;
-    &lt;/div&gt;
-&lt;/tagname&gt;
+<html-code class="block">
+[!DOCTYPE html]
+[html]
+    [head]
+        [meta charset="utf-8"]
+        [title]Page title[/title]
+    [/head]
+    [body]
+        [!-- CONTENT --]
+    [/body]
+[/html]
 </html-code>
 
-Les fils peuvent être :
-- d'autres éléments ;
-- du texte ;
-- des commentaires <html-code>&lt;!-- un commentaire --&gt;</html-code>.
+💡 <html-code>[!DOCTYPE html]</html-code> indique le type du fichier (<u>doc</u>ument <u>type</u>).
 
-⚠ Certains caractères sont réservés car utilisés par le langage HTML. Dans les textes, il convient alors de les remplacer par une **entité HTML** :
-- `<` devient <html-code>&amp;lt;</html-code>
-- `>` devient <html-code>&amp;gt;</html-code>
-- `"` devient <html-code>&amp;quot;</html-code>
-- `&` devient <html-code>&amp;amp;</html-code>
+💡 <html-code>[html][/html]</html-code> est le noeud racine, aussi appelé la **racine** (*root*).
 
-#### Les attributs HTML
+## Encore plus de balises et attributs...
+
+### La documentation
+
+Le langage HTML contient une pléthore de balises (>135) et d'attributs (>131) différents. Cependant, toutes les balises et tous les attributs ne sont pas à utiliser, certains sont :
+- **obsolètes** ;
+- pas **standards** ;
+- **expérimentaux** (changements futurs possibles) ;
+- pas supportés par tous les navigateurs.
+
+💡 La [documentation MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) est très utile pour vérifier les attributs que prend un élément HTML donné.
+
+💡 Le site [caniuse](https://caniuse.com/?search=portal) permet de rechercher si un élément ou un attribut est supporté par les navigateurs, et à partir de quelle version.
+
+### Balises sémantiques et SEO
+
+Beaucoup d'éléments HTML sont en réalité "identiques" et se distinguent que par leur **sémantique**, e.g. :
+- <html-code>[thead][/thead]</html-code> : en-tête de tableau.
+- <html-code>[tbody][/tbody]</html-code> : corps de tableau.
+- <html-code>[tfoot][/tfoot]</html-code> : pied de tableau.
+
+Ces deux éléments sont en réalité identiques dans leur affichage et comportement, leur seule différence est dans le nom de la balise.
+
+De la même manière, les éléments <html-code>[strong]A[/strong]</html-code>, <html-code>[em]A[/em]</html-code>, etc. ont juste un affichage par défaut différent. Affichage qui peut être aisément modifié et interverti.
+
+💡 L'avantage d'avoir des noms différents est de rendre le code HTML plus explicite, facilitant sa lecture par les machines et les humains. Cependant, à votre niveau, il n'est pas utile de trop en accorder d'importance.
+
+💡 La facilitation de la compréhension de la structure de votre page Web par des machines (e.g. quel est le titre de la page, quels sont les mots clefs importants, etc), impact notamment le SEO (<u>S</u>earch <u>E</u>ngine <u>O</u>ptimization).
+
+### Accessibilité
+
+HTML offre aussi de nombreux attributs afin de faciliter l'accessibilité de vos pages Web, notamment aux personnes souffrant d'handicaps visuels ou moteur.
+
+L'accessibilité est un métier à part entière, il n'est donc pas attendu de vous que vous produisiez des pages Web accessibles.
+
+### Les composants Web
+
+Comme si cela ne suffisait pas, vous pouvez aussi créer vos propres éléments HTML personnalisés (*custom elements*).
+
+Imaginez par exemple une page Web affichant une liste de produits. Chaque produit est structuré et affiché de la même manière avec une image, un nom, et un prix :
+<html-code class="block">
+[div class="produit"]
+    [strong class="nom">Pizza[/strong]
+    [img src="/assets/pizza.jpg"/]
+    [div class="prix"]16€[/div]
+[/div]
+</html-code>
+
+Vous pourriez copier-coller la même structure pour chaque produit, mais cela comporte de nombreux défauts :
+- pour en changer la structure, il faudra tous les modifier (avec risques d'oublie).
+- le code HTML devient très lourd et verbeux.
+
+Pour éviter cela, vous pouvez définir votre propre élément personnalisé :
+<html-code class="block">
+[prod-card nom="Pizza" prix="16"][/prod-card]
+</html-code>
+
+Ces éléments personnalisés (*custom elements*) sont créés en associant un nom de balise (doit contenir un <html-code>-</html-code>) à un composants Web (*Web Components*) dont vous définirez le contenu en HTML :
+<html-code class="block">
+[div class="produit"]
+    [strong class="nom">${?}[/strong]
+    [img src="/assets/${?}.jpg"/]
+    [div class="prix"]${?}€[/div]
+[/div]
+</html-code>
+
+Le navigateur remplira alors automatiquement chacun de vos éléments personnalisés par le contenu que vous aurez spécifié. Cela présente de nombreux avantages :
+- rend le code plus lisible et explicite.
+- permet d'organiser son code en différents modules/fichiers.
+- permet une arborescence de projet plus explicite.
+- évite les problèmes liés à la duplication de code.
+- performances améliorées (temps de téléchargement et vitesse d'exécution).
+
+💡 Il existe de très nombreuses bibliothèques/framework Web permettant de définir des composants Web. Dans le cadre de ce module, on utilisera LISS à des fins pédagogique pour simplifier la création de vos propres composants Web.
+
+⚠ Les balises auto-fermantes ne sont pas supportées par les composants Web.
 
 
-Les **attributs HTML** permettent de "configurer" un élément : <html-code>&lt;tagname <var>$attr_name</var>="<var>$attr_value</var>"/&gt;</html-code>
+# X
 
-Par exemple :
-- <html-code>&lt;input type="password"&gt;</html-code> est un élément de saisie de mot de passe.
-- <html-code>&lt;input type="date"&gt;</html-code> est un élément de saisie de date.
-- <html-code>&lt;input type="color"&gt;</html-code> est un élément de saisie de couleur.
+## CM1
 
-💡 Il existe une multitude de balises, d'attributs, et de valeurs possibles pour ces attributs. Il est évident qu'il ne faut pas les apprendre par coeur, mais surtout de retenir la structure du langage HTML, d'avoir une idée de ce qui est possible, et d'être capable de retrouver l'information utile dans la documentation :
 - https://developer.mozilla.org/docs/Web/HTML
 - https://www.w3schools.com/html/
-
-Il existe cependant quelques attributs HTML un peu spéciaux appelés **attributs universels** (global attributes), utilisables sur toutes balises :
-- <html-code>id="ident"</html-code> : identifiant (sélecteur <css-code>#ident</css-code>) ;
-- <html-code>class="c1[...]"</html-code> : identifiant (sélecteur <css-code>.c1</css-code>) ;
-- <html-code>name="nom"</html-code> : pour les formulaire.
-- <html-code>title="..."</html-code> : texte affiché au survol de l'élément.
-- <html-code>data-<var>$name</var>="..."</html-code> : données
-
-<todo>En introduire plus tard ? les sélecteurs.</todo>
-
-- hidden (si jamais montré, si présentation : display none)
-
-- draggable
-- inert
-- popover
-
-- enterkeyhint/inputmode (mobile)
-
-https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes
-
-## Les différents types de balises
-
-### Texte
-
-<ul>
-    <li> Un paragraphe (<u>p</u>aragraph) avec un retour à la ligne (<u>br</u>eak line) :
-<web-system>
-    <script type="html">
-        <p>Texte avec un <br/>
-        retour à la ligne.</p>
-    </script>
-    <div class="flex-2">
-        <html-output></html-output>
-        <web-output></web-output>
-    </div>
-</web-system></li>
-</ul>
-
-
-### Liens hypertextes
-
-Une grande force du Web est de pouvoir naviguer d'une page Web à une autre via des **liens hypertextes**. Pour cela on utilise la balise `a` (<u>a</u>nchor) dont le fils est le texte à afficher, et l'attribut <html-code>href</html-code> (<u>h</u>ypertext <u>ref</u>erence) l'adresse de la page Web sur laquelle se rendre lorsque le lien est cliqué.
-
-<web-system>
-    <script type="html">
-        Cliquez <a href="./index.html">ici</a>.
-    </script>
-    <div class="flex-2">
-        <html-output></html-output>
-        <web-output></web-output>
-    </div>
-</web-system>
-
-💡 Le lien peut être **absolu** (commençant par `/`) ou **relatif** (commençant par `./`).<br/>
-💡 Pour les **liens externes**, l'URL doit être précisée, e.g. `"https://foo.fr/faa"`.<br/>
-💡 L'attribut <html-code>target</html-code> permet d'indiquer si la page web doit être ouverte dans l'onglet courant, dans un nouvel onglet, dans une nouvelle fenêtre, etc.
-
-#### Télécharger des fichiers
-
-Au lieu d'afficher le contenu dans le navigateur, il est aussi possible de forcer son téléchargement grâce à l'attribut <html-code>download</html-code> :
-
-<web-system>
-    <script type="html">
-        Cliquez <a href="./index.html" download>ici</a>
-        pour télécharger.
-    </script>
-    <div class="flex-2">
-        <html-output></html-output>
-        <web-output></web-output>
-    </div>
-</web-system>
-
-💡 Les attributs <html-code>filename</html-code> et <html-code>type</html-code> permettent d'indiquer, respectivement, le nom sous lequel enregistrer le fichier, ainsi que son type.
-
-
-
-### Listes
-
-<ul>
-<li>Liste non-ordonnée (<u>u</u>nordered <u>l</u>ist):
-<web-system>
-    <script type="html">
-        <ul>
-            <li>Item</li>
-            <li>Item</li>
-        </ul>
-    </script>
-    <div class="flex-2">
-        <html-output></html-output>
-        <web-output></web-output>
-    </div>
-</web-system></li>
-<li>Liste ordonnée (<u>o</u>rdered <u>l</u>ist) :
-    <ul>
-        <li>Attributs: <html-code>type<html-code>, <html-code>start<html-code>, <html-code>reversed<html-code></li>
-    </ul>
-<web-system>
-    <web-option for="type"></web-option>
-    <web-option for="type">type="a"</web-option>
-    <web-option for="type">type="A"</web-option>
-    <web-option for="type">type="i"</web-option>
-    <web-option for="type">type="I"</web-option>
-    <web-option for="start"></web-option>
-    <web-option for="start">start="2"</web-option>
-    <web-option for="start">start="3"</web-option>
-    <web-option for="order"></web-option>
-    <web-option for="order">reversed</web-option>
-    <script type="html">
-        <ol $type $start $order>
-            <li>Item</li>
-            <li>Item</li>
-        </ol>
-    </script>
-    <div class="flex-2">
-        <html-output></html-output>
-        <web-output></web-output>
-    </div>
-</web-system>
-</li></ul>
-
-### Tables
-
-Il est aussi possible d'inclure une table en HTML avec les balises :
-- <html-code>tbody</html-code> (<u>t</u>able <u>body</u>) : le corps de la table.
-- <html-code>tr</html-code> (<u>t</u>able <u>r</u>)ow : une ligne de la table.
-- <html-code>td</html-code> (<u>t</u>able <u>d</u>ata) : une cellule de données de la table.
-- <html-code>th</html-code> (<u>t</u>able <u>h</u>eader) : une cellule d'en-tête.
-
-<web-system>
-    <script type="html">
-        <table>
-            <tbody>
-                <tr><th>+</th><th>1</th><th>2</th></tr>
-                <tr><th>1</th><td>2</td><td>3</td></tr>
-                <tr><th>2</th><td>3</td><td>4</td></tr>
-            </tbody>
-        </table>
-    </script>
-    <div class="flex-2">
-        <html-output></html-output>
-        <web-output></web-output>
-    </div>
-</web-system>
-
-💡 Les attributs <html-code>colspan</html-code> et <html-code>rowspan</html-code> permettent d'étendre une cellule sur plusieurs colonnes et/ou lignes.
-
-
-### Conteneurs
-
-- div
-- span
-
--> parler sémantiques...
-Il existe plus de 135 balises différentes.
-
-- sémantique : on ne les verra pas
-- effets seuls : à éviter -> CSS.
-- obsolète
-- et des trucs plus rares / applications spécifiques.
-
-- moins de la moitié réellement utile.
-
--> définir ses propres balises
-
-- p
-- h1 à h6
-
-=> can be forgotten
-- pre / em / strong / del / ins
-
-- header/footer/main/nav/aside.
-
--> et énormément d'autres
-    -> ça peut être bien de les lire une fois pour voir ce qui est possible.
-
-- theader//tfoot
-- tr/th/td
-
-### Inclure des ressources
-
-Les pages Web peuvent aussi inclure des ressources multimédia (images, vidéos, son) ainsi que d'autre nature (formules de maths, page Web, PDF, etc).
-
-- img
-    - src
-    - loading eager/lazy
-
-- picture/video/audio
-    - source
-    - track (vidéo/audio)
-
-- svg
-- math
-- canvas
-
-- iframe (HTML)
-    - allow/sandbox
-    - src
-
-- object : autre (e.g. PDF)
-    - type
-    - data (= src) [<= null]
-
-### Formulaires (10)
-
-- form
-- select
-    - option
-    - optgroup
-
-- textarea
-    - content-editable/spellcheck/writting suggestions <- HTMLContent
-
-- input
-    - datalist (obsolète -> JS ?)
-
-- output
-- meter/progress
-
-## Format d'une page Web (13)
-
-- html
-- head (link/base/meta/style/title)
-- body
-
-- window -> document -> html ->
-
-
-### Sémantique
-
-- caption
-- portail
-- map/area
-- figure/figcaption
-- hgroup
-
-- menu
-
-- address
-- article
-
-- aside
-- footer
-- header
-- main
-- nav
-- section
-- search
-
-- abbr
-- cite
-- code
-
-- data
-- dfn
-
-- kdb
-- mark
-- q
-- rp/rt
-- ruby
-- s
-- samp
-
-- small
-
-- sub/sup
-- time
-- var
-
-- blockquote/cite
-- dd/dt/dl
-
-- hr
-- label
-
-### Obsoletes (car à l'époque pas CSS et stylesheet dégueux)
-
-- embed
-- b / i / u
-- button
-- fieldset / legend
-
-## Composants Web
-
--> composant Web + LISS
--> template + slot
-
-
-## Les outils
-
-
-Les outils
-Les outils
-La documentation
 ▶ La documentation :
 ▶ https://developer.mozilla.org/docs/Web/HTML
 ▶ https://www.w3schools.com/html/
@@ -619,87 +498,22 @@ Introduction_to_HTML/Getting_started
 ▶ Les r ´ef ´erences :
 ▶ https://developer.mozilla.org/docs/Web/HTML/Element
 ▶ https://www.w3schools.com/tags/ref_byfunc.asp
-26/34
-Les outils
-La documentation
-▶ V ´erifier la compatibilit ´e des navigateurs : https://caniuse.com/
-27/34
-Les outils
-La documentation
-▶ Attentions aux ´el ´ements d ´epr ´eci ´es !
-28/34
-Les outils
-Pour ´ecrire de l’HTML
-▶ HTML : fichier texte d’extension .html ;
-▶ On utilisera Visual Studio Code (supporte aussi R/Python) :
-▶ Coloration et auto-compl ´etion ;
-▶ Documentation au survol ;
-▶ Extension HTML Hint : v ´erification de la syntaxe HTML ;
-▶ Extension Live Server : mise `a jour temps r ´eel ;
-▶ ChatGPT INTERDIT !
-29/34
-Les outils
-Navigateur
-▶ Source : fichier HTML (FF/Chr: ctrl + U ).
+
+- inspecteur HTML (h4ck cf US)
 ▶ Inspecteur : DOM (FF: ctrl + + I / Chr: ctrl + + C ).
-30/34
-R ´esultat
-R ´esultat
-Il manque quelque chose...
-<body>
-<header>
-<img src='...'/>
-<img src='...'/>
-<button>Assistance</button>
-<button></button>
-</header>
-<div>
-<span>Messagerie</span>
-<button></button>
-<div>
-<img src='...'/>
-<span>87 mail(s)</span>
-</div>
-</div>
-</body>
-32/34
-R ´esultat
-Il manque quelque chose...
-▶ HTML : structure de la page Web :
-▶ Quels sont les ´el ´ements de la page ?
-▶ Quelle est la hi ´erarchie des ´el ´ements ?
-▶ Mise en forme de la page ?
-▶ Quelles sont les positions, marges, et tailles des ´el ´ements ?
-▶ Quelles sont les couleurs, polices, d ´ecorations des ´el ´ements ?
-▶ Quels sont les filtres, transformations, transitions, et animations 
 
-# TODO
-
-CM2:
-- col/colgroup : css
-- span
-- wbr : responsive. + page break etc.
-- table vs grid : DO NOT USE TABLE FOR POSITIONNING !
-
-### Intéractions : facilite au lieu comportement JS (3)
-
-- dialog
-- details
-- summary
-
-=> CM2
-- noscript
-- script
-
-link css -> blocking="render" 
-
--> color-scheme (css) (<meta>)
-
--> meta viewport : responsive : mobile
-    -> mais + de personnalisation.
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-Without a viewport meta tag, mobile devices render pages at typical desktop screen widths and then scale the pages down, making them difficult to read.
-(idiot)
+-> en-tête (méta-donnée) 
+    -> base (sous-sites) + URI abs/relatif + #?
+💡 Le lien peut être **absolu** (commençant par `/`) ou **relatif** (commençant par `./`).<br/>
+💡 Pour les **liens externes**, l'URL doit être précisée, e.g. `"https://foo.fr/faa"`.
+    -> meta charset (autres méta-données)
+    [onglet] :
+    -> title
+    -> link favicon
+    + juste évoquer + preview (discord/fb/google) -> pas normalisé
+        - "og:" (Discord) [title/desc/image/type/url]
+        - "twitter:"
+        - "description" : google
 
 </main>
     </body>

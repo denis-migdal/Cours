@@ -67,7 +67,10 @@ export default class Code extends LISS({
             _vars[i].replaceWith(name);
         }
 
-        let content = hljs.highlight(this.host.textContent, { language: "html" }).value;
+        let content = this.host.textContent!.trim();
+        content = content.replaceAll('[', '<').replaceAll(']', '>').replaceAll('£', '&');
+
+        content = hljs.highlight(content, { language: "html" }).value;
         
         content = content.replaceAll(/(__[A-Z]+[0-9]*)/g, (_: unknown, name: string) => {
             return vars[name].outerHTML
@@ -78,8 +81,8 @@ export default class Code extends LISS({
     }
 }
 
-function generate(lang: string) {
-    return LISS({extends: Code, params: {code: lang} });
+function generate(lang: string, cdata=false) {
+    return LISS({extends: Code, params: {code: lang, cdata} });
 }
 
 //LISS.define("js-code", JSCode);
