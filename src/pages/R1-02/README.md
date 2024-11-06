@@ -1,6 +1,6 @@
-## Changelog...
-
 ## Supports
+
+-> regénérer les supports (attention aux marges pour versions impr.)
 
 - CM
   -> 1h/séance suffisant.
@@ -41,9 +41,6 @@
 -> backtic ` => noms colonnes
            ' => str
 	   " => can be both à éviter.
-CM3
--> fonctions d’agrégations
--> HAVING lignes pas entrées.
 
 TP1
   - reformuler TP BDR : a si non null sinon b.

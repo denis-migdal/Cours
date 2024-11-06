@@ -757,7 +757,7 @@ SELECT Date, group_concat(Q) FROM Produits
 
 <div>
   <ul>
-    <li><sql-code>HAVING</sql-code> filtre les entrées <b>après</b> agrégation.</li>
+    <li><sql-code>HAVING</sql-code> filtre les lignes <b>après</b> agrégation.</li>
   </ul>
   <br/>
   <div class="flex">

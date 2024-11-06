@@ -790,7 +790,7 @@ UPDATE $TABLENAME SET $COL = $VAL[,...] WHERE $COND;
   <span slot='select'>SELECT * FROM Users;</span>
   <span slot="options" data-vals="Nom = 'Durand'" data-cond="Nom == 'Durant'">Modifier une colonne</span>
   <span slot="options" data-vals="Nom = 'Durand', Prenom='Théo'" data-cond="ID == 2">Modifier plusieurs colonnes</span>
-  <span slot="options" data-vals="Age = 23" data-cond="Age == 43">Plusieurs lignes modifiées</span>
+  <span slot="options" data-vals="Age = 23" data-cond="Age == 43">Plusieurs entrées modifiées</span>
   <span slot="options" data-vals="Age = Age + 10" data-cond="Nom LIKE 'D%'">Valeur calculée à partir de l'entrée</span>
 
 ```sql
