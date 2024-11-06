@@ -33,11 +33,11 @@ Dans le cadre de ce TP, vous utiliserez la base "chimie" disponible via [ce lien
 
 1. Pour chaque résultats, affichez le numéro d'expérience et le nom, prénom du chimiste l'ayant réalisé.
    <pre lang=sql contenteditable></pre>
-1. Modifiez la requête précédente afin d'afficher le nom, prénom des chimistes suivis des numéro, concaténés, des expériences qu'ils ont réalisés (colonne `exps`).
+1. Sans modifier la jointure, adaptez la requête précédente afin d'afficher le nom, prénom des chimistes suivis des numéro, concaténés, des expériences qu'ils ont réalisés (colonne `exps`).
    <pre lang=sql contenteditable></pre>
 1. Modifiez la requête précédente afin d'afficher le nom, prénom des chimistes suivis du nombre d'expériences *différentes* qu'ils ont réalisés.  (colonne `nb_exps`)
    <pre lang=sql contenteditable></pre>
-1. Modifiez la requête précédente afin de n'afficher que ceux qui n'ont pas effectué d'expérience.
+1. Sans modifier la jointure, adaptez la requête précédente afin de n'afficher que ceux qui n'ont pas effectué d'expérience.
    <pre lang=sql contenteditable></pre>
 1. Vous remarquerez que la requête ne retourne aucun résultats, pourquoi ?
    <pre contenteditable></pre>
@@ -52,6 +52,8 @@ Dans le cadre de ce TP, vous utiliserez la base "chimie" disponible via [ce lien
    <pre contenteditable lang="sql"></pre>
 
 ## Mesurer la performance des sous-requêtes et jointures
+
+⚠ Pour des raisons de performances, vous devrez utiliser une base de données "in memory". Pour cela, lancez une nouvelle instance de SQLite sans préciser ni ouvrir de fichies.
 
 1. Activez `.timer on` et `.eqp on`.
 1. Re-créez les tables `U_NC`, `U_PK`, et `D` du TP3, mais cette fois avec <sql-code class='d4rk'><var>$NB</var></sql-code> = `1000000`, et sans manuellement créer d'index.

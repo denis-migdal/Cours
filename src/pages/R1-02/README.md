@@ -2,6 +2,13 @@
 
 -> regénérer les supports (attention aux marges pour versions impr.)
 
+- tous :
+  -> '' : string
+  -> `` : nom de colonne
+  -> éviter "".
+
+=> les commentaires en SQL ? (--)
+
 - CM
   -> 1h/séance suffisant.
   -> séparer le support en 4.
@@ -26,7 +33,8 @@
 
 - TP
   -> TP1
-    -> ajouter des questions pour COALESCE pour mieux comprendre
+    -> ajouter des questions pour COALESCE pour mieux comprendre.
+    -> reformuler COALESCE : a si non null sinon b.
     -> c/c pour éviter erreur recopie quand met la réponse sur le sujet.
   -> TP2
     -> on peut utiliser ORDER BY & LIMIT pour DELETE.
@@ -35,29 +43,6 @@
 
 - imprimer le cheat sheet (attention aux marges).
 - mettre en place un serveur web en mode DS (pour le sujet).
-
-### Notes (MISC)
-
--> backtic ` => noms colonnes
-           ' => str
-	   " => can be both à éviter.
-
-TP1
-  - reformuler TP BDR : a si non null sinon b.
-
-=> TP4 préciser inner join.
-=> TP3/4 => IN MEMORY !!!
-
-=> TP3
-  - T_PK : première entrée => dernière entrée.
-  - /!\
-  - PRAGMA foreign_keys = ON;
-
-=> les commentaires en SQL ? (--)
-
-=> chimiste.sqlite
-  -> mélanger les lignes !!!
-  -> refaire les tables et contraintes
 
 ### TP5
 

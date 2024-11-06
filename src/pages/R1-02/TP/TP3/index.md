@@ -40,10 +40,13 @@
 
 ## Clefs étrangères
 
+⚠ Vous devrez activer les clefs étrangères via la commande :<br/>
+<pre lang="sql">PRAGMA foreign_keys = ON;</pre>
+
 1. Créez une table `T_FK` ayant pour colonnes :
    - `A`  : une clef étrangère non-nulle vers la table `T_PK`.
    <pre lang="sql" contenteditable></pre>
-2. Insérez une entrée dans `T_FK` référençant la première entrée de `T_PK`.
+2. Insérez une entrée dans `T_FK` référençant la dernière entrée de `T_PK`.
    <pre lang="sql" contenteditable></pre>
 3. Incrémentez la colonne `ID` de l'entrée référencée. Que se passe-t-il ? Pourquoi ?
    <pre contenteditable></pre>
@@ -65,6 +68,8 @@
    <pre contenteditable></pre>
 
 ## Mesurer la performance des index
+
+⚠ Pour des raisons de performances, vous devrez utiliser une base de données "in memory". Pour cela, lancez une nouvelle instance de SQLite sans préciser ni ouvrir de fichies.
 
 Nous allons désormais voir à quel point les index sont vitaux lors de requêtes SQL sur de très larges tables. Pour cela nous suivrons le protocole suivant :
 - créer 3 tables (<sql-code>ID INTEGER NOT NULL, Data TEXT</sql-code>) :
