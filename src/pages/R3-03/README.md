@@ -1,11 +1,3 @@
-TP
--> votre propre CV découpé en composants web
--> chercher dans doc les balises HTML a priori nécessaire.
--> pas de code, pas de chat GPT
-    -> exclusion du cours si GPT.
--> à faire sérieusement, base de vos travaux futurs.
-
-
 ## CM2 
 
 => en réalité, classes + <b> peuvent être utilisés par facilité.

@@ -1,50 +1,72 @@
+## Changelog...
 
 ## Supports
 
-- CM: 1h suffisant ?
+- CM
+  -> 1h/séance suffisant.
+  -> séparer le support en 4.
+  -> améliorer les exemples, rédiger les détails non-rédigés.
+  -> améliorer/ajouter les exemples interactifs/animations
+    -> CM2
+      -> mieux expliquer les agrégations ?
+    -> CM3
+      -> exemple de pourquoi index + rapide.
+    -> CM4
+      -> ss-rqt corrélée : une animation pour montrer la différence.
+      -> join : exemples + explicites (e.g. produit/vente/etc)
+      -> exemple de JOIN chaîné
+      -> inverser l'ordre des tables de l'exemple (#57) et montrer LEFT JOIN.
+  -> rajouter certains conseils de TD en CM.
+    -> CM1
+      -> attention uniquement cols demandées, respecter la casse, indenter la rq.
+    -> CM4
+      -> comment bien faire un join ?
+        -> suivre les flèches
+        -> commencer par les plus petites tables/résultats.
+
+- TP
+  -> TP1
+    -> ajouter des questions pour COALESCE pour mieux comprendre
+    -> c/c pour éviter erreur recopie quand met la réponse sur le sujet.
+  -> TP2
+    -> on peut utiliser ORDER BY & LIMIT pour DELETE.
+
+## Organisation DS
+
+- imprimer le cheat sheet (attention aux marges).
+- mettre en place un serveur web en mode DS (pour le sujet).
+
+### Notes (MISC)
+
 -> backtic ` => noms colonnes
            ' => str
 	   " => can be both à éviter.
-
-- CM : séparer support en 1 support/CM.
-- CM : améliorer les exemples.
-- CM : certaines parties (details) non-rédigée.
-- CM : refaire sql-interactive + animations + initial scrollTo.
-- CM4 Slides : refaire animations
-- CM4 Slides : ss-rqt corrélée : mieux expliquer la différence avec une animation.
-
-### Autres
-
-=> chimiste.sqlite : mélanger les lignes !!!
-=> -- commentaires en sql (TP4 ?)
-
--> mieux expliquer agrégats
--> fonction d'agrégat ou d'agrégation ?
+CM3
+-> fonctions d’agrégations
 -> HAVING lignes pas entrées.
 
-### TP1
+TP1
+  - reformuler TP BDR : a si non null sinon b.
 
+=> TP4 préciser inner join.
+=> TP3/4 => IN MEMORY !!!
 
-- reformuler TP BDR : a si non null sinon b.
-- qqs tests de coalesce ?
-- + de questions pour ceux qui finissent en avance ?
-- rappel : relire questions (pas de cols en trop), relire reps, copier/coller pour éviter coquilles.
-- " vs '
-- casse
-- espaces
-- ne pas renommer les fichiers !!!
+=> TP3
+  - T_PK : première entrée => dernière entrée.
+  - /!\
+  - PRAGMA foreign_keys = ON;
 
-### TP3
+=> les commentaires en SQL ? (--)
 
-- Create table + test contraintes + import/export (TP5 ?)
+=> chimiste.sqlite
+  -> mélanger les lignes !!!
+  -> refaire les tables et contraintes
 
 ### TP5
 
 - test postgres GUI (plateforme UCA BDD)
 
 ## Idées TD
-
-### TD1 lire doc SQLite
 
 ### TD3
 
@@ -54,8 +76,6 @@ Comment bien découper en tables (conception), dépendance fonctionnelle (?).
 ### TP5
 
 - interfaces pgAdmin / python bindings (injections) ?
-
-
 - PRAGMA optimize;  / OPTIMIZE => avant chaque fermeture de la database. (?)
 
 ## Export/import
