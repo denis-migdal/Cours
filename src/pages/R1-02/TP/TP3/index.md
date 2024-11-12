@@ -69,7 +69,7 @@
 
 ## Mesurer la performance des index
 
-⚠ Pour des raisons de performances, vous devrez utiliser une base de données "in memory". Pour cela, lancez une nouvelle instance de SQLite sans préciser ni ouvrir de fichies.
+⚠ Pour des raisons de performances, vous devrez utiliser une base de données "in memory". Pour cela, lancez une nouvelle instance de SQLite sans préciser ni ouvrir de fichiers.
 
 Nous allons désormais voir à quel point les index sont vitaux lors de requêtes SQL sur de très larges tables. Pour cela nous suivrons le protocole suivant :
 - créer 3 tables (<sql-code>ID INTEGER NOT NULL, Data TEXT</sql-code>) :

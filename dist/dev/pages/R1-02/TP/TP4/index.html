@@ -14,7 +14,6 @@
 <p><tp-consignes></tp-consignes></p>
 <p>Dans le cadre de ce TP, vous utiliserez la base &quot;chimie&quot; disponible via <a href="../../../../assets/sql/chimie.sqlite">ce lien</a>.</p>
 <h2 id="sous-requêtes">Sous-requêtes</h2>
-<p>[TODO: resultats.resultat =&gt; CHECK IN()].</p>
 <ol>
 <li>Déterminez la structure de la base de donnée et de ses tables.<br/>
 [TODO: champ pour déposer image du schéma.]</li>
@@ -25,9 +24,9 @@ b. En utilisant une sous-requête corrélée.<pre lang=sql contenteditable></pre
 <h2 id="join">JOIN</h2>
 <ol>
 <li>Pour chaque résultats, affichez le numéro d&#39;expérience et le nom, prénom du chimiste l&#39;ayant réalisé.<pre lang=sql contenteditable></pre></li>
-<li>Modifiez la requête précédente afin d&#39;afficher le nom, prénom des chimistes suivis des numéro, concaténés, des expériences qu&#39;ils ont réalisés (colonne <code>exps</code>).<pre lang=sql contenteditable></pre></li>
+<li>Sans modifier la jointure, adaptez la requête précédente afin d&#39;afficher le nom, prénom des chimistes suivis des numéro, concaténés, des expériences qu&#39;ils ont réalisés (colonne <code>exps</code>).<pre lang=sql contenteditable></pre></li>
 <li>Modifiez la requête précédente afin d&#39;afficher le nom, prénom des chimistes suivis du nombre d&#39;expériences <em>différentes</em> qu&#39;ils ont réalisés.  (colonne <code>nb_exps</code>)<pre lang=sql contenteditable></pre></li>
-<li>Modifiez la requête précédente afin de n&#39;afficher que ceux qui n&#39;ont pas effectué d&#39;expérience.<pre lang=sql contenteditable></pre></li>
+<li>Sans modifier la jointure, adaptez la requête précédente afin de n&#39;afficher que ceux qui n&#39;ont pas effectué d&#39;expérience.<pre lang=sql contenteditable></pre></li>
 <li>Vous remarquerez que la requête ne retourne aucun résultats, pourquoi ?<pre contenteditable></pre></li>
 <li>Modifiez la requête précédente pour afficher <em>tous</em> les chimistes avec leur nombre d&#39;expériences distinctes.<pre contenteditable lang="sql"></pre></li>
 <li>Modifiez la requête précédente pour afficher les chimistes avec leur moyenne des températures des expériences qu&#39;ils ont réalisés (colonne <code>avg_temp</code>).<pre contenteditable lang="sql"></pre></li>
@@ -36,6 +35,7 @@ b. En utilisant une sous-requête corrélée.<pre lang=sql contenteditable></pre
 <sql-code class="d4rk block">AVG( CASE WHEN $COND THEN 1 ELSE 0 END ) as taux</sql-code><pre contenteditable lang="sql"></pre></li>
 </ol>
 <h2 id="mesurer-la-performance-des-sous-requêtes-et-jointures">Mesurer la performance des sous-requêtes et jointures</h2>
+<p>⚠ Pour des raisons de performances, vous devrez utiliser une base de données &quot;in memory&quot;. Pour cela, lancez une nouvelle instance de SQLite sans préciser ni ouvrir de fichiers.</p>
 <ol>
 <li>Activez <code>.timer on</code> et <code>.eqp on</code>.</li>
 <li>Re-créez les tables <code>U_NC</code>, <code>U_PK</code>, et <code>D</code> du TP3, mais cette fois avec <sql-code class='d4rk'><var>$NB</var></sql-code> = <code>1000000</code>, et sans manuellement créer d&#39;index.</li>

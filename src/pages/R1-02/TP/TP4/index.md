@@ -19,8 +19,6 @@ Dans le cadre de ce TP, vous utiliserez la base "chimie" disponible via [ce lien
 
 ## Sous-requêtes
 
-[TODO: resultats.resultat => CHECK IN()].
-
 1. Déterminez la structure de la base de donnée et de ses tables.<br/>
    [TODO: champ pour déposer image du schéma.]
 1. Écrivez les requêtes SQL permettant d'obtenir les chimistes ayant au moins un résultat d'expérience.<br/>
@@ -53,7 +51,7 @@ Dans le cadre de ce TP, vous utiliserez la base "chimie" disponible via [ce lien
 
 ## Mesurer la performance des sous-requêtes et jointures
 
-⚠ Pour des raisons de performances, vous devrez utiliser une base de données "in memory". Pour cela, lancez une nouvelle instance de SQLite sans préciser ni ouvrir de fichies.
+⚠ Pour des raisons de performances, vous devrez utiliser une base de données "in memory". Pour cela, lancez une nouvelle instance de SQLite sans préciser ni ouvrir de fichiers.
 
 1. Activez `.timer on` et `.eqp on`.
 1. Re-créez les tables `U_NC`, `U_PK`, et `D` du TP3, mais cette fois avec <sql-code class='d4rk'><var>$NB</var></sql-code> = `1000000`, et sans manuellement créer d'index.

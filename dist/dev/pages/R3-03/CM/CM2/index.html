@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CM2 (Web1)</title>
+        <link rel="stylesheet" href="./index.css">
+        <script type="module" src="./index.js" defer></script>
+    </head>
+    <body>
+        <style>
+        </style>
+        <header></header>
+        <main>
+
+
+<h1 id="cm2--css3">CM2 : CSS3</h1>
+<p>Au cours précédent, nous définissions la <em>structure</em> des pages Web grâce à HTML.
+Il nous faut désormais définir l&#39;<em>affichage</em> de notre page Web.</p>
+<p>Pour cela, nous utiliserons des fichier CSS (<em>Cascading Style Sheets</em>), des <em>feuilles de styles</em> à appliquer à notre page Web, qui permettent de définir :</p>
+<ul>
+<li>le <em>style d&#39;un texte</em> (police, graisse, style, couleurs, casse, etc.) ;</li>
+<li>le <em>positionnement</em> des différents éléments (marges intérieurs/extérieurs, bordures, position, etc.).</li>
+<li>des <em>animations</em>.</li>
+</ul>
+<h2 id="les-règles-css">Les règles CSS</h2>
+<h3 id="inclure-des-règles-css-à-une-page-web">Inclure des règles CSS à une page Web</h3>
+<p>L&#39;ajout d&#39;une feuille de style CSS à la page web se fait via un élément HTML <html-code>link</html-code> :</p>
+<html-code class="block d4rk">
+[!DOCTYPE html]
+[html]
+  [head]
+    [!-- ... --]
+    [link rel='stylesheet' href='<var>$CSS_FILE</var>' blocking="render"/]
+  [/head]
+  [body]
+    [!-- ... --]
+  [/body]
+[/html]
+</html-code>
+
+<p>💡 L&#39;attribut <html-code>blocking=&quot;render&quot;</html-code> permet de bloquer l&#39;affichage de la page tant que la feuille de style n&#39;a pas été chargée. Cela évite un effet de scintillement au chargement de la page.</p>
+<p>⚠ S&#39;il est techniquement possible d&#39;ajouter des règles CSS via un élément HTML <html-code>[style]</html-code> ou un attribut HTML <html-code>style</html-code>, il convient d&#39;éviter cela autant que possible.</p>
+<h3 id="déclarer-une-règle-css">Déclarer une règle CSS</h3>
+<p>Un fichier CSS est composé de <em>règles CSS</em>, elles-même composée :</p>
+<ul>
+<li>d&#39;un <em>sélecteur</em> (indique les éléments sur lesquels appliquer la règle CSS) ;</li>
+<li>d&#39;une ou plusieurs <em>déclarations</em>, attribuant une <em>valeur</em> à une <em>propriété CSS</em>.</li>
+</ul>
+<css-code class="block d4rk">
+<var>$SELECTOR</var> {
+    <var>$PROPRIETY</var>: <var>VALUE</var>;
+}
+</css-code>
+
+<p>Par exemple, pour aligner le texte des paragraphes à droite :
+<css-code class="block d4rk">
+p {
+    text-align: right;
+}
+</css-code></p>
+<h3 id="les-sélecteurs-css-déplacer-cm1">Les sélecteurs CSS (déplacer CM1)</h3>
+<p>[TODO: rappel des selecteurs du CM précédent ?]
+[+~* :root] + pseudo-élément/classes
+[&amp; nested rules]
+[slot/hosts]</p>
+<ul>
+<li>principe des slots + example LISS...</li>
+</ul>
+<h3 id="valeur-par-défaut-et-héritage">Valeur par défaut et héritage</h3>
+<p>Chaque propriété CSS a une valeur par défaut. Lorsque cette dernière est <css-code>inherit</css-code>, par défaut, sa valeur sera celle de l&#39;élément parent. On dit alors que la propriété CSS est <em>héritée</em> :
+<html-code class="block d4rk">
+[div]Mon texte: [span]Hello[/span][/div]
+</html-code>
+<css-code class="block d4rk">
+div {
+    font-weight: bold;
+}
+</css-code></p>
+<p><html-code>[span]</html-code> ne définissant pas de valeurs pour <css-code>font-weight</css-code>, il héritera de son père, i.e. sera affiché en gras.</p>
+<p>CSS défini d&#39;autres valeurs spéciales :</p>
+<ul>
+<li><css-code>initial</css-code> : revient à la valeur par défaut.</li>
+<li><css-code>unset</css-code> : revient à la valeur héritée, sinon à celle par défaut.</li>
+<li><css-code>revert</css-code> : revient à la valeur par défaut définie par le navigateur.</li>
+<li><css-code>revert-layer</css-code> : revient à la valeur définie à la couche précédente (cf suite).</li>
+</ul>
+<p>💡 Il est possible de changer toutes les propriétés CSS en une seule déclaration :
+<css-code class="block d4rk">
+* {
+    all: unset;
+}
+</css-code></p>
+<h2 id="propriétés-css-personnalisées">Propriétés CSS personnalisées</h2>
+<h3 id="motivation--la-gestion-des-couleurs">Motivation : la gestion des couleurs</h3>
+<p>En CSS, il est possible de définir les couleurs d&#39;un élément pour :</p>
+<ul>
+<li><css-code>color</css-code> : le texte ;</li>
+<li><css-code>background-color</css-code> : l&#39;arrière-plan () ;</li>
+<li><css-code>accent-color</css-code> : les éléments d&#39;interface utilisateur ;</li>
+<li><css-code>caret-color</css-code> : le curseur (<em>caret</em>).</li>
+<li>la bordure (cf plus tard) ;</li>
+<li>etc.</li>
+</ul>
+<p>Pour des raisons de lisibilité, il est recommandé de limiter le nombre de couleurs différentes utilisées sur une même page Web (généralement 3 maximum). Il convient donc de définir un <em>jeu de couleurs</em> (<em>color scheme</em>) qui sera utilisé dans la page web, généralement composée de :</p>
+<ul>
+<li>une couleur principale ;</li>
+<li>une couleur secondaire ;</li>
+<li>une couleur tertiaire.</li>
+</ul>
+<p>💡 Il y a toute une théorie sur la manière de bien choisir les couleurs (règle des 60-30-10, roue de couleurs, contrastes, complémentarité, nuances, etc), mais ce n&#39;est pas l&#39;objet ici.</p>
+<p>On souhaiterait alors définir ces couleurs à un seul endroit, et ainsi éviter d&#39;avoir à les copier-coller de partout, ce qui complexifierait toutes modifications futures (i.e. avec le risque d&#39;en oublier un).</p>
+<p>D&#39;autant plus que les couleurs ne sont pas toujours simples à définir :</p>
+<ul>
+<li><css-code>red</css-code> : par le nom de couleur, mais peu de possibilités ;</li>
+<li><css-code class='d4rk'>rgb(<var>red</var>, <var>green</var>, <var>blue</var>)</css-code><br/>
+En notation hexadécimal : <css-code>#FF00FF</css-code> (2 caractères par couleurs) ;</li>
+<li><css-code class='d4rk'>rgba(<var>red</var>, <var>green</var>, <var>blue</var>, <var>alpha</var>)</css-code> : avec transparence<br/>
+En notation hexadécimal : <css-code>#FF00FFFF</css-code> (2 caractères par couleurs) ;</li>
+</ul>
+<p>💡 Les designers utilisent de nombreuses autres manières de définir les couleurs : <css-code>hsl</css-code>, <css-code>hwb</css-code>, <css-code>[ok](lab|lch)</css-code>, <css-code>color</css-code>, <css-code>color-mix</css-code>, <css-code>device-cmyk</css-code>, etc.</p>
+<p>Si cela ne suffisait pas, il faut généralement définir plusieurs jeux de couleurs, e.g. :</p>
+<ul>
+<li>pour un mode sombre/clair ;</li>
+<li>pour l&#39;impression ;</li>
+<li>pour les personnes atteintes de dyschromatopsie ;</li>
+<li>etc.</li>
+</ul>
+<p>💡 Pour indiquer les modes de couleurs supportés (l&#39;ordre indique la préférence) :
+<html-code class='block'>[meta name=&quot;color-scheme&quot; content=&quot;dark light&quot; /]</html-code></p>
+<p>💡 Pour indiquer les couleurs de thème (modifie la couleur de la fenêtre) :
+<html-code class='block'>
+[meta name=&quot;theme-color&quot; media=&quot;(prefers-color-scheme: light)&quot;
+   content=&quot;blue&quot; /]
+[meta name=&quot;theme-color&quot; media=&quot;(prefers-color-scheme: dark)&quot;
+   content=&quot;red&quot; /]
+</html-code></p>
+<p>💡 Pour définir une couleur en fonction du mode :
+<css-code class='block d4rk'>color: light-dark(<var>light_color</var>, <var>dark_color</var>);</css-code></p>
+<p>💡 Pour définir le mode de couleur à utiliser :
+<css-code class='block'>color-scheme: (dark|light);</css-code></p>
+<p>💡 Pour définir des règles CSS spéficiques à un mode de couleur :
+<css-code class='block'>@media (prefers-color-scheme: dark){/* ... }</css-code> </p>
+<p>Si <css-code>currentcolor</css-code> permet de réutiliser la couleur définie par <css-code>color</css-code> pour les autres priopriétés CSS, cela n&#39;est pas suffisant. Il nous faut ainsi un moyen de créer une variable contenant la couleur  que nous pourrons ensuite utiliser dans les règles CSS.</p>
+<h3 id="définir-une-propriété-personnalisée">Définir une propriété personnalisée</h3>
+<p>Pour cela on défini des <em>propriétés CSS personnalisées</em> (aussi appelées <em>variables CSS</em>) :
+<css-code class="block d4rk">
+@property --<var>PROPNAME</var> {
+    syntax       : &quot;<var>VALUE_TYPE</var>&quot;;
+    initial-value: <var>DEFAULT_VALUE</var>;
+    inherit      : true;
+}
+</css-code></p>
+<p>Il sera ensuite possible d&#39;utiliser sa valeur grâce à <css-code class='d4rk'>var(<var>PROPNAME</var>)</css-code>, e.g. :
+<css-code class="block d4rk">
+@property --primary_color {
+    syntax       : &quot;&lt;color&gt;&quot;;
+    initial-value: light-dark(red, blue);
+    inherit      : true;
+}
+@property --secondary_color {
+    syntax       : &quot;&lt;color&gt;&quot;;
+    initial-value: light-dark(yellow, green);
+    inherit      : true;
+}
+h1 {
+    background-color: var(--secondary_color); 
+    color           : var(--primary_color);
+    border-color    : currentcolor;
+}
+</css-code></p>
+<h4 id="définition-et-héritage">Définition et héritage</h4>
+<p>Une fois la propriété déclarée, nous pouvons aussi la (re)définir sur un élément :
+<css-code class="block">
+:root {
+    --primary-color: black;
+}
+</css-code></p>
+<p>💡 Si la propriété est définie avec <css-code>inherit: true</css-code>, elle est alors héritable.</p>
+<p>💡 Si aucune valeur n&#39;est définie, alors la valeur de <css-code>initial-value</css-code> est utilisée.</p>
+<p>💡 Il est d&#39;usage de définir les valeurs globale sur <css-code>:root</css-code>.</p>
+<p>💡 Les propriétés personnalisées traversent les shadow root (cf plus tard).</p>
+<h4 id="indiquer-le-type-de-la-valeur">Indiquer le type de la valeur</h4>
+<p><css-code>syntax</css-code> décrit le type de valeurs acceptées par la propriété CSS personnalisée, e.g. :</p>
+<ul>
+<li><css-code>&quot;*&quot;</css-code>, <css-code>&quot;&lt;string&gt;&quot;</css-code> ;</li>
+<li><css-code>&quot;&lt;number&gt;&quot;</css-code>, <css-code>&quot;&lt;integer&gt;&quot;</css-code>, <css-code>&quot;&lt;percentage&gt;&quot;</css-code> ;</li>
+<li><css-code>&quot;&lt;length&gt;&quot;</css-code>, <css-code>&quot;&lt;color&gt;&quot;</css-code>, <css-code>&quot;&lt;url&gt;&quot;</css-code> ;</li>
+<li>etc.</li>
+</ul>
+<h2 id="positionnement-et-dimensionnement-des-éléments">Positionnement et dimensionnement des éléments</h2>
+<p>L&#39;une des fonctions premières de CSS est de positionner et de dimensionner les éléments sur la page Web.</p>
+<p>Cependant, il convient de garder à l&#39;esprit que la fenêtre dans laquelle s&#39;affiche la page web est de taille variable. Notamment du fait e.g. de la taille variable de l&#39;écran, ou du redimensionnement de la fenêtre (e.g. en demi-écran).</p>
+<h3 id="le-flux">Le flux</h3>
+<p>Par défaut, les éléments sont affichés les uns à la suite des autres :</p>
+<ul>
+<li><html-code>[div]</html-code> : affiché en bloc, prend toute la ligne.</li>
+<li><html-code>[span]</html-code> : affiché comme un texte, sur la ligne courante.</li>
+</ul>
+<p>Ils correspondent en réalité aux propriétés CSS suivantes :</p>
+<ul>
+<li><css-code>display: block;</css-code></li>
+<li><css-code>display: inline;</css-code></li>
+</ul>
+<p>⚠ Un bloc ne peut être contenu dans un élément <css-code>inline</css-code>.<br/>
+⚠ Par défaut, les composants Web sont <css-code>inline</css-code>.<br/>
+⚠ Certaines propriétés CSS sont ignorés sur les éléments <css-code>inline</css-code>.</p>
+<p>Il existe cependant d&#39;autres modes d&#39;affichages :</p>
+<ul>
+<li><css-code>display: none;</css-code> : n&#39;affiche pas l&#39;élément.</li>
+<li><css-code>display: inline-block;</css-code> : affiche en bloc, sur la ligne courante.</li>
+<li><css-code>display: [inline-]flex;</css-code> : positionne les enfants en liste.</li>
+<li><css-code>display: [inline-]grid;</css-code> : positionne les enfants en grille.</li>
+</ul>
+<p>💡 Il existe d&#39;autres modes d&#39;affichages liées aux tables et aux listes.<br/>
+💡 <css-code>visibility: hidden</css-code> permet d&#39;afficher l&#39;élément mais de manière invisible.</p>
+<h4 id="propriétés-css-de-flex">Propriétés CSS de flex</h4>
+<p><css-code>flex-flow</css-code> configure la liste :
+<css-code class="block d4rk">
+.flex {
+    display  : flex;
+    flex-flow: <var>(row|column)</var> <var>[no]wrap</var>;
+}
+</css-code></p>
+<p><css-code>flex-flow</css-code> configure la manière dont la taille d&#39;un élément de la liste est calculée :
+<css-code class="block d4rk">
+.flex &gt; .item {
+    flex: <var>grow</var> <var>shrink</var> <var>basis</var>;
+}
+</css-code></p>
+<p>Par défaut, l&#39;élément a la taille indiquée par <css-code>basis</css-code>. L&#39;espace restant est redistribué à l&#39;ensemble des éléments de manière pondérée par <css-code>grow</css-code>. S&#39;il au contraire il manque de l&#39;espace, les éléments sont réduits de manière pondérée par <css-code>shrink</css-code>. Cela dans les limites indiquées par <css-code>(min|max)-(width|height)</css-code> (cf suite).</p>
+<p>💡 En pratique :</p>
+<ul>
+<li><css-code>0</css-code> sur <css-code>grow</css-code>/<css-code>shrink</css-code> <strong>interdit</strong> l’agrandissement/rétrécissement.</li>
+<li><css-code>1</css-code> sur <css-code>grow</css-code>/<css-code>shrink</css-code> <strong>autorise</strong> l’agrandissement/rétrécissement.</li>
+<li><css-code>0</css-code> sur <css-code>basis</css-code> permet d&#39;obtenir des éléments de <strong>même taille</strong>.</li>
+</ul>
+<p>💡 On utilise ainsi généralement :</p>
+<ul>
+<li><css-code>flex: 1 1 0;</css-code> : pour des éléments de même taille.</li>
+<li><css-code>flex: none;</css-code> : pour des éléments qui ne se redimensionnent pas.</li>
+</ul>
+<p>💡 CSS permet de fixer ces différentes propriétés de manière indépendante avec :</p>
+<ul>
+<li><css-code>flex-direction</css-code></li>
+<li><css-code>flex-wrap</css-code></li>
+<li><css-code>flex-grow</css-code></li>
+<li><css-code>flex-shrink</css-code></li>
+<li><css-code>flex-basis</css-code></li>
+</ul>
+<p>Vous pourrez trouver plus de détails sur flex sur la documentation MDN, ainsi que sur le lien suivant : <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">https://css-tricks.com/snippets/css/a-guide-to-flexbox/</a></p>
+<h4 id="propriétés-css-de-grid">Propriétés CSS de grid</h4>
+<p><css-code>grid</css-code> configure la grille :
+<css-code class="block d4rk">
+.grid {
+    display  : grid;
+    grid: <var>rows</var>/<var>cols</var>;
+}
+</css-code></p>
+<p><css-code>rows</css-code> et <css-code>cols</css-code> définissent respectivement les dimensions des lignes et des colonnes. Il peuvent être définis soit par :</p>
+<ul>
+<li>une liste de dimensions, e.g. <css-code>1fr 2fr</css-code> pour 2 lignes (ou colonnes).</li>
+<li><css-code class="d4rk">auto-flow [dense] <var>size</var></css-code> pour un nombre de lignes (ou colonnes) indéterminé.</li>
+</ul>
+<p>💡 <css-code>1fr</css-code> correspond à une <u>fr</u>action de la dimension.
+Par exemple <css-code>2fr 1fr</css-code> découpe la dimension en 3, la première ligne (ou colonne) est 2x plus grande que la suivante.<br/>
+💡 <css-code>repeat(5, 1fr)</css-code> est une manière plus concise d&#39;écrire <css-code>1fr 1fr 1fr 1fr 1fr</css-code>.</p>
+<p><css-code>grid-area</css-code> permet d&#39;indiquer la position et dimension d&#39;un élément de la grille :
+<css-code class="block d4rk">
+.grid &gt; .item {
+    /* position */
+    grid-area: <var>row</var> / <var>col</var>;
+    /* dimension */
+    grid-area: span <var>height</var> / span <var>width</var>;
+    /* position + dimension */
+    grid-area: <var>row</var> / <var>col</var> / span <var>height</var> / span <var>width</var>;
+}
+</css-code></p>
+<ul>
+<li><css-code class="d4rk"><var>row</var></css-code>/<css-code class="d4rk"><var>col</var></css-code> est le numéro de ligne/colonne de l&#39;élément (commence à 1).<br/>
+💡 <css-code>auto</css-code> permet de laisser la ligne/colonne par défaut.</li>
+<li><css-code class="d4rk">span <var>height</var></css-code>/<css-code class="d4rk">span <var>width</var></css-code> est la taille de l&#39;élément en nombre de cellules.</li>
+</ul>
+<p>💡 Il est possible de définir un élément comme étant une sous-grille (réutilise les lignes et/ou les colonnes de la grille principale) :</p>
+<css-code class="block d4rk">
+.grid > .item {
+    grid-area: span 3 / span 3;
+    display: grid;
+    grid   : subgrid / subgrid;
+}
+</css-code>
+
+<p>💡 Il est possible de nommer des lignes, colonnes, ou région pour placer les éléments de la grille plus explicitement, cependant, nous n&#39;étudierons pas cela ici.</p>
+<p>💡 CSS permet de fixer ces différentes propriétés de manière indépendante avec :</p>
+<ul>
+<li><css-code>grid-template-(rows|columns)</css-code></li>
+<li><css-code>grid-auto-(rows|columns)</css-code></li>
+<li><css-code>grid-auto-flow</css-code></li>
+<li><css-code>grid-(row|column)-(start|end)</css-code></li>
+<li><css-code>grid-(row|column)</css-code></li>
+</ul>
+<p>Vous pourrez trouver plus de détails sur grid sur la documentation MDN, ainsi que sur le lien suivant : <a href="https://css-tricks.com/snippets/css/complete-guide-grid/">https://css-tricks.com/snippets/css/complete-guide-grid/</a></p>
+<h4 id="propriétés-css-de-flex-et-grid">Propriétés CSS de flex et grid</h4>
+<p>CSS offre deux moyens de définir l&#39;alignement d&#39;un élément :</p>
+<ul>
+<li><css-code>place-item</css-code> : au niveau de la liste ;</li>
+<li><css-code>place-self</css-code> : au niveau de l&#39;élément.</li>
+</ul>
+<css-code class='block d4rk'>
+.flex_or_grid {
+    place-item: <var>align_row</var> <var>align_col</var>;
+    & > .item {
+        place-self: <var>align_row</var> <var>align_col</var>;
+    }
+}
+</css-code>
+
+<p>Elles acceptent généralement comme valeur :</p>
+<ul>
+<li><css-code>scretch</css-code></li>
+<li><css-code>(flex-)start</css-code></li>
+<li><css-code>center</css-code></li>
+<li><css-code>(flex-)end</css-code></li>
+</ul>
+<p>💡 De manière analogue <css-code>place-content</css-code> permet d&#39;aligner le contenu de la liste/grille si cette dernière ne la remplit pas.</p>
+<p>💡 Flex supporte aussi <css-code>space-(between|around|evenly)</css-code>.</p>
+<p>💡 <css-code>gap</css-code> permet de définir un espace minimal entre les différentes lignes/colonnes :
+<css-code class='block d4rk'>
+.flex_or_grid {
+    gap: 10px;
+    gap: <var>row-gap</var> <var>column-gap</var>;
+}
+</css-code></p>
+<p>💡 Il est possible de définir l&#39;ordre des éléments de la liste/grille grâce à <css-code>order</css-code>.</p>
+<p>💡 CSS permet de fixer ces différentes propriétés de manière indépendante avec :</p>
+<ul>
+<li><css-code>(justify|align)-(content|item|self)</css-code></li>
+<li><css-code>(row|column)-gap</css-code></li>
+</ul>
+<h3 id="dimensionnement-dun-élément">Dimensionnement d&#39;un élément</h3>
+<h4 id="unités">Unités</h4>
+<p>CSS fourni de multiples unités pour indiquer une taille :</p>
+<ul>
+<li><css-code>1em</css-code>: hauteur <em>actuelle</em> de la police de caractère <em>(pour la taille de la police)</em>.<br/>
+💡 <css-code>1rem</css-code>: hauteur <em>initiale</em> (à la racine) de la police de caractère.</li>
+<li><css-code>1px</css-code> : <u>p</u>i<u>x</u>els, <em>(pour les traits, bordures, et marges)</em>.</li>
+<li><css-code>1%</css-code> : relatif à la taille du contenant <em>(pour les tailles)</em>.</li>
+<li><css-code>1dvw</css-code> : 1/100e de la largeur de la fenêtre (<em><u>d</u>ynamic <u>v</u>iewport <u>w</u>idth</em>).</li>
+<li><css-code>1dvh</css-code> : 1/100e de la hauteur de la fenêtre (<em><u>d</u>ynamic <u>v</u>iewport <u>h</u>eight</em>).</li>
+</ul>
+<p>⚠ Vous pourrez trouver d&#39;autres unités pour le viewport, cependant, <css-code>dvw</css-code> et <css-code>dvh</css-code> permettent de mieux gérer les téléphones portables.</p>
+<p>💡 Pour une impression, il est possible d&#39;indiquer des tailles en <css-code>mm</css-code>, <css-code>cm</css-code>, <css-code>in</css-code>, <css-code>pt</css-code>.</p>
+<p>⚠ Pour effectuer des calculs, vous devez utiliser <css-code>calc()</css-code> :
+<css-code class="block d4rk">
+width: calc( 100% - 2 * 3em );
+</css-code></p>
+<p>💡 CSS fourni d&#39;autres fonctions pour vous aider :</p>
+<ul>
+<li><css-code>min(10px, 10%)</css-code></li>
+<li><css-code>max(10px, 10%)</css-code></li>
+<li><css-code class='d4rk'>minmax(<var>min</var>, <var>max</var>)</css-code> : une valeur entre min et max (pour les grilles).</li>
+<li><css-code class='d4rk'>clamp(<var>min</var>, <var>preferred</var>, <var>max</var>)</css-code> : une valeur entre min et max (pour les grilles).</li>
+<li>etc.</li>
+</ul>
+<h4 id="le-cadre-dun-élément">Le cadre d&#39;un élément</h4>
+<p>Un élément est composé :</p>
+<ul>
+<li>d&#39;un contenu (<em>content</em>) ;</li>
+<li>d&#39;une marge intérieur (<em>padding</em>) ;</li>
+<li>d&#39;une bordure (<em>border</em> et/ou <em>outline</em>) ;</li>
+<li>d&#39;une marge extérieure (<em>margin</em>).</li>
+</ul>
+<p><css-code>margin</css-code> et <css-code>padding</css-code> s&#39;utilisent de la même manière :</p>
+<ul>
+<li><css-code class="d4rk">margin: <var>X</var>;</css-code> : défini l&#39;ensemble des marges ;</li>
+<li><css-code class="d4rk">margin: <var>top</var> <var>right</var> <var>bottom</var> <var>left</var>;</css-code></li>
+<li><css-code class="d4rk">margin: <var>top_and_bottom</var> <var>right_and_left</var>;</css-code></li>
+<li><css-code class="d4rk">margin: <var>top</var> <var>right_and_left</var> <var>bottom</var>;</css-code></li>
+</ul>
+<p>💡 Les marges d&#39;éléments adjacents peuvent être fusionnée. On peut voir les marges comme la distance minimale entre la bordure de l&#39;élément et la bordure de tout autre élément.</p>
+<p><css-code>border</css-code> et <css-code>outline</css-code> s&#39;utilisent de la même manière :</p>
+<ul>
+<li><css-code class="d4rk">border: <var>width</var> <var>style</var> <var>color</var>;</css-code> ;</li>
+<li><css-code class="d4rk">border: none;</css-code></li>
+</ul>
+<p>Contrairement à <css-code>border</css-code>, <css-code>outline</css-code> peut se dessiner par dessus des éléments existants.
+Il est ainsi très utile pour dessiner des bordure sur des contenu <css-code>inline</css-code> sans modifier la hauteur de la ligne.</p>
+<p>Les styles de lignes sont généralement :</p>
+<ul>
+<li><css-code>solid</css-code> ;</li>
+<li><css-code>double</css-code> ;</li>
+<li><css-code>dotted</css-code> ;</li>
+<li><css-code>dashed</css-code> ;</li>
+<li><css-code>dashed</css-code> ;</li>
+<li><css-code>wavy</css-code> (not supported).</li>
+</ul>
+<p>💡 <css-code>border-radius</css-code> permet de d&#39;arrondir les angles de la bordure (border/outline).</p>
+<p>💡 CSS permet de fixer ces différentes propriétés de manière indépendante avec :</p>
+<ul>
+<li><css-code>(padding|margin)-(top|bottom|left|right)</css-code></li>
+<li><css-code>(border|outline)-(width|style|color)</css-code></li>
+<li><css-code>(border|outline)-(top|bottom|left|right)-(width|style|color)</css-code></li>
+<li><css-code>border-radius-(top|bottom|left|right)</css-code></li>
+</ul>
+<h4 id="la-taille-dun-élément">La taille d&#39;un élément</h4>
+<p>La taille d&#39;un élément est calculée à partir :</p>
+<ul>
+<li>d&#39;une taille préférée : <css-code>width</css-code>/<css-code>height</css-code> ;</li>
+<li>d&#39;une taille minimale et maximale : <css-code>(min|max)-(width|height)</css-code>.</li>
+</ul>
+<p>💡 Il est possible d&#39;utiliser <css-code>aspect-ratio</css-code> pour que la hauteur (ou largeur) s&#39;adapter à sa largeur (ou hauteur).</p>
+<p>💡 Les valeurs <css-code>(min|max|fit)-content</css-code> adaptent les tailles à celles de son contenu.</p>
+<p>⚠ Par défaut la taille de l&#39;élément n&#39;inclue pas la bordure et marge intérieur.<br/>
+Pour les inclure, il convient d&#39;utiliser <css-code>box-sizing: border-box</css-code>.</p>
+<h4 id="dépassements">Dépassements</h4>
+<p>Lorsque le contenu est plus grand que le contenant, il y a <em>dépassement</em> (<em>overflow</em>).</p>
+<p>Il est alors nécessaire d&#39;indiquer le comportement à adopter via :</p>
+<ul>
+<li><css-code class="d4rk">overflow: <var>overflow-x</var> <var>overflow-x</var> </css-code></li>
+</ul>
+<p>Les options possibles sont les suivantes :</p>
+<ul>
+<li><css-code>visible</css-code> : affiche le contenu qui dépasse ;</li>
+<li><css-code>hidden</css-code> : cache le contenu qui dépasse ;</li>
+<li><css-code>auto</css-code> : ajoute une barre de défilement si dépassement ;</li>
+<li><css-code>scroll</css-code> : ajoute une barre de défilement.</li>
+</ul>
+<h3 id="responsive">Responsive</h3>
+<p>Comme nous l&#39;avons indiqué en début de section, les pages Web s&#39;affichent dans des fenêtres de tailles différentes.</p>
+<p>Il est alors important de concevoir nos pages Web de sorte à ce qu&#39;elle s&#39;affiche du mieux possible sur des écrans de tailles différentes.</p>
+<p>Lorsque la page Web s&#39;adapte à la taille de la fenêtre, on dit alors qu&#39;elle est <em>responsive</em>.</p>
+<p>[todo: outil]</p>
+<h4 id="par-défaut">Par défaut</h4>
+<p>Les pages Web s&#39;adaptent déjà à la taille de la fenêtre si vous utilisez :</p>
+<ul>
+<li>des conteneurs <css-code>flex</css-code>/<css-code>grid</css-code> ;</li>
+<li>des unités <css-code>%</css-code>/<css-code>dvw</css-code>/<css-code>dvw</css-code> ;</li>
+<li>des tailles minimales et maximales <css-code>(min|max)-(width|height)</css-code>.</li>
+</ul>
+<p>💡 Bien évidemment, <css-code>(min|max|fit)-content</css-code>, <css-code>calc()</css-code>, <css-code>min()</css-code>, <css-code>max()</css-code>, <css-code>minmax()</css-code>, <css-code>clamp()</css-code> peuvent aussi vous aider.</p>
+<p>⚠ Pour des raisons historiques, les navigateurs sur mobile dézooment automatiquement les pages Web afin de s&#39;adapter à la largeur de l&#39;écran.</p>
+<p>Pour éviter ceci, devez alors inclure la balise suivante dans l&#39;en-tête de la page web :</p>
+<html-code class='block'>
+[meta name="viewport"
+   content="width=device-width, initial-scale=1.0"]
+</html-code>
+
+
+<h4 id="des-règles-css-différentes">Des règles CSS différentes</h4>
+<p>Malheureusement, le comportement par défaut n&#39;est pas toujours suffisant pour gérer toutes les dimensions de fenêtres.</p>
+<p>Il est alors nécessaire de réorganiser les éléments en fonction de l&#39;espace disponible, et donc d&#39;utiliser des règles CSS différentes.</p>
+<p>Pour cela il y a deux moyens de procéder :</p>
+<ul>
+<li><css-code>@media</css-code> : (<em>media queries</em>) s&#39;adapte en fonction de la taille de la fenêtre.</li>
+<li><css-code>@container</css-code> : (<em>container queries</em>)  s&#39;adapte en fonction de la taille du conteneur.</li>
+</ul>
+<p>💡 Il est bien souvent préférable de privilégier <css-code>@container</css-code> à <css-code>@media</css-code>.</p>
+<p><css-code>@container</css-code> s&#39;utilise ainsi :</p>
+<ol>
+<li>Définir un conteneur parmis les ancêtres de l&#39;élément avec :<ul>
+<li><css-code class='d4rk'>container: <var>name</var> size</css-code> ;</li>
+<li><css-code class='d4rk'>container: <var>name</var> inline-size</css-code> : ne servira que pour la largeur ;</li>
+</ul>
+</li>
+<li>Définir un <em>container query</em> pour l&#39;élément ciblé, e.g. :<br/>
+<css-code class='d4rk'>@container [<var>name</var>] (min-width: 100px) and (max-width: 100px)</css-code></li>
+</ol>
+<css-code class='block'>
+div {
+    container: card size;
+    div > .item {
+        @container (max-width: 100px) {
+            /* rules \*/
+        }
+        @container (min-width: 100px and max-width: 1000px) {
+            /* rules \*/
+        }
+        @container (min-width: 1000px) {
+            /* rules \*/
+        }
+    }
+}
+</css-code>
+
+<p>💡 Les conteneurs permettent aussi d&#39;utiliser les unités suivantes :</p>
+<ul>
+<li><css-code>cqw</css-code> : 1/100e de la largeur du conteneur <em>(<u>c</u>ontainer <u>q</u>uery <u>w</u>idth)</em></li>
+<li><css-code>cqh</css-code> : 1/100e de la hauteur du conteneur <em>(<u>c</u>ontainer <u>q</u>uery <u>h</u>eight)</em></li>
+</ul>
+<p>💡 Il existe d&#39;autres conditions que <css-code>(min|max)-(width|height)</css-code>, e.g. <css-code>(min|max)-(aspect-ratio|resolution)</css-code>, <css-code>orientation</css-code>, etc.</p>
+<h4 id="impression-bonus">Impression (bonus)</h4>
+<p>⚠ la fonction première d&#39;une page Web est d&#39;être affichée sur écran, il est ainsi inutile de se prendre la tête dessus.</p>
+<p>Les pages peuvent aussi être imprimée, pour cela on peut définir des règles CSS spécifique via les media queries :
+<css-code class='block'>
+/* règles spécifique à l&#39;affichage sur écran */
+@media screen {
+}
+/* règles spécifique à l&#39;impression sur écran */
+@media print {
+    @page {
+        size: A4;
+    }
+    body {
+        width: 21cm;
+        /* ne pas changer les couleurs */
+        print-color-adjust: exact;
+    }
+}
+</css-code></p>
+<p>⚠ Pour une impression, pensez à potentiellement masquer les en-têtes/pieds de pages, surtout s&#39;ils sont fixed.</p>
+<p>⚠ L&#39;impression ne défilera la barre de défilement que si elle est sur l&#39;élément racine.</p>
+<p>⚠ Lors de l&#39;impression, il est généralement préférable de cocher l&#39;option &quot;ajuster à la largeur de la page&quot;.</p>
+<p>⚠ Pour une impression PDF, il est préférable d&#39;utiliser Chromium pour un PDF de taille raisonnable.</p>
+<p>💡 Vous pouvez indiquez où effectuer les coupures de pages avec <css-code>break-*</css-code>, avoir des options en fonction de si la page est pair ou impair, etc<br/></p>
+<p>💡 <html-code>[wbr]</html-code> permet d&#39;insérer un retour à la ligne facultatif.</p>
+<h3 id="sortir-des-éléments-du-flux">Sortir des éléments du flux</h3>
+<p>CSS permet de sortir des éléments du flux, i.e. de les afficher à une position différente de celle à laquelle ils devraient normalement être.</p>
+<p>Par défauts, les éléments sont <css-code>position: static</css-code>, i.e. dans le flux.<br/>
+Les éléments qui ont une valeur différente de <css-code>position</css-code> sont dits <em>positionnés</em>.<br/>
+Les éléments positionnés acceptent les propriétés CSS <css-code>top</css-code>, <css-code>right</css-code>, <css-code>bottom</css-code>, <css-code>left</css-code>.</p>
+<p>⚠ Il convient d&#39;éviter autant que possible les éléments positionnés, et d&#39;utiliser à la place, lorsque possible, des flex, grid, margin, etc.</p>
+<p>⚠ Les éléments positionnés, bien que sortis du flot, sont assujettis à <css-code>overflow</css-code>.<br/></p>
+<p><css-code>position: relative</css-code> déplace un élément relativement à sa position initiale.<br/>
+Lorsque possible, il est préférable d&#39;utiliser des marges à la place.<br/>
+💡 En pratique il est surtout utilisé pour rendre un élément positionné.</p>
+<p><css-code>position: absolute</css-code> positionne un élément de manière absolue, par rapport au premier ancêtre positionné.<br/>
+⚠ Les éléments absolus ne sont pas considérés dans le calcul de la taille de leur père.<br/>
+⚠ Les éléments absolus peuvent en chevaucher (<em>overlap</em>) d&#39;autres :</p>
+<ul>
+<li>si cela n&#39;est pas voulu, privilégier flex/grid, ou <css-code>float: (left|right)</css-code>.</li>
+<li>si cela est voulu, <css-code>z-index: 1</css-code> permet d&#39;indiquer l&#39;ordre d&#39;affichage des éléments. Plus le <css-code>z-index</css-code> est grand, plus il sera affiché au-dessus.<br/></li>
+</ul>
+<p><css-code>position: fixed</css-code> positionne l&#39;élément par rapport à la fenêtre.<br/>
+⚠ Il est préférable de privilégier flex/grid, ou <css-code>position: sticky</css-code></p>
+<p><css-code>position: sticky</css-code> s&#39;affiche normalement, mais reste aux frontière de son père lorsque l&#39;élément est défilé.<br/>
+⚠ Il faut définir au moins l&#39;une des propriétés <css-code>top</css-code>, <css-code>right</css-code>, <css-code>bottom</css-code>, <css-code>left</css-code>.<br/>
+⚠ Utiliser <css-code>scroll-padding</css-code> lorsque l&#39;élément sticky prend toute la largeur/hauteur.<br/>
+💡 Il est notamment très utile pour :</p>
+<ul>
+<li>les colonnes ou lignes d&#39;en-tête d&#39;une table défilable.</li>
+<li>les menu flottants.</li>
+<li>les barres de navigations au-dessous d&#39;une bannière.</li>
+</ul>
+<h2 id="transformations-animations-et-interactions-pw-ou-pwv-ou-cm5-">Transformations, animations et interactions (PW ou PWV ou CM5 ?)</h2>
+<p>=&gt; filter / opacity (e.g. on hover)
+=&gt; filter + rotation (dark mode)</p>
+<p>=&gt; pointer-events / user-select</p>
+<p>=&gt; transform-box.</p>
+<p>=&gt; animation &amp; interactions
+    =&gt; JS / worklet+paint() =&gt; CSS + rapide JS.
+    =&gt; interactions : cursor + events.
+        =&gt; HTML inert
+    =&gt; :hover -&gt; e.g. menu / scale on hover / opacity on hover / hidden.
+        =&gt; spoiler
+    =&gt; multi-page or use CSS (+ JS).
+    =&gt; animation
+        =&gt; carroussel
+    =&gt; visibility hidden</p>
+<p>=&gt; worklet</p>
+<p>=&gt; resize/contenteditable</p>
+<p>Limite de HTML/CSS:
+=&gt; interactions (que faire ?)</p>
+<p>=&gt; mise à l&#39;échelle... vs zoom...</p>
+<h2 id="quelle-règle-css-est-appliquée-">Quelle règle CSS est appliquée ?</h2>
+<h3 id="spécificité">Spécificité</h3>
+<p>Il arrive que des règles CSS soient contradictoires. Dans l&#39;exemple suivant, le texte doit-il s&#39;afficher en gris ou en noir ? </p>
+<html-code class='block d4rk'>
+[span class='username']Paul[/span]
+</html-code>
+<css-code class='block d4rk'>
+.username {
+    color: gray;
+}
+span {
+    color: black;
+}
+</css-code>
+
+<p>Par défaut, CSS applique la règle la plus <em>spécifique</em>.
+Pour rester simple, CSS compte le nombre d&#39;identifiant, de classe, de nom de balise, et des autres éléments dans un tableau :</p>
+<table>
+    <thead>
+        <tr><th>Règle</th><th>ID</th><th>Classes</th><th>Balise</th><th>Autres</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><css-code>.username</css-code></td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+        <tr><td><css-code>span</css-code></td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+    </tbody>
+</table>
+
+<p>CSS compare alors la spécificité colonne par colonne, de gauche à droite, en s&#39;arrêtant à la première colonne différente. En cas de spécificité identique, elle appliquera la dernière règle déclarée.</p>
+<h3 id="importance-et-couches">Importance et couches</h3>
+<p>Il est possible de rendre une déclaration CSS prioritaire via <css-code>!important</css-code> :</p>
+<css-code class='block d4rk'>
+span {
+    color: black !important;
+}
+</css-code>
+
+<p>Néanmoins, cela pose très vite problème lorsqu&#39;on souhaite ajouter une autre règle CSS encore plus prioritaire. Si son usage peut se justifier dans certains contextes particuliers, il convient cependant de les éviter autant que possible.</p>
+<p>Une alternative est d&#39;utiliser les <em>couches CSS</em> (<em>CSS layers</em>). Le principe est très simple : on regroupe des règles CSS ensembles dans une &quot;couche&quot;, et on établi l&#39;ordre de priorité de ces différentes couches entre elles.</p>
+<p>Cela est notamment très utile lorsqu&#39;on souhaite utiliser des bibliothèques CSS :</p>
+<css-code class="block d4rk">
+/* déclare les couches de la moins prioritaire
+à la plus prioritaire \*/
+@layer libA libB myrules;
+@import ./libA.css layer(libA);
+@import ./libB.css layer(libB);
+@layer myrules {
+    span {
+        color: black;
+    }
+}
+</css-code>
+
+<h3 id="lavantage-des-composants-web">L&#39;avantage des composants Web</h3>
+<p>Les composants Web permettent de regrouper, dans un ensemble cohérent, les fichiers définissant le composant (HTML, CSS, JS/Brython, etc), améliorant ainsi la lisibilité du code.</p>
+<p>Cependant, une règle CSS s&#39;applique à tous les éléments correspondant à son sélecteur. Ainsi, sur de larges projets, il est très aisé d&#39;écrire une règle CSS pour un élément donné qui, involontairement, s&#39;appliquera à d&#39;autres éléments. Ce genre d&#39;effets de bord peut très vite devenir infernal à gérer.</p>
+<p>Heureusement, les composants Web ont généralement une <em>racine cachée</em> (<em>shadow root</em>) qui isole les éléments qu&#39;il contient, les rendant alors indépendant du reste du document et des autres composants Web.</p>
+<p>Ainsi, les règles CSS du composant Web ne s&#39;appliquent qu&#39;à ses propres éléments,et ses éléments ne sont impactés que par ses propres règles CSS. Il est alors possible de réutiliser un composant Web dans différentes pages Web, sans qu&#39;une règle CSS déclarée globalement (ou dans un autre composant) ne vienne l&#39;impacter.</p>
+<h2 id="css-ou-html-">CSS ou HTML ?</h2>
+<p>Certains éléments HTML peuvent se substituer à des règles CSS, e.g. :</p>
+<table>
+    <thead>
+        <tr><th>HTML</th><th>CSS</th><th></th></tr>
+    </thead>
+    <tbody>
+        <tr><td><html-code>[b]A[/b]</html-code></td><td><css-code>font-weight: bold;</css-code></td><td><b>A</b></td></tr>
+        <tr><td><html-code>[i]A[/i]</html-code></td><td><css-code>font-style: italic;</css-code></td><td><i>A</i></td></tr>
+        <tr><td><html-code>[u]A[/u]</html-code></td><td><css-code>text-decoration: underline;</css-code></td><td><u>A</u></td></tr>
+        <tr><td><html-code>[mark]A[/mark]</html-code></td><td><css-code>background-color: yellow;</css-code></td><td><mark>A</mark></td></tr>
+        <tr><td><html-code>[s]A[/s]</html-code></td><td></td><td><s>A</s></td></tr>
+    </tbody>
+</table>
+
+<p>[TODO: cheat sheet text-*]</p>
+<p>Cependant, la séparation entre structure et affichage fait qu&#39;il est souvent préférable d&#39;utiliser des règles CSS, plutôt que des éléments HTML :</p>
+<ul>
+<li>pour plus d&#39;options (e.g. couleur du surlignage, style du soulignage, etc) ;</li>
+<li>pour faciliter les modifications futures de l&#39;affichage ;</li>
+<li>l&#39;affichage de ces éléments peut être modifié, générant des inconsistances.</li>
+</ul>
+<h3 id="sémantique-et-affichage">Sémantique et affichage.</h3>
+<p>Il arrive cependant qu&#39;on souhaite afficher de manière différente deux éléments HTML. Dès lors, il est nécessaire d&#39;avoir un moyen de les distinguer afin de leur appliquer des règles CSS différentes :</p>
+<ul>
+<li>par leurs ancêtres ;</li>
+<li>par leur nom de balise (d&#39;où l&#39;utilité des balises sémantiques) ;</li>
+<li>par leur classe.</li>
+<li>etc.</li>
+</ul>
+<p>Cependant, la classe est un attribut HTML, il doivent donc autant que possible décrire la <em>sémantique</em> (le sens) de l&#39;élément HTML, plus que la manière de l&#39;afficher.</p>
+<p>💡 Pour distinguer les colonnes d&#39;une table, on utilise les balises <html-code>colgroup</html-code> et <html-code>col</html-col> :</p>
+<html-code class="block d4rk">
+[table]
+    [colgroup]
+        [col class="col_username"][/col]
+        [col class="col_user_age"][/col]
+    [/colgroup]
+    [tbody]
+        [tr][td]Paul[/td][td]34[/td][/tr]
+        [tr][td]Jean[/td][td]72[/td][/tr]
+    [/tbody]
+[/table]
+</html-code>
+
+<css-code class='block d4rk'>
+col.col_username {
+    font-weight: bold;
+}
+col.col_user_age {
+    font-style: italic;
+}
+</css-code>
+
+<h3 id="les-préprocesseurs-css">Les préprocesseurs CSS</h3>
+<p>Cependant, cette séparation entre structure (HTML) et affichage (CSS) n&#39;est pas toujours entièrement respectée. Par facilité, il est en effet courant d&#39;utiliser des classes, non pas pour ajouter une sémantique ou désigner un type d&#39;élément, mais pour appliquer des règles CSS sur un ensemble d&#39;éléments HTML, e.g. :</p>
+<html-code class="block d4rk">
+[h1 class="text-3xl font-bold underline"]Hello world![/h1]
+</html-code>
+
+<p>Sur de gros projets, cela permet d&#39;éviter la duplication de règles CSS, ainsi que de les normaliser. C&#39;est par exemple ce que proposent plusieurs bibliothèques CSS comme <em>Tailwind</em> ou <em>Bootstrap</em>.</p>
+<p>En réalité, cela est surtout une solution de contournement aux limites de CSS, qui ne permet pas de réutiliser des règles existantes dans une nouvelle règle, e.g. :</p>
+<css-code class="block d4rk">
+h1 {
+    text-decoration: blue underline;
+}
+h2 {
+    /* Je veux pareil que h1... \*/
+}
+</css-code>
+
+<p>Pour combler les limites de CSS, des <em>pré-processeurs CSS</em> (e.g. LESS, SASS) permettent d&#39;ajouter plus de fonctionnalités à CSS :
+<css-code class="block d4rk">
+@mixin title {
+    text-decoration: blue underline;
+}
+h1 {
+    @include title;
+}
+h2 {
+    @include title;
+}
+</css-code></p>
+<h1 id="x">X</h1>
+<p>=&gt; outil (inspecteur)</p>
+<p>=&gt; astuces
+    <a href="https://developer.mozilla.org/fr/docs/Web/CSS/Pseudo-elements">https://developer.mozilla.org/fr/docs/Web/CSS/Pseudo-elements</a> (comme un élément)
+    <a href="https://developer.mozilla.org/fr/docs/Web/CSS/Pseudo-classes">https://developer.mozilla.org/fr/docs/Web/CSS/Pseudo-classes</a> (comme une classe)
+    + évoquer pseudo-classes/pseudo-éléments.</p>
+<pre><code>=&gt; ::before/::after + other pseudo-element/class
+    =&gt; attr()
+</code></pre><p>=&gt; :scope (CM3?)</p>
+<p>=&gt; limitation
+    =&gt; code avec pre ou white-space + font-family (monospace) + coloration syntaxique (limitation).</p>
+<p>=&gt; contain : pour opti (CM5 ?)</p>
+</main>
+    </body>
+</html>

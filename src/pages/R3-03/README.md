@@ -1,11 +1,19 @@
-## CM2 
+## CM2
 
-=> en réalité, classes + <b> peuvent être utilisés par facilité.
-Y'a pas de police.
+=> manque passage rédigés
+=> !!! dvi/dvb
 
-=> Webcomponent & CSS.
+1h07 (-~5min pour démarrer ?)
+	=> j'ai speedé
+	=> découper en 2 ???
+	=> pas eu le temps de voir les animations/transitions.
+	=> ne pas trop se concenter sur les valeurs différentes de propriétés, montrer plus
 
 ## CM3 : Client
+
+=> computedStyleMap() / style / prop.
+=> CSS.registerProperty()
+=> set prop ?
 
 => Webcomponent : associate JS/CSS/HTML (independant)
 

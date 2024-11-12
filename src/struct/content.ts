@@ -64,7 +64,8 @@ export default [
                 name: "CM",
                 path: "CM",
                 children: [
-                    "CM1"
+                    "CM1",
+                    "CM2"
                 ]
             }
         ]

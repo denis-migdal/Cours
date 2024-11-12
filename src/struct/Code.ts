@@ -51,6 +51,8 @@ export default class Code extends LISS({
     constructor() {
         super();
 
+        const lang = this.params.lang;
+
         // already init, was cloned.
         if(this.content.firstElementChild?.tagName === "CODE")
             return;
@@ -68,9 +70,11 @@ export default class Code extends LISS({
         }
 
         let content = this.host.textContent!.trim();
-        content = content.replaceAll('[', '<').replaceAll(']', '>').replaceAll('£', '&');
+        if( lang === 'html')
+            content = content.replaceAll('[', '<').replaceAll(']', '>')
+        content = content.replaceAll('£', '&');
 
-        content = hljs.highlight(content, { language: "html" }).value;
+        content = hljs.highlight(content, { language: lang }).value;
         
         content = content.replaceAll(/(__[A-Z]+[0-9]*)/g, (_: unknown, name: string) => {
             return vars[name].outerHTML
@@ -82,12 +86,12 @@ export default class Code extends LISS({
 }
 
 function generate(lang: string, cdata=false) {
-    return LISS({extends: Code, params: {code: lang, cdata} });
+    return LISS({extends: Code, params: {lang, cdata} });
 }
 
 //LISS.define("js-code", JSCode);
-//LISS.define("css-code", CSSCode);
 LISS.define("html-code", generate("html") );
+LISS.define("css-code" , generate("css") );
 
+//LISS.define("html-script", LISS({extends: Code, host: HTMLScriptElement, params: {lang: "html"} }) );
 
-LISS.define("html-script", LISS({extends: Code, host: HTMLScriptElement, params: {code: "html"} }) );
