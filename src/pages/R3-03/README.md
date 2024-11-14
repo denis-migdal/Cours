@@ -1,15 +1,89 @@
+## TPs
+    -> besoin d'un starting project !
+    -> besoin sujet dirigé + installation VCS.
+
+## TP2
+
+=> demander installation des ext VSC par défaut.
+=> vsc n'utilise pas le proxy quand lancé via desktop (marche quand cli)
+
+=> il faut VRAIMENT un step by step (+ qui ne nécessite pas trop de css -tout est inline au début-) => br ou div ?
+=> project skeleton
+=> utilisation vsc guider
+=> premiers pas.
+
+## CM1
+
+notion de shorthand properties (800 props, mais shorthands donc moins à réellement retenir)
+
+- HTML : normalisé W3C (HTML5)
+
 ## CM2
 
+font short hand property !!!
+
+all
+
+background-color -> background
+
+https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties
+	-> not specified : initial
+	-> can't even specify inherit...
+	-> can't use var() on normal prop.
+
+-> peut parfois être intelligent	
+
+scroll margin vs scroll padding
+
+-> columns pour du texte...
+
+transform/transition/animation -> offset ?
+
+text-*
+(dont text-emphasis)
+
+- CSS : normalisé W3C (CSS3)
+- 800 keywords mais shorthand properties => utiliser ceux-ci (et ça en fait alors bien moins) - ~16 variants. (expliquer le principe des shorthand properties)
+
+- besoin slides visuels.
+
+=> table empty-cells + table layout.
+
 => manque passage rédigés
-=> !!! dvi/dvb
 
 1h07 (-~5min pour démarrer ?)
 	=> j'ai speedé
 	=> découper en 2 ???
+    => pas le temps de voir des astuces CSS.
 	=> pas eu le temps de voir les animations/transitions.
 	=> ne pas trop se concenter sur les valeurs différentes de propriétés, montrer plus
 
+=> des fiches bonus à lire chez soit ?
+    => color schemes : mode jour/nuit
+    => impression de pages
+    => animations/transitions ?
+
 ## CM3 : Client
+
+-> Plein de langages
+    -> JS (ECMA) 95", dernière version esX
+        -> fait en 10j plein de problèmes
+    -> WebASM (récent) mais pas accès DOM.
+    -> langage -> JS (e.g. TS)
+    -> Appel Java : problème de sécurité : code arbitraire, mais utilise VM normale avec restrictions ad hoc -> autorisation (e.g. accès fichier) -> mais autorise => utilisateur donne vulnérabilité.
+
+
++Events / boucle d'évent (avec promesses) + yield
++ signaux/effect/computed signal.
++ ?
+
+-> Framework
+    -> triche : réécrit, donc peux détecter signaux.
+    -> VDOM + efficaces (op sur DOM très coûteux)
+
+CSS form
+    -> default
+    -> ro/rw
 
 => computedStyleMap() / style / prop.
 => CSS.registerProperty()
@@ -46,7 +120,7 @@ Shadow
 
 Is it usefull ?
   <template shadowrootmode="open">
-    <style>
+    <style scoped>
       p {
         padding: 8px;
         background-color: plum;
@@ -170,40 +244,16 @@ Les pages Web peuvent aussi inclure des ressources multimédia (images, vidéos,
 
 ## CM2 : CSS
 
-
-CM2:
-- col/colgroup : css
-- span
-- wbr : responsive. + page break etc.
-- table vs grid : DO NOT USE TABLE FOR POSITIONNING !
-
-▶ HTML : structure de la page Web :
-▶ Quels sont les ´el ´ements de la page ?
-▶ Quelle est la hi ´erarchie des ´el ´ements ?
-▶ Mise en forme de la page ?
-▶ Quelles sont les positions, marges, et tailles des ´el ´ements ?
-▶ Quelles sont les couleurs, polices, d ´ecorations des ´el ´ements ?
-▶ Quels sont les filtres, transformations, transitions, et animations 
-
-CSS : style -> do not use
-
-Cours, pas résumé => cheat sheet mais étu doivent aussi faire efforts de synthèse.
-
 CSS : ~800 keywords...
 JS : https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 -> meta
 -> fix length & scale : e.g. for print A4/A5/etc.
 	/!\ ZOOM vs scale...
--> grid
--> flex-box
--> media queries : redimentionner, etc.
 
 -> optimisations : inert+other stuff : draw/reflow [FUCK]
 
 -> fixed vs sticky (! height bug) vs absolute vs float vs grid vs flexbox.
-
-link css -> blocking="render" 
 
 -> color-scheme (css) (<meta>)
 
