@@ -67,6 +67,14 @@ export default [
                     "CM1",
                     "CM2"
                 ]
+            }, {
+                name: "Cheat Sheet",
+                children: [
+                    {
+                        name: 'HTML',
+                        path: "/assets/web/HTML5/cheat sheet.svg"
+                    }
+                ]
             }
         ]
     },
