@@ -65,16 +65,18 @@ export default [
                 path: "CM",
                 children: [
                     "CM1",
-                    "CM2"
+                    "CM2",
+                    "CM3"
                 ]
             }, {
-                name: "Cheat Sheet",
+                name: "TP",
+                path: "TP",
                 children: [
-                    {
-                        name: 'HTML',
-                        path: "/assets/web/HTML5/cheat sheet.svg"
-                    }
+                    "TP1",
                 ]
+            }, {
+                name: "Cheat Sheet HTML",
+                path: "/assets/web/HTML5/cheat sheet.svg"
             }
         ]
     },

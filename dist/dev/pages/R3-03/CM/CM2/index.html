@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf8"/>
         <title>CM2 (Web1)</title>
         <link rel="stylesheet" href="./index.css">
         <script type="module" src="./index.js" defer></script>

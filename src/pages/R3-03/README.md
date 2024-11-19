@@ -112,27 +112,18 @@ global context
 + CSS + opti + CSS perso (the name ?)
 + advanced selector (TextNode)
 
++ innerText : seulement texte visible.
+
 + template + slot ?
 Shadow
 - exportparts/part
 - is
 - slot
 
-Is it usefull ?
-  <template shadowrootmode="open">
-    <style scoped>
-      p {
-        padding: 8px;
-        background-color: plum;
-      }
-    </style>
-    <p>I'm in the shadow DOM.</p>
-  </template>
-  
+Templates  
  => FAST
  => insérer des éléments sans passer par un CustomElement.
  => géré par le customElement actuel => evite de longs create...
-
 
 - popover
 
@@ -229,6 +220,8 @@ Les pages Web peuvent aussi inclure des ressources multimédia (images, vidéos,
 -> performances
 -> lighthouse
 
++ traduction (i18n)
+
 -> robots.txt + meta robot + ref. son site ?
 
 ## ?
@@ -239,6 +232,13 @@ Les pages Web peuvent aussi inclure des ressources multimédia (images, vidéos,
 
 -> svg/math/object
 -> unit tests/web test + ZOD
+
+# CM1
+L’intérêt des composants Web est multiple,
+principalement lié à la factorisation qu’ils permettent :
+— Éviter de copier/coller de gros blocs HTML lorsqu’une même structure se répète.
+— Séparer de manière cohérente les différents éléments du site Web afin d’améliorer la lisibilité du code.
+— Lorsque la structure d’un composant Web doit être modifiée, la modification est restreinte à un seul fichier.
 
 # OLD
 
@@ -274,3 +274,112 @@ Without a viewport meta tag, mobile devices render pages at typical desktop scre
 ▶ Extension HTML Hint : v ´erification de la syntaxe HTML ;
 ▶ Extension Live Server : mise `a jour temps r ´eel ;
 ▶ ChatGPT INTERDIT !
+
+
+# Envoyer une requête HTTP
+
+```javascript
+// [JS] Javascript
+async query() {
+    const anwser = await fetch($URL);
+    // ou
+    const answer = await fetch($URL, {method: "POST", body: $PARAMS);
+
+    if( ! answer.ok )
+        throw new Error(`${answer.status}: ${answer.statusText}`);
+
+    const json = await answer.json(); // récupérer du JSON
+    const text = await answer.text(); // récupérer du texte
+    // autres formats possibles dans la doc.
+}
+
+query();
+```
+
+```python
+# [🐍] Python
+async query():
+    answer = fetch($URL)
+    # ou
+    answer = fetch($URL, {"method": "POST", "body": $PARAMS)
+
+    if not answer.ok:
+        raise Error(f"{answer.status}: {answer.statusText}");
+
+    json = await answer.json() # récupérer du JSON
+    text = await answer.text() # récupérer du texte
+    # autres formats possibles dans la doc.
+
+
+aio.run( query() )
+```
+
+📖 Les requêtes de type "GET" (type par défaut) ont leurs paramètres dans l'URL (cf ci-dessous).
+
+📖 Les requêtes de type "POST" ont leurs paramètres dans le corps de la requête (body), i.e. sont chiffrées en HTTPS. Elles peuvent être écrites sous n'importe quelle format : une chaîne de paramètre (comme GET), du JSON, du texte, etc.
+
+📖 [Plus d'informations dans la documentation.](https://developer.mozilla.org/en-US/docs/Web/API/Response)
+
+Pour construire la chaîne de paramètre :
+
+```javascript
+// [JS] Javascript
+
+// client
+const params = new URLSearchParams();
+params.set($NAME, $VALUE)
+fetch( `${URL}?${params.toString()}` );
+
+// serveur
+const params = new URLSearchParams($STR);
+for(let key in params.keys() )
+    params.get(key); // retourne undefined si pas trouvé.
+
+params.has($NAME); // retourne un booléen
+params.get($NAME) ?? $DEFAULT_VALUE; // avec une valeur par défaut
+```
+
+```python
+# [🐍] Python
+
+# client
+params = URLSearchParams.new()
+params.set($NAME, $VALUE)
+fetch( f"{URL}?{params.toString()}" )
+
+# serveur
+params = URLSearchParams.new($STR);
+for key in params.keys():
+    params.get(key) # retourne undefined si pas trouvé.
+
+params.has($NAME) # retourne un booléen
+```
+
+📖 [Plus d'informations dans la documentation.](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+
+💡 `location` contient les informations relatives à l'URL de la page actuelle. Vous pouvez ainsi récupérer la chaîne de paramètres via `location.search`, et l'exploiter en la donnant au constructeur de `URLSearchParams`.
+
+# Stocker des données côté client
+
+Précedemment, les données enregistrées côté client étaient stockées sous la forme de cookies, inclues dans l'en-tête de chaque requêtes HTTP envoyées au serveur. Cette technologie est désormais obsolète au profit de `localStorage`, `sessionStorage`, et `IndexDB`. Contrairement aux cookies, les données enregistrées par un site Web (identifié par son nom de domaine) ne peuvent pas être accedées via d'autres noms de domaines.
+
+## LocalStorage/SessionStorage
+
+```javascript
+localStorage.setItem($NAME, JSON.stringify( $VALUE ) );
+JSON.parse( localStorage.getItem($NAME) ); // returne null si inexistant
+localStorage.removeItem($NAME);
+```
+
+La différence entre `localStorage` et `sessionStorage` est que le dernier est unique à chaque onglet du navigateur et sera supprimé lorsque l'onglet sera fermé. Les données stockées par un site Web ne peuvent généralement pas dépasser 10Mo.
+
+📖 [Plus d'informations dans la documentation.](https://developer.mozilla.org/en-US/docs/Web/API/Storage)
+
+## IndexDB
+
+L'usage d'indexDB est bien plus complexe que localStorage ou sessionStorage, mais permet de stocker des données plus volumineuses. Vous pouvez le voir comme une base de données stockée côté client.
+
+Son usage étant complexe et peu fréquent, nous ne l'étudierons pas en cours.
+
+📖 [Plus d'informations dans la documentation.](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB)
+

@@ -189,5 +189,8 @@ function updateHeader() {
     header.replaceChildren(module_html, type_html, ...html);
 }
 
-main.addEventListener('scroll', updateHeader);
-updateHeader();
+const p = new URLSearchParams(location.search);
+if( ! p.has('ds') ) {
+    main.addEventListener('scroll', updateHeader);
+    updateHeader();
+}

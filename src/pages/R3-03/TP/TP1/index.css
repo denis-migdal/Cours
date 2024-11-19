@@ -1,0 +1,3 @@
+@import "../../../../struct/tp.css";
+
+ol > li > ol { list-style-type: lower-alpha; }

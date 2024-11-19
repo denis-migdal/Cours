@@ -44,11 +44,16 @@ for(let field of document.querySelectorAll('[contenteditable]') ) {
 
 const hljs = require('highlight.js');
 
+
+import {initContentEditableCode} from "../../libs/LISS2/src/pages/playground/hl.ts";
+
 // highlight...
-for(let pre of document.querySelectorAll('pre[lang][contenteditable]') ) {
+for(let pre of document.querySelectorAll<HTMLElement>('pre[lang][contenteditable]') ) {
 
     const language = pre.getAttribute('lang');
 
+    initContentEditableCode(pre);
+/*
     pre.setAttribute("spellcheck", "false");
 
     pre.addEventListener("input", (ev) => {
@@ -104,7 +109,7 @@ for(let pre of document.querySelectorAll('pre[lang][contenteditable]') ) {
         range.collapse(true);
         sel.removeAllRanges();
         sel.addRange(range);
-    });
+    });*/
 }
 
 const toolbar = document.createElement("span");

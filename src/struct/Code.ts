@@ -48,10 +48,10 @@ export default class Code extends LISS({
     shadow: ShadowCfg.NONE
 }) {
 
-    constructor() {
+    constructor(lang: string) {
         super();
 
-        const lang = this.params.lang;
+        console.warn(lang);
 
         // already init, was cloned.
         if(this.content.firstElementChild?.tagName === "CODE")
@@ -70,8 +70,8 @@ export default class Code extends LISS({
         }
 
         let content = this.host.textContent!.trim();
-        if( lang === 'html')
-            content = content.replaceAll('[', '<').replaceAll(']', '>')
+        /*if( lang === 'html')
+            content = content.replaceAll('[', '<').replaceAll(']', '>')*/
         content = content.replaceAll('£', '&');
 
         content = hljs.highlight(content, { language: lang }).value;
@@ -86,12 +86,20 @@ export default class Code extends LISS({
 }
 
 function generate(lang: string, cdata=false) {
-    return LISS({extends: Code, params: {lang, cdata} });
+    return class LCode extends Code {
+        constructor() {
+            super(lang);
+        }
+    }
 }
 
 //LISS.define("js-code", JSCode);
 LISS.define("html-code", generate("html") );
 LISS.define("css-code" , generate("css") );
+LISS.define("py-code" , generate("python") );
+LISS.define("js-code" , generate("javascript") );
+LISS.define("shell-code", generate("bash") );
+LISS.define("key-shortcut", generate("bash") );
 
 //LISS.define("html-script", LISS({extends: Code, host: HTMLScriptElement, params: {lang: "html"} }) );
 
