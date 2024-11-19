@@ -51,8 +51,6 @@ export default class Code extends LISS({
     constructor(lang: string) {
         super();
 
-        console.warn(lang);
-
         // already init, was cloned.
         if(this.content.firstElementChild?.tagName === "CODE")
             return;
@@ -70,6 +68,14 @@ export default class Code extends LISS({
         }
 
         let content = this.host.textContent!.trim();
+
+        if( this.content.firstChild?.nodeType === Node.COMMENT_NODE ) {
+            content = this.host.innerHTML.slice(4,-3).trim();
+        }
+
+        content = content.replaceAll(/\\(.)/g, (_, c) => c );
+            //TODO: replace vars too...
+
         /*if( lang === 'html')
             content = content.replaceAll('[', '<').replaceAll(']', '>')*/
         content = content.replaceAll('£', '&');

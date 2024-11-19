@@ -65,46 +65,46 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 <h3 id="les-balises-html">Les balises HTML</h3>
 <p>HTML est un langage permettant de décrire une <strong>structure</strong> via des <strong>balises</strong>, e.g. :</p>
 <ul>
-<li><html-code>[br/]</html-code> correspond à un retour à la ligne (<em><u>br</u>eak line</em>).</li>
-<li><html-code>[p]texte[/p]</html-code> correspond à un paragraphe (<em><u>p</u>aragraph</em>).</li>
+<li><html-code>&lt;br/&gt;</html-code> correspond à un retour à la ligne (<em><u>br</u>eak line</em>).</li>
+<li><html-code>&lt;p&gt;texte&lt;/p&gt;</html-code> correspond à un paragraphe (<em><u>p</u>aragraph</em>).</li>
 </ul>
-<p>Les éléments qui ne peuvent avoir de contenu s&#39;écrivent avec une balise <strong>auto-fermante</strong> (<em>self-closing tag</em>) qui se présente sous la forme suivante : <html-code>[<var>$NAME</var>/]</html-code>.<br/>
-<html-code><var>$NAME</var></html-code> est le <strong>nom de la balise</strong> (<em>tag name</em>), il indique le type de l&#39;élément HTML.</p>
-<p>Les éléments qui peuvent avoir du contenu, e.g. un paragraphe peut contenir du texte, s&#39;écrivent sous la forme suivante : <html-code>[<var>$NAME</var>]<var>$CONTENT</var>[/<var>$NAME</var>]</html-code></p>
+<p>Les éléments qui ne peuvent avoir de contenu s&#39;écrivent avec une balise <strong>auto-fermante</strong> (<em>self-closing tag</em>) qui se présente sous la forme suivante : <html-code class="d4rk">&lt;<var>$NAME</var>/&gt;</html-code>.<br/>
+<html-code class="d4rk"><var>$NAME</var></html-code> est le <strong>nom de la balise</strong> (<em>tag name</em>), il indique le type de l&#39;élément HTML.</p>
+<p>Les éléments qui peuvent avoir du contenu, e.g. un paragraphe peut contenir du texte, s&#39;écrivent sous la forme suivante : <html-code class="d4rk">&lt;<var>$NAME</var>&gt;<var>$CONTENT</var>&lt;/<var>$NAME</var>&gt;</html-code></p>
 <ul>
-<li><html-code>[<var>$NAME</var>]</html-code> est la <strong>balise ouvrante</strong> (<em>opening tag</em>).</li>
-<li><html-code>[/<var>$NAME</var>]</html-code> est la <strong>balise fermante</strong> (<em>closing tag</em>).</li>
-<li><html-code><var>$CONTENT</var></html-code> est le contenu de la balise.</li>
+<li><html-code class="d4rk">&lt;<var>$NAME</var>&gt;</html-code> est la <strong>balise ouvrante</strong> (<em>opening tag</em>).</li>
+<li><html-code class="d4rk">&lt;/<var>$NAME</var>&gt;</html-code> est la <strong>balise fermante</strong> (<em>closing tag</em>).</li>
+<li><html-code class="d4rk"><var>$CONTENT</var></html-code> est le contenu de la balise.</li>
 </ul>
-<p>Vous remarquerez que HTML utilise <html-code>[</html-code> et <html-code>]</html-code> pour marquer le début et la fin d&#39;une balise. Ainsi, <html-code>soit y[x et y]0</html-code> est interprété par HTML comme étant une balise.</p>
+<p>Vous remarquerez que HTML utilise <html-code>&lt;</html-code> et <html-code>&gt;</html-code> pour marquer le début et la fin d&#39;une balise. Ainsi, <html-code>soit y[x et y]0</html-code> est interprété par HTML comme étant une balise.</p>
 <p>Pour éviter cela, on va échapper les caractères utilisés par HTML via des entités HTML (<em>HTML entities</em>) :</p>
 <ul>
-<li><html-code>[</html-code> devient <html-code>£lt;</html-code> (<em><u>l</u>esser <u>t</u>han</em>) ;</li>
-<li><html-code>]</html-code> devient <html-code>£gt;</html-code> (<em><u>g</u>reater <u>t</u>han</em>) ;</li>
-<li><html-code>&quot;</html-code> devient <html-code>£quot;</html-code> (<em><u>quot</u>e</em>) ;</li>
-<li><html-code>&amp;</html-code> devient <html-code>£amp;</html-code> (<em><u>amp</u>ersand</em>).</li>
+<li><html-code>&lt;</html-code> devient <html-code>&amp;lt;</html-code> (<em><u>l</u>esser <u>t</u>han</em>) ;</li>
+<li><html-code>&gt;</html-code> devient <html-code>&amp;gt;</html-code> (<em><u>g</u>reater <u>t</u>han</em>) ;</li>
+<li><html-code>&quot;</html-code> devient <html-code>&amp;quot;</html-code> (<em><u>quot</u>e</em>) ;</li>
+<li><html-code>&amp;</html-code> devient <html-code>&amp;amp;</html-code> (<em><u>amp</u>ersand</em>).</li>
 </ul>
-<p>💡 En HTML, les <strong>commentaires</strong> s&#39;écrivent ainsi : <html-code>[!-- <var>$COMMENT</var> --]</html-code></p>
+<p>💡 En HTML, les <strong>commentaires</strong> s&#39;écrivent ainsi : <html-code class="d4rk">&lt;!-- <var>$COMMENT</var> --&gt;</html-code></p>
 <h3 id="les-attributs-html">Les attributs HTML</h3>
 <p>Les <strong>attributs HTML</strong> (<em>HTML attribute</em>) permettent de configurer les éléments HTML :</p>
 <ul>
-<li><html-code>[img src=&quot;<var>$URL</var>&quot;/]</html-code> affiche l&#39;<u>im</u>a<u>g</u>e présente à l&#39;URL indiquée par l&#39;attribut <html-code>src</html-code>.</li>
-<li><html-code>[a href=&quot;<var>$URL</var>&quot;]lien[/a]</html-code> est un lien hypertexte pointant sur l&#39;URL indiqué par l&#39;attribut <html-code>href</html-code>.</li>
+<li><html-code class="d4rk">&lt;img src=&quot;<var>$URL</var>&quot;/&gt;</html-code> affiche l&#39;<u>im</u>a<u>g</u>e présente à l&#39;URL indiquée par l&#39;attribut <html-code>src</html-code>.</li>
+<li><html-code class="d4rk">&lt;a href=&quot;<var>$URL</var>&quot;&gt;lien&lt;/a&gt;</html-code> est un lien hypertexte pointant sur l&#39;URL indiqué par l&#39;attribut <html-code>href</html-code>.</li>
 </ul>
-<p>Les attributs HTML sont indiqués dans la balise ouvrante (ou auto-fermante) de l&#39;élément HTML. Le nom de l&#39;attribut est précédé d&#39;un <html-code>=</html-code> suivi de sa valeur entre guillements.</p>
+<p>Les attributs HTML sont indiqués dans la balise ouvrante (ou auto-fermante) de l&#39;élément HTML. Le nom de l&#39;attribut est précédé d&#39;un <html-code>=</html-code> suivi de sa valeur entre guillemets.</p>
 <p>💡 Une même balise HTML peut contenir plusieurs attributs, séparés par un espace :</p>
 <ul>
-<li><html-code>[a href=&quot;...&quot; target=&quot;_blank&quot;]lien[/a]</html-code> : ouvrir dans un nouvel onglet.</li>
-<li><html-code>[a href=&quot;...&quot; type=&quot;text/csv&quot; download=&quot;data.csv&quot;]lien[/a]</html-code><ul>
+<li><html-code>&lt;a href=&quot;...&quot; target=&quot;_blank&quot;&gt;lien&lt;/a&gt;</html-code> : ouvrir dans un nouvel onglet.</li>
+<li><html-code>&lt;a href=&quot;...&quot; type=&quot;text/csv&quot; download=&quot;data.csv&quot;&gt;lien&lt;/a&gt;</html-code><ul>
 <li><html-code>type</html-code> est le <strong>type MIME</strong> du fichier.</li>
 <li><html-code>download</html-code> au clic, télécharge la ressource.</li>
-<li><html-code>download=&quot;<var>FILENAME</var>&quot;</html-code> indique le nom par défaut du fichier téléchargé.</li>
+<li><html-code class="d4rk">download=&quot;<var>FILENAME</var>&quot;</html-code> indique le nom par défaut du fichier téléchargé.</li>
 </ul>
 </li>
 </ul>
 <p>💡 Certains attributs n&#39;ont pas besoin de valeur et configurent l&#39;élément par leur seule présence. Ce sont les <strong>attributs booléens</strong> (<em>boolean attributes</em>), e.g. :</p>
 <ul>
-<li><html-code>[a href=&quot;...&quot; type=&quot;text/csv&quot; download]lien[/a]</html-code></li>
+<li><html-code>&lt;a href=&quot;...&quot; type=&quot;text/csv&quot; download&gt;lien&lt;/a&gt;</html-code></li>
 </ul>
 <p>Chaque type d&#39;élément HTML a sa propre liste d&#39;attributs qui permettent de le configurer. Il existe cependant des attributs appelés <strong>attributs universels</strong> (<em>global attributes</em>) communs à tous les éléments HTML, e.g. :</p>
 <ul>
@@ -116,10 +116,10 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 <div class="flex-2">
     <div>
 <html-code class="block">
-[ul]
-    [li]Item A[/li]
-    [li]Item B[/li]
-[/ul]
+&lt;ul>
+    &lt;li>Item A&lt;/li>
+    &lt;li>Item B&lt;/li>
+&lt;/ul>
 </html-code>
     </div>
     <div>
@@ -132,12 +132,12 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 
 <div class="flex-2">
     <div>
-<html-code class="block">
-[ol]
-    [li]Item A[/li]
-    [li]Item B[/li]
-[/ol]
-</html-code>
+<html-code class="block"><!--
+<ol>
+    <li>Item A</li>
+    <li>Item B</li>
+</ol>
+--></html-code>
     </div>
     <div>
 <ol>
@@ -151,14 +151,14 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 <p>Les tableaux (<em>table</em>) sont composés d&#39;un (ou plusieurs) corps (<em><u>t</u>able <u>b</u>ody</em>) contenant des lignes (<em><u>t</u>able <u>r</u>ow</em>), elles-même composée de cellules (<em><u>t</u>able <u>d</u>ata</em>) :</p>
 <div class="flex-2">
     <div>
-<html-code class="block">
-[table]
-    [tbody]
-        [tr][td]A[/td][td]B[/td][/tr]
-        [tr][td]C[/td][td]C[/td][/tr]
-    [/tbody]
-[/table]
-</html-code>
+<html-code class="block"><!--
+<table>
+    <tbody>
+        <tr><td>A</td><td>B</td></tr>
+        <tr><td>C</td><td>C</td></tr>
+    </tbody>
+</table>
+--></html-code>
     </div>
     <div>
 <table>
@@ -173,17 +173,17 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 <p>💡 Il est possible d&#39;ajouter les cellules d&#39;en-têtes (<u>t</u>able <u>h</u>eader), dans le corps de la table, mais aussi dans une en-tête (<u>t</u>able <u>head</u>er) ou un pied (<u>t</u>able <u>foot</u>er) :</p>
 <div class="flex-2">
     <div>
-<html-code class="block">
-[table]
-    [thead]
-        [tr][th]ID[/th][th]Nom[/th][/tr]
-    [/thead]
-    [tbody]
-        [tr][th]1[/th][td]Pierre[/td][/tr]
-        [tr][th]2[/th][td]Paul[/td][/tr]
-    [/tbody]
-[/table]
-</html-code>
+<html-code class="block"><!--
+<table>
+    <thead>
+        <tr><th>ID</th><th>Nom</th></tr>
+    </thead>
+    <tbody>
+        <tr><th>1</th><td>Pierre</td></tr>
+        <tr><th>2</th><td>Paul</td></tr>
+    </tbody>
+</table>
+--></html-code>
     </div>
     <div>
 <table>
@@ -205,31 +205,31 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
         <tr><td>HTML</td><td>Affichage</td><td>Sens</td></tr>
     </thead>
     <tbody>
-        <tr><td><html-code>[strong]A[/strong]</html-code></td><td><strong>A</strong></td><td>important (<i><u>strong</u> importance</i>)</td></tr>
-        <tr><td><html-code>[em]A[/em]</html-code></td><td><em>A</em></td><td>mis en valeur (<i><u>em</u>phasis</i>)</td></tr>
-        <tr><td><html-code>[mark]A[/mark]</html-code></td><td><mark>A</mark></td><td>marqué</td></tr>
-        <tr><td><html-code>[ins]A[/ins]</html-code></td><td><ins>A</ins></td><td>inséré (<i><u>ins</u>erted</i>)</td></tr>
-        <tr><td><html-code>[del]A[/del]</html-code></td><td><del>A</del></td><td>supprimé  (<i><u>del</u>eted</i>)</td></tr>
+        <tr><td><html-code><!--<strong>A</strong>--></html-code></td><td><strong>A</strong></td><td>important (<i><u>strong</u> importance</i>)</td></tr>
+        <tr><td><html-code><!--<em>A</em>--></html-code></td><td><em>A</em></td><td>mis en valeur (<i><u>em</u>phasis</i>)</td></tr>
+        <tr><td><html-code><!--<mark>A</mark>--></html-code></td><td><mark>A</mark></td><td>marqué</td></tr>
+        <tr><td><html-code><!--<ins>A</ins>--></html-code></td><td><ins>A</ins></td><td>inséré (<i><u>ins</u>erted</i>)</td></tr>
+        <tr><td><html-code><!--<del>A</del>--></html-code></td><td><del>A</del></td><td>supprimé  (<i><u>del</u>eted</i>)</td></tr>
     </tbody>
 </table>
 
-<p>De la même manière, les balises <html-code>[h1]A[/h1]</html-code> à <html-code>[h6]A[/h6]</html-code> permettent d&#39;indiquez différents niveaux de titres.</p>
+<p>De la même manière, les balises <html-code>&lt;h1&gt;A&lt;/h1&gt;</html-code> à <html-code>&lt;h6&gt;A&lt;/h6&gt;</html-code> permettent d&#39;indiquez différents niveaux de titres.</p>
 <table>
     <thead>
         <tr><td>HTML</td><td>Affichage</td><td>Sens</td></tr>
     </thead>
     <tbody>
-        <tr><td><html-code>[h1]A[/h1]</html-code></td><td><h1>A</h1></td><td>titre de niveau 1</td></tr>
-        <tr><td><html-code>[h2]A[/h2]</html-code></td><td><h2>A</h2></td><td>titre de niveau 2</td></tr>
-        <tr><td><html-code>[h3]A[/h3]</html-code></td><td><h3>A</h3></td><td>titre de niveau 3</td></tr>
-        <tr><td><html-code>[h4]A[/h4]</html-code></td><td><h4>A</h4></td><td>titre de niveau 4</td></tr>
-        <tr><td><html-code>[h5]A[/h5]</html-code></td><td><h5>A</h5></td><td>titre de niveau 5</td></tr>
-        <tr><td><html-code>[h6]A[/h6]</html-code></td><td><h6>A</h6></td><td>titre de niveau 6</td></tr>
+        <tr><td><html-code><!--<h1>A</h1>--></html-code></td><td><h1>A</h1></td><td>titre de niveau 1</td></tr>
+        <tr><td><html-code><!--<h2>A</h2>--></html-code></td><td><h2>A</h2></td><td>titre de niveau 2</td></tr>
+        <tr><td><html-code><!--<h3>A</h3>--></html-code></td><td><h3>A</h3></td><td>titre de niveau 3</td></tr>
+        <tr><td><html-code><!--<h4>A</h4>--></html-code></td><td><h4>A</h4></td><td>titre de niveau 4</td></tr>
+        <tr><td><html-code><!--<h5>A</h5>--></html-code></td><td><h5>A</h5></td><td>titre de niveau 5</td></tr>
+        <tr><td><html-code><!--<h6>A</h6>--></html-code></td><td><h6>A</h6></td><td>titre de niveau 6</td></tr>
     </tbody>
 </table>
 
 <p>⚠ Ils ne doivent pas être utilisés pour leur affichage par défaut, qui peut être modifié, mais pour leur <strong>sémantique</strong>, i.e. le <em>sens</em> qu&#39;ils donnent. </p>
-<p>⚠ Il ne doit y avoir qu&#39;un seul <html-code>[h1]A[/h1]</html-code> par page.</p>
+<p>⚠ Il ne doit y avoir qu&#39;un seul <html-code>&lt;h1&gt;A&lt;/h1&gt;</html-code> par page.</p>
 <h3 id="sémantique-vs-affichage">Sémantique vs affichage</h3>
 <p>Pour rappel, HTML décrit la <strong>structure</strong> d&#39;une page Web, mais pas la manière dont les éléments doivent être affichés dans la page Web.</p>
 <p>Il est notamment possible d&#39;intégrer e.g. des données sous la forme de listes ou de tableaux. Cependant, les listes et les tableaux ne doivent être utilisés que pour décrire la structure des données. Ils ne doivent pas être utilisés pour positionner des éléments sur une page Web.</p>
@@ -239,22 +239,22 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 <h3 id="larbre-dom">L&#39;arbre DOM</h3>
 <p>Comme nous l&#39;avons vu, un élément HTML peut contenir du texte ou d&#39;autres éléments HTML. Il est d&#39;ailleurs très fréquent d&#39;utiliser les <strong>conteneurs génériques</strong> :</p>
 <ul>
-<li><html-code>[div]...[/div]</html-code> pour grouper un contenu dans un &quot;bloc&quot;.</li>
-<li><html-code>[span]...[/span]</html-code> se comporte comme du texte inséré à la ligne courante.</li>
+<li><html-code>&lt;div&gt;...&lt;/div&gt;</html-code> pour grouper un contenu dans un &quot;bloc&quot;.</li>
+<li><html-code>&lt;span&gt;...&lt;/span&gt;</html-code> se comporte comme du texte inséré à la ligne courante.</li>
 </ul>
 <div class="flex-2">
-<html-code class="block">
-[div]
+<html-code class="block"><!--
+<div>
     A
-    [div]B[/div]
+    <div>B</div>
     C
-[/div]
-[div]
+</div>
+<div>
     D
-    [span]E[/span]
+    <span>E</span>
     F
-[/div]
-</html-code>
+</div>
+--></html-code>
     <div>
         <div>
             A
@@ -271,18 +271,18 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 
 <p>On peut représenter cette hiérarchie sous la forme d&#39;un arbre, appelé <strong>arbre DOM</strong> où chaque élément HTML est associé à un noeud (<em>node</em>), et a pour fils son contenu :</p>
 <div class="flex-2">
-<html-code class="block">
-[div]
+<html-code class="block"><!--
+<div>
     A
-    [div]B[/div]
+    <div>B</div>
     C
-[/div]
-[div]
+</div>
+<div>
     D
-    [span]E[/span]
+    <span>E</span>
     F
-[/div]
-</html-code>
+</div>
+--></html-code>
     <div>
 <pre><code>Document
 ├── div
@@ -330,7 +330,7 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 
 <h3 id="inspecter-une-page-web">Inspecter une page Web</h3>
 <ul>
-<li>inspecteur / sélectors</li>
+<li>inspecteur / sélecteurs</li>
 </ul>
 <p>Afficher/inspecter l&#39;arbre DOM de la page</p>
 <ul>
@@ -351,21 +351,20 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 <li>un <strong>corps</strong> (<em>body</em>) définissant le <em>contenu</em> de la page Web.</li>
 </ul>
 <p>Les pages Web suivent ainsi la structure suivante :</p>
-<html-code class="block">
-[!DOCTYPE html]
-[html]
-    [head]
-        [meta charset="utf-8"]
-        [title]Page title[/title]
-    [/head]
-    [body]
-        [!-- CONTENT --]
-    [/body]
-[/html]
-</html-code>
-
-<p>💡 <html-code>[!DOCTYPE html]</html-code> indique le type du fichier (<u>doc</u>ument <u>type</u>).</p>
-<p>💡 <html-code>[html][/html]</html-code> est le noeud racine, aussi appelé la <strong>racine</strong> (<em>root</em>).</p>
+<p><html-code class="block"><!--
+<!DOCTYPE html>
+\<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Page title</title>
+    </head>
+    \<body>
+        <\!-- CONTENT --\>
+    \</body\>
+\</html>
+--></html-code></p>
+<p>💡 <html-code>&lt;!DOCTYPE html&gt;</html-code> indique le type du fichier (<u>doc</u>ument <u>type</u>).</p>
+<p>💡 <html-code>&lt;html&gt;&lt;/html&gt;</html-code> est le noeud racine, aussi appelé la <strong>racine</strong> (<em>root</em>).</p>
 <h2 id="encore-plus-de-balises-et-attributs">Encore plus de balises et attributs...</h2>
 <h3 id="la-documentation">La documentation</h3>
 <p>Le langage HTML contient une pléthore de balises (&gt;135) et d&#39;attributs (&gt;131) différents. Cependant, toutes les balises et tous les attributs ne sont pas à utiliser, certains sont :</p>
@@ -380,12 +379,12 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 <h3 id="balises-sémantiques-et-seo">Balises sémantiques et SEO</h3>
 <p>Beaucoup d&#39;éléments HTML sont en réalité &quot;identiques&quot; et se distinguent que par leur <strong>sémantique</strong>, e.g. :</p>
 <ul>
-<li><html-code>[thead][/thead]</html-code> : en-tête de tableau.</li>
-<li><html-code>[tbody][/tbody]</html-code> : corps de tableau.</li>
-<li><html-code>[tfoot][/tfoot]</html-code> : pied de tableau.</li>
+<li><html-code>&lt;thead&gt;&lt;/thead&gt;</html-code> : en-tête de tableau.</li>
+<li><html-code>&lt;tbody&gt;&lt;/tbody&gt;</html-code> : corps de tableau.</li>
+<li><html-code>&lt;tfoot&gt;&lt;/tfoot&gt;</html-code> : pied de tableau.</li>
 </ul>
 <p>Ces deux éléments sont en réalité identiques dans leur affichage et comportement, leur seule différence est dans le nom de la balise.</p>
-<p>De la même manière, les éléments <html-code>[strong]A[/strong]</html-code>, <html-code>[em]A[/em]</html-code>, etc. ont juste un affichage par défaut différent. Affichage qui peut être aisément modifié et interverti.</p>
+<p>De la même manière, les éléments <html-code>&lt;strong&gt;A&lt;/strong&gt;</html-code>, <html-code>&lt;em&gt;A&lt;/em&gt;</html-code>, etc. ont juste un affichage par défaut différent. Affichage qui peut être aisément modifié et interverti.</p>
 <p>💡 L&#39;avantage d&#39;avoir des noms différents est de rendre le code HTML plus explicite, facilitant sa lecture par les machines et les humains. Cependant, à votre niveau, il n&#39;est pas utile de trop en accorder d&#39;importance.</p>
 <p>💡 La facilitation de la compréhension de la structure de votre page Web par des machines (e.g. quel est le titre de la page, quels sont les mots clefs importants, etc), impact notamment le SEO (<u>S</u>earch <u>E</u>ngine <u>O</u>ptimization).</p>
 <h3 id="accessibilité">Accessibilité</h3>
@@ -395,11 +394,11 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 <p>Comme si cela ne suffisait pas, vous pouvez aussi créer vos propres éléments HTML personnalisés (<em>custom elements</em>).</p>
 <p>Imaginez par exemple une page Web affichant une liste de produits. Chaque produit est structuré et affiché de la même manière avec une image, un nom, et un prix :
 <html-code class="block">
-[div class=&quot;produit&quot;]
-    [strong class=&quot;nom&quot;&gt;Pizza[/strong]
-    [img src=&quot;/assets/pizza.jpg&quot;/]
-    [div class=&quot;prix&quot;]16€[/div]
-[/div]
+&lt;div class=&quot;produit&quot;&gt;
+    &lt;strong class=&quot;nom&quot;&gt;Pizza&lt;/strong&gt;
+    &lt;img src=&quot;/assets/pizza.jpg&quot;/&gt;
+    &lt;div class=&quot;prix&quot;&gt;16€&lt;/div&gt;
+&lt;/div&gt;
 </html-code></p>
 <p>Vous pourriez copier-coller la même structure pour chaque produit, mais cela comporte de nombreux défauts :</p>
 <ul>
@@ -408,15 +407,15 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 </ul>
 <p>Pour éviter cela, vous pouvez définir votre propre élément personnalisé :
 <html-code class="block">
-[prod-card nom=&quot;Pizza&quot; prix=&quot;16&quot;][/prod-card]
+&lt;prod-card nom=&quot;Pizza&quot; prix=&quot;16&quot;&gt;&lt;/prod-card&gt;
 </html-code></p>
 <p>Ces éléments personnalisés (<em>custom elements</em>) sont créés en associant un nom de balise (doit contenir un <html-code>-</html-code>) à un composants Web (<em>Web Components</em>) dont vous définirez le contenu en HTML :
 <html-code class="block">
-[div class=&quot;produit&quot;]
-    [strong class=&quot;nom&quot;&gt;${?}[/strong]
-    [img src=&quot;/assets/${?}.jpg&quot;/]
-    [div class=&quot;prix&quot;]${?}€[/div]
-[/div]
+&lt;div class=&quot;produit&quot;&gt;
+    &lt;strong class=&quot;nom&quot;&gt;${name}&lt;/strong&gt;
+    &lt;img src=&quot;/assets/${name}.jpg&quot;/&gt;
+    &lt;div class=&quot;prix&quot;&gt;${price}€&lt;/div&gt;
+&lt;/div&gt;
 </html-code></p>
 <p>Le navigateur remplira alors automatiquement chacun de vos éléments personnalisés par le contenu que vous aurez spécifié. Cela présente de nombreux avantages :</p>
 <ul>
