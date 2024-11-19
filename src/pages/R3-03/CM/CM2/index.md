@@ -29,22 +29,22 @@ Pour cela, nous utiliserons des fichier CSS (*Cascading Style Sheets*), des *feu
 
 L'ajout d'une feuille de style CSS à la page web se fait via un élément HTML <html-code>link</html-code> :
 
-<html-code class="block d4rk">
-[!DOCTYPE html]
-[html]
-  [head]
-    [!-- ... --]
-    [link rel='stylesheet' href='<var>$CSS_FILE</var>' blocking="render"/]
-  [/head]
-  [body]
-    [!-- ... --]
-  [/body]
-[/html]
-</html-code>
+<html-code class="block d4rk"><!--
+<!DOCTYPE html>
+\<html>
+  \<head>
+    <\!-- ... --\>
+    <link rel='stylesheet' href='<var>$CSS_FILE</var>' blocking="render"/>
+  \</head>
+  <body>
+    <\!-- ... --\>
+  \</body\>
+\</html>
+--></html-code>
 
 💡 L'attribut <html-code>blocking="render"</html-code> permet de bloquer l'affichage de la page tant que la feuille de style n'a pas été chargée. Cela évite un effet de scintillement au chargement de la page.
 
-⚠ S'il est techniquement possible d'ajouter des règles CSS via un élément HTML <html-code>[style]</html-code> ou un attribut HTML <html-code>style</html-code>, il convient d'éviter cela autant que possible.
+⚠ S'il est techniquement possible d'ajouter des règles CSS via un élément HTML <html-code>\<style\></html-code> ou un attribut HTML <html-code>style</html-code>, il convient d'éviter cela autant que possible.
 
 ### Déclarer une règle CSS
 
@@ -77,7 +77,7 @@ p {
 
 Chaque propriété CSS a une valeur par défaut. Lorsque cette dernière est <css-code>inherit</css-code>, par défaut, sa valeur sera celle de l'élément parent. On dit alors que la propriété CSS est *héritée* :
 <html-code class="block d4rk">
-[div]Mon texte: [span]Hello[/span][/div]
+\<div\>Mon texte: \<span\>Hello\</span\>\</div\>
 </html-code>
 <css-code class="block d4rk">
 div {
@@ -85,7 +85,7 @@ div {
 }
 </css-code>
 
-<html-code>[span]</html-code> ne définissant pas de valeurs pour <css-code>font-weight</css-code>, il héritera de son père, i.e. sera affiché en gras.
+<html-code>\<span\></html-code> ne définissant pas de valeurs pour <css-code>font-weight</css-code>, il héritera de son père, i.e. sera affiché en gras.
 
 CSS défini d'autres valeurs spéciales :
 - <css-code>initial</css-code> : revient à la valeur par défaut.
@@ -106,7 +106,7 @@ CSS défini d'autres valeurs spéciales :
 
 En CSS, il est possible de définir les couleurs d'un élément pour :
 - <css-code>color</css-code> : le texte ;
-- <css-code>background-color</css-code> : l'arrière-plan () ;
+- <css-code>background-color</css-code> : l'arrière-plan ;
 - <css-code>accent-color</css-code> : les éléments d'interface utilisateur ;
 - <css-code>caret-color</css-code> : le curseur (*caret*).
 - la bordure (cf plus tard) ;
@@ -137,14 +137,14 @@ Si cela ne suffisait pas, il faut généralement définir plusieurs jeux de coul
 - etc.
 
 💡 Pour indiquer les modes de couleurs supportés (l'ordre indique la préférence) :
-<html-code class='block'>[meta name="color-scheme" content="dark light" /]</html-code>
+<html-code class='block'>\<meta name="color-scheme" content="dark light" /\></html-code>
 
 💡 Pour indiquer les couleurs de thème (modifie la couleur de la fenêtre) :
 <html-code class='block'>
-[meta name="theme-color" media="(prefers-color-scheme: light)"
-   content="blue" /]
-[meta name="theme-color" media="(prefers-color-scheme: dark)"
-   content="red" /]
+\<meta name="theme-color" media="(prefers-color-scheme: light)"
+   content="blue" /\>
+\<meta name="theme-color" media="(prefers-color-scheme: dark)"
+   content="red" /\>
 </html-code>
 
 💡 Pour définir une couleur en fonction du mode :
@@ -153,24 +153,24 @@ Si cela ne suffisait pas, il faut généralement définir plusieurs jeux de coul
 💡 Pour définir le mode de couleur à utiliser :
 <css-code class='block'>color-scheme: (dark|light);</css-code>
 
-💡 Pour définir des règles CSS spéficiques à un mode de couleur :
-<css-code class='block'>@media (prefers-color-scheme: dark){/* ... \}</css-code> 
+💡 Pour définir des règles CSS spécifiques à un mode de couleur :
+<css-code class='block'>@media (prefers-color-scheme: dark){/* ... \*/}</css-code> 
 
 
-Si <css-code>currentcolor</css-code> permet de réutiliser la couleur définie par <css-code>color</css-code> pour les autres priopriétés CSS, cela n'est pas suffisant. Il nous faut ainsi un moyen de créer une variable contenant la couleur  que nous pourrons ensuite utiliser dans les règles CSS.
+Si <css-code>currentcolor</css-code> permet de réutiliser la couleur définie par <css-code>color</css-code> pour les autres propriétés CSS, cela n'est pas suffisant. Il nous faut ainsi un moyen de créer une variable contenant la couleur  que nous pourrons ensuite utiliser dans les règles CSS.
 
 ### Définir une propriété personnalisée
 
 Pour cela on défini des *propriétés CSS personnalisées* (aussi appelées *variables CSS*) :
 <css-code class="block d4rk">
-@property --<var>PROPNAME</var> {
-    syntax       : "<var>VALUE_TYPE</var>";
-    initial-value: <var>DEFAULT_VALUE</var>;
+@property --<var>$PROPNAME</var> {
+    syntax       : "<var>$VALUE_TYPE</var>";
+    initial-value: <var>$DEFAULT_VALUE</var>;
     inherit      : true;
 }
 </css-code>
 
-Il sera ensuite possible d'utiliser sa valeur grâce à <css-code class='d4rk'>var(<var>PROPNAME</var>)</css-code>, e.g. :
+Il sera ensuite possible d'utiliser sa valeur grâce à <css-code class='d4rk'>var(--<var>$PROPNAME</var>)</css-code>, e.g. :
 <css-code class="block d4rk">
 @property --primary_color {
     syntax       : "\<color\>";
@@ -224,8 +224,8 @@ Cependant, il convient de garder à l'esprit que la fenêtre dans laquelle s'aff
 ### Le flux
 
 Par défaut, les éléments sont affichés les uns à la suite des autres :
-- <html-code>[div]</html-code> : affiché en bloc, prend toute la ligne.
-- <html-code>[span]</html-code> : affiché comme un texte, sur la ligne courante.
+- <html-code>\<div\></html-code> : affiché en bloc, prend toute la ligne.
+- <html-code>\<span\></html-code> : affiché comme un texte, sur la ligne courante.
 
 Ils correspondent en réalité aux propriétés CSS suivantes :
 - <css-code>display: block;</css-code>
@@ -491,10 +491,10 @@ Les pages Web s'adaptent déjà à la taille de la fenêtre si vous utilisez :
 
 Pour éviter ceci, devez alors inclure la balise suivante dans l'en-tête de la page web :
 
-<html-code class='block'>
-[meta name="viewport"
-   content="width=device-width, initial-scale=1.0"]
-</html-code>
+<html-code class='block'><!--
+\<meta name="viewport"
+   content="width=device-width, initial-scale=1.0"/>
+--></html-code>
 
 
 #### Des règles CSS différentes
@@ -519,7 +519,7 @@ Pour cela il y a deux moyens de procéder :
 <css-code class='block'>
 div {
     container: card size;
-    div > .item {
+    \& > .item {
         @container (max-width: 100px) {
             /* rules \*/
         }
@@ -571,7 +571,7 @@ Les pages peuvent aussi être imprimée, pour cela on peut définir des règles 
 
 💡 Vous pouvez indiquez où effectuer les coupures de pages avec <css-code>break-*</css-code>, avoir des options en fonction de si la page est pair ou impair, etc<br/>
 
-💡 <html-code>[wbr]</html-code> permet d'insérer un retour à la ligne facultatif.
+💡 <html-code>\<wbr/\></html-code> permet d'insérer un retour à la ligne facultatif.
 
 ### Sortir des éléments du flux
 
@@ -642,9 +642,9 @@ Limite de HTML/CSS:
 
 Il arrive que des règles CSS soient contradictoires. Dans l'exemple suivant, le texte doit-il s'afficher en gris ou en noir ? 
 
-<html-code class='block d4rk'>
-[span class='username']Paul[/span]
-</html-code>
+<html-code class='block d4rk'><!--
+<span class='username'>Paul</span>
+--></html-code>
 <css-code class='block d4rk'>
 .username {
     color: gray;
@@ -717,11 +717,11 @@ Certains éléments HTML peuvent se substituer à des règles CSS, e.g. :
         <tr><th>HTML</th><th>CSS</th><th></th></tr>
     </thead>
     <tbody>
-        <tr><td><html-code>[b]A[/b]</html-code></td><td><css-code>font-weight: bold;</css-code></td><td><b>A</b></td></tr>
-        <tr><td><html-code>[i]A[/i]</html-code></td><td><css-code>font-style: italic;</css-code></td><td><i>A</i></td></tr>
-        <tr><td><html-code>[u]A[/u]</html-code></td><td><css-code>text-decoration: underline;</css-code></td><td><u>A</u></td></tr>
-        <tr><td><html-code>[mark]A[/mark]</html-code></td><td><css-code>background-color: yellow;</css-code></td><td><mark>A</mark></td></tr>
-        <tr><td><html-code>[s]A[/s]</html-code></td><td></td><td><s>A</s></td></tr>
+        <tr><td><html-code><!--<b>A</b>--></html-code></td><td><css-code>font-weight: bold;</css-code></td><td><b>A</b></td></tr>
+        <tr><td><html-code><!--<i>A</i>--></html-code></td><td><css-code>font-style: italic;</css-code></td><td><i>A</i></td></tr>
+        <tr><td><html-code><!--<u>A</u>--></html-code></td><td><css-code>text-decoration: underline;</css-code></td><td><u>A</u></td></tr>
+        <tr><td><html-code><!--<mark>A</mark>--></html-code></td><td><css-code>background-color: yellow;</css-code></td><td><mark>A</mark></td></tr>
+        <tr><td><html-code><!--<s>A</s>--></html-code></td><td></td><td><s>A</s></td></tr>
     </tbody>
 </table>
 
@@ -744,18 +744,18 @@ Cependant, la classe est un attribut HTML, il doivent donc autant que possible d
 
 💡 Pour distinguer les colonnes d'une table, on utilise les balises <html-code>colgroup</html-code> et <html-code>col</html-col> :
 
-<html-code class="block d4rk">
-[table]
-    [colgroup]
-        [col class="col_username"][/col]
-        [col class="col_user_age"][/col]
-    [/colgroup]
-    [tbody]
-        [tr][td]Paul[/td][td]34[/td][/tr]
-        [tr][td]Jean[/td][td]72[/td][/tr]
-    [/tbody]
-[/table]
-</html-code>
+<html-code class="block d4rk"><!--
+\<table\>
+    \<colgroup\>
+        \<col class="col_username"\>\</col\>
+        \<col class="col_user_age"\>\</col\>
+    \</colgroup\>
+    \<tbody\>
+        \<tr\>\<td\>Paul\</td\>\<td\>34\</td\>\</tr\>
+        \<tr\>\<td\>Jean\</td\>\<td\>72\</td\>\</tr\>
+    \</tbody\>
+\</table\>
+--></html-code>
 
 <css-code class='block d4rk'>
 col.col_username {
@@ -770,9 +770,9 @@ col.col_user_age {
 
 Cependant, cette séparation entre structure (HTML) et affichage (CSS) n'est pas toujours entièrement respectée. Par facilité, il est en effet courant d'utiliser des classes, non pas pour ajouter une sémantique ou désigner un type d'élément, mais pour appliquer des règles CSS sur un ensemble d'éléments HTML, e.g. :
 
-<html-code class="block d4rk">
-[h1 class="text-3xl font-bold underline"]Hello world![/h1]
-</html-code>
+<html-code class="block d4rk"><!--
+\<h1 class="text-3xl font-bold underline"\>Hello world!\</h1\>
+--></html-code>
 
 Sur de gros projets, cela permet d'éviter la duplication de règles CSS, ainsi que de les normaliser. C'est par exemple ce que proposent plusieurs bibliothèques CSS comme *Tailwind* ou *Bootstrap*.
 

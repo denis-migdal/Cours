@@ -71,20 +71,33 @@ export default class Code extends LISS({
 
         if( this.content.firstChild?.nodeType === Node.COMMENT_NODE ) {
             content = this.host.innerHTML.slice(4,-3).trim();
+
+            console.warn(content);
+
+            let i = 0;
+            // ([\w$_]+)\>
+            content = content.replaceAll(/\<var\>(.*)\<\/var\>/g, (_, content) => {
+
+                const name = `__VAR${i++}`;
+
+                let elem = document.createElement('var');
+                elem.textContent = content;
+                vars[name] = elem;
+
+                
+                return name;
+            });
+            //TODO: replace vars too...
+
         }
 
         content = content.replaceAll(/\\(.)/g, (_, c) => c );
-            //TODO: replace vars too...
-
-        /*if( lang === 'html')
-            content = content.replaceAll('[', '<').replaceAll(']', '>')*/
-        content = content.replaceAll('£', '&');
-
         content = hljs.highlight(content, { language: lang }).value;
         
         content = content.replaceAll(/(__[A-Z]+[0-9]*)/g, (_: unknown, name: string) => {
             return vars[name].outerHTML
         });
+
         code.innerHTML = content.replaceAll(/(\$[A-Z_]+[0-9]*)/g, (_: unknown, varname: string) => `<varname>${varname}</varname>`);
 
         this.content.replaceChildren(code);
