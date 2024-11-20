@@ -71,8 +71,9 @@
 <h2 id="votre-premier-composant-web">Votre premier composant Web</h2>
 <h3 id="ouvrir-le-projet">Ouvrir le projet</h3>
 <ol>
-<li>Téléchargez, puis décompressez l&#39;archive <a href="../../../../assets/web/Site%20Web.zip">Site Web</a>.</li>
+<li>Téléchargez, puis décompressez l&#39;archive <a href="../../../../assets/web/W1-TP1.zip">Site Web</a>.</li>
 <li>Ouvrez le dossier dans Visual Studio Code, puis lancez <code>Go Live</code>.</li>
+<li>Vous devriez alors voir un texte s&#39;afficher dans la page Web.</li>
 </ol>
 <p>💡 Le dossier ainsi ouvert est alors la racine (<em>root dir</em>) <shell-code>$ROOT</shell-code> de votre site Web.<br/>
 Dans le navigateur, il correspondra à l&#39;URL <code>http://localhost:5000/</code>.</p>
@@ -100,11 +101,14 @@ Dans le navigateur, il correspondra à l&#39;URL <code>http://localhost:5000/</c
 <p>Afin de créer des composants Web simplement, en HTML uniquement, nous utiliserons LISS en mode automatique. LISS offre une <a href="https://github.com/denis-migdal/LISS/blob/V2/doc/fr/auto.md">documentation en français</a> ainsi qu&#39;un <a href="https://denis-migdal.github.io/LISS/dist/dev/pages/playground/?example=auto-html">bac à sable</a> contenant divers exemples. </p>
 <p>Dans le cadre de ce projet, chaque composant Web est défini par un dossier :<br>
 <shell-code class="d4rk"><var>$ROOT</var>/components/<var>$NAME</var>/</shell-code></p>
-<p>Dans ce dossier, le contenu du composant Web est défini par le fichier <shell-code class="d4rk">index.html</shell-code></p>
+<p>Dans ce dossier, le contenu du composant Web est défini par le fichier <shell-code class="d4rk">index.html</shell-code>.</p>
+<p>⚠ Respectez la casse et la convention <shell-code class="d4rk"><var>$ROOT</var>/components/<var>$NAME</var>/index.html</shell-code> sinon votre composant ne fonctionnera pas !</p>
 <ol>
+<li>Lisez la documentation de LISS et visualisez ses examples dans le bac à sable.</li>
 <li>Modifiez le contenu de <html-code>&lt;hello-world&gt;</html-code> afin d&#39;afficher <code>Bonjour le monde ;)</code>.</li>
 <li>Créez un nouveau composant Web <html-code>&lt;my-hello&gt;</html-code> affichant <code>Bonjour ;)</code>.</li>
 <li>Ajoutez ce nouveau composant Web à la page Web.</li>
+<li>Vérifiez que <code>Bonjour ;)</code> s&#39;affiche bien dans la page Web.</li>
 </ol>
 <h2 id="créer-des-composants-web-plus-avancés">Créer des composants Web plus avancés.</h2>
 <h3 id="contenu-dynamique-dépendant-des-attributs-de-lélément">Contenu dynamique dépendant des attributs de l&#39;élément</h3>
@@ -118,6 +122,7 @@ Dans le navigateur, il correspondra à l&#39;URL <code>http://localhost:5000/</c
 </ul>
 </li>
 <li>En vous inspirant de <code>/index.html</code>, créez une nouvelle page <code>/user/</code> via un fichier <code>/user/index.html</code> affichant la description d&#39;un utilisateur John Doe de 42 ans.</li>
+<li>Vérifiez que la page <code>/user/</code> affiche bien la description de l&#39;utilisateur.</li>
 </ol>
 <p>💡 Une telle fonctionnalité est usuellement implémentée en JavaScript, mais LISS permet de cacher cette complexité. Ici, l&#39;attribut n&#39;est pas synchronisé avec le contenu, c&#39;est à dire que si vous modifiez l&#39;attribut via l&#39;inspecteur, sa valeur ne sera pas mise à jour dans le contenu de l&#39;élément personnalisé.</p>
 <p>💡 De nombreux framework web fournissent des fonctionnalités équivalentes et bien plus avancées.</p>
@@ -126,12 +131,13 @@ Dans le navigateur, il correspondra à l&#39;URL <code>http://localhost:5000/</c
 <li>À la fin de la page <code>/user/</code> ajoutez un titre de niveau 3 <code>Dernières connexions</code></li>
 <li>Ajoutez une liste ordonnée (<em><u>o</u>rdered <u>l</u>ist</em>) contenant 10 éléments (<em><u>l</u>ist <u>i</u>tem</em>) :<br/>
 <html-code>[2020-02-23] &lt;b&gt;localhost&lt;/b&gt; &lt;em&gt;1h30&lt;/em&gt;</html-code></li>
-<li>Créez un composant personnalisé <html-code>&lt;user-connexion&gt;</html-code> pour remplacer les éléments de cette liste. Ses attributs seront <html-code>date</html-code>, <html-code>host</html-code>, et <html-code>duration</html-code>.</li>
+<li>Créez un composant personnalisé <html-code>&lt;user-connexion&gt;</html-code> pour <b>remplacer</b> les éléments de cette liste. Ses attributs seront <html-code>date</html-code>, <html-code>host</html-code>, et <html-code>duration</html-code>.</li>
+<li>Vérifiez que la page <code>/user/</code> affiche bien la liste des dernières connexions.</li>
 <li>Quel est l&#39;un des intérêts des composants personnalisés exploité ici ?<pre contenteditable></pre></li>
 </ol>
 <h3 id="hériter-dun-élément-existant">Hériter d&#39;un élément existant</h3>
 <ol>
-<li>Créez une nouvelle page Web <code>/users/</code> contenant un tableau dont la première colonne sera vide, et les suivantes seront <code>ID</code>, <code>Nom</code>, <code>Prénom</code>, <code>Âge</code>.</li>
+<li>Créez une nouvelle page Web <code>/users/</code> contenant un tableau dont la première colonne de l&#39;en-tête sera vide, et les suivantes seront <code>ID</code>, <code>Nom</code>, <code>Prénom</code>, <code>Âge</code>.</li>
 <li>Créez un nouveau composant Web <html-code>&lt;user-line&gt;</html-code> qui correspondra à une ligne du tableau et qui contiendra 5 cellules (<u>t</u>able <u>d</u>ata) :<ul>
 <li>une <u>im</u>a<u>g</u>e dont la <u>s</u>ou<u>rc</u>e sera <html-code>/assets/img/roles/${user-role}.jpg</html-code> ;</li>
 <li>l&#39;identifiant (attribut <html-code>user-id</html-code>) ;</li>
@@ -140,12 +146,15 @@ Dans le navigateur, il correspondra à l&#39;URL <code>http://localhost:5000/</c
 <li>l&#39;âge (attribut <html-code>user-age</html-code>) ;</li>
 </ul>
 </li>
+<li>Vérifiez que la page <code>/users/</code> affiche bien un tableau vide.</li>
 <li>Ajoutez 5 lignes au tableau de <code>/users/</code> en utilisant une balise :
 <html-code class="block">&lt;tr is=&quot;user-line&quot;&gt;</html-code>
 💡 3 rôles sont définis : <code>admin</code>, <code>user</code>, et <code>disabled</code>.</li>
+<li>Vérifiez que la page <code>/users/</code> affiche bien 5 utilisateurs.</li>
 <li>Observez une ligne via l&#39;inspecteur. Vous remarquerez que cet élément n&#39;a pas de <code>#shadow-root</code>.</li>
 <li>Intervertissez les colonnes <code>Nom</code> et <code>Prénom</code>.</li>
 <li>Transformez le contenu de la cellule <code>ID</code> en un lien hypertexte renvoyant sur <html-code>/user/?id=${user-id}</html-code>.</li>
+<li>Vérifiez que le lien hypertexte fonctionne bien en cliquant dessus.</li>
 <li>Quel est l&#39;un des intérêts des composants personnalisés exploité ici ?<pre contenteditable></pre></li>
 </ol>
 <p>💡 Pour le moment, <html-code>/user/?id=${user-id}</html-code> affichera toujours le même utilisateur. Nous verrons par la suite comment générer dynamiquement son contenu en fonction de données locales ou externes.</p>

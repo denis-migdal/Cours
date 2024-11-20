@@ -71,8 +71,9 @@ Il vous est recommandé d’organiser votre espace de travail de la sorte :
 
 ### Ouvrir le projet
 
-1. Téléchargez, puis décompressez l'archive [Site Web](../../../../assets/web/Site%20Web.zip).
+1. Téléchargez, puis décompressez l'archive [Site Web](../../../../assets/web/W1-TP1.zip).
 1. Ouvrez le dossier dans Visual Studio Code, puis lancez `Go Live`.
+1. Vous devriez alors voir un texte s'afficher dans la page Web.
 
 💡 Le dossier ainsi ouvert est alors la racine (*root dir*) <shell-code>$ROOT</shell-code> de votre site Web.<br/>
 Dans le navigateur, il correspondra à l'URL `http://localhost:5000/`.
@@ -106,11 +107,15 @@ Afin de créer des composants Web simplement, en HTML uniquement, nous utilisero
 Dans le cadre de ce projet, chaque composant Web est défini par un dossier :<br>
 <shell-code class="d4rk"><var>$ROOT</var>/components/<var>$NAME</var>/</shell-code>
 
-Dans ce dossier, le contenu du composant Web est défini par le fichier <shell-code class="d4rk">index.html</shell-code>
+Dans ce dossier, le contenu du composant Web est défini par le fichier <shell-code class="d4rk">index.html</shell-code>.
 
+⚠ Respectez la casse et la convention <shell-code class="d4rk"><var>$ROOT</var>/components/<var>$NAME</var>/index.html</shell-code> sinon votre composant ne fonctionnera pas !
+
+1. Lisez la documentation de LISS et visualisez ses examples dans le bac à sable.
 1. Modifiez le contenu de <html-code>\<hello-world\></html-code> afin d'afficher `Bonjour le monde ;)`.
 1. Créez un nouveau composant Web <html-code>\<my-hello\></html-code> affichant `Bonjour ;)`.
 1. Ajoutez ce nouveau composant Web à la page Web.
+1. Vérifiez que `Bonjour ;)` s'affiche bien dans la page Web.
 
 ## Créer des composants Web plus avancés.
 
@@ -124,6 +129,7 @@ LISS permet d'insérer la valeur d'un attribut de l'élément personnalisé dans
    - un texte <html-code>Prénom : ${user-surname}</html-code> suivi d'un retour à la ligne (*line <u>br</u>eak*).
    - un texte <html-code>Âge : ${user-age}</html-code> suivi d'un retour à la ligne (*line <u>br</u>eak*).
 2. En vous inspirant de `/index.html`, créez une nouvelle page `/user/` via un fichier `/user/index.html` affichant la description d'un utilisateur John Doe de 42 ans.
+3. Vérifiez que la page `/user/` affiche bien la description de l'utilisateur.
 
 💡 Une telle fonctionnalité est usuellement implémentée en JavaScript, mais LISS permet de cacher cette complexité. Ici, l'attribut n'est pas synchronisé avec le contenu, c'est à dire que si vous modifiez l'attribut via l'inspecteur, sa valeur ne sera pas mise à jour dans le contenu de l'élément personnalisé.
 
@@ -134,25 +140,29 @@ LISS permet d'insérer la valeur d'un attribut de l'élément personnalisé dans
 1. À la fin de la page `/user/` ajoutez un titre de niveau 3 `Dernières connexions`
 1. Ajoutez une liste ordonnée (*<u>o</u>rdered <u>l</u>ist*) contenant 10 éléments (*<u>l</u>ist <u>i</u>tem*) :<br/>
    <html-code>[2020-02-23] \<b\>localhost\</b\> \<em\>1h30\</em\></html-code>
-1. Créez un composant personnalisé <html-code>\<user-connexion\></html-code> pour remplacer les éléments de cette liste. Ses attributs seront <html-code>date</html-code>, <html-code>host</html-code>, et <html-code>duration</html-code>.
+1. Créez un composant personnalisé <html-code>\<user-connexion\></html-code> pour <b>remplacer</b> les éléments de cette liste. Ses attributs seront <html-code>date</html-code>, <html-code>host</html-code>, et <html-code>duration</html-code>.
+1. Vérifiez que la page `/user/` affiche bien la liste des dernières connexions.
 1. Quel est l'un des intérêts des composants personnalisés exploité ici ?
    <pre contenteditable></pre>
 
 ### Hériter d'un élément existant
 
-1. Créez une nouvelle page Web `/users/` contenant un tableau dont la première colonne sera vide, et les suivantes seront `ID`, `Nom`, `Prénom`, `Âge`.
+1. Créez une nouvelle page Web `/users/` contenant un tableau dont la première colonne de l'en-tête sera vide, et les suivantes seront `ID`, `Nom`, `Prénom`, `Âge`.
 1. Créez un nouveau composant Web <html-code>\<user-line\></html-code> qui correspondra à une ligne du tableau et qui contiendra 5 cellules (<u>t</u>able <u>d</u>ata) :
    - une <u>im</u>a<u>g</u>e dont la <u>s</u>ou<u>rc</u>e sera <html-code>/assets/img/roles/${user-role}.jpg</html-code> ;
    - l'identifiant (attribut <html-code>user-id</html-code>) ;
    - le prénom (attribut <html-code>user-surname</html-code>) ;
    - le nom (attribut <html-code>user-name</html-code>) ;
    - l'âge (attribut <html-code>user-age</html-code>) ;
+1. Vérifiez que la page `/users/` affiche bien un tableau vide.
 2. Ajoutez 5 lignes au tableau de `/users/` en utilisant une balise :
    <html-code class="block">\<tr is="user-line"\></html-code>
    💡 3 rôles sont définis : `admin`, `user`, et `disabled`.
+1. Vérifiez que la page `/users/` affiche bien 5 utilisateurs.
 2. Observez une ligne via l'inspecteur. Vous remarquerez que cet élément n'a pas de `#shadow-root`.
 2. Intervertissez les colonnes `Nom` et `Prénom`.
 2. Transformez le contenu de la cellule `ID` en un lien hypertexte renvoyant sur <html-code>/user/?id=${user-id}</html-code>.
+2. Vérifiez que le lien hypertexte fonctionne bien en cliquant dessus.
 2. Quel est l'un des intérêts des composants personnalisés exploité ici ?
    <pre contenteditable></pre>
 
