@@ -34,10 +34,10 @@ Pour les VCOD, nous verrons par la suite TypeScript en *Programmation Web* (S4) 
 
 ### Exécuter du code dans la page Web
 
-Dans l'en-tête de la page Web, <html-code>\<script\></html-code> permet d'exécuter du code sur la page :
-<html-code class="block d4rk">
-\<script src="<var>$JS_FILE</var>" type="module" <var>[defer|async]</var>\>\</script\>
-</html-code>
+Dans l'en-tête de la page Web, <script type="html"><script></script> permet d'exécuter du code sur la page :
+<script type="html">
+<script src="<var>$JS_FILE</var>" type="module" <var>[defer|async]</var>><\/script>
+</script>
 
 💡 <html-code>type="module"</html-code> indique le type du script (ici un module JavaScript).
 
@@ -59,7 +59,7 @@ La console gère plusieurs niveau d'affichages dont vous pouvez filtrer l'affich
 - <js-code>console.warn("...")</js-code>
 - <js-code>console.error("...")</js-code> : affiche aussi la pile d'appel.
 
-💡 Vous pouvez formatter les textes affichés dans la console en le préfixant par `%c`, e.g.
+💡 Vous pouvez formatter l'affichage dans la console en préfixant le texte par `%c`, e.g.
 <js-code class="block">console.log("%cOK", "color: red")</js-code> 
 
 💡 Vous pouvez manipuler la console via :
@@ -76,7 +76,7 @@ La console gère plusieurs niveau d'affichages dont vous pouvez filtrer l'affich
 
 ### Spécificités de Brython
 
-L'API du navigateur est accessible à partir du module <py-code>browser.window<py-code> :
+L'API du navigateur est accessible à partir du module <py-code>browser.window</py-code> :
 <py-code>from browser import window</py-code>
 
 En JavaScript, <js-code>window</js-code> représente la "fenêtre" de la page Web actuelle. Il contient l'ensemble des variables/classes/fonctions globales de la page Web. En particulier, <js-code>window.document</js-code> représente l'arbre DOM de la page Web.
@@ -95,7 +95,9 @@ En JavaScript, <js-code>window</js-code> représente la "fenêtre" de la page We
 Pour interagir avec le DOM, il convient de sélectionner les éléments HTML sur lesquels on souhaite interagir.
 
 Pour cela on utilise <html-code>.querySelector[All]\()</html-code> qui retourne le (ou les) **descendants** de <html-code class="d4rk"><var>$ELEM</var></html-code> correspondant au sélecteur <html-code class="d4rk"><var>$SELECTOR</var></html-code> :
-<html-code class="block d4rk"><var>$ELEM</var>.querySelector[All]\(<var>$SELECTOR</var>)</html-code>
+<script type="html">
+    <var>$ELEM</var>.querySelector[All](<var>$SELECTOR</var>)
+</script>
 
 💡 <html-code class="d4rk">.closest(<var>$S</var>)</html-code> retourne le premier **ancêtre** correspondant au sélecteur <html-code class="d4rk"><var>$S</var></html-code>.
 
@@ -104,7 +106,7 @@ Pour cela on utilise <html-code>.querySelector[All]\()</html-code> qui retourne 
 💡 Dans un sélecteur, <css-code>:scope</css-code> permet de désigner l'élément à partir du lequel on appelle ces fonctions.
 
 💡 Vous pouvez utiliser ces fonctions sur <html-code>document</html-code>, mais aussi sur :
-- <html-code>document.documentElement</html-code> : la racine (<html-code>\<html\></html-code>).
+- <html-code>document.documentElement</html-code> : la racine (<script type="html"><html></script>).
 - <html-code>document.head</html-code>
 - <html-code>document.body</html-code>
 
@@ -137,33 +139,33 @@ En premier lieu il est possible de modifier les attributs et les classes d'un é
     <tbody>
         <tr>
             <td><i>Lister</i></td>
-            <td><js-code mode="d4rk"></js-code></td>
-            <td><js-code mode="d4rk">.getAttributeNames()</js-code></td>
+            <td><js-code class="d4rk"></js-code></td>
+            <td><js-code class="d4rk">.getAttributeNames()</js-code></td>
         </tr>
         <tr>
             <td><i>Obtenir</i></td>
-            <td><js-code mode="d4rk"></js-code></td>
-            <td><js-code mode="d4rk">.getAttribute(<var>$N</var>)</js-code></td>
+            <td><js-code class="d4rk"></js-code></td>
+            <td><js-code class="d4rk">.getAttribute(<var>$N</var>)</js-code></td>
         </tr>
         <tr>
             <td><i>Ajouter</i></td>
-            <td><js-code mode="d4rk">.classList.add(<var>$C</var>[,...])</js-code></td>
-            <td><js-code mode="d4rk">.setAttribute(<var>$N</var>, <var>$V</var>)</js-code></td>
+            <td><js-code class="d4rk">.classList.add(<var>$C</var>[,...])</js-code></td>
+            <td><js-code class="d4rk">.setAttribute(<var>$N</var>, <var>$V</var>)</js-code></td>
         </tr>
         <tr>
             <td><i>Supprimer</i></td>
-            <td><js-code mode="d4rk">.classList.remove(<var>$C</var>[,...])</js-code></td>
-            <td><js-code mode="d4rk">.removeAttribute(<var>$N</var>)</js-code></td>
+            <td><js-code class="d4rk">.classList.remove(<var>$C</var>[,...])</js-code></td>
+            <td><js-code class="d4rk">.removeAttribute(<var>$N</var>)</js-code></td>
         </tr>
         <tr>
             <td><i>Basculer</i></td>
-            <td><js-code mode="d4rk">.classList.toggle(<var>$C</var>[, <var>$F</var>])</js-code></td>
-            <td><js-code mode="d4rk">.toggleAttribute(<var>$N</var>[, <var>$F</var>])</js-code></td>
+            <td><js-code class="d4rk">.classList.toggle(<var>$C</var>[, <var>$F</var>])</js-code></td>
+            <td><js-code class="d4rk">.toggleAttribute(<var>$N</var>[, <var>$F</var>])</js-code></td>
         </tr>
         <tr>
             <td><i>Contient ?</i></td>
-            <td><js-code mode="d4rk">.classList.has(<var>$C</var>)</js-code></td>
-            <td><js-code mode="d4rk">.hasAttribute(<var>$N</var>)</js-code></td>
+            <td><js-code class="d4rk">.classList.has(<var>$C</var>)</js-code></td>
+            <td><js-code class="d4rk">.hasAttribute(<var>$N</var>)</js-code></td>
         </tr>
     </tbody>
 </table>
@@ -198,15 +200,15 @@ Il est alors possible d'accéder ou de modifier les propriétés CSS via :
     <tbody>
         <tr>
             <td><i>Obtenir</i></td>
-            <td><js-code mode="d4rk">.getPropertyValue(<var>$N</var>)</js-code></td>
+            <td><js-code class="d4rk">.getPropertyValue(<var>$N</var>)</js-code></td>
         </tr>
         <tr>
             <td><i>Définir</i></td>
-            <td><js-code mode="d4rk">.setProperty(<var>$N</var>, <var>$V</var>)</js-code></td>
+            <td><js-code class="d4rk">.setProperty(<var>$N</var>, <var>$V</var>)</js-code></td>
         </tr>
         <tr>
             <td><i>Supprimer</i></td>
-            <td><js-code mode="d4rk">.removeProperty(<var>$N</var>)</js-code></td>
+            <td><js-code class="d4rk">.removeProperty(<var>$N</var>)</js-code></td>
         </tr>
     </tbody>
 </table>

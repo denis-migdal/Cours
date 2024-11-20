@@ -80,44 +80,44 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 ### Les balises HTML
 
 HTML est un langage permettant de décrire une **structure** via des **balises**, e.g. :
-- <html-code>\<br/\></html-code> correspond à un retour à la ligne (*<u>br</u>eak line*).
-- <html-code>\<p\>texte\</p\></html-code> correspond à un paragraphe (*<u>p</u>aragraph*).
+- <script type="html"><br/></script> correspond à un retour à la ligne (*<u>br</u>eak line*).
+- <script type="html"><p>texte</p></script> correspond à un paragraphe (*<u>p</u>aragraph*).
 
-Les éléments qui ne peuvent avoir de contenu s'écrivent avec une balise **auto-fermante** (*self-closing tag*) qui se présente sous la forme suivante : <html-code class="d4rk">\<<var>$NAME</var>/\></html-code>.<br/>
-<html-code class="d4rk"><var>$NAME</var></html-code> est le **nom de la balise** (*tag name*), il indique le type de l'élément HTML.
+Les éléments qui ne peuvent avoir de contenu s'écrivent avec une balise **auto-fermante** (*self-closing tag*) qui se présente sous la forme suivante : <script type="html"><<var>$NAME</var>/></script>.<br/>
+<script type="html"><var>$NAME</var></script> est le <b>nom de la balise</b> (<i>tag name</i>), il indique le type de l'élément HTML.
 
-Les éléments qui peuvent avoir du contenu, e.g. un paragraphe peut contenir du texte, s'écrivent sous la forme suivante : <html-code class="d4rk">\<<var>$NAME</var>\><var>$CONTENT</var>\</<var>$NAME</var>\></html-code>
-- <html-code class="d4rk">\<<var>$NAME</var>\></html-code> est la **balise ouvrante** (*opening tag*).
-- <html-code class="d4rk">\</<var>$NAME</var>\></html-code> est la **balise fermante** (*closing tag*).
-- <html-code class="d4rk"><var>$CONTENT</var></html-code> est le contenu de la balise.
+Les éléments qui peuvent avoir du contenu, e.g. un paragraphe peut contenir du texte, s'écrivent sous la forme suivante : <script type="html"><<var>$NAME</var>><var>$CONTENT</var></<var>$NAME</var>></script>
+- <script type="html"><<var>$NAME</var>></script> est la <b>balise ouvrante</b> (<i>opening tag</i>).
+- <script type="html"></<var>$NAME</var>></script> est la <b>balise fermante</b> (<i>closing tag</i>).
+- <script type="html"><var>$CONTENT</var></script> est le contenu de la balise.
 
-Vous remarquerez que HTML utilise <html-code>\<</html-code> et <html-code>\></html-code> pour marquer le début et la fin d'une balise. Ainsi, <html-code>soit y[x et y]0</html-code> est interprété par HTML comme étant une balise.
+Vous remarquerez que HTML utilise <script type="html"><</script> et <script type="html">></script> pour marquer le début et la fin d'une balise. Ainsi, <script type="html">soit y<x et y>0</script> est interprété par HTML comme étant une balise.
 
 Pour éviter cela, on va échapper les caractères utilisés par HTML via des entités HTML (*HTML entities*) :
-- <html-code>\<</html-code> devient <html-code>\&lt;</html-code> (*<u>l</u>esser <u>t</u>han*) ;
-- <html-code>\></html-code> devient <html-code>\&gt;</html-code> (*<u>g</u>reater <u>t</u>han*) ;
-- <html-code>"</html-code> devient <html-code>\&quot;</html-code> (*<u>quot</u>e*) ;
-- <html-code>\&</html-code> devient <html-code>\&amp;</html-code> (*<u>amp</u>ersand*).
+- <script type="html"><</script> devient <script type="html">&lt;</script> (<i><u>l</u>esser <u>t</u>han</i>) ;
+- <script type="html">></script> devient <script type="html">&gt;</script> (<i><u>g</u>reater <u>t</u>han</i>) ;
+- <script type="html">"</script> devient <script type="html">&quot;</script> (<i><u>quot</u>e</i>) ;
+- <script type="html">&</script> devient <script type="html">&amp;</script> (<i><u>amp</u>ersand</i>).
 
-💡 En HTML, les **commentaires** s'écrivent ainsi : <html-code class="d4rk">\<!-- <var>$COMMENT</var> --\></html-code>
+💡 En HTML, les **commentaires** s'écrivent ainsi : <script type="html"><!-- <var>$COMMENT</var> --></script>
 
 ### Les attributs HTML
 
 Les **attributs HTML** (*HTML attribute*) permettent de configurer les éléments HTML :
-- <html-code class="d4rk">\<img src="<var>$URL</var>"/\></html-code> affiche l'<u>im</u>a<u>g</u>e présente à l'URL indiquée par l'attribut <html-code>src</html-code>.
-- <html-code class="d4rk">\<a href="<var>$URL</var>"\>lien\</a\></html-code> est un lien hypertexte pointant sur l'URL indiqué par l'attribut <html-code>href</html-code>.
+- <script type="html"><img src="<var>$URL</var>"/></script> affiche l'<u>im</u>a<u>g</u>e présente à l'URL indiquée par l'attribut <html-code>src</html-code>.
+- <script type="html"><a href="<var>$URL</var>">lien</a></script> est un lien hypertexte pointant sur l'URL indiqué par l'attribut <html-code>href</html-code>.
 
 Les attributs HTML sont indiqués dans la balise ouvrante (ou auto-fermante) de l'élément HTML. Le nom de l'attribut est précédé d'un <html-code>=</html-code> suivi de sa valeur entre guillemets.
 
 💡 Une même balise HTML peut contenir plusieurs attributs, séparés par un espace :
-- <html-code>\<a href="..." target="_blank"\>lien\</a\></html-code> : ouvrir dans un nouvel onglet.
-- <html-code>\<a href="..." type="text/csv" download="data.csv"\>lien\</a\></html-code>
+- <script type="html"><a href="..." target="_blank">lien</a></script> : ouvrir dans un nouvel onglet.
+- <script type="html"><a href="..." type="text/csv" download="data.csv">lien</a></script>
   - <html-code>type</html-code> est le **type MIME** du fichier.
   - <html-code>download</html-code> au clic, télécharge la ressource.
-  - <html-code class="d4rk">download="<var>FILENAME</var>"</html-code> indique le nom par défaut du fichier téléchargé.
+  - <script type="html">download="<var>FILENAME</var>"</script> indique le nom par défaut du fichier téléchargé.
 
 💡 Certains attributs n'ont pas besoin de valeur et configurent l'élément par leur seule présence. Ce sont les **attributs booléens** (*boolean attributes*), e.g. :
-- <html-code>\<a href="..." type="text/csv" download\>lien\</a\></html-code>
+- <script type="html"><a href="..." type="text/csv" download>lien</a></script>
 
 
 Chaque type d'élément HTML a sa propre liste d'attributs qui permettent de le configurer. Il existe cependant des attributs appelés **attributs universels** (*global attributes*) communs à tous les éléments HTML, e.g. :
@@ -131,12 +131,12 @@ Une liste est un élément HTML qui contient plusieurs sous éléments (*<u>l</u
 
 <div class="flex-2">
     <div>
-<html-code class="block">
-&lt;ul>
-    &lt;li>Item A&lt;/li>
-    &lt;li>Item B&lt;/li>
-&lt;/ul>
-</html-code>
+    <script type="html">
+        <ul>
+            <li>Item A</li>
+            <li>Item B</li>
+        </ul>
+    </script>
     </div>
     <div>
 <ul>
@@ -148,12 +148,12 @@ Une liste est un élément HTML qui contient plusieurs sous éléments (*<u>l</u
 
 <div class="flex-2">
     <div>
-<html-code class="block"><!--
-<ol>
-    <li>Item A</li>
-    <li>Item B</li>
-</ol>
---></html-code>
+        <script type="html">
+            <ol>
+                <li>Item A</li>
+                <li>Item B</li>
+            </ol>
+        </script>
     </div>
     <div>
 <ol>
@@ -169,14 +169,14 @@ Les tableaux (*table*) sont composés d'un (ou plusieurs) corps (*<u>t</u>able <
 
 <div class="flex-2">
     <div>
-<html-code class="block"><!--
-<table>
-    <tbody>
-        <tr><td>A</td><td>B</td></tr>
-        <tr><td>C</td><td>C</td></tr>
-    </tbody>
-</table>
---></html-code>
+    <script type="html">
+        <table>
+            <tbody>
+                <tr><td>A</td><td>B</td></tr>
+                <tr><td>C</td><td>C</td></tr>
+            </tbody>
+        </table>
+    </script>
     </div>
     <div>
 <table>
@@ -192,17 +192,17 @@ Les tableaux (*table*) sont composés d'un (ou plusieurs) corps (*<u>t</u>able <
 
 <div class="flex-2">
     <div>
-<html-code class="block"><!--
-<table>
-    <thead>
-        <tr><th>ID</th><th>Nom</th></tr>
-    </thead>
-    <tbody>
-        <tr><th>1</th><td>Pierre</td></tr>
-        <tr><th>2</th><td>Paul</td></tr>
-    </tbody>
-</table>
---></html-code>
+        <script type="html">
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>Nom</th></tr>
+                </thead>
+                <tbody>
+                    <tr><th>1</th><td>Pierre</td></tr>
+                    <tr><th>2</th><td>Paul</td></tr>
+                </tbody>
+            </table>
+        </script>
     </div>
     <div>
 <table>
@@ -226,33 +226,33 @@ Par défaut, certains éléments HTML modifient l'affichage du texte :
         <tr><td>HTML</td><td>Affichage</td><td>Sens</td></tr>
     </thead>
     <tbody>
-        <tr><td><html-code><!--<strong>A</strong>--></html-code></td><td><strong>A</strong></td><td>important (<i><u>strong</u> importance</i>)</td></tr>
-        <tr><td><html-code><!--<em>A</em>--></html-code></td><td><em>A</em></td><td>mis en valeur (<i><u>em</u>phasis</i>)</td></tr>
-        <tr><td><html-code><!--<mark>A</mark>--></html-code></td><td><mark>A</mark></td><td>marqué</td></tr>
-        <tr><td><html-code><!--<ins>A</ins>--></html-code></td><td><ins>A</ins></td><td>inséré (<i><u>ins</u>erted</i>)</td></tr>
-        <tr><td><html-code><!--<del>A</del>--></html-code></td><td><del>A</del></td><td>supprimé  (<i><u>del</u>eted</i>)</td></tr>
+        <tr><td><script type="html"><strong>A</strong></script></td><td><strong>A</strong></td><td>important (<i><u>strong</u> importance</i>)</td></tr>
+        <tr><td><script type="html"><em>A</em></script></td><td><em>A</em></td><td>mis en valeur (<i><u>em</u>phasis</i>)</td></tr>
+        <tr><td><script type="html"><mark>A</mark></script></td><td><mark>A</mark></td><td>marqué</td></tr>
+        <tr><td><script type="html"><ins>A</ins></script></td><td><ins>A</ins></td><td>inséré (<i><u>ins</u>erted</i>)</td></tr>
+        <tr><td><script type="html"><del>A</del></script></td><td><del>A</del></td><td>supprimé  (<i><u>del</u>eted</i>)</td></tr>
     </tbody>
 </table>
 
-De la même manière, les balises <html-code>\<h1\>A\</h1\></html-code> à <html-code>\<h6\>A\</h6\></html-code> permettent d'indiquez différents niveaux de titres.
+De la même manière, les balises <script type="html"><h1>A</h1></script> à <script type="html"><h6>A</h6></script> permettent d'indiquer différents niveaux de titres.
 
 <table>
     <thead>
         <tr><td>HTML</td><td>Affichage</td><td>Sens</td></tr>
     </thead>
     <tbody>
-        <tr><td><html-code><!--<h1>A</h1>--></html-code></td><td><h1>A</h1></td><td>titre de niveau 1</td></tr>
-        <tr><td><html-code><!--<h2>A</h2>--></html-code></td><td><h2>A</h2></td><td>titre de niveau 2</td></tr>
-        <tr><td><html-code><!--<h3>A</h3>--></html-code></td><td><h3>A</h3></td><td>titre de niveau 3</td></tr>
-        <tr><td><html-code><!--<h4>A</h4>--></html-code></td><td><h4>A</h4></td><td>titre de niveau 4</td></tr>
-        <tr><td><html-code><!--<h5>A</h5>--></html-code></td><td><h5>A</h5></td><td>titre de niveau 5</td></tr>
-        <tr><td><html-code><!--<h6>A</h6>--></html-code></td><td><h6>A</h6></td><td>titre de niveau 6</td></tr>
+        <tr><td><script type="html"><h1>A</h1></script></td><td><h1>A</h1></td><td>titre de niveau 1</td></tr>
+        <tr><td><script type="html"><h2>A</h2></script></td><td><h2>A</h2></td><td>titre de niveau 2</td></tr>
+        <tr><td><script type="html"><h3>A</h3></script></td><td><h3>A</h3></td><td>titre de niveau 3</td></tr>
+        <tr><td><script type="html"><h4>A</h4></script></td><td><h4>A</h4></td><td>titre de niveau 4</td></tr>
+        <tr><td><script type="html"><h5>A</h5></script></td><td><h5>A</h5></td><td>titre de niveau 5</td></tr>
+        <tr><td><script type="html"><h6>A</h6></script></td><td><h6>A</h6></td><td>titre de niveau 6</td></tr>
     </tbody>
 </table>
 
 ⚠ Ils ne doivent pas être utilisés pour leur affichage par défaut, qui peut être modifié, mais pour leur **sémantique**, i.e. le *sens* qu'ils donnent. 
 
-⚠ Il ne doit y avoir qu'un seul <html-code>\<h1\>A\</h1\></html-code> par page.
+⚠ Il ne doit y avoir qu'un seul <script type="html"><h1>A</h1></script> par page.
 
 ### Sémantique vs affichage
 
@@ -269,22 +269,22 @@ Un tableau a un nombre de colonnes et de lignes fixe. Une grille quant à elle p
 ### L'arbre DOM
 
 Comme nous l'avons vu, un élément HTML peut contenir du texte ou d'autres éléments HTML. Il est d'ailleurs très fréquent d'utiliser les **conteneurs génériques** :
-- <html-code>\<div\>...\</div\></html-code> pour grouper un contenu dans un "bloc".
-- <html-code>\<span\>...\</span\></html-code> se comporte comme du texte inséré à la ligne courante.
+- <script type="html"><div>...</div></script> pour grouper un contenu dans un "bloc".
+- <script type="html"><span>...</span></script> se comporte comme du texte inséré à la ligne courante.
 
 <div class="flex-2">
-<html-code class="block"><!--
-<div>
-    A
-    <div>B</div>
-    C
-</div>
-<div>
-    D
-    <span>E</span>
-    F
-</div>
---></html-code>
+    <script type="html">
+        <div>
+            A
+            <div>B</div>
+            C
+        </div>
+        <div>
+            D
+            <span>E</span>
+            F
+        </div>
+    </script>
     <div>
         <div>
             A
@@ -302,18 +302,18 @@ Comme nous l'avons vu, un élément HTML peut contenir du texte ou d'autres él�
 On peut représenter cette hiérarchie sous la forme d'un arbre, appelé **arbre DOM** où chaque élément HTML est associé à un noeud (*node*), et a pour fils son contenu :
 
 <div class="flex-2">
-<html-code class="block"><!--
-<div>
-    A
-    <div>B</div>
-    C
-</div>
-<div>
-    D
-    <span>E</span>
-    F
-</div>
---></html-code>
+    <script type="html">
+        <div>
+            A
+            <div>B</div>
+            C
+        </div>
+        <div>
+            D
+            <span>E</span>
+            F
+        </div>
+    </script>
     <div>
 <pre><code>Document
 ├── div
@@ -386,22 +386,22 @@ Jusqu'à présent, nous avons vu des éléments HTML permettant de définir le *
 
 Les pages Web suivent ainsi la structure suivante :
 
-<html-code class="block"><!--
-<!DOCTYPE html>
-\<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Page title</title>
-    </head>
-    \<body>
-        <\!-- CONTENT --\>
-    \</body\>
-\</html>
---></html-code>
+<script type="html">
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <title>Page title</title>
+        </head>
+        <body>
+            <!-- CONTENT -->
+        </body\>
+    </html>
+</script>
 
-💡 <html-code>\<!DOCTYPE html\></html-code> indique le type du fichier (<u>doc</u>ument <u>type</u>).
+💡 <script type="html"><!DOCTYPE html></script> indique le type du fichier (<u>doc</u>ument <u>type</u>).
 
-💡 <html-code>\<html\>\</html\></html-code> est le noeud racine, aussi appelé la **racine** (*root*).
+💡 <script type="html"><html></html></script> est le noeud racine, aussi appelé la **racine** (*root*).
 
 ## Encore plus de balises et attributs...
 
@@ -420,13 +420,13 @@ Le langage HTML contient une pléthore de balises (>135) et d'attributs (>131) d
 ### Balises sémantiques et SEO
 
 Beaucoup d'éléments HTML sont en réalité "identiques" et se distinguent que par leur **sémantique**, e.g. :
-- <html-code>\<thead\>\</thead\></html-code> : en-tête de tableau.
-- <html-code>\<tbody\>\</tbody\></html-code> : corps de tableau.
-- <html-code>\<tfoot\>\</tfoot\></html-code> : pied de tableau.
+- <script type="html"><thead></thead></script> : en-tête de tableau.
+- <script type="html"><tbody></tbody></script> : corps de tableau.
+- <script type="html"><tfoot></tfoot></script> : pied de tableau.
 
 Ces deux éléments sont en réalité identiques dans leur affichage et comportement, leur seule différence est dans le nom de la balise.
 
-De la même manière, les éléments <html-code>\<strong\>A\</strong\></html-code>, <html-code>\<em\>A\</em\></html-code>, etc. ont juste un affichage par défaut différent. Affichage qui peut être aisément modifié et interverti.
+De la même manière, les éléments <script type="html"><strong>A</strong></script>, <script type="html"><em>A</em></script>, etc. ont juste un affichage par défaut différent. Affichage qui peut être aisément modifié et interverti.
 
 💡 L'avantage d'avoir des noms différents est de rendre le code HTML plus explicite, facilitant sa lecture par les machines et les humains. Cependant, à votre niveau, il n'est pas utile de trop en accorder d'importance.
 
@@ -443,31 +443,31 @@ L'accessibilité est un métier à part entière, il n'est donc pas attendu de v
 Comme si cela ne suffisait pas, vous pouvez aussi créer vos propres éléments HTML personnalisés (*custom elements*).
 
 Imaginez par exemple une page Web affichant une liste de produits. Chaque produit est structuré et affiché de la même manière avec une image, un nom, et un prix :
-<html-code class="block">
-\<div class="produit"\>
-    \<strong class="nom">Pizza\</strong\>
-    \<img src="/assets/pizza.jpg"/\>
-    \<div class="prix"\>16€\</div\>
-\</div\>
-</html-code>
+<script type="html">
+    <div class="produit">
+        <strong class="nom">Pizza</strong>
+        <img src="/assets/pizza.jpg"/>
+        <div class="prix">16€</div>
+    </div>
+</script>
 
 Vous pourriez copier-coller la même structure pour chaque produit, mais cela comporte de nombreux défauts :
 - pour en changer la structure, il faudra tous les modifier (avec risques d'oublie).
 - le code HTML devient très lourd et verbeux.
 
 Pour éviter cela, vous pouvez définir votre propre élément personnalisé :
-<html-code class="block">
-\<prod-card nom="Pizza" prix="16"\>\</prod-card\>
-</html-code>
+<script type="html">
+    <prod-card nom="Pizza" prix="16"></prod-card>
+</script>
 
 Ces éléments personnalisés (*custom elements*) sont créés en associant un nom de balise (doit contenir un <html-code>-</html-code>) à un composants Web (*Web Components*) dont vous définirez le contenu en HTML :
-<html-code class="block">
-\<div class="produit"\>
-    \<strong class="nom"\>${name}\</strong\>
-    \<img src="/assets/${name}.jpg"/\>
-    \<div class="prix"\>${price}€\</div\>
-\</div\>
-</html-code>
+<script type="html">
+    <div class="produit">
+        <strong class="nom">${name}</strong>
+        <img src="/assets/${name}.jpg"/>
+        <div class="prix">${price}€</div>
+    </div>
+</script>
 
 Le navigateur remplira alors automatiquement chacun de vos éléments personnalisés par le contenu que vous aurez spécifié. Cela présente de nombreux avantages :
 - rend le code plus lisible et explicite.
