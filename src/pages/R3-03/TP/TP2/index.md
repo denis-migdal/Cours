@@ -26,6 +26,7 @@
                     -> opacity
                     -> outline
                     -> child visibility.
+                -> ::after/::before... (tooltip?)
                 -> font : word break + ellipse
                 -> position absolute + overflow hidden (icon role)
                 -> color scheme switch
