@@ -1,3 +1,5 @@
+// OBSOLETE, use skeleton menu
+
 const menu = document.querySelector('#menu');
 
 const isMultiCM = document.querySelectorAll('h1').length > 1;

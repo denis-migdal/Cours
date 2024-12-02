@@ -1,0 +1,20 @@
+@import "../../../../../libs/LISS2/src/pages/docs/skeleton";
+@import "./menu.css";
+
+table {
+    & > tbody {
+        display: flex;
+
+        & > tr {
+            background-color: red;
+            border-radius: 5px;
+
+            & > .name {
+                display: block;
+                &::before {
+                    content: "Name:"
+                }
+            }
+        }
+    }
+}

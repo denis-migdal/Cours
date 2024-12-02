@@ -66,7 +66,8 @@ export default [
                 children: [
                     "CM1",
                     "CM2",
-                    "CM3"
+                    "CM3",
+                    "CM4"
                 ]
             }, {
                 name: "TP",
@@ -77,6 +78,9 @@ export default [
             }, {
                 name: "Cheat Sheet HTML",
                 path: "/assets/web/HTML5/cheat sheet.svg"
+            }, {
+                name: "Cheat Sheet CSS",
+                path: "/assets/web/CSS3/cheat sheet.svg"
             }
         ]
     },

@@ -1,20 +1,9 @@
-## TPs
-    -> besoin d'un starting project !
-    -> besoin sujet dirigé + installation VCS.
-
 ## TP2
 
 => demander installation des ext VSC par défaut.
 => vsc n'utilise pas le proxy quand lancé via desktop (marche quand cli)
 
-=> il faut VRAIMENT un step by step (+ qui ne nécessite pas trop de css -tout est inline au début-) => br ou div ?
-=> project skeleton
-=> utilisation vsc guider
-=> premiers pas.
-
 ## CM1
-
-notion de shorthand properties (800 props, mais shorthands donc moins à réellement retenir)
 
 - HTML : normalisé W3C (HTML5)
 
@@ -22,16 +11,17 @@ notion de shorthand properties (800 props, mais shorthands donc moins à réelle
 
 font short hand property !!!
 
-all
+all (-> inherit erreur + autres valeurs pas claires)
 
 background-color -> background
 
+notion de shorthand properties (800 props, mais shorthands donc moins à réellement retenir)
 https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties
 	-> not specified : initial
 	-> can't even specify inherit...
 	-> can't use var() on normal prop.
-
--> peut parfois être intelligent	
+    -> peut parfois être intelligent
+- 800 keywords mais shorthand properties => utiliser ceux-ci (et ça en fait alors bien moins) - ~16 variants. (expliquer le principe des shorthand properties)
 
 scroll margin vs scroll padding
 
@@ -39,11 +29,7 @@ scroll margin vs scroll padding
 
 transform/transition/animation -> offset ?
 
-text-*
-(dont text-emphasis)
-
 - CSS : normalisé W3C (CSS3)
-- 800 keywords mais shorthand properties => utiliser ceux-ci (et ça en fait alors bien moins) - ~16 variants. (expliquer le principe des shorthand properties)
 
 - besoin slides visuels.
 
@@ -65,13 +51,7 @@ text-*
 
 ## CM3 : Client
 
--> Plein de langages
-    -> JS (ECMA) 95", dernière version esX
-        -> fait en 10j plein de problèmes
-    -> WebASM (récent) mais pas accès DOM.
-    -> langage -> JS (e.g. TS)
-    -> Appel Java : problème de sécurité : code arbitraire, mais utilise VM normale avec restrictions ad hoc -> autorisation (e.g. accès fichier) -> mais autorise => utilisateur donne vulnérabilité.
-
+-> JS (ECMA) 95", dernière version esX
 
 +Events / boucle d'évent (avec promesses) + yield
 + signaux/effect/computed signal.
@@ -81,20 +61,13 @@ text-*
     -> triche : réécrit, donc peux détecter signaux.
     -> VDOM + efficaces (op sur DOM très coûteux)
 
+=> CSS.registerProperty()
+=> Webcomponent : associate JS/CSS/HTML (independant)
+
+
 CSS form
     -> default
     -> ro/rw
-
-=> computedStyleMap() / style / prop.
-=> CSS.registerProperty()
-=> set prop ?
-
-=> Webcomponent : associate JS/CSS/HTML (independant)
-
-+ notes
-
-global context
-- window -> document -> html ->
 
 + history
 + form + name="..."
@@ -105,12 +78,8 @@ global context
 - popover
 - enterkeyhint/inputmode (mobile)
 
-+ data-
-+ DOM manipulation
-
 + flux / reflow / redraw / paint / etc.
 + CSS + opti + CSS perso (the name ?)
-+ advanced selector (TextNode)
 
 + innerText : seulement texte visible.
 

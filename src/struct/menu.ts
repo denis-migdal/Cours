@@ -1,3 +1,4 @@
+// OBSOLETE, use skeleton menu
 
 import pages, {root_path} from "./content";
 
