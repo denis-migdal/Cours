@@ -1,3 +1,3 @@
-import "struct/menu.ts";
+import "../../../../../libs/LISS2/src/pages/docs/skeleton";
+import "./../../TP/TP2/menu";
 import "struct/Code";
-import "struct/HTMLWidgets";

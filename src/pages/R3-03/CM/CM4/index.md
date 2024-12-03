@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="utf8"/>
         <title>CM4 (Web1)</title>
-        <link rel="stylesheet" href="./index.css">
-        <script type="module" src="./index.js" defer></script>
+        <!--
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="cyan" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+        -->
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="./index.css"  rel="stylesheet" blocking="render">
+        <script  src="./index.js"  type="module"     blocking="render" async></script>
     </head>
     <body>
-        <style>
-        </style>
-        <header></header>
         <main>
 
 # CM4 : Architecture client/serveur
@@ -22,48 +25,309 @@ Les échanges entre le client et le serveur Web utilisent le protocole HTTP(S) :
 - le client demande une ressource via une *requête HTTP* ;
 - le serveur retourne la ressource demandée via une *réponse HTTP*.
 
-## Contenu dynamique
+Les requêtes et réponses HTTP contiennent :
+- une *en-tête* : contenant des méta-données ;
+- un *corps* (facultatif) : contenant les données transférées.
 
-Afin de tester nos pages Web en TP, nous utilisions jusqu'à présent *Live Server* comme serveur Web. Son fonctionnement est très simple : la racine du site Web est associée à un dossier <shell-code class="d4rk"><var>$ROOT</var></shell-code> du serveur. Chaque URL est alors associée à un fichier du serveur. Ainsi, lorsqu'il reçoit une requête HTTP, il retourne le fichier demandé, e.g. :<br/>
+## Contenus dynamiques
+
+Afin de tester nos pages Web en TP, nous utilisions jusqu'à présent *Live Server* comme serveur Web. Son fonctionnement est très simple : la racine du site Web est associée à un dossier <shell-code class="d4rk"><var>$ROOT</var></shell-code> du serveur. Chaque URL est alors associée à un fichier du serveur. 
+*Live Server* est ainsi un serveur web *statique* (*static web server*) distribuant des fichiers/ressources statiques (*static files/assets*). Ainsi, lorsqu'il reçoit une requête HTTP, il retourne le fichier demandé, e.g. :<br/>
 <shell-code class="d4rk">http://localhost:5000/<var>$PATHNAME</var></shell-code> est associé au fichier <shell-code class="d4rk"><var>$ROOT</var>/<var>$PATHNAME</var></shell-code>.
 
-*Live Server* est ainsi un serveur web *statique* (*static web server*) distribuant des fichiers/ressources statiques (*static files/assets*). Il est cependant possible d'avoir des serveurs *dynamiques* (*dynamic server*) générant le contenu renvoyé en fonction de la requête HTTP reçue.
+Il est cependant possible d'avoir des serveurs *dynamiques* (*dynamic server*) générant le contenu renvoyé en fonction de la requête HTTP reçue. Imaginez un site vendant 5,000 produits différents. Il est évident qu'on ne va pas s'amuser à créer 5,000 pages Web à la main. À la place, on voudrait générer dynamiquement les pages Web à partir :
+- de l'**identifiant** du produit (i.e. quel produit afficher) ;
+- des **données** du produit, stockées dans une base de données ;
+- d'un **modèle** (*template*) indiquant comment structurer et afficher ces données.
+
+Il serait alors très aisé d'ajouter un nouveau produit en ajoutant une entrée dans la base de donnée, ou de modifier l'affichage des pages produits en modifiant le modèle. On aurait ainsi deux parties :
+- *statique* : le modèle commun à tous les produits (HTML/CSS/JS/Brython/etc) ;
+- *dynamique* : les données spécifiques à chaque produit.
+
+Les données ne sont cependant pas directement accessibles à partir de la page Web. En effet, si les accès à la base de données (e.g. SQL) étaient effectués sur la page Web, i.e. sur le navigateur/côté client, n'importe quel visiteur pourrait alors arbitrairement modifier les requêtes effectuées, ou récupérer/réutiliser les identifiants utilisés pour se connecter à la base de données.
+
+Il convient alors envoyer des requêtes au serveur Web, qui se chargera de manipuler la base de données côté serveur, puis en retournera les résultats. Le serveur Web fournira ainsi une *API*.
+
+### Les API REST
+
+REST (*<u>RE</u>presentational <u>S</u>tate <u>T</u>ransfer*) est un ensemble de principes permettant d'architecturer proprement une API Web de sorte à éviter qu'elle devienne chaotique :
+- URL uniformes ;
+- sémantique des requêtes HTTP ;
+- données structurées ;
+- sans états.
+
+#### Uniformiser les URL
+
+Comme vous le savez déjà, les URL identifient les ressources de manière unique.
+
+Afin d'éviter les collisions, et rendre les URL plus explicites/lisibles, il convient de les uniformiser en suivant un format unique. Pour cela on conserve une logique d'arborescence avec des *collections*, qui sont des ressources contenant elles-mêmes d'autres ressources (≈dossiers).
+
+Par exemple, un produit sera identifié par (et manipulé via) l'URL `/produits/{$ID_PRODUIT}`. L'ensemble des URL correspondant à ce format est appelé **route** et sera alors traité par la même fonction (*handler*), avec `$ID_PRODUIT` comme paramètre. La collection `/produits/` est alors la liste des produits, et permettra des manipulations d'ensemble.
+
+💡 Il est fréquent de préfixer les chemins par `/api/v1/` et `/static/` afin d'aisément distinguer l'API REST, des ressources statiques. Le numéro de version permet d'assurer la rétro-compatibilité pour les applications utilisant d'anciennes versions de l'API.
+
+💡 La structuration des URL en routes permet d'aisément visualiser les ressources accessibles via l'API, ainsi que de gérer plus facilement les droits d'accès aux données, en autorisant/interdisant l'accès à certaines routes.
+
+#### Uniformiser les requêtes
+
+Les API REST utilisent 5 *méthodes HTTP* :
+- *GET :* lire une ressource.
+- *POST :* ajouter une ressource à une collection.
+- *PUT :* créer une ressource ou la remplacer si elle existe.
+- *PATCH :* modifier partiellement une ressource.
+- *DELETE :* supprimer une ressource.
+
+Il est ainsi d'usage d'utiliser les requêtes suivantes afin d'indiquer le type d'opération effectué sur la ressource :
+- <js-code class="d4rk">GET    /<var>$COLLECTION</var>/</js-code> : obtenir la liste des ressources de la collection.
+- <js-code class="d4rk">POST   /<var>$COLLECTION</var>/</js-code> : créer une nouvelle ressource dans la collection.
+- <js-code class="d4rk">GET    /<var>$COLLECTION</var>/<var>$ID</var></js-code> : obtenir la ressource d'identifiant <js-code class="d4rk"><var>$ID</var></js-code>.
+- <js-code class="d4rk">PUT    /<var>$COLLECTION</var>/<var>$ID</var></js-code> : créer ou remplacer la ressource d'identifiant <js-code class="d4rk"><var>$ID</var></js-code>.
+- <js-code class="d4rk">PATCH  /<var>$COLLECTION</var>/<var>$ID</var></js-code> : modifier la ressource d'identifiant <js-code class="d4rk"><var>$ID</var></js-code>.
+- <js-code class="d4rk">DELETE /<var>$COLLECTION</var>/<var>$ID</var></js-code> : supprimer la ressource d'identifiant <js-code class="d4rk"><var>$ID</var></js-code>.
+
+⚠ Les requêtes `GET` et `DELETE` ne peuvent contenir de corps (*body*).
+
+#### Query strings
+
+Les URL peuvent aussi être suffixées par une *chaîne de requête* (*query string*), indiquée par un `?`. Les query strings sont des paires `clefs=valeurs` séparées par un `&`, e.g. : `?limit=10&export=csv`. 
+
+Elles sont principalement utilisées sur les requêtes `GET` afin de :
+- indiquer le format des données souhaité ;
+- filtrer les champs/informations ;
+- sur une collection, filtrer les entrées.
+
+⚠ Il est fréquent que les serveurs Web loggent les URL demandées. Il est ainsi important de ne pas inclure d'informations sensibles dans les query strings.
+
+Les query strings sont manipulées via la classe `URLSearchParams` :
+
+<center>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Opération
+            </th>
+            <th>
+                URLSearchParams
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><i>Créer</i></td>
+            <td><js-code class="d4rk">new URLSearchParams(<var>$URL</var>.search)</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Générer</i></td>
+            <td><js-code class="d4rk">.toString()</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Lister</i></td>
+            <td><js-code class="d4rk">.entries()/.keys()/.values()</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Obtenir</i></td>
+            <td><js-code class="d4rk">.get[All](<var>$N</var>)</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Ajouter</i></td>
+            <td><js-code class="d4rk">.set(<var>$N</var>, <var>$V</var>)/.append(<var>$N</var>, <var>$V</var>)</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Supprimer</i></td>
+            <td><js-code class="d4rk">.delete(<var>$N</var>)</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Contient ?</i></td>
+            <td><js-code class="d4rk">.has(<var>$N</var>)</js-code></td>
+        </tr>
+    </tbody>
+</table>
+</center>
+
+💡 L'URL de la page est stockée dans <js-code>document.location</js-code>.
+
+#### Données structurées
+
+Le corps des requêtes/réponses REST sont usuellement au format JSON, mais peuvent utiliser n'importe quel format, e.g. :
+- texte brut ;
+- données binaires ;
+- URLSearchParams/FormData ;
+- XML ;
+- CSV ;
+- etc.
+
+Le format utilisé/à utiliser est potentiellement indiqué par la requête REST. Il est cependant important de conserver des données structurées (i.e. éviter des réponses au format HTML) afin de permettre leur réutilisation pour d'autres usages (et potentiellement leur mise en cache). 
+
+Notamment, il est fréquent d'offrir la possibilité aux développeurs tiers d'exploiter les données du site via une API REST (e.g. *Open Data* avec stats INSEE, données météo, etc). Bien évidemment, certaines API peuvent être payantes, e.g. en fonction du nombre de requêtes autorisées à la seconde.
+
+#### Sans États
+
+Les API REST se doivent d'être *sans état* (*stateless*), cela signifie que :
+1. le serveur ne stocke aucun état de la connexion/session HTTP actuelle ;
+2. une requête contient toutes les données nécessaires à sa réponse ;
+3. une requête ne dépend pas d'autres requêtes ;
+4. les requêtes identiques produisent des réponses identiques *(sauf si les données ont été modifiées)*.
+
+Cela comporte de nombreux avantages :
+- *sécurité* : l'absence d'état côté serveur (1) évite des attaques par *déni de services* (DoS).
+- *performance* : les requêtes ne dépendant pas d'un état (2), il aisé de répartir les charges (*load balancing*).
+- *clarté* : les requêtes ne dépendant pas d'autres requêtes (3), les échanges sont plus simples à comprendre.
+- *tests* : les réponses étant déterministes et reproductibles (4), on peut écrire des tests unitaires.
+
+## API JS
+
+### Fetch
+
+Une requête HTTP peut être effectuée au sein de la page Web via `fetch()`:
+<js-code class="block d4rk">
+const response = await fetch(<var>$URL</var>, {
+    method: <var>$HTTP_METHOD</var>,
+    body  : <var>$BODY</var>
+});
+</js-code>
+
+Le corps peut être de différent type :
+- <js-code>string</js-code>
+- <js-code>Blob</js-code>/<js-code>File</js-code>
+- <js-code>Uint8Array</js-code>/<js-code>ReadableStream</js-code>
+- <js-code>URLSearchParams</js-code>/<js-code>FormData</js-code>
+- etc.
+
+💡 Pour envoyer des données au format, JSON, il convient de les convertir en <js-code>string</js-code> :
+<js-code class="block d4rk">
+const response = await fetch(<var>$URL</var>, {
+    body: JSON.stringify(<var>$DATA</var>)
+    headers: {
+        "Content-Type": "application/json"
+    }
+});
+</js-code>
+
+💡 <js-code>"Content-Type"</js-code> indique le type des données contenu dans le corps de la requête :
+- <js-code>"text/plain"</js-code> : texte ;
+- <js-code>"application/json"</js-code> : JSON ;
+- <js-code>"application/octet-stream"</js-code> : données binaires.
+- <js-code>"application/x-www-form-urlencoded"</js-code> : <js-code>URLSearchParams</js-code>/<js-code>FormData</js-code> ;
+
+`fetch()` retourne un `Response`, dont le contenu peut être lu via :
+- <js-code>await response.text()</js-code>
+- <js-code>await response.json()</js-code>
+- <js-code>await response.bytes()</js-code> : Uint8Array
+- <js-code>await response.formData()</js-code> : FormData
+
+⚠ Le corps d'une réponse ne peut être lue qu'une seule fois.
+- <js-code>.bodyUsed</js-code> : indique si le corps a été lu.
+- <js-code>.clone()</js-code> : clone la réponse (permet ainsi plusieurs lectures).
+
+#### Status
+
+`Response` indique aussi si la requête s'est bien effectuée :
+- `.ok` : pas d'erreurs ;
+- `.status` : code de status HTTP ;
+- `.statusText` : message précisant l'erreur.
+
+Les codes de status HTTP se divisent en 5 catégories :
+- 1XX : requête en cours
+- 2XX : succès
+- 3XX : redirection
+- 4XX : erreur du client
+- 5XX : erreur du serveur.
+
++ cors
++ cache
+
+🚩 [TODO] : outils network
+
+### SSE
+
+Contrairement aux WebSockets, les *Server Send Events* ne permettent qu'une communication unidirectionnelle du serveur vers le client. Il est utilisé lorsque le serveur doit régulièrement envoyer des informations au client, sans attendre de réponses, e.g. envoyer des logs en temps réel.
+
+Le principe est très simple, il s'agit d'une requête et d'une réponse HTTP normales, à l'exception que la réponse HTTP est maintenue en vie (`keep-alive`) et est écrite petit à petit (`text/event-stream`). Le corps de la réponse suit le format suivant :
+
+```
+event: $EVENT_NAME
+data: $DATA
+
+event: $EVENT_NAME
+data: $DATA
+
+event: $EVENT_NAME
+data: $DATA
+```
+
+Côté client, l'utilisation est très simple, il suffit d'écouter des événements d'un `EventSource`.
+
+```javascript
+// [JS] JavaScript
+
+// Client
+const servEvent = new EventSource($URL);
+servEvent.addEventListener($EVENT_NAME, function(ev) {
+    console.log(ev.data)
+});
+servEvent.close(); // termine la communication.
 
 
-GET $PATHNAME http1/1
-Host: $SERVER
-Content-Length: BODY_LEN
+// Serveur (helper)
+class SSE {
+    constructor(res) {
+        this.res = res;
+        this.#setHeaders
+    }
+    #setHeaders() {
+        this.res.set({
+            'Cache-Control': 'no-cache',
+            'Content-Type' : 'text/event-stream',
+            'Connection'   : 'keep-alive'
+        });
+        this.res.flushHeaders();
+    }
+    dispatchEvent(name, data) {
+        this.res.write(`event: ${name}\n${data}\n\n`);
+    }
+}
 
-BODY
+// Serveur
+app.get($URL, async function(req, res) {
 
-    -> HTTP method.
-    -> URL/Page // query string
-    -> body/corps.
+    const sse = new SSE(res);
 
--> UNIFORMISÉ
-    -> params (GET/POST)
-    -> URL routes
-    -> REST (state less : avoid DOS, cache)
-    -> X.
+    sse.dispatchEvent($EVENT_NAME, $DATA); // Envoyer un événement.
+});
+```
 
--> fetch
-    -> mais aussi WebSocket/SSE.
+### Upload/Download
+
+=> qu'est-ce qu'un Blob/File ?
+=> decode/encode
+
+### Websockets
+
+https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+
+## Les formulaires
 
 -> form
+    -> input
+    -> FormData / URLSearchParams.
+    -> clear
+    
+-> validation + CSS
 
--> impl server (?)
-    -> DOS ?
+/!\ vérifier les donnés côté serveur.
 
--> opti (CM5?)
+**⚠** Vous ne devez **<u>*JAMAIS*</u>** faire confiance client. En effet, il est très aisé d'envoyer des données arbitraires au serveur. Vous devez ainsi *<u>**SYSTÉMATIQUEMENT**</u>* vérifier la validité des données envoyées par le client (format, valeurs, autorisations, etc).
 
--> distribue contenu *static*, quid *dynamique* e.g. généré from BDD, from params, from command shell, etc.
+## Gestion des données
 
+Localstorage/sessionStorage/FileSystem API/cache.
 
+## Les différents type de serveurs Web
 
-[...]
+La distribution du contenu statique est relativement simple, le serveur lit les fichiers, puis les envoie au client. Bien évidemment, peut gérer des fonctionnalités plus avancées comme mettre les fichiers en RAM pour les distribuer plus rapidement, vérifier les droits d'accès aux fichiers (dont authentifications), réécrire les URL, transmettre la requête à un autre serveur, personnaliser l'en-tête de la réponse HTTP, etc.
 
-
-Cela est bien utile lors de la phase de développement, mais n'est pas adapté pour la phase de production, i.e. lorsque le site Web sera mis sur un serveur afin d'être accessible via Internet. On utilise alors des serveurs Web, e.g. Apache, Nginx, qui offrent de nombreuses fonctionnalités et possibilités de configurations :
+On utilise alors des serveurs Web, e.g. Apache, Nginx, qui offrent de nombreuses fonctionnalités et possibilités de configurations :
 - réécritures d'URL/redirections ;
 - transfert du flux / reverse proxy ;
 - vérification des droits d'accès / authentification ;
@@ -81,39 +345,22 @@ Pour du contenu dynamique, i.e. généré sur demande par le serveur, il existe 
 
 - *rediriger le flux* vers un autre serveur (reverse proxy). Quasi-identique à la solution précédente, il a l'avantage de pouvoir bénéficier des fonctionnalités du serveur Web (authentification, cache, etc), ainsi que d'éviter des problèmes de *Same Origin Policy* (SOP). Il peut aussi permettre de simplifier l'implémentation du serveur, en déléguant la sécurisation de la communication au reverse proxy, i.e. le serveur  envoie et reçoit des données en clair, et le reverse proxy les chiffre et les déchiffre.
 
+Contrôle d'accès :
+- soit au niveau du serveur REST ;
+- soit via un reverse Proxy se plaçant entre le client et le serveur REST (e.g. apache, nginx).
 
-# OLD
-
-La distribution du contenu statique est relativement simple, le serveur lit les fichiers, puis les envoie au client. Bien évidemment, peut gérer des fonctionnalités plus avancées comme mettre les fichiers en RAM pour les distribuer plus rapidement, vérifier les droits d'accès aux fichiers (dont authentifications), réécrire les URL, transmettre la requête à un autre serveur, personnaliser l'en-tête de la réponse HTTP, etc.
-
-# Le serveur Web
-
-
-
-Le contenu généré peut être sous n'importe quel format : de l'HTML, des images, du texte brut, des données binaires, du JSON, etc. Cependant, il est préférable de séparer la structure de la page Web (HTML/CSS/JS/Images, etc.), des données dynamiques du site Web, cela pour plusieurs raisons :
-
-- la *mise en cache facilitée* de la structure de la page Web statique ;
-
-- *améliore la lisibilité* du code de votre site Web (notamment si la partie dynamique utilise une API REST) ;
-
-- *découpler la structure de la page Web des données*, permettant ainsi de formatter les données afin de pouvoir facilement les réutiliser pour d'autres usages tout en évitant qu'une modification de la structure de la page Web ne casse tout.
-
-**⚠** Vous ne devez **<u>*JAMAIS*</u>** faire confiance client. En effet, il est très aisé d'envoyer des données arbitraires au serveur. Vous devez ainsi *<u>**SYSTÉMATIQUEMENT**</u>* vérifier la validité des données envoyées par le client (format, valeurs, autorisations, etc).
-
-## Serveur HTTP
-
-Un serveur HTTP répond aux *requêtes HTTP* du client par une *réponse HTTP*. Les requêtes et réponses HTTP se composent d'un *en-tête* (header) contenant les méta-données, et d'un *corps* (body) contenant les données échangées.
-
-L'en-tête de la requête contient ainsi l'URI demandée et la *méthode HTTP*. L'en-tête de la réponse contient le *code de status* de la réponse (200 si tout c'est bien passé). Cf la section *"Envoyer une requête HTTP"* de la fiche *API JS/DOM* pour plus de détails.
-
-Côté serveur HTTP, on manipule des routes. Une route représente un ensemble d'URI qui seront traitées par le même gestionnaire. Il peut contenir des paramètres e.g. `/dir/$PARAM/foo` qui seront exploités par le gestionnaire (handler).
 
 Afin de rendre le code plus lisible, il est fréquent que les frameworks représentent les routes par une arborescence de fichiers. Au démarrage, le framework va ainsi lire de manière récursive un dossier e.g. `/routes/` et ajouter les différents gestionnaires en fonction des fichiers qui s'y trouvent. Ainsi, le fichiers/dossier `/routes/dir/{PARAMS}/foo` contiendra le gestionnaire à utiliser pour la route `/dir/$PARAM/foo`.
 
-🚩 [TODO] : outils network
+-> BDD
+-> execute shell commands
+-> redirections
 
+-> 403/gestion authentification/.htaccess
 
-# Architecture client/serveur
+## Opti (CM5 ?)
+
+### Architecture client/serveur
 
 
 L'affichage d'une page Web se déroule usuellement de la sorte :
@@ -145,7 +392,20 @@ L'affichage d'une page Web se déroule usuellement de la sorte :
 
 7. Une fois l'exécution du script fini, le navigateur dessine la page Web pour la première fois.
 
-## Optimisations
+### Optimisations
+
+-> séparer static/dynamique pour cache
+-> cache : client storage / RAM (dont sqlite)
+-> pré-générer vs on demand vs lazy
+-> calculs
+-> async
+-> webworker
+-> img
+
+-> profiler / lighthouse
+-> hoist/+ les 2 autres trucs
+-> page parsing
+-> HTTP1vs2vs3
 
 L'un des objectifs des développeur Web est de dessiner la page Web le plus tôt possible. Pour cela, il va user de diverses techniques :
 
@@ -210,282 +470,6 @@ L'un des objectifs des développeur Web est de dessiner la page Web le plus tôt
 🚩 [TODO] : outils navigateur pour network / load performances (lighthouse)
 
 🚩 [TODO] : archi projet dev vs prod.
-
-### Serveur HTTP (bas niveau)
-
-```typescript
-// [TS] TypeScript
-// Exécuter le fichier : deno run --allow-net --allow-env $FILE
-
-// @deno-types="npm:@types/express@4"
-import express from "npm:express";
-import cors    from "npm:cors"
-
-const app = express();
-app.use(cors()) // CORS - Autorise l'accès à partir d'autres domaines.
-
-// Considérer que le corps des requêtes est du texte brut.
-// .raw() permet d'obtenir des données binaires.
-// .json() si le corps des requêtes est systématiquement du JSON.
-app.use(express.text()); 
-
-// ---------------------------------------------
-// ---------- ROUTES ---------------------------
-// ---------------------------------------------
-
-// Ajouter une route (méthode HTTP GET)
-app.get($ROUTE, (request, response) => {
-
-    // Affiche les paramètres de la requête GET.
-    console.log(request.query);
-
-    response.send($DATA); // $DATA est une chaîne de charactère.
-});
-
-// Ajouter une route (méthode HTTP POST)
-app.post($ROUTE, (request, response) => {
-
-    // Affiche le corps de la requête POST.
-    console.log(request.body);
-
-    response.send($DATA);
-});
-
-// Renvoyer du JSON dans la réponse
-app.get($ROUTE, (request, response) => {
-    response.json($DATA); // $DATA est un object.
-});
-
-// Avec un paramètre dans la route
-app.get("/dir/:param/foo", (request, response) => {
-    response.send(request.params.param);
-});
-
-// Retourner un code d'erreur
-app.get("*", (request, response) => {
-    response.status(404).send("Not found");
-});
-
-// ---------------------------------------------
-
-const port = Number(Deno.env.get("PORT")) || 3000;
-app.listen(port, () => {
-    console.log(`Listening on http://localhost:${port}...`);
-});
-```
-
-```python
-# [🐍] Python
-from aiohttp import web
-
-# CORS
-import aiohttp_cors
-
-app = web.Application()
-
-#########################################################
-########### ROUTES ######################################
-#########################################################
-
-routes = web.RouteTableDef()
-
-# Ajouter une route (méthode HTTP GET)
-@routes.get($ROUTE)
-async def myhandler(request):
-
-    # Affiche les paramètres de la requête GET.
-    print(request.rel_url.query)
-
-    return web.Response(text=$DATA) # $DATA est une chaîne de charactères.
-
-# Ajouter une route (méthode HTTP POST)
-@routes.post($ROUTE)
-async def myhandler(request):
-
-    body = await request.text # pour du texte.
-    body = await request.json # pour du JSON.
-    print(body)
-
-    return web.Response(text=$DATA)
-
-# Renvoyer du JSON dans la réponse
-@routes.get($ROUTE)
-async def myhandler(request):
-    web.json_response($DATA); # $DATA est un dictionaire.
-
-# Avec un paramètre dans la route.
-@routes.get("/dir/{param}/foo")
-async def myhandler(request):
-    param = request.match_info.get('param', None)
-    print(param)
-    web.Response(text=$DATA)
-
-# Retourner un code d'erreur
-@routes.get("*")
-async def myhandler(request):
-    raise web.HTTPNotFound("Not found")
-    # ou request.Response(text="Not found", status=404)
-
-app.add_routes(routes)
-
-#########################################################
-
-# CORS - Autorise l'accès à partir d'autres domaines.
-cors = aiohttp_cors.setup(app, defaults={
-    "*": aiohttp_cors.ResourceOptions(
-        allow_credentials=True,
-        expose_headers="*",
-        allow_headers="*"
-    )
-})
-
-if __name__ == '__main__':
-    web.run_app(app)
-```
-
-### Serveur HTTP (avec arborescence de routes)
-
-## API REST
-
-Une API REST est une manière de concevoir les échanges HTTP entre le client et le serveur de sorte à les uniformaliser, les rendre plus compréhensibles, et faciliter les opérations de tests et de déboguages. Une API REST est donc implémentée par un serveur HTTP.
-
-Une requête REST est composée de 3 éléments :
-
-- *une URI* (ou route) qui désigne une ressource ;
-
-- la *méthode HTTP* qui indique le type d'opération à effectuer ;
-
-- le *corps de la requête* contenant des données envoyées au serveur.
-
-Une API REST supporte 5 méthodes HTTP :
-
-- *GET :* lire la ressource.
-
-- POST : ajouter une ressource à une collection.
-
-- *PUT :* créer une ressource ou la remplacer si elle existe.
-
-- *PATCH :* modifier partiellement une ressource.
-
-- *DELETE :* supprimer une ressource.
-
-L'URI/route des ressources doivent suivre le même format. On appelle *collection* une ressource qui est elle-même un ensemble de ressources. Les routes permettent aussi de gérer plus facilement les droits d'accès aux données, en autorisant/interdisant l'accès à certaines routes, soit au niveau du serveur REST, soit via un reverse Proxy se plaçant entre le client et le serveur REST (e.g. apache, nginx).
-
-La modification d'une ressource est effectuée de la sorte :
-
-- `GET /$COLLECTION/` : obtenir la liste des ressources de la collection.
-
-- `POST /$COLLECTION/` : créer une nouvelle ressource dans la collection.
-
-- `GET /$COLLECTION/$ID` : obtenir la ressource d'identifiant `$ID` appartenant à la collection.
-
-- `PUT /$COLLECTION/$ID` : modifier ou créer la ressource d'identifiant `$ID` appartenant à la collection.
-
-- `PATCH /$COLLECTION/$ID` : modifier la ressource d'identifiant `$ID` appartenant à la collection.
-
-- `DELETE /$COLLECTION/$ID` : supprimer la ressource d'identifiant `$ID` appartenant à la collection.
-
-Le corps de la requête et de la réponse REST sont usuellement au format JSON, mais peuvent utiliser n'importe quel format (potentiellement déterminé par la requête REST) :
-
-- URLSearchParams ;
-
-- texte brut ;
-
-- données binaires ;
-
-- XML ;
-
-- etc.
-
-Les API REST sont *sans état*, c'est à dire que le serveur n'enrigistre pas l'état de la connexion/session HTTP. L'état est stocké côté client et les données nécessaires sont inclues dans la requête REST.
-
-Le fait de ne pas stocker d'état côté serveur permet d'éviter certaines attaques DoS de clients malicieux qui ouvriraient des connexions/sessions HTTP afin de surcharger le serveur. Cela permet aussi de mettre en cache la réponse à certaines requêtes REST, ainsi que de plus facilement répartir l'API REST sur plusieurs serveur en limitant les problématiques de synchronisations.
-
-Pour les opérations de tests et de débogues, le fait qu'il n'y a pas d'état stocké signifie qu'une même requête REST produira le même effet, quel que soit l'état de la connexion/session. Cela permet ainsi de mieux comprendre les échanges entre le client et le serveur.
-
-## Websocket
-
-🚩 [TODO]
-
-## Server Send Event
-
-Contrairement aux WebSockets, les *Server Send Events* ne permettent qu'une communication unidirectionnelle du serveur vers le client. Il est utilisé lorsque le serveur doit régulièrement envoyer des informations au client, sans attendre de réponses, e.g. envoyer des logs en temps réel.
-
-Le principe est très simple, il s'agit d'une requête et d'une réponse HTTP normales, à l'exception que la réponse HTTP est maintenue en vie (`keep-alive`) et est écrite petit à petit (`text/event-stream`). Le corps de la réponse suit le format suivant :
-
-```
-event: $EVENT_NAME
-data: $DATA
-
-event: $EVENT_NAME
-data: $DATA
-
-event: $EVENT_NAME
-data: $DATA
-```
-
-Côté client, l'utilisation est très simple, il suffit d'écouter des événements d'un `EventSource`.
-
-```javascript
-// [JS] JavaScript
-
-// Client
-const servEvent = new EventSource($URL);
-servEvent.addEventListener($EVENT_NAME, function(ev) {
-    console.log(ev.data)
-});
-servEvent.close(); // termine la communication.
-
-
-// Serveur (helper)
-class SSE {
-    constructor(res) {
-        this.res = res;
-        this.#setHeaders
-    }
-    #setHeaders() {
-        this.res.set({
-            'Cache-Control': 'no-cache',
-            'Content-Type' : 'text/event-stream',
-            'Connection'   : 'keep-alive'
-        });
-        this.res.flushHeaders();
-    }
-    dispatchEvent(name, data) {
-        this.res.write(`event: ${name}\n${data}\n\n`);
-    }
-}
-
-// Serveur
-app.get($URL, async function(req, res) {
-
-    const sse = new SSE(res);
-
-    sse.dispatchEvent($EVENT_NAME, $DATA); // Envoyer un événement.
-});
-```
-
-```python
-# [🐍] Python
-
-# Client
-def handler(ev):
-    console.log(ev.data)
-
-const servEvent = EventSource.new($URL);
-servEvent.addEventListener($EVENT_NAME, handler);
-servEvent.close(); # termine la communication.
-
-# Serveur
-# pip3 install aiohttp_sse
-from aiohttp_sse import sse_response
-
-
-async def GET(request):
-    req = sse_response(request)
-
-    req.send($DATA, event=$EVENT_NAME) # Envoyer un événement.
-```
 
 </main>
     </body>

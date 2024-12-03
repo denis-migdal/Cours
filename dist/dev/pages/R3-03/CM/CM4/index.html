@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="utf8"/>
         <title>CM4 (Web1)</title>
-        <link rel="stylesheet" href="./index.css">
-        <script type="module" src="./index.js" defer></script>
+        <!--
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="cyan" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+        -->
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="./index.css"  rel="stylesheet" blocking="render">
+        <script  src="./index.js"  type="module"     blocking="render" async></script>
     </head>
     <body>
-        <style>
-        </style>
-        <header></header>
         <main>
 
 <h1 id="cm4--architecture-clientserveur">CM4 : Architecture client/serveur</h1>
@@ -23,31 +26,275 @@
 <li>le client demande une ressource via une <em>requête HTTP</em> ;</li>
 <li>le serveur retourne la ressource demandée via une <em>réponse HTTP</em>.</li>
 </ul>
-<h2 id="contenu-dynamique">Contenu dynamique</h2>
-<p>Afin de tester nos pages Web en TP, nous utilisions jusqu&#39;à présent <em>Live Server</em> comme serveur Web. Son fonctionnement est très simple : la racine du site Web est associée à un dossier <shell-code class="d4rk"><var>$ROOT</var></shell-code> du serveur. Chaque URL est alors associée à un fichier du serveur. Ainsi, lorsqu&#39;il reçoit une requête HTTP, il retourne le fichier demandé, e.g. :<br/>
+<p>Les requêtes et réponses HTTP contiennent :</p>
+<ul>
+<li>une <em>en-tête</em> : contenant des méta-données ;</li>
+<li>un <em>corps</em> (facultatif) : contenant les données transférées.</li>
+</ul>
+<h2 id="contenus-dynamiques">Contenus dynamiques</h2>
+<p>Afin de tester nos pages Web en TP, nous utilisions jusqu&#39;à présent <em>Live Server</em> comme serveur Web. Son fonctionnement est très simple : la racine du site Web est associée à un dossier <shell-code class="d4rk"><var>$ROOT</var></shell-code> du serveur. Chaque URL est alors associée à un fichier du serveur. 
+<em>Live Server</em> est ainsi un serveur web <em>statique</em> (<em>static web server</em>) distribuant des fichiers/ressources statiques (<em>static files/assets</em>). Ainsi, lorsqu&#39;il reçoit une requête HTTP, il retourne le fichier demandé, e.g. :<br/>
 <shell-code class="d4rk"><a href="http://localhost:5000/">http://localhost:5000/</a><var>$PATHNAME</var></shell-code> est associé au fichier <shell-code class="d4rk"><var>$ROOT</var>/<var>$PATHNAME</var></shell-code>.</p>
-<p><em>Live Server</em> est ainsi un serveur web <em>statique</em> (<em>static web server</em>) distribuant des fichiers/ressources statiques (<em>static files/assets</em>). Il est cependant possible d&#39;avoir des serveurs <em>dynamiques</em> (<em>dynamic server</em>) générant le contenu renvoyé en fonction de la requête HTTP reçue.</p>
-<p>GET $PATHNAME http1/1
-Host: $SERVER
-Content-Length: BODY_LEN</p>
-<p>BODY</p>
-<pre><code>-&gt; HTTP method.
--&gt; URL/Page // query string
--&gt; body/corps.
-</code></pre><p>-&gt; UNIFORMISÉ
-    -&gt; params (GET/POST)
-    -&gt; URL routes
-    -&gt; REST (state less : avoid DOS, cache)
-    -&gt; X.</p>
-<p>-&gt; fetch
-    -&gt; mais aussi WebSocket/SSE.</p>
-<p>-&gt; form</p>
-<p>-&gt; impl server (?)
-    -&gt; DOS ?</p>
-<p>-&gt; opti (CM5?)</p>
-<p>-&gt; distribue contenu <em>static</em>, quid <em>dynamique</em> e.g. généré from BDD, from params, from command shell, etc.</p>
-<p>[...]</p>
-<p>Cela est bien utile lors de la phase de développement, mais n&#39;est pas adapté pour la phase de production, i.e. lorsque le site Web sera mis sur un serveur afin d&#39;être accessible via Internet. On utilise alors des serveurs Web, e.g. Apache, Nginx, qui offrent de nombreuses fonctionnalités et possibilités de configurations :</p>
+<p>Il est cependant possible d&#39;avoir des serveurs <em>dynamiques</em> (<em>dynamic server</em>) générant le contenu renvoyé en fonction de la requête HTTP reçue. Imaginez un site vendant 5,000 produits différents. Il est évident qu&#39;on ne va pas s&#39;amuser à créer 5,000 pages Web à la main. À la place, on voudrait générer dynamiquement les pages Web à partir :</p>
+<ul>
+<li>de l&#39;<strong>identifiant</strong> du produit (i.e. quel produit afficher) ;</li>
+<li>des <strong>données</strong> du produit, stockées dans une base de données ;</li>
+<li>d&#39;un <strong>modèle</strong> (<em>template</em>) indiquant comment structurer et afficher ces données.</li>
+</ul>
+<p>Il serait alors très aisé d&#39;ajouter un nouveau produit en ajoutant une entrée dans la base de donnée, ou de modifier l&#39;affichage des pages produits en modifiant le modèle. On aurait ainsi deux parties :</p>
+<ul>
+<li><em>statique</em> : le modèle commun à tous les produits (HTML/CSS/JS/Brython/etc) ;</li>
+<li><em>dynamique</em> : les données spécifiques à chaque produit.</li>
+</ul>
+<p>Les données ne sont cependant pas directement accessibles à partir de la page Web. En effet, si les accès à la base de données (e.g. SQL) étaient effectués sur la page Web, i.e. sur le navigateur/côté client, n&#39;importe quel visiteur pourrait alors arbitrairement modifier les requêtes effectuées, ou récupérer/réutiliser les identifiants utilisés pour se connecter à la base de données.</p>
+<p>Il convient alors envoyer des requêtes au serveur Web, qui se chargera de manipuler la base de données côté serveur, puis en retournera les résultats. Le serveur Web fournira ainsi une <em>API</em>.</p>
+<h3 id="les-api-rest">Les API REST</h3>
+<p>REST (<em><u>RE</u>presentational <u>S</u>tate <u>T</u>ransfer</em>) est un ensemble de principes permettant d&#39;architecturer proprement une API Web de sorte à éviter qu&#39;elle devienne chaotique :</p>
+<ul>
+<li>URL uniformes ;</li>
+<li>sémantique des requêtes HTTP ;</li>
+<li>données structurées ;</li>
+<li>sans états.</li>
+</ul>
+<h4 id="uniformiser-les-url">Uniformiser les URL</h4>
+<p>Comme vous le savez déjà, les URL identifient les ressources de manière unique.</p>
+<p>Afin d&#39;éviter les collisions, et rendre les URL plus explicites/lisibles, il convient de les uniformiser en suivant un format unique. Pour cela on conserve une logique d&#39;arborescence avec des <em>collections</em>, qui sont des ressources contenant elles-mêmes d&#39;autres ressources (≈dossiers).</p>
+<p>Par exemple, un produit sera identifié par (et manipulé via) l&#39;URL <code>/produits/{$ID_PRODUIT}</code>. L&#39;ensemble des URL correspondant à ce format est appelé <strong>route</strong> et sera alors traité par la même fonction (<em>handler</em>), avec <code>$ID_PRODUIT</code> comme paramètre. La collection <code>/produits/</code> est alors la liste des produits, et permettra des manipulations d&#39;ensemble.</p>
+<p>💡 Il est fréquent de préfixer les chemins par <code>/api/v1/</code> et <code>/static/</code> afin d&#39;aisément distinguer l&#39;API REST, des ressources statiques. Le numéro de version permet d&#39;assurer la rétro-compatibilité pour les applications utilisant d&#39;anciennes versions de l&#39;API.</p>
+<p>💡 La structuration des URL en routes permet d&#39;aisément visualiser les ressources accessibles via l&#39;API, ainsi que de gérer plus facilement les droits d&#39;accès aux données, en autorisant/interdisant l&#39;accès à certaines routes.</p>
+<h4 id="uniformiser-les-requêtes">Uniformiser les requêtes</h4>
+<p>Les API REST utilisent 5 <em>méthodes HTTP</em> :</p>
+<ul>
+<li><em>GET :</em> lire une ressource.</li>
+<li><em>POST :</em> ajouter une ressource à une collection.</li>
+<li><em>PUT :</em> créer une ressource ou la remplacer si elle existe.</li>
+<li><em>PATCH :</em> modifier partiellement une ressource.</li>
+<li><em>DELETE :</em> supprimer une ressource.</li>
+</ul>
+<p>Il est ainsi d&#39;usage d&#39;utiliser les requêtes suivantes afin d&#39;indiquer le type d&#39;opération effectué sur la ressource :</p>
+<ul>
+<li><js-code class="d4rk">GET    /<var>$COLLECTION</var>/</js-code> : obtenir la liste des ressources de la collection.</li>
+<li><js-code class="d4rk">POST   /<var>$COLLECTION</var>/</js-code> : créer une nouvelle ressource dans la collection.</li>
+<li><js-code class="d4rk">GET    /<var>$COLLECTION</var>/<var>$ID</var></js-code> : obtenir la ressource d&#39;identifiant <js-code class="d4rk"><var>$ID</var></js-code>.</li>
+<li><js-code class="d4rk">PUT    /<var>$COLLECTION</var>/<var>$ID</var></js-code> : créer ou remplacer la ressource d&#39;identifiant <js-code class="d4rk"><var>$ID</var></js-code>.</li>
+<li><js-code class="d4rk">PATCH  /<var>$COLLECTION</var>/<var>$ID</var></js-code> : modifier la ressource d&#39;identifiant <js-code class="d4rk"><var>$ID</var></js-code>.</li>
+<li><js-code class="d4rk">DELETE /<var>$COLLECTION</var>/<var>$ID</var></js-code> : supprimer la ressource d&#39;identifiant <js-code class="d4rk"><var>$ID</var></js-code>.</li>
+</ul>
+<p>⚠ Les requêtes <code>GET</code> et <code>DELETE</code> ne peuvent contenir de corps (<em>body</em>).</p>
+<h4 id="query-strings">Query strings</h4>
+<p>Les URL peuvent aussi être suffixées par une <em>chaîne de requête</em> (<em>query string</em>), indiquée par un <code>?</code>. Les query strings sont des paires <code>clefs=valeurs</code> séparées par un <code>&amp;</code>, e.g. : <code>?limit=10&amp;export=csv</code>. </p>
+<p>Elles sont principalement utilisées sur les requêtes <code>GET</code> afin de :</p>
+<ul>
+<li>indiquer le format des données souhaité ;</li>
+<li>filtrer les champs/informations ;</li>
+<li>sur une collection, filtrer les entrées.</li>
+</ul>
+<p>⚠ Il est fréquent que les serveurs Web loggent les URL demandées. Il est ainsi important de ne pas inclure d&#39;informations sensibles dans les query strings.</p>
+<p>Les query strings sont manipulées via la classe <code>URLSearchParams</code> :</p>
+<center>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Opération
+            </th>
+            <th>
+                URLSearchParams
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><i>Créer</i></td>
+            <td><js-code class="d4rk">new URLSearchParams(<var>$URL</var>.search)</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Générer</i></td>
+            <td><js-code class="d4rk">.toString()</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Lister</i></td>
+            <td><js-code class="d4rk">.entries()/.keys()/.values()</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Obtenir</i></td>
+            <td><js-code class="d4rk">.get[All](<var>$N</var>)</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Ajouter</i></td>
+            <td><js-code class="d4rk">.set(<var>$N</var>, <var>$V</var>)/.append(<var>$N</var>, <var>$V</var>)</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Supprimer</i></td>
+            <td><js-code class="d4rk">.delete(<var>$N</var>)</js-code></td>
+        </tr>
+        <tr>
+            <td><i>Contient ?</i></td>
+            <td><js-code class="d4rk">.has(<var>$N</var>)</js-code></td>
+        </tr>
+    </tbody>
+</table>
+</center>
+
+<p>💡 L&#39;URL de la page est stockée dans <js-code>document.location</js-code>.</p>
+<h4 id="données-structurées">Données structurées</h4>
+<p>Le corps des requêtes/réponses REST sont usuellement au format JSON, mais peuvent utiliser n&#39;importe quel format, e.g. :</p>
+<ul>
+<li>texte brut ;</li>
+<li>données binaires ;</li>
+<li>URLSearchParams/FormData ;</li>
+<li>XML ;</li>
+<li>CSV ;</li>
+<li>etc.</li>
+</ul>
+<p>Le format utilisé/à utiliser est potentiellement indiqué par la requête REST. Il est cependant important de conserver des données structurées (i.e. éviter des réponses au format HTML) afin de permettre leur réutilisation pour d&#39;autres usages (et potentiellement leur mise en cache). </p>
+<p>Notamment, il est fréquent d&#39;offrir la possibilité aux développeurs tiers d&#39;exploiter les données du site via une API REST (e.g. <em>Open Data</em> avec stats INSEE, données météo, etc). Bien évidemment, certaines API peuvent être payantes, e.g. en fonction du nombre de requêtes autorisées à la seconde.</p>
+<h4 id="sans-états">Sans États</h4>
+<p>Les API REST se doivent d&#39;être <em>sans état</em> (<em>stateless</em>), cela signifie que :</p>
+<ol>
+<li>le serveur ne stocke aucun état de la connexion/session HTTP actuelle ;</li>
+<li>une requête contient toutes les données nécessaires à sa réponse ;</li>
+<li>une requête ne dépend pas d&#39;autres requêtes ;</li>
+<li>les requêtes identiques produisent des réponses identiques <em>(sauf si les données ont été modifiées)</em>.</li>
+</ol>
+<p>Cela comporte de nombreux avantages :</p>
+<ul>
+<li><em>sécurité</em> : l&#39;absence d&#39;état côté serveur (1) évite des attaques par <em>déni de services</em> (DoS).</li>
+<li><em>performance</em> : les requêtes ne dépendant pas d&#39;un état (2), il aisé de répartir les charges (<em>load balancing</em>).</li>
+<li><em>clarté</em> : les requêtes ne dépendant pas d&#39;autres requêtes (3), les échanges sont plus simples à comprendre.</li>
+<li><em>tests</em> : les réponses étant déterministes et reproductibles (4), on peut écrire des tests unitaires.</li>
+</ul>
+<h2 id="api-js">API JS</h2>
+<h3 id="fetch">Fetch</h3>
+<p>Une requête HTTP peut être effectuée au sein de la page Web via <code>fetch()</code>:
+<js-code class="block d4rk">
+const response = await fetch(<var>$URL</var>, {
+    method: <var>$HTTP_METHOD</var>,
+    body  : <var>$BODY</var>
+});
+</js-code></p>
+<p>Le corps peut être de différent type :</p>
+<ul>
+<li><js-code>string</js-code></li>
+<li><js-code>Blob</js-code>/<js-code>File</js-code></li>
+<li><js-code>Uint8Array</js-code>/<js-code>ReadableStream</js-code></li>
+<li><js-code>URLSearchParams</js-code>/<js-code>FormData</js-code></li>
+<li>etc.</li>
+</ul>
+<p>💡 Pour envoyer des données au format, JSON, il convient de les convertir en <js-code>string</js-code> :
+<js-code class="block d4rk">
+const response = await fetch(<var>$URL</var>, {
+    body: JSON.stringify(<var>$DATA</var>)
+    headers: {
+        &quot;Content-Type&quot;: &quot;application/json&quot;
+    }
+});
+</js-code></p>
+<p>💡 <js-code>&quot;Content-Type&quot;</js-code> indique le type des données contenu dans le corps de la requête :</p>
+<ul>
+<li><js-code>&quot;text/plain&quot;</js-code> : texte ;</li>
+<li><js-code>&quot;application/json&quot;</js-code> : JSON ;</li>
+<li><js-code>&quot;application/octet-stream&quot;</js-code> : données binaires.</li>
+<li><js-code>&quot;application/x-www-form-urlencoded&quot;</js-code> : <js-code>URLSearchParams</js-code>/<js-code>FormData</js-code> ;</li>
+</ul>
+<p><code>fetch()</code> retourne un <code>Response</code>, dont le contenu peut être lu via :</p>
+<ul>
+<li><js-code>await response.text()</js-code></li>
+<li><js-code>await response.json()</js-code></li>
+<li><js-code>await response.bytes()</js-code> : Uint8Array</li>
+<li><js-code>await response.formData()</js-code> : FormData</li>
+</ul>
+<p>⚠ Le corps d&#39;une réponse ne peut être lue qu&#39;une seule fois.</p>
+<ul>
+<li><js-code>.bodyUsed</js-code> : indique si le corps a été lu.</li>
+<li><js-code>.clone()</js-code> : clone la réponse (permet ainsi plusieurs lectures).</li>
+</ul>
+<h4 id="status">Status</h4>
+<p><code>Response</code> indique aussi si la requête s&#39;est bien effectuée :</p>
+<ul>
+<li><code>.ok</code> : pas d&#39;erreurs ;</li>
+<li><code>.status</code> : code de status HTTP ;</li>
+<li><code>.statusText</code> : message précisant l&#39;erreur.</li>
+</ul>
+<p>Les codes de status HTTP se divisent en 5 catégories :</p>
+<ul>
+<li>1XX : requête en cours</li>
+<li>2XX : succès</li>
+<li>3XX : redirection</li>
+<li>4XX : erreur du client</li>
+<li>5XX : erreur du serveur.</li>
+</ul>
+<ul>
+<li>cors</li>
+<li>cache</li>
+</ul>
+<p>🚩 [TODO] : outils network</p>
+<h3 id="sse">SSE</h3>
+<p>Contrairement aux WebSockets, les <em>Server Send Events</em> ne permettent qu&#39;une communication unidirectionnelle du serveur vers le client. Il est utilisé lorsque le serveur doit régulièrement envoyer des informations au client, sans attendre de réponses, e.g. envoyer des logs en temps réel.</p>
+<p>Le principe est très simple, il s&#39;agit d&#39;une requête et d&#39;une réponse HTTP normales, à l&#39;exception que la réponse HTTP est maintenue en vie (<code>keep-alive</code>) et est écrite petit à petit (<code>text/event-stream</code>). Le corps de la réponse suit le format suivant :</p>
+<pre><code>event: $EVENT_NAME
+data: $DATA
+
+event: $EVENT_NAME
+data: $DATA
+
+event: $EVENT_NAME
+data: $DATA
+</code></pre><p>Côté client, l&#39;utilisation est très simple, il suffit d&#39;écouter des événements d&#39;un <code>EventSource</code>.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-comment">// [JS] JavaScript</span>
+
+<span class="hljs-comment">// Client</span>
+<span class="hljs-keyword">const</span> servEvent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EventSource</span>($URL);
+servEvent.<span class="hljs-title function_">addEventListener</span>($EVENT_NAME, <span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ev.<span class="hljs-property">data</span>)
+});
+servEvent.<span class="hljs-title function_">close</span>(); <span class="hljs-comment">// termine la communication.</span>
+
+
+<span class="hljs-comment">// Serveur (helper)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SSE</span> {
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">res</span>) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">res</span> = res;
+        <span class="hljs-variable language_">this</span>.#setHeaders
+    }
+    #<span class="hljs-title function_">setHeaders</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">res</span>.<span class="hljs-title function_">set</span>({
+            <span class="hljs-string">&#x27;Cache-Control&#x27;</span>: <span class="hljs-string">&#x27;no-cache&#x27;</span>,
+            <span class="hljs-string">&#x27;Content-Type&#x27;</span> : <span class="hljs-string">&#x27;text/event-stream&#x27;</span>,
+            <span class="hljs-string">&#x27;Connection&#x27;</span>   : <span class="hljs-string">&#x27;keep-alive&#x27;</span>
+        });
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">res</span>.<span class="hljs-title function_">flushHeaders</span>();
+    }
+    <span class="hljs-title function_">dispatchEvent</span>(<span class="hljs-params">name, data</span>) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">res</span>.<span class="hljs-title function_">write</span>(<span class="hljs-string">`event: <span class="hljs-subst">${name}</span>\n<span class="hljs-subst">${data}</span>\n\n`</span>);
+    }
+}
+
+<span class="hljs-comment">// Serveur</span>
+app.<span class="hljs-title function_">get</span>($URL, <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) {
+
+    <span class="hljs-keyword">const</span> sse = <span class="hljs-keyword">new</span> <span class="hljs-title function_">SSE</span>(res);
+
+    sse.<span class="hljs-title function_">dispatchEvent</span>($EVENT_NAME, $DATA); <span class="hljs-comment">// Envoyer un événement.</span>
+});
+</code></pre><h3 id="uploaddownload">Upload/Download</h3>
+<p>=&gt; qu&#39;est-ce qu&#39;un Blob/File ?
+=&gt; decode/encode</p>
+<h3 id="websockets">Websockets</h3>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket">https://developer.mozilla.org/en-US/docs/Web/API/WebSocket</a></p>
+<h2 id="les-formulaires">Les formulaires</h2>
+<p>-&gt; form
+    -&gt; input
+    -&gt; FormData / URLSearchParams.
+    -&gt; clear</p>
+<p>-&gt; validation + CSS</p>
+<p>/!\ vérifier les donnés côté serveur.</p>
+<p><strong>⚠</strong> Vous ne devez <strong><u><em>JAMAIS</em></u></strong> faire confiance client. En effet, il est très aisé d&#39;envoyer des données arbitraires au serveur. Vous devez ainsi <em><u><strong>SYSTÉMATIQUEMENT</strong></u></em> vérifier la validité des données envoyées par le client (format, valeurs, autorisations, etc).</p>
+<h2 id="gestion-des-données">Gestion des données</h2>
+<p>Localstorage/sessionStorage/FileSystem API/cache.</p>
+<h2 id="les-différents-type-de-serveurs-web">Les différents type de serveurs Web</h2>
+<p>La distribution du contenu statique est relativement simple, le serveur lit les fichiers, puis les envoie au client. Bien évidemment, peut gérer des fonctionnalités plus avancées comme mettre les fichiers en RAM pour les distribuer plus rapidement, vérifier les droits d&#39;accès aux fichiers (dont authentifications), réécrire les URL, transmettre la requête à un autre serveur, personnaliser l&#39;en-tête de la réponse HTTP, etc.</p>
+<p>On utilise alors des serveurs Web, e.g. Apache, Nginx, qui offrent de nombreuses fonctionnalités et possibilités de configurations :</p>
 <ul>
 <li>réécritures d&#39;URL/redirections ;</li>
 <li>transfert du flux / reverse proxy ;</li>
@@ -67,26 +314,18 @@ Content-Length: BODY_LEN</p>
 <li><p><em>rediriger le flux</em> vers un autre serveur (reverse proxy). Quasi-identique à la solution précédente, il a l&#39;avantage de pouvoir bénéficier des fonctionnalités du serveur Web (authentification, cache, etc), ainsi que d&#39;éviter des problèmes de <em>Same Origin Policy</em> (SOP). Il peut aussi permettre de simplifier l&#39;implémentation du serveur, en déléguant la sécurisation de la communication au reverse proxy, i.e. le serveur  envoie et reçoit des données en clair, et le reverse proxy les chiffre et les déchiffre.</p>
 </li>
 </ul>
-<h1 id="old">OLD</h1>
-<p>La distribution du contenu statique est relativement simple, le serveur lit les fichiers, puis les envoie au client. Bien évidemment, peut gérer des fonctionnalités plus avancées comme mettre les fichiers en RAM pour les distribuer plus rapidement, vérifier les droits d&#39;accès aux fichiers (dont authentifications), réécrire les URL, transmettre la requête à un autre serveur, personnaliser l&#39;en-tête de la réponse HTTP, etc.</p>
-<h1 id="le-serveur-web">Le serveur Web</h1>
-<p>Le contenu généré peut être sous n&#39;importe quel format : de l&#39;HTML, des images, du texte brut, des données binaires, du JSON, etc. Cependant, il est préférable de séparer la structure de la page Web (HTML/CSS/JS/Images, etc.), des données dynamiques du site Web, cela pour plusieurs raisons :</p>
+<p>Contrôle d&#39;accès :</p>
 <ul>
-<li><p>la <em>mise en cache facilitée</em> de la structure de la page Web statique ;</p>
-</li>
-<li><p><em>améliore la lisibilité</em> du code de votre site Web (notamment si la partie dynamique utilise une API REST) ;</p>
-</li>
-<li><p><em>découpler la structure de la page Web des données</em>, permettant ainsi de formatter les données afin de pouvoir facilement les réutiliser pour d&#39;autres usages tout en évitant qu&#39;une modification de la structure de la page Web ne casse tout.</p>
-</li>
+<li>soit au niveau du serveur REST ;</li>
+<li>soit via un reverse Proxy se plaçant entre le client et le serveur REST (e.g. apache, nginx).</li>
 </ul>
-<p><strong>⚠</strong> Vous ne devez <strong><u><em>JAMAIS</em></u></strong> faire confiance client. En effet, il est très aisé d&#39;envoyer des données arbitraires au serveur. Vous devez ainsi <em><u><strong>SYSTÉMATIQUEMENT</strong></u></em> vérifier la validité des données envoyées par le client (format, valeurs, autorisations, etc).</p>
-<h2 id="serveur-http">Serveur HTTP</h2>
-<p>Un serveur HTTP répond aux <em>requêtes HTTP</em> du client par une <em>réponse HTTP</em>. Les requêtes et réponses HTTP se composent d&#39;un <em>en-tête</em> (header) contenant les méta-données, et d&#39;un <em>corps</em> (body) contenant les données échangées.</p>
-<p>L&#39;en-tête de la requête contient ainsi l&#39;URI demandée et la <em>méthode HTTP</em>. L&#39;en-tête de la réponse contient le <em>code de status</em> de la réponse (200 si tout c&#39;est bien passé). Cf la section <em>&quot;Envoyer une requête HTTP&quot;</em> de la fiche <em>API JS/DOM</em> pour plus de détails.</p>
-<p>Côté serveur HTTP, on manipule des routes. Une route représente un ensemble d&#39;URI qui seront traitées par le même gestionnaire. Il peut contenir des paramètres e.g. <code>/dir/$PARAM/foo</code> qui seront exploités par le gestionnaire (handler).</p>
 <p>Afin de rendre le code plus lisible, il est fréquent que les frameworks représentent les routes par une arborescence de fichiers. Au démarrage, le framework va ainsi lire de manière récursive un dossier e.g. <code>/routes/</code> et ajouter les différents gestionnaires en fonction des fichiers qui s&#39;y trouvent. Ainsi, le fichiers/dossier <code>/routes/dir/{PARAMS}/foo</code> contiendra le gestionnaire à utiliser pour la route <code>/dir/$PARAM/foo</code>.</p>
-<p>🚩 [TODO] : outils network</p>
-<h1 id="architecture-clientserveur">Architecture client/serveur</h1>
+<p>-&gt; BDD
+-&gt; execute shell commands
+-&gt; redirections</p>
+<p>-&gt; 403/gestion authentification/.htaccess</p>
+<h2 id="opti-cm5-">Opti (CM5 ?)</h2>
+<h3 id="architecture-clientserveur">Architecture client/serveur</h3>
 <p>L&#39;affichage d&#39;une page Web se déroule usuellement de la sorte :</p>
 <pre><code class="hljs language-html"><span class="hljs-meta">&lt;!DOCTYPE&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
@@ -114,7 +353,18 @@ Content-Length: BODY_LEN</p>
 <li><p>Une fois l&#39;exécution du script fini, le navigateur dessine la page Web pour la première fois.</p>
 </li>
 </ol>
-<h2 id="optimisations">Optimisations</h2>
+<h3 id="optimisations">Optimisations</h3>
+<p>-&gt; séparer static/dynamique pour cache
+-&gt; cache : client storage / RAM (dont sqlite)
+-&gt; pré-générer vs on demand vs lazy
+-&gt; calculs
+-&gt; async
+-&gt; webworker
+-&gt; img</p>
+<p>-&gt; profiler / lighthouse
+-&gt; hoist/+ les 2 autres trucs
+-&gt; page parsing
+-&gt; HTTP1vs2vs3</p>
 <p>L&#39;un des objectifs des développeur Web est de dessiner la page Web le plus tôt possible. Pour cela, il va user de diverses techniques :</p>
 <ul>
 <li><p><em>Compresser les fichiers</em> avant de les transmettre, réduisant le temps de téléchargement des ressources nécessaires.</p>
@@ -189,257 +439,6 @@ Content-Length: BODY_LEN</p>
 <p>⚠ L&#39;optimisation prématurée est diabolique. Vous n&#39;avez, à votre niveau, pas besoin d&#39;optimiser vos sites Web. Vous n&#39;avez pas non plus à implémenter vous-mêmes ces optimisations, de nombreux outils le font déjà pour vous (e.g. Webpack).</p>
 <p>🚩 [TODO] : outils navigateur pour network / load performances (lighthouse)</p>
 <p>🚩 [TODO] : archi projet dev vs prod.</p>
-<h3 id="serveur-http-bas-niveau">Serveur HTTP (bas niveau)</h3>
-<pre><code class="hljs language-typescript"><span class="hljs-comment">// [TS] TypeScript</span>
-<span class="hljs-comment">// Exécuter le fichier : deno run --allow-net --allow-env $FILE</span>
-
-<span class="hljs-comment">// @deno-types=&quot;npm:@types/express@4&quot;</span>
-<span class="hljs-keyword">import</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;npm:express&quot;</span>;
-<span class="hljs-keyword">import</span> cors    <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;npm:cors&quot;</span>
-
-<span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>();
-app.<span class="hljs-title function_">use</span>(<span class="hljs-title function_">cors</span>()) <span class="hljs-comment">// CORS - Autorise l&#x27;accès à partir d&#x27;autres domaines.</span>
-
-<span class="hljs-comment">// Considérer que le corps des requêtes est du texte brut.</span>
-<span class="hljs-comment">// .raw() permet d&#x27;obtenir des données binaires.</span>
-<span class="hljs-comment">// .json() si le corps des requêtes est systématiquement du JSON.</span>
-app.<span class="hljs-title function_">use</span>(express.<span class="hljs-title function_">text</span>()); 
-
-<span class="hljs-comment">// ---------------------------------------------</span>
-<span class="hljs-comment">// ---------- ROUTES ---------------------------</span>
-<span class="hljs-comment">// ---------------------------------------------</span>
-
-<span class="hljs-comment">// Ajouter une route (méthode HTTP GET)</span>
-app.<span class="hljs-title function_">get</span>($ROUTE, <span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> {
-
-    <span class="hljs-comment">// Affiche les paramètres de la requête GET.</span>
-    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(request.<span class="hljs-property">query</span>);
-
-    response.<span class="hljs-title function_">send</span>($DATA); <span class="hljs-comment">// $DATA est une chaîne de charactère.</span>
-});
-
-<span class="hljs-comment">// Ajouter une route (méthode HTTP POST)</span>
-app.<span class="hljs-title function_">post</span>($ROUTE, <span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> {
-
-    <span class="hljs-comment">// Affiche le corps de la requête POST.</span>
-    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(request.<span class="hljs-property">body</span>);
-
-    response.<span class="hljs-title function_">send</span>($DATA);
-});
-
-<span class="hljs-comment">// Renvoyer du JSON dans la réponse</span>
-app.<span class="hljs-title function_">get</span>($ROUTE, <span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> {
-    response.<span class="hljs-title function_">json</span>($DATA); <span class="hljs-comment">// $DATA est un object.</span>
-});
-
-<span class="hljs-comment">// Avec un paramètre dans la route</span>
-app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/dir/:param/foo&quot;</span>, <span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> {
-    response.<span class="hljs-title function_">send</span>(request.<span class="hljs-property">params</span>.<span class="hljs-property">param</span>);
-});
-
-<span class="hljs-comment">// Retourner un code d&#x27;erreur</span>
-app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;*&quot;</span>, <span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> {
-    response.<span class="hljs-title function_">status</span>(<span class="hljs-number">404</span>).<span class="hljs-title function_">send</span>(<span class="hljs-string">&quot;Not found&quot;</span>);
-});
-
-<span class="hljs-comment">// ---------------------------------------------</span>
-
-<span class="hljs-keyword">const</span> port = <span class="hljs-title class_">Number</span>(<span class="hljs-title class_">Deno</span>.<span class="hljs-property">env</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;PORT&quot;</span>)) || <span class="hljs-number">3000</span>;
-app.<span class="hljs-title function_">listen</span>(port, <span class="hljs-function">() =&gt;</span> {
-    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Listening on http://localhost:<span class="hljs-subst">${port}</span>...`</span>);
-});
-</code></pre><pre><code class="hljs language-python"><span class="hljs-comment"># [🐍] Python</span>
-<span class="hljs-keyword">from</span> aiohttp <span class="hljs-keyword">import</span> web
-
-<span class="hljs-comment"># CORS</span>
-<span class="hljs-keyword">import</span> aiohttp_cors
-
-app = web.Application()
-
-<span class="hljs-comment">#########################################################</span>
-<span class="hljs-comment">########### ROUTES ######################################</span>
-<span class="hljs-comment">#########################################################</span>
-
-routes = web.RouteTableDef()
-
-<span class="hljs-comment"># Ajouter une route (méthode HTTP GET)</span>
-<span class="hljs-meta">@routes.get(<span class="hljs-params">$ROUTE</span>)</span>
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">myhandler</span>(<span class="hljs-params">request</span>):
-
-    <span class="hljs-comment"># Affiche les paramètres de la requête GET.</span>
-    <span class="hljs-built_in">print</span>(request.rel_url.query)
-
-    <span class="hljs-keyword">return</span> web.Response(text=$DATA) <span class="hljs-comment"># $DATA est une chaîne de charactères.</span>
-
-<span class="hljs-comment"># Ajouter une route (méthode HTTP POST)</span>
-<span class="hljs-meta">@routes.post(<span class="hljs-params">$ROUTE</span>)</span>
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">myhandler</span>(<span class="hljs-params">request</span>):
-
-    body = <span class="hljs-keyword">await</span> request.text <span class="hljs-comment"># pour du texte.</span>
-    body = <span class="hljs-keyword">await</span> request.json <span class="hljs-comment"># pour du JSON.</span>
-    <span class="hljs-built_in">print</span>(body)
-
-    <span class="hljs-keyword">return</span> web.Response(text=$DATA)
-
-<span class="hljs-comment"># Renvoyer du JSON dans la réponse</span>
-<span class="hljs-meta">@routes.get(<span class="hljs-params">$ROUTE</span>)</span>
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">myhandler</span>(<span class="hljs-params">request</span>):
-    web.json_response($DATA); <span class="hljs-comment"># $DATA est un dictionaire.</span>
-
-<span class="hljs-comment"># Avec un paramètre dans la route.</span>
-<span class="hljs-meta">@routes.get(<span class="hljs-params"><span class="hljs-string">&quot;/dir/{param}/foo&quot;</span></span>)</span>
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">myhandler</span>(<span class="hljs-params">request</span>):
-    param = request.match_info.get(<span class="hljs-string">&#x27;param&#x27;</span>, <span class="hljs-literal">None</span>)
-    <span class="hljs-built_in">print</span>(param)
-    web.Response(text=$DATA)
-
-<span class="hljs-comment"># Retourner un code d&#x27;erreur</span>
-<span class="hljs-meta">@routes.get(<span class="hljs-params"><span class="hljs-string">&quot;*&quot;</span></span>)</span>
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">myhandler</span>(<span class="hljs-params">request</span>):
-    <span class="hljs-keyword">raise</span> web.HTTPNotFound(<span class="hljs-string">&quot;Not found&quot;</span>)
-    <span class="hljs-comment"># ou request.Response(text=&quot;Not found&quot;, status=404)</span>
-
-app.add_routes(routes)
-
-<span class="hljs-comment">#########################################################</span>
-
-<span class="hljs-comment"># CORS - Autorise l&#x27;accès à partir d&#x27;autres domaines.</span>
-cors = aiohttp_cors.setup(app, defaults={
-    <span class="hljs-string">&quot;*&quot;</span>: aiohttp_cors.ResourceOptions(
-        allow_credentials=<span class="hljs-literal">True</span>,
-        expose_headers=<span class="hljs-string">&quot;*&quot;</span>,
-        allow_headers=<span class="hljs-string">&quot;*&quot;</span>
-    )
-})
-
-<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
-    web.run_app(app)
-</code></pre><h3 id="serveur-http-avec-arborescence-de-routes">Serveur HTTP (avec arborescence de routes)</h3>
-<h2 id="api-rest">API REST</h2>
-<p>Une API REST est une manière de concevoir les échanges HTTP entre le client et le serveur de sorte à les uniformaliser, les rendre plus compréhensibles, et faciliter les opérations de tests et de déboguages. Une API REST est donc implémentée par un serveur HTTP.</p>
-<p>Une requête REST est composée de 3 éléments :</p>
-<ul>
-<li><p><em>une URI</em> (ou route) qui désigne une ressource ;</p>
-</li>
-<li><p>la <em>méthode HTTP</em> qui indique le type d&#39;opération à effectuer ;</p>
-</li>
-<li><p>le <em>corps de la requête</em> contenant des données envoyées au serveur.</p>
-</li>
-</ul>
-<p>Une API REST supporte 5 méthodes HTTP :</p>
-<ul>
-<li><p><em>GET :</em> lire la ressource.</p>
-</li>
-<li><p>POST : ajouter une ressource à une collection.</p>
-</li>
-<li><p><em>PUT :</em> créer une ressource ou la remplacer si elle existe.</p>
-</li>
-<li><p><em>PATCH :</em> modifier partiellement une ressource.</p>
-</li>
-<li><p><em>DELETE :</em> supprimer une ressource.</p>
-</li>
-</ul>
-<p>L&#39;URI/route des ressources doivent suivre le même format. On appelle <em>collection</em> une ressource qui est elle-même un ensemble de ressources. Les routes permettent aussi de gérer plus facilement les droits d&#39;accès aux données, en autorisant/interdisant l&#39;accès à certaines routes, soit au niveau du serveur REST, soit via un reverse Proxy se plaçant entre le client et le serveur REST (e.g. apache, nginx).</p>
-<p>La modification d&#39;une ressource est effectuée de la sorte :</p>
-<ul>
-<li><p><code>GET /$COLLECTION/</code> : obtenir la liste des ressources de la collection.</p>
-</li>
-<li><p><code>POST /$COLLECTION/</code> : créer une nouvelle ressource dans la collection.</p>
-</li>
-<li><p><code>GET /$COLLECTION/$ID</code> : obtenir la ressource d&#39;identifiant <code>$ID</code> appartenant à la collection.</p>
-</li>
-<li><p><code>PUT /$COLLECTION/$ID</code> : modifier ou créer la ressource d&#39;identifiant <code>$ID</code> appartenant à la collection.</p>
-</li>
-<li><p><code>PATCH /$COLLECTION/$ID</code> : modifier la ressource d&#39;identifiant <code>$ID</code> appartenant à la collection.</p>
-</li>
-<li><p><code>DELETE /$COLLECTION/$ID</code> : supprimer la ressource d&#39;identifiant <code>$ID</code> appartenant à la collection.</p>
-</li>
-</ul>
-<p>Le corps de la requête et de la réponse REST sont usuellement au format JSON, mais peuvent utiliser n&#39;importe quel format (potentiellement déterminé par la requête REST) :</p>
-<ul>
-<li><p>URLSearchParams ;</p>
-</li>
-<li><p>texte brut ;</p>
-</li>
-<li><p>données binaires ;</p>
-</li>
-<li><p>XML ;</p>
-</li>
-<li><p>etc.</p>
-</li>
-</ul>
-<p>Les API REST sont <em>sans état</em>, c&#39;est à dire que le serveur n&#39;enrigistre pas l&#39;état de la connexion/session HTTP. L&#39;état est stocké côté client et les données nécessaires sont inclues dans la requête REST.</p>
-<p>Le fait de ne pas stocker d&#39;état côté serveur permet d&#39;éviter certaines attaques DoS de clients malicieux qui ouvriraient des connexions/sessions HTTP afin de surcharger le serveur. Cela permet aussi de mettre en cache la réponse à certaines requêtes REST, ainsi que de plus facilement répartir l&#39;API REST sur plusieurs serveur en limitant les problématiques de synchronisations.</p>
-<p>Pour les opérations de tests et de débogues, le fait qu&#39;il n&#39;y a pas d&#39;état stocké signifie qu&#39;une même requête REST produira le même effet, quel que soit l&#39;état de la connexion/session. Cela permet ainsi de mieux comprendre les échanges entre le client et le serveur.</p>
-<h2 id="websocket">Websocket</h2>
-<p>🚩 [TODO]</p>
-<h2 id="server-send-event">Server Send Event</h2>
-<p>Contrairement aux WebSockets, les <em>Server Send Events</em> ne permettent qu&#39;une communication unidirectionnelle du serveur vers le client. Il est utilisé lorsque le serveur doit régulièrement envoyer des informations au client, sans attendre de réponses, e.g. envoyer des logs en temps réel.</p>
-<p>Le principe est très simple, il s&#39;agit d&#39;une requête et d&#39;une réponse HTTP normales, à l&#39;exception que la réponse HTTP est maintenue en vie (<code>keep-alive</code>) et est écrite petit à petit (<code>text/event-stream</code>). Le corps de la réponse suit le format suivant :</p>
-<pre><code>event: $EVENT_NAME
-data: $DATA
-
-event: $EVENT_NAME
-data: $DATA
-
-event: $EVENT_NAME
-data: $DATA
-</code></pre><p>Côté client, l&#39;utilisation est très simple, il suffit d&#39;écouter des événements d&#39;un <code>EventSource</code>.</p>
-<pre><code class="hljs language-javascript"><span class="hljs-comment">// [JS] JavaScript</span>
-
-<span class="hljs-comment">// Client</span>
-<span class="hljs-keyword">const</span> servEvent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EventSource</span>($URL);
-servEvent.<span class="hljs-title function_">addEventListener</span>($EVENT_NAME, <span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>) {
-    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ev.<span class="hljs-property">data</span>)
-});
-servEvent.<span class="hljs-title function_">close</span>(); <span class="hljs-comment">// termine la communication.</span>
-
-
-<span class="hljs-comment">// Serveur (helper)</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">SSE</span> {
-    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">res</span>) {
-        <span class="hljs-variable language_">this</span>.<span class="hljs-property">res</span> = res;
-        <span class="hljs-variable language_">this</span>.#setHeaders
-    }
-    #<span class="hljs-title function_">setHeaders</span>(<span class="hljs-params"></span>) {
-        <span class="hljs-variable language_">this</span>.<span class="hljs-property">res</span>.<span class="hljs-title function_">set</span>({
-            <span class="hljs-string">&#x27;Cache-Control&#x27;</span>: <span class="hljs-string">&#x27;no-cache&#x27;</span>,
-            <span class="hljs-string">&#x27;Content-Type&#x27;</span> : <span class="hljs-string">&#x27;text/event-stream&#x27;</span>,
-            <span class="hljs-string">&#x27;Connection&#x27;</span>   : <span class="hljs-string">&#x27;keep-alive&#x27;</span>
-        });
-        <span class="hljs-variable language_">this</span>.<span class="hljs-property">res</span>.<span class="hljs-title function_">flushHeaders</span>();
-    }
-    <span class="hljs-title function_">dispatchEvent</span>(<span class="hljs-params">name, data</span>) {
-        <span class="hljs-variable language_">this</span>.<span class="hljs-property">res</span>.<span class="hljs-title function_">write</span>(<span class="hljs-string">`event: <span class="hljs-subst">${name}</span>\n<span class="hljs-subst">${data}</span>\n\n`</span>);
-    }
-}
-
-<span class="hljs-comment">// Serveur</span>
-app.<span class="hljs-title function_">get</span>($URL, <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) {
-
-    <span class="hljs-keyword">const</span> sse = <span class="hljs-keyword">new</span> <span class="hljs-title function_">SSE</span>(res);
-
-    sse.<span class="hljs-title function_">dispatchEvent</span>($EVENT_NAME, $DATA); <span class="hljs-comment">// Envoyer un événement.</span>
-});
-</code></pre><pre><code class="hljs language-python"><span class="hljs-comment"># [🐍] Python</span>
-
-<span class="hljs-comment"># Client</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">handler</span>(<span class="hljs-params">ev</span>):
-    console.log(ev.data)
-
-const servEvent = EventSource.new($URL);
-servEvent.addEventListener($EVENT_NAME, handler);
-servEvent.close(); <span class="hljs-comment"># termine la communication.</span>
-
-<span class="hljs-comment"># Serveur</span>
-<span class="hljs-comment"># pip3 install aiohttp_sse</span>
-<span class="hljs-keyword">from</span> aiohttp_sse <span class="hljs-keyword">import</span> sse_response
-
-
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">GET</span>(<span class="hljs-params">request</span>):
-    req = sse_response(request)
-
-    req.send($DATA, event=$EVENT_NAME) <span class="hljs-comment"># Envoyer un événement.</span>
-</code></pre></main>
+</main>
     </body>
 </html>
