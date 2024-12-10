@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>TP3-4 (Web1)</title>
+        <!--
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="cyan" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+        -->
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="./index.css"  rel="stylesheet" blocking="render">
+        <script  src="./index.js"  type="module"     blocking="render" async></script>
+    </head>
+    <body>
+        <main>
+
+<h1 id="tp3-4">TP3-4</h1>
+<h2 id="tp3--exécuter-du-code-côté-serveur">TP3 : Exécuter du code côté serveur</h2>
+<p>La documentation de LISS V2 n&#39;ayant pas été achevée, et son inclusion de fichiers <code>.js</code>/<code>.bry</code> pas encore proprement testé, vous ne l&#39;utiliserez pas dans le cadre de cette séance de TP.</p>
+<p>LISS v2 est déjà utilisé ailleurs, donc devrait fonctionner proprement, mais en l&#39;absence de documentations, tests unitaires et d&#39;exemples bac à sable, on ne va pas prendre trop de risques.</p>
+<h2 id="tp4--serveur">TP4 : Serveur</h2>
+<h3 id="prise-en-main">Prise en main</h3>
+<p>Vous vous servirez de :</p>
+<ul>
+<li>la documentation : <a href="https://denis-migdal.github.io/VSHS/dist/dev/pages/docs/fr/">https://denis-migdal.github.io/VSHS/dist/dev/pages/docs/fr/</a></li>
+<li>du bac à sable : <a href="https://denis-migdal.github.io/VSHS/dist/dev/pages/playground/">https://denis-migdal.github.io/VSHS/dist/dev/pages/playground/</a></li>
+</ul>
+<ol>
+<li>Téléchargez la V2 de VSHS : <a href="https://github.com/denis-migdal/VSHS/tree/V2">https://github.com/denis-migdal/VSHS/tree/V2</a></li>
+<li>En vous servant de la documentation, lancez le serveur en mode démonstration.</li>
+<li>Testez quelques exemple de la documentation/bac à sable.</li>
+<li>En vous servant de la documentation, exécutez quelques requête via <code>curl</code> ou <code>wget</code> sur le serveur.</li>
+</ol>
+<h3 id="création-des-routes">Création des routes</h3>
+<ol>
+<li>Créez une route <code>/users</code> permettant d&#39;accéder à la liste des utilisateurs (pour le moment un simple tableau global) ;</li>
+<li>Lancez votre serveur en ligne de commande</li>
+<li>Testez cette route via <code>curl</code> ou <code>wget</code>.</li>
+<li>Créez une route <code>/user/{ID}</code> permettant d&#39;accéder aux données d&#39;un utilisateur (pour le moment un simple dictionnaire associatif global) ;</li>
+<li>Testez cette route via <code>curl</code> ou <code>wget</code>.</li>
+</ol>
+<h3 id="création-des-requêtes">Création des requêtes</h3>
+<ol>
+<li>Dans un fichier JS que vous inclurez à une page Web, effectuez une requête <code>fetch</code> permettant d&#39;afficher dans la console la liste des utilisateurs ainsi qu&#39;un utilisateur de votre choix.</li>
+<li>Créez de nouvelles routes pour ajouter/supprimer/modifier un utilisateur (cf les 6 routes vues en cours). Vous testerez ces routes via <code>curl</code>/<code>wget</code>.</li>
+<li>Créez des fonctions JS permettant d&#39;effectuer de telles requêtes auprès du serveur.</li>
+<li>Kilian ayant très certainement harcelé l&#39;encadrant pour obtenir une pause, il pourra refaire le TP en Brython afin de ne pas s&#39;ennuyer.</li>
+</ol>
+</main>
+    </body>
+</html>

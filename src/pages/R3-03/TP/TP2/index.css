@@ -1,5 +1,5 @@
 @import "../../../../../libs/LISS2/src/pages/docs/skeleton";
-@import "./menu.css";
+@import "../TP2/menu.css";
 
 table {
     & > tbody {

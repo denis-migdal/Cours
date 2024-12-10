@@ -74,7 +74,8 @@ export default [
                 path: "TP",
                 children: [
                     "TP1",
-                    "TP2"
+                    "TP2",
+                    "TP3-4"
                 ]
             }, {
                 name: "Cheat Sheet HTML",
