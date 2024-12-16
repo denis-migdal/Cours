@@ -21,7 +21,7 @@
 
 1. Mettez à jour votre version de LISS en téléchargeant sa dernière version via ce lien : https://raw.githubusercontent.com/denis-migdal/LISS/refs/heads/V2/dist/dev/index.js
 2. Lisez la documentation de LISS via ce lien : https://denis-migdal.github.io/LISS/dist/dev/pages/fr/docs/controler/?bry=true
-3. En vous servant des exemples, modifiez le composant "user-desc" en lui ajoutant un fichier "index.py".
+3. En vous servant des exemples, modifiez le composant "user-desc" en lui ajoutant un fichier "index.bry".
 4. Créez une structure Python contenant les informations d'un utilisateur.
 5. Remplissez le composant "user-desc" à partir de cette structure via l'API JS (cf CM3).
 6. Transformez la structure précédente en un dictionnaire associatif dont la clef sera l'identifiant de l'utilisateur et la valeur les information de l'utilisateur.
