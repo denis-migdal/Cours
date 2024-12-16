@@ -17,11 +17,16 @@
 
 # TP3-4
 
-## TP3 : Exécuter du code côté serveur
+## TP3 : Exécuter du code côté client
 
-La documentation de LISS V2 n'ayant pas été achevée, et son inclusion de fichiers `.js`/`.bry` pas encore proprement testé, vous ne l'utiliserez pas dans le cadre de cette séance de TP.
+1. Mettez à jour votre version de LISS en téléchargeant sa dernière version via ce lien : https://raw.githubusercontent.com/denis-migdal/LISS/refs/heads/V2/dist/dev/index.js
+2. Lisez la documentation de LISS via ce lien : https://denis-migdal.github.io/LISS/dist/dev/pages/fr/docs/controler/?bry=true
+3. En vous servant des exemples, modifiez le composant "user-desc" en lui ajoutant un fichier "index.py".
+4. Créez une structure Python contenant les informations d'un utilisateur.
+5. Remplissez le composant "user-desc" à partir de cette structure via l'API JS (cf CM3).
+6. Transformez la structure précédente en un dictionnaire associatif dont la clef sera l'identifiant de l'utilisateur et la valeur les information de l'utilisateur.
+6. En considérant que "user-desc" a un unique attribut "user-id", remplissez le composant "user-desc" avec les informations de l'utilisateur d'identifiant "user-id".
 
-LISS v2 est déjà utilisé ailleurs, donc devrait fonctionner proprement, mais en l'absence de documentations, tests unitaires et d'exemples bac à sable, on ne va pas prendre trop de risques.
 
 ## TP4 : Serveur
 
@@ -31,7 +36,7 @@ Vous vous servirez de :
 - la documentation : https://denis-migdal.github.io/VSHS/dist/dev/pages/docs/fr/
 - du bac à sable : https://denis-migdal.github.io/VSHS/dist/dev/pages/playground/
 
-1. Téléchargez la V2 de VSHS : https://github.com/denis-migdal/VSHS/tree/V2
+1. Téléchargez la V2 de VSHS : https://github.com/denis-migdal/VSHS
 2. En vous servant de la documentation, lancez le serveur en mode démonstration.
 3. Testez quelques exemple de la documentation/bac à sable.
 4. En vous servant de la documentation, exécutez quelques requête via `curl` ou `wget` sur le serveur.
@@ -46,10 +51,9 @@ Vous vous servirez de :
 
 ### Création des requêtes
 
-1. Dans un fichier JS que vous inclurez à une page Web, effectuez une requête `fetch` permettant d'afficher dans la console la liste des utilisateurs ainsi qu'un utilisateur de votre choix.
+1. Dans un fichier Brython que vous inclurez à une page Web, effectuez une requête `fetch` permettant d'afficher dans la console la liste des utilisateurs ainsi qu'un utilisateur de votre choix.
 2. Créez de nouvelles routes pour ajouter/supprimer/modifier un utilisateur (cf les 6 routes vues en cours). Vous testerez ces routes via `curl`/`wget`.
-3. Créez des fonctions JS permettant d'effectuer de telles requêtes auprès du serveur.
-4. Kilian ayant très certainement harcelé l'encadrant pour obtenir une pause, il pourra refaire le TP en Brython afin de ne pas s'ennuyer.
+3. Créez des fonctions Brython permettant d'effectuer de telles requêtes auprès du serveur.
 
 </main>
     </body>
