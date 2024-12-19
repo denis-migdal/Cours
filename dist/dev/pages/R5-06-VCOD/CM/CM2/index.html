@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>CM2 (Dev Log)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <!--<link rel="modulepreload" href="./index.js" blocking="render" as="script" />-->
+        <script type="module" src="./index.js"></script>
+        <link rel="stylesheet" href="./index.css">
+        <script>
+            console.warn("script start");
+            document.addEventListener("DOMContentLoaded", function() {
+            	console.warn("DOM loaded")
+        	});
+        </script>
+    </head>
+    <body class="hide_h1">
+        <header></header>
+        <main>
+
+<p>⚠ [Draft] Document en cours de rédaction.</p>
+<h1 id="git">Git</h1>
+<h2 id="todo-motivations">[TODO] Motivations</h2>
+<ul>
+<li>pkoi git
+  -&gt; suivi modifications (revert)
+  -&gt; git bisect / [blame]
+  -&gt; voir ce qu&#39;on a modifié (relecture de code)
+  -&gt; plusieurs versions en //
+  -&gt; travail en même temps à plusieurs</li>
+</ul>
+<h2 id="todo-les-commits">[TODO] Les commits</h2>
+<p>plusieurs versions/chaîne de commits
+-&gt; schéma</p>
+<p>-&gt; qu&#39;est-ce qu&#39;un commit
+    - commits -&gt; hash + store changes
+        + dupl files.</p>
+<p>-&gt; créer un commit
+(git add ./-u/-A)</p>
+<p>-&gt; .gitignore</p>
+<p>-&gt; git status
+-&gt; git log (et plus joli ?)</p>
+<h2 id="dépôt-distant-et-travail-collabo-">Dépôt distant et travail collabo ?</h2>
+<p>-&gt; clone (tree/bare)
+-&gt; push/pull
+-&gt; stash pop/push</p>
+<p>-&gt; les conflits (éviter les force !)</p>
+<p>-&gt; issues (?) / PR issues
+    -&gt; (classer+associer à un commit) + attribuer pers/roadmap? + board + roadmap</p>
+<h2 id="les-branches">Les branches</h2>
+<p>-&gt; pointeurs sur un commit
+    -&gt; head = working tree</p>
+<p>git switch [-c]</p>
+<p>-&gt; aussi versions (tags) - téléchargement github etc.</p>
+<p>-&gt; add worktree
+-&gt; git wortree add -b branch ../dir (se mettre dans un autre dossier).</p>
+<h2 id="fct-avancée-">Fct avancée ?</h2>
+<h3 id="problèmes">Problèmes</h3>
+<p>--amend</p>
+<ul>
+<li><p>annuler change / annuler add / modifier commit / annuler commit(s) locaux / annuler commit(s) distants</p>
+</li>
+<li><p>blame/diff / bisect / reset/revert/rebase/etc.
+-&gt; diff [--word-diff] / range-diff
+-&gt; restore (file) --source (commit)</p>
+</li>
+<li><p>fetch to another branch.</p>
+</li>
+<li><p>bisect: each commits must work.</p>
+</li>
+</ul>
+<h3 id="alias">Alias</h3>
+<h3 id="submodules">Submodules</h3>
+<p>-&gt; no circularity</p>
+<h3 id="cicd">CI/CD</h3>
+<p>(yaml/.yml)
+=&gt; artefacts/build
+=&gt; git pages</p>
+<h3 id="x">X</h3>
+<p>=&gt; git maintenance start (big repo, speed up things)
+=&gt; squash commit merge
+=&gt; $PS1 : git repo/branch</p>
+</main>
+    </body>
+</html>
