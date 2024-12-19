@@ -5,15 +5,8 @@
         <title>CM2 (Dev Log)</title>
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-          <!--<link rel="modulepreload" href="./index.js" blocking="render" as="script" />-->
-        <script type="module" src="./index.js"></script>
         <link rel="stylesheet" href="./index.css">
-        <script>
-            console.warn("script start");
-            document.addEventListener("DOMContentLoaded", function() {
-            	console.warn("DOM loaded")
-        	});
-        </script>
+        <script type="module" src="./index.js" blocking="render"></script>
     </head>
     <body class="hide_h1">
         <header></header>
