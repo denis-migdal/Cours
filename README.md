@@ -11,6 +11,11 @@
 
 /!\ Print PDF on Chromium ? (PDF size x32 less than FF) ?
 
+🕮⚠💡
+http://xahlee.info/comp/unicode_computing_symbols.html
+
+AdmSys : https://stackoverflow.com/questions/52666511/create-an-ast-from-bash-in-c
+
 ## Contenu
 
 - Tableur : 2x10h TP.

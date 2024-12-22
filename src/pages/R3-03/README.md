@@ -1,3 +1,27 @@
+https://web.dev/baseline
+https://web.dev/baseline/2024
+https://web.dev/series/baseline-newly-available
+https://web.dev/articles/origin-private-file-system?hl=en
+https://danburzo.ro/line-height-lh/
+
+https://developer.mozilla.org/en-US/docs/Web/API/FileSystem
+
+https://github.com/tc39/proposals (évolution JS)
+https://github.com/tc39/agendas/blob/main/2024/07.md
+
+Deno
+https://github.com/denoland/deno/releases/tag/v2.0.3
+
+
+How to identify dynamic scripts :
+https://stackoverflow.com/questions/78758974/stacktraces-how-to-identify-the-script-when-using-dynamic-scripts
+
+JS WTF
+https://javascriptwtf.com/
+
+Build MDN (DS)
+https://github.com/mdn/content
+
 ## TP2
 
 => demander installation des ext VSC par défaut.
