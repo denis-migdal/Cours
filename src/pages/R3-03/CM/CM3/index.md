@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>CM3 (Web1)</title>
+        <title>CM3 (TW)</title>
+		<meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="stylesheet" href="./index.css">
-        <script type="module" src="./index.js" defer></script>
+        <script type="module" src="./index.js" blocking="render"></script>
     </head>
-    <body>
-        <style>
-        </style>
+    <body class="hide_h1">
         <header></header>
         <main>
 
@@ -34,17 +34,17 @@ Pour les VCOD, nous verrons par la suite TypeScript en *Programmation Web* (S4) 
 
 ### Exécuter du code dans la page Web
 
-Dans l'en-tête de la page Web, <script type="html"><script></script> permet d'exécuter du code sur la page :
-<script type="html">
-<script src="<var>$JS_FILE</var>" type="module" <var>[defer|async]</var>><\/script>
+Dans l'en-tête de la page Web, <script type="c-html"><script></script> permet d'exécuter du code sur la page :
+<script type="c-html">
+<script src="<h>$JS_FILE</h>" type="module" <h>[defer|async]</h>><xscript>
 </script>
 
-💡 <html-code>type="module"</html-code> indique le type du script (ici un module JavaScript).
+💡 <script type="c-html">type="module"</script> indique le type du script (ici un module JavaScript).
 
-💡 <html-code class="d4rk"><var>[defer|async]</var></html-code> permet d'indiquer quand exécuter le code inclus :
+💡 <script type="c-html"><h>[defer|async]</h></script> permet d'indiquer quand exécuter le code inclus :
 - par défaut : exécuter le script avant d'interpréter le reste de la page (à éviter).
-- <html-code>async</html-code> : continuer à interpréter la page Web pendant que le script se télécharge.
-- <html-code>defer</html-code> : commencer à télécharger le script, mais attendre que la page ai finie de se charger avant de l'exécuter.
+- <script type="c-html">async</script> : continuer à interpréter la page Web pendant que le script se télécharge.
+- <script type="c-html">defer</script> : commencer à télécharger le script, mais attendre que la page ai finie de se charger avant de l'exécuter.
 
 ⚠ Il recommandé d'attendre que la page ai finie de se charger avant de la manipuler. En effet, si le code HTML n'a pas fini d'être interprété lors de l'exécution du script, certains éléments ne seront pas encore chargés dans le DOM.
 
@@ -53,24 +53,24 @@ Dans l'en-tête de la page Web, <script type="html"><script></script> permet d'e
 Les erreurs survenant durant l'exécution du code sont affichées dans la *console* de la page Web. [TODO: ouvrir la console de la page Web]
 
 La console gère plusieurs niveau d'affichages dont vous pouvez filtrer l'affichage :
-- <js-code>console.debug("...")</js-code>
-- <js-code>console.info("...")</js-code>
-- <js-code>console.log("...")</js-code> : par défaut.
-- <js-code>console.warn("...")</js-code>
-- <js-code>console.error("...")</js-code> : affiche aussi la pile d'appel.
+- <script type="c-js">console.debug("...")</script>
+- <script type="c-js">console.info("...")</script>
+- <script type="c-js">console.log("...")</script> : par défaut.
+- <script type="c-js">console.warn("...")</script>
+- <script type="c-js">console.error("...")</script> : affiche aussi la pile d'appel.
 
 💡 Vous pouvez formatter l'affichage dans la console en préfixant le texte par `%c`, e.g.
-<js-code class="block">console.log("%cOK", "color: red")</js-code> 
+<js-code class="block">console.log("%cOK", "color: red")</script> 
 
 💡 Vous pouvez manipuler la console via :
-- <js-code>.clear()</js-code> : effacer la console.
-- <js-code class="d4rk">.group[Collapsed](<var>$NAME</var>)</js-code>/<js-code>.groupEnd()</js-code> : ouvre/ferme un groupe indenté qui peut être replié (*collapsed*) ou déplié.
+- <script type="c-js">.clear()</script> : effacer la console.
+- <script type="c-js">.group[Collapsed](<h>$NAME</h>)</script>/<script type="c-js">.groupEnd()</script> : ouvre/ferme un groupe indenté qui peut être replié (*collapsed*) ou déplié.
 
 💡 `console` offre d'autres fonctions d'affichages :
-- <js-code class="d4rk">.assert(<var>$COND</var>, "...")</js-code> : affiche une erreur si <js-code class="d4rk">$COND</js-code> est faux.
-- <js-code>.dir()/.dirxml()</js-code> : afficher les propriétés d'un objet.
-- <js-code>.table(...)</js-code> : afficher le(s) object(s) sous la forme d'un tableau.
-- <js-code>.trace()</js-code> : afficher la pile d'appel.
+- <script type="c-js">.assert(<h>$COND</h>, "...")</script> : affiche une erreur si <script type="c-js">$COND</script> est faux.
+- <script type="c-js">.dir()/.dirxml()</script> : afficher les propriétés d'un objet.
+- <script type="c-js">.table(...)</script> : afficher le(s) object(s) sous la forme d'un tableau.
+- <script type="c-js">.trace()</script> : afficher la pile d'appel.
 
 💡 Cette console permet aussi d'entrer du code JavaScript à exécuter grâce à une interface *REPL* (*Read–eval–print loop*).
 
@@ -79,11 +79,11 @@ La console gère plusieurs niveau d'affichages dont vous pouvez filtrer l'affich
 L'API du navigateur est accessible à partir du module <py-code>browser.window</py-code> :
 <py-code>from browser import window</py-code>
 
-En JavaScript, <js-code>window</js-code> représente la "fenêtre" de la page Web actuelle. Il contient l'ensemble des variables/classes/fonctions globales de la page Web. En particulier, <js-code>window.document</js-code> représente l'arbre DOM de la page Web.
+En JavaScript, <script type="c-js">window</script> représente la "fenêtre" de la page Web actuelle. Il contient l'ensemble des variables/classes/fonctions globales de la page Web. En particulier, <script type="c-js">window.document</script> représente l'arbre DOM de la page Web.
 
-💡 En JavaScript, <js-code>window</js-code> est implicite, i.e. on peut écrire <js-code>document</js-code> au lieu de <js-code>window.document</js-code>. En Brython, il faudra obligatoirement expliciter <js-code>window</js-code>.
+💡 En JavaScript, <script type="c-js">window</script> est implicite, i.e. on peut écrire <script type="c-js">document</script> au lieu de <script type="c-js">window.document</script>. En Brython, il faudra obligatoirement expliciter <script type="c-js">window</script>.
 
-⚠ Afin que les objets Python s'affichent correctement, il est important d'utiliser la version Brython de <js-code>console</js-code> en l'important via :
+⚠ Afin que les objets Python s'affichent correctement, il est important d'utiliser la version Brython de <script type="c-js">console</script> en l'important via :
 <py-code class="block">from browser import console</py-code>
 
 ⚠ Brython a aussi du mal à distinguer les classes des fonctions JavaScripts. Pour instancier une nouvelle classe il faudra ainsi écrire <py-code>window.URL.new()</py-code> au lieu de <py-code>URL()</py-code>. [TODO: corrigé par SBrython]
@@ -94,29 +94,29 @@ En JavaScript, <js-code>window</js-code> représente la "fenêtre" de la page We
 
 Pour interagir avec le DOM, il convient de sélectionner les éléments HTML sur lesquels on souhaite interagir.
 
-Pour cela on utilise <html-code>.querySelector[All]\()</html-code> qui retourne le (ou les) **descendants** de <html-code class="d4rk"><var>$ELEM</var></html-code> correspondant au sélecteur <html-code class="d4rk"><var>$SELECTOR</var></html-code> :
-<script type="html">
-    <var>$ELEM</var>.querySelector[All](<var>$SELECTOR</var>)
+Pour cela on utilise <script type="c-html">.querySelector[All]\()</script> qui retourne le (ou les) **descendants** de <script type="c-html"><h>$ELEM</h></script> correspondant au sélecteur <script type="c-html"><h>$SELECTOR</h></script> :
+<script type="c-html">
+    <h>$ELEM</h>.querySelector[All](<h>$SELECTOR</h>)
 </script>
 
-💡 <html-code class="d4rk">.closest(<var>$S</var>)</html-code> retourne le premier **ancêtre** correspondant au sélecteur <html-code class="d4rk"><var>$S</var></html-code>.
+💡 <script type="c-html">.closest(<h>$S</h>)</script> retourne le premier **ancêtre** correspondant au sélecteur <script type="c-html"><h>$S</h></script>.
 
-💡 <html-code class="d4rk">.matches(<var>$SELECTOR</var>)</html-code> retourne un booléen indiquant si l'élément correspond au sélecteur <html-code class="d4rk"><var>$S</var></html-code>.
+💡 <script type="c-html">.matches(<h>$SELECTOR</h>)</script> retourne un booléen indiquant si l'élément correspond au sélecteur <script type="c-html"><h>$S</h></script>.
 
-💡 Dans un sélecteur, <css-code>:scope</css-code> permet de désigner l'élément à partir du lequel on appelle ces fonctions.
+💡 Dans un sélecteur, <script type="c-css">:scope</script> permet de désigner l'élément à partir du lequel on appelle ces fonctions.
 
-💡 Vous pouvez utiliser ces fonctions sur <html-code>document</html-code>, mais aussi sur :
-- <html-code>document.documentElement</html-code> : la racine (<script type="html"><html></script>).
-- <html-code>document.head</html-code>
-- <html-code>document.body</html-code>
+💡 Vous pouvez utiliser ces fonctions sur <script type="c-html">document</script>, mais aussi sur :
+- <script type="c-html">document.documentElement</script> : la racine (<script type="c-html"><html></script>).
+- <script type="c-html">document.head</script>
+- <script type="c-html">document.body</script>
 
 💡 Il existe aussi les sélecteurs [XPath](https://developer.mozilla.org/en-US/docs/Web/XPath/Introduction_to_using_XPath_in_JavaScript), plus puissants, mais plus complexes.
 
 ### Créer un élément HTML
 
 Vous pouvez aussi créer un élément HTML via :
-- <js-code class="d4rk"><var>$E</var>.clone(true)</js-code> : duplique l'élément <js-code class="d4rk"><var>$E</var></js-code>.
-- <js-code class="d4rk">document.createElement(<var>$N</var>[, {is: <var>$IS</var>}])</js-code> : créé un élément de nom <js-code class="d4rk"><var>$N</var></js-code>.
+- <script type="c-js"><h>$E</h>.clone(true)</script> : duplique l'élément <script type="c-js"><h>$E</h></script>.
+- <script type="c-js">document.createElement(<h>$N</h><h>[, {is: $IS}]</h>)</script> : créé un élément de nom <script type="c-js"><h>$N</h></script>.
 
 ### Manipuler les attributs et classes
 
@@ -139,52 +139,52 @@ En premier lieu il est possible de modifier les attributs et les classes d'un é
     <tbody>
         <tr>
             <td><i>Lister</i></td>
-            <td><js-code class="d4rk"></js-code></td>
-            <td><js-code class="d4rk">.getAttributeNames()</js-code></td>
+            <td><script type="c-js"></script></td>
+            <td><script type="c-js">.getAttributeNames()</script></td>
         </tr>
         <tr>
             <td><i>Obtenir</i></td>
-            <td><js-code class="d4rk"></js-code></td>
-            <td><js-code class="d4rk">.getAttribute(<var>$N</var>)</js-code></td>
+            <td><script type="c-js"></script></td>
+            <td><script type="c-js">.getAttribute(<h>$N</h>)</script></td>
         </tr>
         <tr>
             <td><i>Ajouter</i></td>
-            <td><js-code class="d4rk">.classList.add(<var>$C</var>[,...])</js-code></td>
-            <td><js-code class="d4rk">.setAttribute(<var>$N</var>, <var>$V</var>)</js-code></td>
+            <td><script type="c-js">.classList.add(<h>$C[,...]</h>)</script></td>
+            <td><script type="c-js">.setAttribute(<h>$N</h>, <h>$V</h>)</script></td>
         </tr>
         <tr>
             <td><i>Supprimer</i></td>
-            <td><js-code class="d4rk">.classList.remove(<var>$C</var>[,...])</js-code></td>
-            <td><js-code class="d4rk">.removeAttribute(<var>$N</var>)</js-code></td>
+            <td><script type="c-js">.classList.remove(<h>$C[,...]</h>)</script></td>
+            <td><script type="c-js">.removeAttribute(<h>$N</h>)</script></td>
         </tr>
         <tr>
             <td><i>Basculer</i></td>
-            <td><js-code class="d4rk">.classList.toggle(<var>$C</var>[, <var>$F</var>])</js-code></td>
-            <td><js-code class="d4rk">.toggleAttribute(<var>$N</var>[, <var>$F</var>])</js-code></td>
+            <td><script type="c-js">.classList.toggle(<h>$C</h><h>[, $F]</h>)</script></td>
+            <td><script type="c-js">.toggleAttribute(<h>$N</h><h>[, $F]</h>)</script></td>
         </tr>
         <tr>
             <td><i>Contient ?</i></td>
-            <td><js-code class="d4rk">.classList.has(<var>$C</var>)</js-code></td>
-            <td><js-code class="d4rk">.hasAttribute(<var>$N</var>)</js-code></td>
+            <td><script type="c-js">.classList.has(<h>$C</h>)</script></td>
+            <td><script type="c-js">.hasAttribute(<h>$N</h>)</script></td>
         </tr>
     </tbody>
 </table>
 
-💡 <js-code>.tagName</js-code> permet d'obtenir le nom de la balise HTML.
+💡 <script type="c-js">.tagName</script> permet d'obtenir le nom de la balise HTML.
 
 ### Manipuler les attributs data-*
 
-Les attributs <html-code>data-*</html-code> sont un peu particuliers. En effet, ils peuvent être manipulés via <js-code>.(get|set|remove|toggle|has)Attribute()</js-code>, mais aussi via <js-code>.dataset</js-code> qui se manipule comme un dictionnaire associatif. Chaque clé <js-code class="d4rk"><var>$KEY</var></js-code> de <js-code>.dataset</js-code> correspondant à un attribut <html-code class="d4rk">data-<var>$KEY</var></html-code> de l'élément HTML.
+Les attributs <script type="c-html">data-*</script> sont un peu particuliers. En effet, ils peuvent être manipulés via <script type="c-js">.(get|set|remove|toggle|has)Attribute()</script>, mais aussi via <script type="c-js">.dataset</script> qui se manipule comme un dictionnaire associatif. Chaque clé <script type="c-js"><h>$KEY</h></script> de <script type="c-js">.dataset</script> correspondant à un attribut <script type="c-html">data-<h>$KEY</h></script> de l'élément HTML.
 
-Ils sont utilisés afin que les développeurs puissent définir des attributs personnalisés, sans entrer en conflit avec les attributs définis par HTML, e.g. <html-code class="d4rk">data-title</html-code>.
+Ils sont utilisés afin que les développeurs puissent définir des attributs personnalisés, sans entrer en conflit avec les attributs définis par HTML, e.g. <script type="c-html">data-title</script>.
 
 ### Manipuler le style 
 
 La modification de l'affichage d'un élément se fait usuellement via la modification de ses classes. Il est cependant tout à fait possible de manipuler directement ses propriétés CSS. Dans ce cas de figure, on préfère généralement se limiter à la manipulation des propriétés personnalisées.
 
 Les styles peuvent être accédés de deux manières distinctes :
-- <js-code class="d4rk"><var>$E</var>.style</js-code> : les styles **déclarés** sur <js-code class="d4rk"><var>$E</var></js-code> ;
-- <js-code class="d4rk">getComputedStyle(<var>$E</var>)</js-code> : les styles **calculés** appliqués sur <js-code class="d4rk"><var>$E</var></js-code> (en lecture seule).
+- <script type="c-js"><h>$E</h>.style</script> : les styles **déclarés** sur <script type="c-js"><h>$E</h></script> ;
+- <script type="c-js">getComputedStyle(<h>$E</h>)</script> : les styles **calculés** appliqués sur <script type="c-js"><h>$E</h></script> (en lecture seule).
 
 Il est alors possible d'accéder ou de modifier les propriétés CSS via :
 <table>
@@ -200,34 +200,34 @@ Il est alors possible d'accéder ou de modifier les propriétés CSS via :
     <tbody>
         <tr>
             <td><i>Obtenir</i></td>
-            <td><js-code class="d4rk">.getPropertyValue(<var>$N</var>)</js-code></td>
+            <td><script type="c-js">.getPropertyValue(<h>$N</h>)</script></td>
         </tr>
         <tr>
             <td><i>Définir</i></td>
-            <td><js-code class="d4rk">.setProperty(<var>$N</var>, <var>$V</var>)</js-code></td>
+            <td><script type="c-js">.setProperty(<h>$N</h>, <h>$V</h>)</script></td>
         </tr>
         <tr>
             <td><i>Supprimer</i></td>
-            <td><js-code class="d4rk">.removeProperty(<var>$N</var>)</js-code></td>
+            <td><script type="c-js">.removeProperty(<h>$N</h>)</script></td>
         </tr>
     </tbody>
 </table>
 
-⚠ Pour obtenir des positions d'éléments aisément comparables, utilisez <js-code>.getBoundingClientRect()</js-code> qui retourne la position relativement à la zone d'affichage (i.e. la fenêtre).
+⚠ Pour obtenir des positions d'éléments aisément comparables, utilisez <script type="c-js">.getBoundingClientRect()</script> qui retourne la position relativement à la zone d'affichage (i.e. la fenêtre).
 
 ### Manipuler le contenu
 
 Il existe beaucoup de manière d'obtenir un (ou des) élément(s) à partir d'un autre. Nous verrons les plus génériques :
-- <js-code>.parentElement</js-code> : le père d'un élément.
-- <js-code>.children</js-code> : la liste des éléments fils de l'élément.
-- <js-code>.childNodes</js-code> : idem, mais inclus aussi les contenus autres, e.g. textes.
+- <script type="c-js">.parentElement</script> : le père d'un élément.
+- <script type="c-js">.children</script> : la liste des éléments fils de l'élément.
+- <script type="c-js">.childNodes</script> : idem, mais inclus aussi les contenus autres, e.g. textes.
 
 Il existe beaucoup de manière de modifier le contenu d'un élément. Nous verrons les plus génériques :
-- <js-code>.textContent</js-code> permet d'accéder et de définir le contenu **textuel** d'un élément.
-- <js-code class="d4rk">.append(<var>$N[,...]</var>)</js-code> : ajouter les noeud <js-code class="d4rk"><var>$N</var></js-code> (éléments ou textes).
-- <js-code class="d4rk">.remove()</js-code> : retirer l'élément de son père.
-- <js-code>.replaceWith(<var>$N</var>)</js-code> : remplace l'élément par <js-code class="d4rk"><var>$N</var></js-code> dans son père.
-- <js-code class="d4rk">.replaceContent(<var>$N[,...]</var>)</js-code> : remplace le contenu de l'élément par <js-code class="d4rk"><var>$N</var></js-code>.
+- <script type="c-js">.textContent</script> permet d'accéder et de définir le contenu **textuel** d'un élément.
+- <script type="c-js">.append(<h>$N[,...]</h>)</script> : ajouter les noeud <script type="c-js"><h>$N</h></script> (éléments ou textes).
+- <script type="c-js">.remove()</script> : retirer l'élément de son père.
+- <script type="c-js">.replaceWith(<h>$N</h>)</script> : remplace l'élément par <script type="c-js"><h>$N</h></script> dans son père.
+- <script type="c-js">.replaceContent(<h>$N[,...]</h>)</script> : remplace le contenu de l'élément par <script type="c-js"><h>$N</h></script>.
 
 ⚠ Un élément ne peut être qu'à un seul endroit à la fois. L'insérer dans un élément le retirera donc de son précédent père.
 

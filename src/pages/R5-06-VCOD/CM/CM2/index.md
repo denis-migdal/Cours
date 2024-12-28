@@ -18,7 +18,7 @@
 
 ## Motivations
 
-Lorsque vous travaillez sur un projet, chaque modifications fait passer votre projet d'une version x à une version x+1. Cependant, ces modifications peuvent (temporairement) altérer le bon fonctionnement de votre projet, e.g. une modification peut introduire un bug empêchant l'exécution de votre programme.
+Lorsque vous travaillez sur un projet, chaque modification fait passer votre projet d'une version x à une version x+1. Cependant, ces modifications peuvent (temporairement) altérer le bon fonctionnement de votre projet, e.g. une modification peut introduire un bug empêchant l'exécution de votre programme.
 
 On souhaite donc à minima conserver une version "qui marche", en plus de la version actuelle (de travail), afin de pouvoir :
 - continuer d'utiliser le projet, même si la version actuelle ne fonctionne plus ;
@@ -26,13 +26,21 @@ On souhaite donc à minima conserver une version "qui marche", en plus de la ver
 - revenir en arrière, si la nouvelle version ne fonctionne plus et que vous n'arrivez pas à la réparer ;
 - etc.
 
-Pour cela, vous pouvez copier le dossier de votre projet pour en conserver une version. Cependant cela devient très vite chaotique avec des dossiers dans lesquels on se perd ("v1", "v2", "actuel", "final", "final final", "test", etc.). Il n'est aussi pas possible de revenir à une version antérieur qui n'a pas été préalablement sauvegardée.
+Pour cela, vous pouvez copier le dossier de votre projet pour en conserver une version. Cependant, cela devient très vite chaotique avec des dossiers dans lesquels on se perd ("v1", "v2", "actuel", "final", "final final", "test", etc.). Il n'est aussi pas possible de revenir à une version antérieur qui n'a pas été préalablement sauvegardée.
 
 Pire encore pour des projets collaboratifs, où les échanges de codes se font par partages de fichiers via mails, Discord, Dropbox, etc. Il est alors nécessaire de récupérer les fichiers à la main, de les copier au bon endroit, etc. en espérant que la nouvelle version du fichier soit compatible avec le reste du projet que vous avez en local, et n'annule pas des modifications précédentes effectuées sur ce fichier.
 
-Lorsqu'on travail sur un projet, il est ainsi important d'utiliser les bons outils, dont un **gestionnaire de versions**. Git ([*connard* en argot britanique](https://www.wordreference.com/enfr/git)) est, de nos jours, le gestionnaire de version le plus populaire. Il offre de très nombreuses fonctionnalités permettant la gestion et manipulation des versions de votre projet, et facilite le travail collaboratif sur un projet.
+Lorsqu'on travail sur un projet, il est ainsi important d'utiliser les bons outils, dont un **gestionnaire de versions**. Ils offrent de très nombreuses fonctionnalités, permettant la gestion et manipulation des versions de votre projet, ainsi que le travail collaboratif.
 
-## L'historique du projet
+💡 Git ([*connard* en argot britanique](https://www.wordreference.com/enfr/git)) est, de nos jours, le gestionnaire de version le plus populaire.
+
+## Manipuler l'historique du projet
+
+[TODO] fonctionnement général
+    -> dépôt git
+    -> arbre de travail
+    -> .git : info/données
+    -> manipulé via des commandes git
 
 ### L'historique
 
@@ -125,12 +133,37 @@ Pour éviter que ces fichiers (ou dossiers) soient (par erreur) ajoutés à l'in
 
 ### Naviguer dans l'historique
 
-revenir à un commit
+Working tree...
 
--> index vide / pas de modifications
-    -> git stash pop/push
+L'un des grands avantages des gestionnaires de versions est de pouvoir aisément d'une version à l'autre.
 
 HEAD + ~ ^
+
+⚠ Il est nécessaire que l'index soit vide et qu'il n'y ai pas de modif pour utiliser switch
+
+-> worktree
+    -> utilité.
+    -> add
+    -> list
+
+-> restore (file) --source (commit)
+
+### Les branches
+
+-> pointeurs sur un commit
+	-> head = working tree
+
+git switch [-c]
+
+-> aussi versions (tags) - téléchargement github etc.
+
+-> add worktree
+-> git wortree add -b branch ../dir (se mettre dans un autre dossier).
+
+###
+
+- blame / bisect
+- bisect: each commits must work.
 
 ###
 
@@ -144,13 +177,29 @@ restore -s REF file (modifier le fichier du worktree)
     git-reset is about updating your branch, moving the tip in order to add or remove commits from the branch. This operation changes the commit history.
     git reset can also be used to restore the index, overlapping with git restore.
 
-
 ###
 
 Naviguer dans l'historique /  (déplacer master -> branch)
 HEAD : @~1
 
-###
+## Dépôt distant et travail collabo ?
+
+-> clone (tree/bare)
+-> push/pull
+-> stash pop/push
+
+-> les conflits (éviter les force !)
+
+-> issues (?) / PR issues
+	-> (classer+associer à un commit) + attribuer pers/roadmap? + board + roadmap
+
+- annuler commit(s) distants
+
+## Fcts avancées ?
+
+### Config (latter)
+
++ alias
 
 Config (latter)
 
@@ -166,47 +215,8 @@ git log [branch|commit|autre]
 
 => références.
 
-
-
-## Dépôt distant et travail collabo ?
-
--> clone (tree/bare)
--> push/pull
--> stash pop/push
-
--> les conflits (éviter les force !)
-
--> issues (?) / PR issues
-	-> (classer+associer à un commit) + attribuer pers/roadmap? + board + roadmap
-
-## Les branches
-
--> pointeurs sur un commit
-	-> head = working tree
-
-git switch [-c]
-
--> aussi versions (tags) - téléchargement github etc.
-
--> add worktree
--> git wortree add -b branch ../dir (se mettre dans un autre dossier).
-
-
-## Fct avancée ?
-
-### Problèmes
-
---amend
-- annuler change / annuler add / modifier commit / annuler commit(s) locaux / annuler commit(s) distants
-- blame/diff / bisect / reset/revert/rebase/etc.
--> diff [--word-diff] / range-diff
--> restore (file) --source (commit)
-
-- fetch to another branch.
-
-- bisect: each commits must work.
-
-### Alias
+=> $PS1 : git repo/branch
+=> git maintenance start (big repo, speed up things)
 
 ### Submodules
 
@@ -218,11 +228,7 @@ git switch [-c]
 => artefacts/build
 => git pages
 
-### X
-
-=> git maintenance start (big repo, speed up things)
-=> squash commit merge
-=> $PS1 : git repo/branch
+## Symbols
 
 <script type="c-text">
     (A)←(B)←(C)

@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>CM1 (Web1)</title>
+        <meta charset="utf8"/>
+        <title>CM1 (TW)</title>
+		<meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="stylesheet" href="./index.css">
-        <script type="module" src="./index.js" defer></script>
+        <script type="module" src="./index.js" blocking="render"></script>
     </head>
-    <body>
-        <style>
-        </style>
+    <body class="hide_h1">
         <header></header>
         <main>
 
 
-# CM1 : HTML5
+# HTML5
 
 ## Introduction
 
@@ -56,16 +57,15 @@ Tim Berners-Lee va alors créer tout un ensemble d'outils et de concepts afin de
 
 #### Le début du Web
 
-En tout premier lieu, il faut pouvoir indiquer la ressource distante référencée, donc avoir un moyen de l'identifier. Pour cela Tim Berners-Lee va créer le concept d'**URL** (Unique Resource Locator), une chaîne de caractère référençant une ressource distante et structurée de la sorte :
-`$PROTO://$SERVER/$FILEPATH`. 
+En tout premier lieu, il faut pouvoir indiquer la ressource distante référencée, donc avoir un moyen de l'identifier. Pour cela Tim Berners-Lee va créer le concept d'**URL** (Unique Resource Locator), une chaîne de caractère référençant une ressource distante et structurée de la sorte : <script type="c-text"><h>$PROTO</h>://<h>$SERVER</h>/<h>$FILEPATH</h></script>. 
 
 Il faut ensuite pouvoir récupérer cette ressource. Le problème est que FTP a été conçu pour télécharger/uploader des fichiers par lots. Il n'est alors pas très adapté à des téléchargements ponctuels et temporaires de fichiers uniques. Tim Berners-Lee va alors créer **HTTP** (HyperText Transfert Protocol) qui permet d'obtenir très simplement une ressource à partir de son URL.
 
 Tim Berners-Lee créée aussi le tout premier navigateur Web (`WorldWideWeb`) capable d'accéder à des ressources distantes à partir de son URL. Il supporte alors les protocoles suivants :
-- `http`
-- `ftp`
-- `file` : pour lire des ressources locales.
-- `news` : un ancêtre des forums en ligne.
+- <script type="c-text">http</script>
+- <script type="c-text">ftp</script>
+- <script type="c-text">file</script> : pour lire des ressources locales.
+- <script type="c-text">news</script> : un ancêtre des forums en ligne.
 
 Il ne reste alors plus qu'à définir un type de document SGML qui pourra contenir des liens hypertextes URL, et qui s'affichera dans le navigateur. Pour cela Tim Berners-Lee créée `HTML` (HyperText Markup Langage), une application de SGML.
 
@@ -80,48 +80,48 @@ https://en.wikipedia.org/wiki/WorldWideWeb#History
 ### Les balises HTML
 
 HTML est un langage permettant de décrire une **structure** via des **balises**, e.g. :
-- <script type="html"><br/></script> correspond à un retour à la ligne (*<u>br</u>eak line*).
-- <script type="html"><p>texte</p></script> correspond à un paragraphe (*<u>p</u>aragraph*).
+- <script type="c-html"><br/></script> correspond à un retour à la ligne (*<u>br</u>eak line*).
+- <script type="c-html"><p>texte</p></script> correspond à un paragraphe (*<u>p</u>aragraph*).
 
-Les éléments qui ne peuvent avoir de contenu s'écrivent avec une balise **auto-fermante** (*self-closing tag*) qui se présente sous la forme suivante : <script type="html"><<var>$NAME</var>/></script>.<br/>
-<script type="html"><var>$NAME</var></script> est le <b>nom de la balise</b> (<i>tag name</i>), il indique le type de l'élément HTML.
+Les éléments qui ne peuvent avoir de contenu s'écrivent avec une balise **auto-fermante** (*self-closing tag*) qui se présente sous la forme suivante : <script type="c-html"><<h>$NAME</h>/></script>.<br/>
+<script type="c-html"><h>$NAME</h></script> est le <b>nom de la balise</b> (<i>tag name</i>), il indique le type de l'élément HTML.
 
-Les éléments qui peuvent avoir du contenu, e.g. un paragraphe peut contenir du texte, s'écrivent sous la forme suivante : <script type="html"><<var>$NAME</var>><var>$CONTENT</var></<var>$NAME</var>></script>
-- <script type="html"><<var>$NAME</var>></script> est la <b>balise ouvrante</b> (<i>opening tag</i>).
-- <script type="html"></<var>$NAME</var>></script> est la <b>balise fermante</b> (<i>closing tag</i>).
-- <script type="html"><var>$CONTENT</var></script> est le contenu de la balise.
+Les éléments qui peuvent avoir du contenu, e.g. un paragraphe peut contenir du texte, s'écrivent sous la forme suivante : <script type="c-html"><<h>$NAME</h>><h>$CONTENT</h></<h>$NAME</h>></script>
+- <script type="c-html"><<h>$NAME</h>></script> est la <b>balise ouvrante</b> (<i>opening tag</i>).
+- <script type="c-html"></<h>$NAME</h>></script> est la <b>balise fermante</b> (<i>closing tag</i>).
+- <script type="c-html"><h>$CONTENT</h></script> est le contenu de la balise.
 
-Vous remarquerez que HTML utilise <script type="html"><</script> et <script type="html">></script> pour marquer le début et la fin d'une balise. Ainsi, <script type="html">soit y<x et y>0</script> est interprété par HTML comme étant une balise.
+Vous remarquerez que HTML utilise <script type="c-html"><</script> et <script type="c-html">></script> pour marquer le début et la fin d'une balise. Ainsi, <script type="c-html">soit y<x et y>0</script> est interprété par HTML comme étant une balise.
 
 Pour éviter cela, on va échapper les caractères utilisés par HTML via des entités HTML (*HTML entities*) :
-- <script type="html"><</script> devient <script type="html">&lt;</script> (<i><u>l</u>esser <u>t</u>han</i>) ;
-- <script type="html">></script> devient <script type="html">&gt;</script> (<i><u>g</u>reater <u>t</u>han</i>) ;
-- <script type="html">"</script> devient <script type="html">&quot;</script> (<i><u>quot</u>e</i>) ;
-- <script type="html">&</script> devient <script type="html">&amp;</script> (<i><u>amp</u>ersand</i>).
+- <script type="c-html"><</script> devient <script type="c-html">&lt;</script> (<i><u>l</u>esser <u>t</u>han</i>) ;
+- <script type="c-html">></script> devient <script type="c-html">&gt;</script> (<i><u>g</u>reater <u>t</u>han</i>) ;
+- <script type="c-html">"</script> devient <script type="c-html">&quot;</script> (<i><u>quot</u>e</i>) ;
+- <script type="c-html">&</script> devient <script type="c-html">&amp;</script> (<i><u>amp</u>ersand</i>).
 
-💡 En HTML, les **commentaires** s'écrivent ainsi : <script type="html"><!-- <var>$COMMENT</var> --></script>
+💡 En HTML, les **commentaires** s'écrivent ainsi : <script type="c-html"><!-- <h>$COMMENT</h> --></script>
 
 ### Les attributs HTML
 
 Les **attributs HTML** (*HTML attribute*) permettent de configurer les éléments HTML :
-- <script type="html"><img src="<var>$URL</var>"/></script> affiche l'<u>im</u>a<u>g</u>e présente à l'URL indiquée par l'attribut <html-code>src</html-code>.
-- <script type="html"><a href="<var>$URL</var>">lien</a></script> est un lien hypertexte pointant sur l'URL indiqué par l'attribut <html-code>href</html-code>.
+- <script type="c-html"><img src="<h>$URL</h>"/></script> affiche l'<u>im</u>a<u>g</u>e présente à l'URL indiquée par l'attribut <script type="c-html">src</script>.
+- <script type="c-html"><a href="<h>$URL</h>">lien</a></script> est un lien hypertexte pointant sur l'URL indiqué par l'attribut <script type="c-html">href</script>.
 
-Les attributs HTML sont indiqués dans la balise ouvrante (ou auto-fermante) de l'élément HTML. Le nom de l'attribut est précédé d'un <html-code>=</html-code> suivi de sa valeur entre guillemets.
+Les attributs HTML sont indiqués dans la balise ouvrante (ou auto-fermante) de l'élément HTML. Le nom de l'attribut est précédé d'un <script type="c-html">=</script> suivi de sa valeur entre guillemets.
 
 💡 Une même balise HTML peut contenir plusieurs attributs, séparés par un espace :
-- <script type="html"><a href="..." target="_blank">lien</a></script> : ouvrir dans un nouvel onglet.
-- <script type="html"><a href="..." type="text/csv" download="data.csv">lien</a></script>
-  - <html-code>type</html-code> est le **type MIME** du fichier.
-  - <html-code>download</html-code> au clic, télécharge la ressource.
-  - <script type="html">download="<var>FILENAME</var>"</script> indique le nom par défaut du fichier téléchargé.
+- <script type="c-html"><a href="..." target="_blank">lien</a></script> : ouvrir dans un nouvel onglet.
+- <script type="c-html"><a href="..." type="text/csv" download="data.csv">lien</a></script>
+  - <script type="c-html">type</script> est le **type MIME** du fichier.
+  - <script type="c-html">download</script> au clic, télécharge la ressource.
+  - <script type="c-html">download="<h>$FILENAME</h>"</script> indique le nom par défaut du fichier téléchargé.
 
 💡 Certains attributs n'ont pas besoin de valeur et configurent l'élément par leur seule présence. Ce sont les **attributs booléens** (*boolean attributes*), e.g. :
-- <script type="html"><a href="..." type="text/csv" download>lien</a></script>
+- <script type="c-html"><a href="..." type="text/csv" download>lien</a></script>
 
 
 Chaque type d'élément HTML a sa propre liste d'attributs qui permettent de le configurer. Il existe cependant des attributs appelés **attributs universels** (*global attributes*) communs à tous les éléments HTML, e.g. :
-- <html-code>title</html-code> permet d'afficher une bulle d'information (*tooltip*) au survol de l'élément.
+- <script type="c-html">title</script> permet d'afficher une bulle d'information (<i>tooltip</i>) au survol de l'élément.
 
 ## Données structurées
 
@@ -131,7 +131,7 @@ Une liste est un élément HTML qui contient plusieurs sous éléments (*<u>l</u
 
 <div class="flex-2">
     <div>
-    <script type="html">
+    <script type="c-html">
         <ul>
             <li>Item A</li>
             <li>Item B</li>
@@ -148,7 +148,7 @@ Une liste est un élément HTML qui contient plusieurs sous éléments (*<u>l</u
 
 <div class="flex-2">
     <div>
-        <script type="html">
+        <script type="c-html">
             <ol>
                 <li>Item A</li>
                 <li>Item B</li>
@@ -169,7 +169,7 @@ Les tableaux (*table*) sont composés d'un (ou plusieurs) corps (*<u>t</u>able <
 
 <div class="flex-2">
     <div>
-    <script type="html">
+    <script type="c-html">
         <table>
             <tbody>
                 <tr><td>A</td><td>B</td></tr>
@@ -192,7 +192,7 @@ Les tableaux (*table*) sont composés d'un (ou plusieurs) corps (*<u>t</u>able <
 
 <div class="flex-2">
     <div>
-        <script type="html">
+        <script type="c-html">
             <table>
                 <thead>
                     <tr><th>ID</th><th>Nom</th></tr>
@@ -226,33 +226,33 @@ Par défaut, certains éléments HTML modifient l'affichage du texte :
         <tr><td>HTML</td><td>Affichage</td><td>Sens</td></tr>
     </thead>
     <tbody>
-        <tr><td><script type="html"><strong>A</strong></script></td><td><strong>A</strong></td><td>important (<i><u>strong</u> importance</i>)</td></tr>
-        <tr><td><script type="html"><em>A</em></script></td><td><em>A</em></td><td>mis en valeur (<i><u>em</u>phasis</i>)</td></tr>
-        <tr><td><script type="html"><mark>A</mark></script></td><td><mark>A</mark></td><td>marqué</td></tr>
-        <tr><td><script type="html"><ins>A</ins></script></td><td><ins>A</ins></td><td>inséré (<i><u>ins</u>erted</i>)</td></tr>
-        <tr><td><script type="html"><del>A</del></script></td><td><del>A</del></td><td>supprimé  (<i><u>del</u>eted</i>)</td></tr>
+        <tr><td><script type="c-html"><strong>A</strong></script></td><td><strong>A</strong></td><td>important (<i><u>strong</u> importance</i>)</td></tr>
+        <tr><td><script type="c-html"><em>A</em></script></td><td><em>A</em></td><td>mis en valeur (<i><u>em</u>phasis</i>)</td></tr>
+        <tr><td><script type="c-html"><mark>A</mark></script></td><td><mark>A</mark></td><td>marqué</td></tr>
+        <tr><td><script type="c-html"><ins>A</ins></script></td><td><ins>A</ins></td><td>inséré (<i><u>ins</u>erted</i>)</td></tr>
+        <tr><td><script type="c-html"><del>A</del></script></td><td><del>A</del></td><td>supprimé  (<i><u>del</u>eted</i>)</td></tr>
     </tbody>
 </table>
 
-De la même manière, les balises <script type="html"><h1>A</h1></script> à <script type="html"><h6>A</h6></script> permettent d'indiquer différents niveaux de titres.
+De la même manière, les balises <script type="c-html"><h1>A</h1></script> à <script type="c-html"><h6>A</h6></script> permettent d'indiquer différents niveaux de titres.
 
 <table>
     <thead>
         <tr><td>HTML</td><td>Affichage</td><td>Sens</td></tr>
     </thead>
     <tbody>
-        <tr><td><script type="html"><h1>A</h1></script></td><td><h1>A</h1></td><td>titre de niveau 1</td></tr>
-        <tr><td><script type="html"><h2>A</h2></script></td><td><h2>A</h2></td><td>titre de niveau 2</td></tr>
-        <tr><td><script type="html"><h3>A</h3></script></td><td><h3>A</h3></td><td>titre de niveau 3</td></tr>
-        <tr><td><script type="html"><h4>A</h4></script></td><td><h4>A</h4></td><td>titre de niveau 4</td></tr>
-        <tr><td><script type="html"><h5>A</h5></script></td><td><h5>A</h5></td><td>titre de niveau 5</td></tr>
-        <tr><td><script type="html"><h6>A</h6></script></td><td><h6>A</h6></td><td>titre de niveau 6</td></tr>
+        <tr><td><script type="c-html"><h1>A</h1></script></td><td><script type="html-output"><h1>A</h1></script></td><td>titre de niveau 1</td></tr>
+        <tr><td><script type="c-html"><h2>A</h2></script></td><td><script type="html-output"><h2>A</h2></script></td><td>titre de niveau 2</td></tr>
+        <tr><td><script type="c-html"><h3>A</h3></script></td><td><script type="html-output"><h3>A</h3></script></td><td>titre de niveau 3</td></tr>
+        <tr><td><script type="c-html"><h4>A</h4></script></td><td><script type="html-output"><h4>A</h4></script></td><td>titre de niveau 4</td></tr>
+        <tr><td><script type="c-html"><h5>A</h5></script></td><td><script type="html-output"><h5>A</h5></script></td><td>titre de niveau 5</td></tr>
+        <tr><td><script type="c-html"><h6>A</h6></script></td><td><script type="html-output"><h6>A</h6></script></td><td>titre de niveau 6</td></tr>
     </tbody>
 </table>
 
 ⚠ Ils ne doivent pas être utilisés pour leur affichage par défaut, qui peut être modifié, mais pour leur **sémantique**, i.e. le *sens* qu'ils donnent. 
 
-⚠ Il ne doit y avoir qu'un seul <script type="html"><h1>A</h1></script> par page.
+⚠ Il ne doit y avoir qu'un seul <script type="c-html"><h1>A</h1></script> par page.
 
 ### Sémantique vs affichage
 
@@ -269,11 +269,11 @@ Un tableau a un nombre de colonnes et de lignes fixe. Une grille quant à elle p
 ### L'arbre DOM
 
 Comme nous l'avons vu, un élément HTML peut contenir du texte ou d'autres éléments HTML. Il est d'ailleurs très fréquent d'utiliser les **conteneurs génériques** :
-- <script type="html"><div>...</div></script> pour grouper un contenu dans un "bloc".
-- <script type="html"><span>...</span></script> se comporte comme du texte inséré à la ligne courante.
+- <script type="c-html"><div>...</div></script> pour grouper un contenu dans un "bloc".
+- <script type="c-html"><span>...</span></script> se comporte comme du texte inséré à la ligne courante.
 
 <div class="flex-2">
-    <script type="html">
+    <script type="c-html">
         <div>
             A
             <div>B</div>
@@ -302,7 +302,7 @@ Comme nous l'avons vu, un élément HTML peut contenir du texte ou d'autres él�
 On peut représenter cette hiérarchie sous la forme d'un arbre, appelé **arbre DOM** où chaque élément HTML est associé à un noeud (*node*), et a pour fils son contenu :
 
 <div class="flex-2">
-    <script type="html">
+    <script type="c-html">
         <div>
             A
             <div>B</div>
@@ -386,7 +386,7 @@ Jusqu'à présent, nous avons vu des éléments HTML permettant de définir le *
 
 Les pages Web suivent ainsi la structure suivante :
 
-<script type="html">
+<script type="c-html">
     <!DOCTYPE html>
     <html>
         <head>
@@ -399,9 +399,9 @@ Les pages Web suivent ainsi la structure suivante :
     </html>
 </script>
 
-💡 <script type="html"><!DOCTYPE html></script> indique le type du fichier (<u>doc</u>ument <u>type</u>).
+💡 <script type="c-html"><!DOCTYPE html></script> indique le type du fichier (<u>doc</u>ument <u>type</u>).
 
-💡 <script type="html"><html></html></script> est le noeud racine, aussi appelé la **racine** (*root*).
+💡 <script type="c-html"><html></html></script> est le noeud racine, aussi appelé la **racine** (*root*).
 
 ## Encore plus de balises et attributs...
 
@@ -420,13 +420,13 @@ Le langage HTML contient une pléthore de balises (>135) et d'attributs (>131) d
 ### Balises sémantiques et SEO
 
 Beaucoup d'éléments HTML sont en réalité "identiques" et se distinguent que par leur **sémantique**, e.g. :
-- <script type="html"><thead></thead></script> : en-tête de tableau.
-- <script type="html"><tbody></tbody></script> : corps de tableau.
-- <script type="html"><tfoot></tfoot></script> : pied de tableau.
+- <script type="c-html"><thead></thead></script> : en-tête de tableau.
+- <script type="c-html"><tbody></tbody></script> : corps de tableau.
+- <script type="c-html"><tfoot></tfoot></script> : pied de tableau.
 
 Ces deux éléments sont en réalité identiques dans leur affichage et comportement, leur seule différence est dans le nom de la balise.
 
-De la même manière, les éléments <script type="html"><strong>A</strong></script>, <script type="html"><em>A</em></script>, etc. ont juste un affichage par défaut différent. Affichage qui peut être aisément modifié et interverti.
+De la même manière, les éléments <script type="c-html"><strong>A</strong></script>, <script type="c-html"><em>A</em></script>, etc. ont juste un affichage par défaut différent. Affichage qui peut être aisément modifié et interverti.
 
 💡 L'avantage d'avoir des noms différents est de rendre le code HTML plus explicite, facilitant sa lecture par les machines et les humains. Cependant, à votre niveau, il n'est pas utile de trop en accorder d'importance.
 
@@ -443,7 +443,7 @@ L'accessibilité est un métier à part entière, il n'est donc pas attendu de v
 Comme si cela ne suffisait pas, vous pouvez aussi créer vos propres éléments HTML personnalisés (*custom elements*).
 
 Imaginez par exemple une page Web affichant une liste de produits. Chaque produit est structuré et affiché de la même manière avec une image, un nom, et un prix :
-<script type="html">
+<script type="c-html">
     <div class="produit">
         <strong class="nom">Pizza</strong>
         <img src="/assets/pizza.jpg"/>
@@ -456,12 +456,12 @@ Vous pourriez copier-coller la même structure pour chaque produit, mais cela co
 - le code HTML devient très lourd et verbeux.
 
 Pour éviter cela, vous pouvez définir votre propre élément personnalisé :
-<script type="html">
+<script type="c-html">
     <prod-card nom="Pizza" prix="16"></prod-card>
 </script>
 
-Ces éléments personnalisés (*custom elements*) sont créés en associant un nom de balise (doit contenir un <html-code>-</html-code>) à un composants Web (*Web Components*) dont vous définirez le contenu en HTML :
-<script type="html">
+Ces éléments personnalisés (*custom elements*) sont créés en associant un nom de balise (doit contenir un <script type="c-html">-</script>) à un composants Web (*Web Components*) dont vous définirez le contenu en HTML :
+<script type="c-html">
     <div class="produit">
         <strong class="nom">${name}</strong>
         <img src="/assets/${name}.jpg"/>

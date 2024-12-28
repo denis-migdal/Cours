@@ -6,7 +6,16 @@
         - CM1:CM1
 + R3-03:[R 3-03] Technologies Web
     + CM:CM
-        - CM1:CM1
+        - CM1:I. HTML5
+        - CM2:II. CSS3
+        - CM3:III. Code côté client
+        - CM4:IV. Architecture client/serveur
+        - CM5:V. Formulaires ?
+    + TP:TP
+        - TP1:TP1
+        - TP2:TP2
+        - TP3:TP3
+        - TP4:TP4
 + R5-06-VCOD:[R 5-06-VCOD] Developpement Logiciel
     + CM:CM
         - CM1:I. Motivations au développement logiciel

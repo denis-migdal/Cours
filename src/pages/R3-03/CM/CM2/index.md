@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>CM2 (Web1)</title>
+        <title>CM2 (TW)</title>
+		<meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="stylesheet" href="./index.css">
-        <script type="module" src="./index.js" defer></script>
+        <script type="module" src="./index.js" blocking="render"></script>
     </head>
-    <body>
-        <style>
-        </style>
+    <body class="hide_h1">
         <header></header>
         <main>
 
 
-# CM2 : CSS3
+# CSS3
 
 Au cours précédent, nous définissions la *structure* des pages Web grâce à HTML.
 Il nous faut désormais définir l'*affichage* de notre page Web.
@@ -27,24 +27,24 @@ Pour cela, nous utiliserons des fichier CSS (*Cascading Style Sheets*), des *feu
 
 ### Inclure des règles CSS à une page Web
 
-L'ajout d'une feuille de style CSS à la page web se fait via un élément HTML <html-code>link</html-code> :
+L'ajout d'une feuille de style CSS à la page web se fait via un élément HTML <script type="c-html">link</script> :
 
-<script type="html">
+<script type="c-html">
     <!DOCTYPE html>
     <html>
       <head>
         <!-- ... -->
-        <link rel='stylesheet' href='<var>$CSS_FILE</var>' blocking="render"/>
+        <link rel='stylesheet' href='<h>$CSS_FILE</h>' blocking="render"/>
       </head>
       <body>
         <!-- ... -->
-      <\/body>
+      <xbody>
     </html>
 </script>
 
-💡 L'attribut <html-code>blocking="render"</html-code> permet de bloquer l'affichage de la page tant que la feuille de style n'a pas été chargée. Cela évite un effet de scintillement au chargement de la page.
+💡 L'attribut <script type="c-html">blocking="render"</script> permet de bloquer l'affichage de la page tant que la feuille de style n'a pas été chargée. Cela évite un effet de scintillement au chargement de la page.
 
-⚠ S'il est techniquement possible d'ajouter des règles CSS via un élément HTML <html-code>\<style\></html-code> ou un attribut HTML <html-code>style</html-code>, il convient d'éviter cela autant que possible.
+⚠ S'il est techniquement possible d'ajouter des règles CSS via un élément HTML <script type="c-html"><style></script> ou un attribut HTML <script type="c-html">style</script>, il convient d'éviter cela autant que possible.
 
 ### Déclarer une règle CSS
 
@@ -52,18 +52,18 @@ Un fichier CSS est composé de *règles CSS*, elles-même composée :
 - d'un *sélecteur* (indique les éléments sur lesquels appliquer la règle CSS) ;
 - d'une ou plusieurs *déclarations*, attribuant une *valeur* à une *propriété CSS*.
 
-<css-code class="block d4rk">
-<var>$SELECTOR</var> {
-    <var>$PROPRIETY</var>: <var>VALUE</var>;
+<script type="c-css">
+<h>$SELECTOR</h> {
+    <h>$PROPRIETY</h>: <h>$VALUE</h>;
 }
-</css-code>
+</script>
 
 Par exemple, pour aligner le texte des paragraphes à droite :
-<css-code class="block d4rk">
+<script type="c-css">
 p {
     text-align: right;
 }
-</css-code>
+</script>
 
 ### Les sélecteurs CSS (déplacer CM1)
 
@@ -75,40 +75,40 @@ p {
 
 ### Valeur par défaut et héritage
 
-Chaque propriété CSS a une valeur par défaut. Lorsque cette dernière est <css-code>inherit</css-code>, par défaut, sa valeur sera celle de l'élément parent. On dit alors que la propriété CSS est *héritée* :
-<script type="html">
+Chaque propriété CSS a une valeur par défaut. Lorsque cette dernière est <script type="c-css">inherit</script>, par défaut, sa valeur sera celle de l'élément parent. On dit alors que la propriété CSS est *héritée* :
+<script type="c-html">
     <div>Mon texte: <span>Hello</span></div>
 </script>
-<css-code class="block d4rk">
+<script type="c-css">
 div {
     font-weight: bold;
 }
-</css-code>
+</script>
 
-<html-code>\<span\></html-code> ne définissant pas de valeurs pour <css-code>font-weight</css-code>, il héritera de son père, i.e. sera affiché en gras.
+<script type="c-html"><span></script> ne définissant pas de valeurs pour <script type="c-css">font-weight</script>, il héritera de son père, i.e. sera affiché en gras.
 
 CSS défini d'autres valeurs spéciales :
-- <css-code>initial</css-code> : revient à la valeur par défaut.
-- <css-code>unset</css-code> : revient à la valeur héritée, sinon à celle par défaut.
-- <css-code>revert</css-code> : revient à la valeur par défaut définie par le navigateur.
-- <css-code>revert-layer</css-code> : revient à la valeur définie à la couche précédente (cf suite).
+- <script type="c-css">initial</script> : revient à la valeur par défaut.
+- <script type="c-css">unset</script> : revient à la valeur héritée, sinon à celle par défaut.
+- <script type="c-css">revert</script> : revient à la valeur par défaut définie par le navigateur.
+- <script type="c-css">revert-layer</script> : revient à la valeur définie à la couche précédente (cf suite).
 
 💡 Il est possible de changer toutes les propriétés CSS en une seule déclaration :
-<css-code class="block d4rk">
+<script type="c-css">
 \* {
     all: unset;
 }
-</css-code>
+</script>
 
 ## Propriétés CSS personnalisées
 
 ### Motivation : la gestion des couleurs
 
 En CSS, il est possible de définir les couleurs d'un élément pour :
-- <css-code>color</css-code> : le texte ;
-- <css-code>background-color</css-code> : l'arrière-plan ;
-- <css-code>accent-color</css-code> : les éléments d'interface utilisateur ;
-- <css-code>caret-color</css-code> : le curseur (*caret*).
+- <script type="c-css">color</script> : le texte ;
+- <script type="c-css">background-color</script> : l'arrière-plan ;
+- <script type="c-css">accent-color</script> : les éléments d'interface utilisateur ;
+- <script type="c-css">caret-color</script> : le curseur (*caret*).
 - la bordure (cf plus tard) ;
 - etc.
 
@@ -122,13 +122,13 @@ Pour des raisons de lisibilité, il est recommandé de limiter le nombre de coul
 On souhaiterait alors définir ces couleurs à un seul endroit, et ainsi éviter d'avoir à les copier-coller de partout, ce qui complexifierait toutes modifications futures (i.e. avec le risque d'en oublier un).
 
 D'autant plus que les couleurs ne sont pas toujours simples à définir :
-- <css-code>red</css-code> : par le nom de couleur, mais peu de possibilités ;
-- <css-code class='d4rk'>rgb(<var>red</var>, <var>green</var>, <var>blue</var>)</css-code><br/>
-  En notation hexadécimal : <css-code>#FF00FF</css-code> (2 caractères par couleurs) ;
-- <css-code class='d4rk'>rgba(<var>red</var>, <var>green</var>, <var>blue</var>, <var>alpha</var>)</css-code> : avec transparence<br/>
-  En notation hexadécimal : <css-code>#FF00FFFF</css-code> (2 caractères par couleurs) ;
+- <script type="c-css">red</script> : par le nom de couleur, mais peu de possibilités ;
+- <script type="c-css">rgb(<h>$red</h>, <h>$green</h>, <h>$blue</h>)</script><br/>
+  En notation hexadécimal : <script type="c-css">#FF00FF</script> (2 caractères par couleurs) ;
+- <script type="c-css">rgba(<h>$red</h>, <h>$green</h>, <h>$blue</h>, <h>$alpha</h>)</script> : avec transparence<br/>
+  En notation hexadécimal : <script type="c-css">#FF00FFFF</script> (2 caractères par couleurs) ;
 
-💡 Les designers utilisent de nombreuses autres manières de définir les couleurs : <css-code>hsl</css-code>, <css-code>hwb</css-code>, <css-code>\[ok\](lab|lch)</css-code>, <css-code>color</css-code>, <css-code>color-mix</css-code>, <css-code>device-cmyk</css-code>, etc.
+💡 Les designers utilisent de nombreuses autres manières de définir les couleurs : <script type="c-css">hsl</script>, <script type="c-css">hwb</script>, <script type="c-css">\[ok\](lab|lch)</script>, <script type="c-css">color</script>, <script type="c-css">color-mix</script>, <script type="c-css">device-cmyk</script>, etc.
 
 Si cela ne suffisait pas, il faut généralement définir plusieurs jeux de couleurs, e.g. :
 - pour un mode sombre/clair ;
@@ -137,12 +137,12 @@ Si cela ne suffisait pas, il faut généralement définir plusieurs jeux de coul
 - etc.
 
 💡 Pour indiquer les modes de couleurs supportés (l'ordre indique la préférence) :
-<script type="html">
+<script type="c-html">
     <meta name="color-scheme" content="dark light" />
 </script>
 
 💡 Pour indiquer les couleurs de thème (modifie la couleur de la fenêtre) :
-<script type="html">
+<script type="c-html">
     <meta name="theme-color" media="(prefers-color-scheme: light)"
        content="blue"/>
     <meta name="theme-color" media="(prefers-color-scheme: dark)"
@@ -150,30 +150,30 @@ Si cela ne suffisait pas, il faut généralement définir plusieurs jeux de coul
 </script>
 
 💡 Pour définir une couleur en fonction du mode :
-<css-code class='block d4rk'>color: light-dark(<var>light_color</var>, <var>dark_color</var>);</css-code>
+<script type="c-css">color: light-dark(<h>light_color</h>, <h>dark_color</h>);</script>
 
 💡 Pour définir le mode de couleur à utiliser :
-<css-code class='block'>color-scheme: (dark|light);</css-code>
+<script type="c-css">color-scheme: (dark|light);</script>
 
 💡 Pour définir des règles CSS spécifiques à un mode de couleur :
-<css-code class='block'>@media (prefers-color-scheme: dark){/* ... \*/}</css-code> 
+<script type="c-css">@media (prefers-color-scheme: dark){/* ... \*/}</script> 
 
 
-Si <css-code>currentcolor</css-code> permet de réutiliser la couleur définie par <css-code>color</css-code> pour les autres propriétés CSS, cela n'est pas suffisant. Il nous faut ainsi un moyen de créer une variable contenant la couleur  que nous pourrons ensuite utiliser dans les règles CSS.
+Si <script type="c-css">currentcolor</script> permet de réutiliser la couleur définie par <script type="c-css">color</script> pour les autres propriétés CSS, cela n'est pas suffisant. Il nous faut ainsi un moyen de créer une variable contenant la couleur  que nous pourrons ensuite utiliser dans les règles CSS.
 
 ### Définir une propriété personnalisée
 
 Pour cela on défini des *propriétés CSS personnalisées* (aussi appelées *variables CSS*) :
-<css-code class="block d4rk">
-@property --<var>$PROPNAME</var> {
-    syntax       : "<var>$VALUE_TYPE</var>";
-    initial-value: <var>$DEFAULT_VALUE</var>;
+<script type="c-css">
+@property --<h>$PROPNAME</h> {
+    syntax       : "<h>$VALUE_TYPE</h>";
+    initial-value: <h>$DEFAULT_VALUE</h>;
     inherit      : true;
 }
-</css-code>
+</script>
 
-Il sera ensuite possible d'utiliser sa valeur grâce à <css-code class='d4rk'>var(--<var>$PROPNAME</var>)</css-code>, e.g. :
-<script type="css">
+Il sera ensuite possible d'utiliser sa valeur grâce à <script type="c-css">var(--<h>$PROPNAME</h>)</script>, e.g. :
+<script type="c-css">
 @property --primary_color {
     syntax       : "<color>";
     initial-value: light-dark(red, blue);
@@ -197,26 +197,26 @@ h1 {
 #### Définition et héritage
 
 Une fois la propriété déclarée, nous pouvons aussi la (re)définir sur un élément :
-<css-code class="block">
+<script type="c-css">
 :root {
     --primary-color: black;
 }
-</css-code>
+</script>
 
-💡 Si la propriété est définie avec <css-code>inherit: true</css-code>, elle est alors héritable.
+💡 Si la propriété est définie avec <script type="c-css">inherit: true</script>, elle est alors héritable.
 
-💡 Si aucune valeur n'est définie, alors la valeur de <css-code>initial-value</css-code> est utilisée.
+💡 Si aucune valeur n'est définie, alors la valeur de <script type="c-css">initial-value</script> est utilisée.
 
-💡 Il est d'usage de définir les valeurs globale sur <css-code>:root</css-code>.
+💡 Il est d'usage de définir les valeurs globale sur <script type="c-css">:root</script>.
 
 💡 Les propriétés personnalisées traversent les shadow root (cf plus tard).
 
 #### Indiquer le type de la valeur
 
-<css-code>syntax</css-code> décrit le type de valeurs acceptées par la propriété CSS personnalisée, e.g. :
-- <css-code>"\*"</css-code>, <css-code>"\<string\>"</css-code> ;
-- <css-code>"\<number\>"</css-code>, <css-code>"\<integer\>"</css-code>, <css-code>"\<percentage\>"</css-code> ;
-- <css-code>"\<length\>"</css-code>, <css-code>"\<color\>"</css-code>, <css-code>"\<url\>"</css-code> ;
+<script type="c-css">syntax</script> décrit le type de valeurs acceptées par la propriété CSS personnalisée, e.g. :
+- <script type="c-css">"\*"</script>, <script type="c-css">"\<string\>"</script> ;
+- <script type="c-css">"\<number\>"</script>, <script type="c-css">"\<integer\>"</script>, <script type="c-css">"\<percentage\>"</script> ;
+- <script type="c-css">"\<length\>"</script>, <script type="c-css">"\<color\>"</script>, <script type="c-css">"\<url\>"</script> ;
 - etc.
 
 ## Positionnement et dimensionnement des éléments
@@ -228,183 +228,183 @@ Cependant, il convient de garder à l'esprit que la fenêtre dans laquelle s'aff
 ### Le flux
 
 Par défaut, les éléments sont affichés les uns à la suite des autres :
-- <html-code>\<div\></html-code> : affiché en bloc, prend toute la ligne.
-- <html-code>\<span\></html-code> : affiché comme un texte, sur la ligne courante.
+- <script type="c-html"><div></script> : affiché en bloc, prend toute la ligne.
+- <script type="c-html"><span></script> : affiché comme un texte, sur la ligne courante.
 
 Ils correspondent en réalité aux propriétés CSS suivantes :
-- <css-code>display: block;</css-code>
-- <css-code>display: inline;</css-code>
+- <script type="c-css">display: block;</script>
+- <script type="c-css">display: inline;</script>
 
-⚠ Un bloc ne peut être contenu dans un élément <css-code>inline</css-code>.<br/>
-⚠ Par défaut, les composants Web sont <css-code>inline</css-code>.<br/>
-⚠ Certaines propriétés CSS sont ignorés sur les éléments <css-code>inline</css-code>.
+⚠ Un bloc ne peut être contenu dans un élément <script type="c-css">inline</script>.<br/>
+⚠ Par défaut, les composants Web sont <script type="c-css">inline</script>.<br/>
+⚠ Certaines propriétés CSS sont ignorés sur les éléments <script type="c-css">inline</script>.
 
 Il existe cependant d'autres modes d'affichages :
-- <css-code>display: none;</css-code> : n'affiche pas l'élément.
-- <css-code>display: inline-block;</css-code> : affiche en bloc, sur la ligne courante.
-- <css-code>display: [inline-]flex;</css-code> : positionne les enfants en liste.
-- <css-code>display: [inline-]grid;</css-code> : positionne les enfants en grille.
+- <script type="c-css">display: none;</script> : n'affiche pas l'élément.
+- <script type="c-css">display: inline-block;</script> : affiche en bloc, sur la ligne courante.
+- <script type="c-css">display: [inline-]flex;</script> : positionne les enfants en liste.
+- <script type="c-css">display: [inline-]grid;</script> : positionne les enfants en grille.
 
 💡 Il existe d'autres modes d'affichages liées aux tables et aux listes.<br/>
-💡 <css-code>visibility: hidden</css-code> permet d'afficher l'élément mais de manière invisible.
+💡 <script type="c-css">visibility: hidden</script> permet d'afficher l'élément mais de manière invisible.
 
 #### Propriétés CSS de flex
 
-<css-code>flex-flow</css-code> configure la liste :
-<css-code class="block d4rk">
+<script type="c-css">flex-flow</script> configure la liste :
+<script type="c-css">
 .flex {
     display  : flex;
-    flex-flow: <var>(row|column)</var> <var>[no]wrap</var>;
+    flex-flow: <h>(row|column)</h> <h>[no]wrap</h>;
 }
-</css-code>
+</script>
 
-<css-code>flex-flow</css-code> configure la manière dont la taille d'un élément de la liste est calculée :
-<css-code class="block d4rk">
+<script type="c-css">flex-flow</script> configure la manière dont la taille d'un élément de la liste est calculée :
+<script type="c-css">
 .flex > .item {
-    flex: <var>grow</var> <var>shrink</var> <var>basis</var>;
+    flex: <h>grow</h> <h>shrink</h> <h>basis</h>;
 }
-</css-code>
+</script>
 
-Par défaut, l'élément a la taille indiquée par <css-code>basis</css-code>. L'espace restant est redistribué à l'ensemble des éléments de manière pondérée par <css-code>grow</css-code>. S'il au contraire il manque de l'espace, les éléments sont réduits de manière pondérée par <css-code>shrink</css-code>. Cela dans les limites indiquées par <css-code>(min|max)-(width|height)</css-code> (cf suite).
+Par défaut, l'élément a la taille indiquée par <script type="c-css">basis</script>. L'espace restant est redistribué à l'ensemble des éléments de manière pondérée par <script type="c-css">grow</script>. S'il au contraire il manque de l'espace, les éléments sont réduits de manière pondérée par <script type="c-css">shrink</script>. Cela dans les limites indiquées par <script type="c-css">(min|max)-(width|height)</script> (cf suite).
 
 💡 En pratique :
-- <css-code>0</css-code> sur <css-code>grow</css-code>/<css-code>shrink</css-code> **interdit** l’agrandissement/rétrécissement.
-- <css-code>1</css-code> sur <css-code>grow</css-code>/<css-code>shrink</css-code> **autorise** l’agrandissement/rétrécissement.
-- <css-code>0</css-code> sur <css-code>basis</css-code> permet d'obtenir des éléments de **même taille**.
+- <script type="c-css">0</script> sur <script type="c-css">grow</script>/<script type="c-css">shrink</script> **interdit** l’agrandissement/rétrécissement.
+- <script type="c-css">1</script> sur <script type="c-css">grow</script>/<script type="c-css">shrink</script> **autorise** l’agrandissement/rétrécissement.
+- <script type="c-css">0</script> sur <script type="c-css">basis</script> permet d'obtenir des éléments de **même taille**.
 
 💡 On utilise ainsi généralement :
-- <css-code>flex: 1 1 0;</css-code> : pour des éléments de même taille.
-- <css-code>flex: none;</css-code> : pour des éléments qui ne se redimensionnent pas.
+- <script type="c-css">flex: 1 1 0;</script> : pour des éléments de même taille.
+- <script type="c-css">flex: none;</script> : pour des éléments qui ne se redimensionnent pas.
 
 💡 CSS permet de fixer ces différentes propriétés de manière indépendante avec :
-- <css-code>flex-direction</css-code>
-- <css-code>flex-wrap</css-code>
-- <css-code>flex-grow</css-code>
-- <css-code>flex-shrink</css-code>
-- <css-code>flex-basis</css-code>
+- <script type="c-css">flex-direction</script>
+- <script type="c-css">flex-wrap</script>
+- <script type="c-css">flex-grow</script>
+- <script type="c-css">flex-shrink</script>
+- <script type="c-css">flex-basis</script>
 
 Vous pourrez trouver plus de détails sur flex sur la documentation MDN, ainsi que sur le lien suivant : https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 
 #### Propriétés CSS de grid
 
-<css-code>grid</css-code> configure la grille :
-<css-code class="block d4rk">
+<script type="c-css">grid</script> configure la grille :
+<script type="c-css">
 .grid {
     display  : grid;
-    grid: <var>rows</var>/<var>cols</var>;
+    grid: <h>rows</h>/<h>cols</h>;
 }
-</css-code>
+</script>
 
-<css-code>rows</css-code> et <css-code>cols</css-code> définissent respectivement les dimensions des lignes et des colonnes. Il peuvent être définis soit par :
-- une liste de dimensions, e.g. <css-code>1fr 2fr</css-code> pour 2 lignes (ou colonnes).
-- <css-code class="d4rk">auto-flow [dense] <var>size</var></css-code> pour un nombre de lignes (ou colonnes) indéterminé.
+<script type="c-css">rows</script> et <script type="c-css">cols</script> définissent respectivement les dimensions des lignes et des colonnes. Il peuvent être définis soit par :
+- une liste de dimensions, e.g. <script type="c-css">1fr 2fr</script> pour 2 lignes (ou colonnes).
+- <script type="c-css">auto-flow [dense] <h>size</h></script> pour un nombre de lignes (ou colonnes) indéterminé.
 
-💡 <css-code>1fr</css-code> correspond à une <u>fr</u>action de la dimension.
-Par exemple <css-code>2fr 1fr</css-code> découpe la dimension en 3, la première ligne (ou colonne) est 2x plus grande que la suivante.<br/>
-💡 <css-code>repeat(5, 1fr)</css-code> est une manière plus concise d'écrire <css-code>1fr 1fr 1fr 1fr 1fr</css-code>.
+💡 <script type="c-css">1fr</script> correspond à une <u>fr</u>action de la dimension.
+Par exemple <script type="c-css">2fr 1fr</script> découpe la dimension en 3, la première ligne (ou colonne) est 2x plus grande que la suivante.<br/>
+💡 <script type="c-css">repeat(5, 1fr)</script> est une manière plus concise d'écrire <script type="c-css">1fr 1fr 1fr 1fr 1fr</script>.
 
-<css-code>grid-area</css-code> permet d'indiquer la position et dimension d'un élément de la grille :
-<css-code class="block d4rk">
+<script type="c-css">grid-area</script> permet d'indiquer la position et dimension d'un élément de la grille :
+<script type="c-css">
 .grid > .item {
     /* position \*/
-    grid-area: <var>row</var> / <var>col</var>;
+    grid-area: <h>row</h> / <h>col</h>;
     /* dimension \*/
-    grid-area: span <var>height</var> / span <var>width</var>;
+    grid-area: span <h>height</h> / span <h>width</h>;
     /* position + dimension \*/
-    grid-area: <var>row</var> / <var>col</var> / span <var>height</var> / span <var>width</var>;
+    grid-area: <h>row</h> / <h>col</h> / span <h>height</h> / span <h>width</h>;
 }
-</css-code>
+</script>
 
-- <css-code class="d4rk"><var>row</var></css-code>/<css-code class="d4rk"><var>col</var></css-code> est le numéro de ligne/colonne de l'élément (commence à 1).<br/>
-  💡 <css-code>auto</css-code> permet de laisser la ligne/colonne par défaut.
-- <css-code class="d4rk">span <var>height</var></css-code>/<css-code class="d4rk">span <var>width</var></css-code> est la taille de l'élément en nombre de cellules.
+- <script type="c-css"><h>row</h></script>/<script type="c-css"><h>col</h></script> est le numéro de ligne/colonne de l'élément (commence à 1).<br/>
+  💡 <script type="c-css">auto</script> permet de laisser la ligne/colonne par défaut.
+- <script type="c-css">span <h>height</h></script>/<script type="c-css">span <h>width</h></script> est la taille de l'élément en nombre de cellules.
 
 💡 Il est possible de définir un élément comme étant une sous-grille (réutilise les lignes et/ou les colonnes de la grille principale) :
 
-<css-code class="block d4rk">
+<script type="c-css">
 .grid > .item {
     grid-area: span 3 / span 3;
     display: grid;
     grid   : subgrid / subgrid;
 }
-</css-code>
+</script>
 
 💡 Il est possible de nommer des lignes, colonnes, ou région pour placer les éléments de la grille plus explicitement, cependant, nous n'étudierons pas cela ici.
 
 💡 CSS permet de fixer ces différentes propriétés de manière indépendante avec :
-- <css-code>grid-template-(rows|columns)</css-code>
-- <css-code>grid-auto-(rows|columns)</css-code>
-- <css-code>grid-auto-flow</css-code>
-- <css-code>grid-(row|column)-(start|end)</css-code>
-- <css-code>grid-(row|column)</css-code>
+- <script type="c-css">grid-template-(rows|columns)</script>
+- <script type="c-css">grid-auto-(rows|columns)</script>
+- <script type="c-css">grid-auto-flow</script>
+- <script type="c-css">grid-(row|column)-(start|end)</script>
+- <script type="c-css">grid-(row|column)</script>
 
 Vous pourrez trouver plus de détails sur grid sur la documentation MDN, ainsi que sur le lien suivant : https://css-tricks.com/snippets/css/complete-guide-grid/
 
 #### Propriétés CSS de flex et grid
 
 CSS offre deux moyens de définir l'alignement d'un élément :
-- <css-code>place-item</css-code> : au niveau de la liste ;
-- <css-code>place-self</css-code> : au niveau de l'élément.
+- <script type="c-css">place-item</script> : au niveau de la liste ;
+- <script type="c-css">place-self</script> : au niveau de l'élément.
 
-<css-code class='block d4rk'>
+<script type="c-css">
 .flex_or_grid {
-    place-item: <var>align_row</var> <var>align_col</var>;
+    place-item: <h>align_row</h> <h>align_col</h>;
     & > .item {
-        place-self: <var>align_row</var> <var>align_col</var>;
+        place-self: <h>align_row</h> <h>align_col</h>;
     }
 }
-</css-code>
+</script>
 
 Elles acceptent généralement comme valeur :
-- <css-code>scretch</css-code>
-- <css-code>(flex-)start</css-code>
-- <css-code>center</css-code>
-- <css-code>(flex-)end</css-code>
+- <script type="c-css">scretch</script>
+- <script type="c-css">(flex-)start</script>
+- <script type="c-css">center</script>
+- <script type="c-css">(flex-)end</script>
 
-💡 De manière analogue <css-code>place-content</css-code> permet d'aligner le contenu de la liste/grille si cette dernière ne la remplit pas.
+💡 De manière analogue <script type="c-css">place-content</script> permet d'aligner le contenu de la liste/grille si cette dernière ne la remplit pas.
 
-💡 Flex supporte aussi <css-code>space-(between|around|evenly)</css-code>.
+💡 Flex supporte aussi <script type="c-css">space-(between|around|evenly)</script>.
 
-💡 <css-code>gap</css-code> permet de définir un espace minimal entre les différentes lignes/colonnes :
-<css-code class='block d4rk'>
+💡 <script type="c-css">gap</script> permet de définir un espace minimal entre les différentes lignes/colonnes :
+<script type="c-css">
 .flex_or_grid {
     gap: 10px;
-    gap: <var>row-gap</var> <var>column-gap</var>;
+    gap: <h>row-gap</h> <h>column-gap</h>;
 }
-</css-code>
+</script>
 
-💡 Il est possible de définir l'ordre des éléments de la liste/grille grâce à <css-code>order</css-code>.
+💡 Il est possible de définir l'ordre des éléments de la liste/grille grâce à <script type="c-css">order</script>.
 
 💡 CSS permet de fixer ces différentes propriétés de manière indépendante avec :
-- <css-code>(justify|align)-(content|item|self)</css-code>
-- <css-code>(row|column)-gap</css-code>
+- <script type="c-css">(justify|align)-(content|item|self)</script>
+- <script type="c-css">(row|column)-gap</script>
 
 ### Dimensionnement d'un élément
 
 #### Unités
 
 CSS fourni de multiples unités pour indiquer une taille :
-- <css-code>1em</css-code>: hauteur *actuelle* de la police de caractère *(pour la taille de la police)*.<br/>
-  💡 <css-code>1rem</css-code>: hauteur *initiale* (à la racine) de la police de caractère.
-- <css-code>1px</css-code> : <u>p</u>i<u>x</u>els, *(pour les traits, bordures, et marges)*.
-- <css-code>1%</css-code> : relatif à la taille du contenant *(pour les tailles)*.
-- <css-code>1dvw</css-code> : 1/100e de la largeur de la fenêtre (*<u>d</u>ynamic <u>v</u>iewport <u>w</u>idth*).
-- <css-code>1dvh</css-code> : 1/100e de la hauteur de la fenêtre (*<u>d</u>ynamic <u>v</u>iewport <u>h</u>eight*).
+- <script type="c-css">1em</script>: hauteur *actuelle* de la police de caractère *(pour la taille de la police)*.<br/>
+  💡 <script type="c-css">1rem</script>: hauteur *initiale* (à la racine) de la police de caractère.
+- <script type="c-css">1px</script> : <u>p</u>i<u>x</u>els, *(pour les traits, bordures, et marges)*.
+- <script type="c-css">1%</script> : relatif à la taille du contenant *(pour les tailles)*.
+- <script type="c-css">1dvw</script> : 1/100e de la largeur de la fenêtre (*<u>d</u>ynamic <u>v</u>iewport <u>w</u>idth*).
+- <script type="c-css">1dvh</script> : 1/100e de la hauteur de la fenêtre (*<u>d</u>ynamic <u>v</u>iewport <u>h</u>eight*).
 
-⚠ Vous pourrez trouver d'autres unités pour le viewport, cependant, <css-code>dvw</css-code> et <css-code>dvh</css-code> permettent de mieux gérer les téléphones portables.
+⚠ Vous pourrez trouver d'autres unités pour le viewport, cependant, <script type="c-css">dvw</script> et <script type="c-css">dvh</script> permettent de mieux gérer les téléphones portables.
 
-💡 Pour une impression, il est possible d'indiquer des tailles en <css-code>mm</css-code>, <css-code>cm</css-code>, <css-code>in</css-code>, <css-code>pt</css-code>.
+💡 Pour une impression, il est possible d'indiquer des tailles en <script type="c-css">mm</script>, <script type="c-css">cm</script>, <script type="c-css">in</script>, <script type="c-css">pt</script>.
 
-⚠ Pour effectuer des calculs, vous devez utiliser <css-code>calc()</css-code> :
-<css-code class="block d4rk">
+⚠ Pour effectuer des calculs, vous devez utiliser <script type="c-css">calc()</script> :
+<script type="c-css">
 width: calc( 100% - 2 * 3em );
-</css-code>
+</script>
 
 💡 CSS fourni d'autres fonctions pour vous aider :
-- <css-code>min(10px, 10%)</css-code>
-- <css-code>max(10px, 10%)</css-code>
-- <css-code class='d4rk'>minmax(<var>min</var>, <var>max</var>)</css-code> : une valeur entre min et max (pour les grilles).
-- <css-code class='d4rk'>clamp(<var>min</var>, <var>preferred</var>, <var>max</var>)</css-code> : une valeur entre min et max (pour les grilles).
+- <script type="c-css">min(10px, 10%)</script>
+- <script type="c-css">max(10px, 10%)</script>
+- <script type="c-css">minmax(<h>min</h>, <h>max</h>)</script> : une valeur entre min et max (pour les grilles).
+- <script type="c-css">clamp(<h>min</h>, <h>preferred</h>, <h>max</h>)</script> : une valeur entre min et max (pour les grilles).
 - etc.
 
 #### Le cadre d'un élément
@@ -415,62 +415,62 @@ Un élément est composé :
 - d'une bordure (*border* et/ou *outline*) ;
 - d'une marge extérieure (*margin*).
 
-<css-code>margin</css-code> et <css-code>padding</css-code> s'utilisent de la même manière :
-- <css-code class="d4rk">margin: <var>X</var>;</css-code> : défini l'ensemble des marges ;
-- <css-code class="d4rk">margin: <var>top</var> <var>right</var> <var>bottom</var> <var>left</var>;</css-code>
-- <css-code class="d4rk">margin: <var>top_and_bottom</var> <var>right_and_left</var>;</css-code>
-- <css-code class="d4rk">margin: <var>top</var> <var>right_and_left</var> <var>bottom</var>;</css-code>
+<script type="c-css">margin</script> et <script type="c-css">padding</script> s'utilisent de la même manière :
+- <script type="c-css">margin: <h>X</h>;</script> : défini l'ensemble des marges ;
+- <script type="c-css">margin: <h>top</h> <h>right</h> <h>bottom</h> <h>left</h>;</script>
+- <script type="c-css">margin: <h>top_and_bottom</h> <h>right_and_left</h>;</script>
+- <script type="c-css">margin: <h>top</h> <h>right_and_left</h> <h>bottom</h>;</script>
 
 💡 Les marges d'éléments adjacents peuvent être fusionnée. On peut voir les marges comme la distance minimale entre la bordure de l'élément et la bordure de tout autre élément.
 
-<css-code>border</css-code> et <css-code>outline</css-code> s'utilisent de la même manière :
-- <css-code class="d4rk">border: <var>width</var> <var>style</var> <var>color</var>;</css-code> ;
-- <css-code class="d4rk">border: none;</css-code>
+<script type="c-css">border</script> et <script type="c-css">outline</script> s'utilisent de la même manière :
+- <script type="c-css">border: <h>width</h> <h>style</h> <h>color</h>;</script> ;
+- <script type="c-css">border: none;</script>
  
-Contrairement à <css-code>border</css-code>, <css-code>outline</css-code> peut se dessiner par dessus des éléments existants.
-Il est ainsi très utile pour dessiner des bordure sur des contenu <css-code>inline</css-code> sans modifier la hauteur de la ligne.
+Contrairement à <script type="c-css">border</script>, <script type="c-css">outline</script> peut se dessiner par dessus des éléments existants.
+Il est ainsi très utile pour dessiner des bordure sur des contenu <script type="c-css">inline</script> sans modifier la hauteur de la ligne.
 
 Les styles de lignes sont généralement :
-- <css-code>solid</css-code> ;
-- <css-code>double</css-code> ;
-- <css-code>dotted</css-code> ;
-- <css-code>dashed</css-code> ;
-- <css-code>dashed</css-code> ;
-- <css-code>wavy</css-code> (not supported).
+- <script type="c-css">solid</script> ;
+- <script type="c-css">double</script> ;
+- <script type="c-css">dotted</script> ;
+- <script type="c-css">dashed</script> ;
+- <script type="c-css">dashed</script> ;
+- <script type="c-css">wavy</script> (not supported).
 
-💡 <css-code>border-radius</css-code> permet de d'arrondir les angles de la bordure (border/outline).
+💡 <script type="c-css">border-radius</script> permet de d'arrondir les angles de la bordure (border/outline).
 
 💡 CSS permet de fixer ces différentes propriétés de manière indépendante avec :
-- <css-code>(padding|margin)-(top|bottom|left|right)</css-code>
-- <css-code>(border|outline)-(width|style|color)</css-code>
-- <css-code>(border|outline)-(top|bottom|left|right)-(width|style|color)</css-code>
-- <css-code>border-radius-(top|bottom|left|right)</css-code>
+- <script type="c-css">(padding|margin)-(top|bottom|left|right)</script>
+- <script type="c-css">(border|outline)-(width|style|color)</script>
+- <script type="c-css">(border|outline)-(top|bottom|left|right)-(width|style|color)</script>
+- <script type="c-css">border-radius-(top|bottom|left|right)</script>
 
 #### La taille d'un élément
 
 La taille d'un élément est calculée à partir :
-- d'une taille préférée : <css-code>width</css-code>/<css-code>height</css-code> ;
-- d'une taille minimale et maximale : <css-code>(min|max)-(width|height)</css-code>.
+- d'une taille préférée : <script type="c-css">width</script>/<script type="c-css">height</script> ;
+- d'une taille minimale et maximale : <script type="c-css">(min|max)-(width|height)</script>.
 
-💡 Il est possible d'utiliser <css-code>aspect-ratio</css-code> pour que la hauteur (ou largeur) s'adapter à sa largeur (ou hauteur).
+💡 Il est possible d'utiliser <script type="c-css">aspect-ratio</script> pour que la hauteur (ou largeur) s'adapter à sa largeur (ou hauteur).
 
-💡 Les valeurs <css-code>(min|max|fit)-content</css-code> adaptent les tailles à celles de son contenu.
+💡 Les valeurs <script type="c-css">(min|max|fit)-content</script> adaptent les tailles à celles de son contenu.
 
 ⚠ Par défaut la taille de l'élément n'inclue pas la bordure et marge intérieur.<br/>
-Pour les inclure, il convient d'utiliser <css-code>box-sizing: border-box</css-code>.
+Pour les inclure, il convient d'utiliser <script type="c-css">box-sizing: border-box</script>.
 
 #### Dépassements
 
 Lorsque le contenu est plus grand que le contenant, il y a *dépassement* (*overflow*).
 
 Il est alors nécessaire d'indiquer le comportement à adopter via :
-- <css-code class="d4rk">overflow: <var>overflow-x</var> <var>overflow-x</var> </css-code>
+- <script type="c-css">overflow: <h>overflow-x</h> <h>overflow-x</h> </script>
 
 Les options possibles sont les suivantes :
-- <css-code>visible</css-code> : affiche le contenu qui dépasse ;
-- <css-code>hidden</css-code> : cache le contenu qui dépasse ;
-- <css-code>auto</css-code> : ajoute une barre de défilement si dépassement ;
-- <css-code>scroll</css-code> : ajoute une barre de défilement.
+- <script type="c-css">visible</script> : affiche le contenu qui dépasse ;
+- <script type="c-css">hidden</script> : cache le contenu qui dépasse ;
+- <script type="c-css">auto</script> : ajoute une barre de défilement si dépassement ;
+- <script type="c-css">scroll</script> : ajoute une barre de défilement.
 
 ### Responsive
 
@@ -485,17 +485,17 @@ Lorsque la page Web s'adapte à la taille de la fenêtre, on dit alors qu'elle e
 #### Par défaut
 
 Les pages Web s'adaptent déjà à la taille de la fenêtre si vous utilisez :
-- des conteneurs <css-code>flex</css-code>/<css-code>grid</css-code> ;
-- des unités <css-code>%</css-code>/<css-code>dvw</css-code>/<css-code>dvw</css-code> ;
-- des tailles minimales et maximales <css-code>(min|max)-(width|height)</css-code>.
+- des conteneurs <script type="c-css">flex</script>/<script type="c-css">grid</script> ;
+- des unités <script type="c-css">%</script>/<script type="c-css">dvw</script>/<script type="c-css">dvw</script> ;
+- des tailles minimales et maximales <script type="c-css">(min|max)-(width|height)</script>.
 
-💡 Bien évidemment, <css-code>(min|max|fit)-content</css-code>, <css-code>calc()</css-code>, <css-code>min()</css-code>, <css-code>max()</css-code>, <css-code>minmax()</css-code>, <css-code>clamp()</css-code> peuvent aussi vous aider.
+💡 Bien évidemment, <script type="c-css">(min|max|fit)-content</script>, <script type="c-css">calc()</script>, <script type="c-css">min()</script>, <script type="c-css">max()</script>, <script type="c-css">minmax()</script>, <script type="c-css">clamp()</script> peuvent aussi vous aider.
 
 ⚠ Pour des raisons historiques, les navigateurs sur mobile dézooment automatiquement les pages Web afin de s'adapter à la largeur de l'écran.
 
 Pour éviter ceci, devez alors inclure la balise suivante dans l'en-tête de la page web :
 
-<script type="html">
+<script type="c-html">
 <meta name="viewport"
    content="width=device-width, initial-scale=1.0"/>
 </script>
@@ -508,19 +508,19 @@ Malheureusement, le comportement par défaut n'est pas toujours suffisant pour g
 Il est alors nécessaire de réorganiser les éléments en fonction de l'espace disponible, et donc d'utiliser des règles CSS différentes.
 
 Pour cela il y a deux moyens de procéder :
-- <css-code>@media</css-code> : (*media queries*) s'adapte en fonction de la taille de la fenêtre.
-- <css-code>@container</css-code> : (*container queries*)  s'adapte en fonction de la taille du conteneur.
+- <script type="c-css">@media</script> : (*media queries*) s'adapte en fonction de la taille de la fenêtre.
+- <script type="c-css">@container</script> : (*container queries*)  s'adapte en fonction de la taille du conteneur.
 
-💡 Il est bien souvent préférable de privilégier <css-code>@container</css-code> à <css-code>@media</css-code>.
+💡 Il est bien souvent préférable de privilégier <script type="c-css">@container</script> à <script type="c-css">@media</script>.
 
-<css-code>@container</css-code> s'utilise ainsi :
+<script type="c-css">@container</script> s'utilise ainsi :
 1. Définir un conteneur parmis les ancêtres de l'élément avec :
-   - <css-code class='d4rk'>container: <var>name</var> size</css-code> ;
-   - <css-code class='d4rk'>container: <var>name</var> inline-size</css-code> : ne servira que pour la largeur ;
+   - <script type="c-css">container: <h>name</h> size</script> ;
+   - <script type="c-css">container: <h>name</h> inline-size</script> : ne servira que pour la largeur ;
 2. Définir un *container query* pour l'élément ciblé, e.g. :<br/>
-   <css-code class='d4rk'>@container [<var>name</var>] (min-width: 100px) and (max-width: 100px)</css-code>
+   <script type="c-css">@container [<h>name</h>] (min-width: 100px) and (max-width: 100px)</script>
 
-<script type="css">
+<script type="c-css">
 div {
     container: card size;
 
@@ -539,17 +539,17 @@ div {
 </script>
 
 💡 Les conteneurs permettent aussi d'utiliser les unités suivantes :
-- <css-code>cqw</css-code> : 1/100e de la largeur du conteneur *(<u>c</u>ontainer <u>q</u>uery <u>w</u>idth)*
-- <css-code>cqh</css-code> : 1/100e de la hauteur du conteneur *(<u>c</u>ontainer <u>q</u>uery <u>h</u>eight)*
+- <script type="c-css">cqw</script> : 1/100e de la largeur du conteneur *(<u>c</u>ontainer <u>q</u>uery <u>w</u>idth)*
+- <script type="c-css">cqh</script> : 1/100e de la hauteur du conteneur *(<u>c</u>ontainer <u>q</u>uery <u>h</u>eight)*
 
-💡 Il existe d'autres conditions que <css-code>(min|max)-(width|height)</css-code>, e.g. <css-code>(min|max)-(aspect-ratio|resolution)</css-code>, <css-code>orientation</css-code>, etc.
+💡 Il existe d'autres conditions que <script type="c-css">(min|max)-(width|height)</script>, e.g. <script type="c-css">(min|max)-(aspect-ratio|resolution)</script>, <script type="c-css">orientation</script>, etc.
 
 #### Impression (bonus)
 
 ⚠ la fonction première d'une page Web est d'être affichée sur écran, il est ainsi inutile de se prendre la tête dessus.
 
 Les pages peuvent aussi être imprimée, pour cela on peut définir des règles CSS spécifique via les media queries :
-<css-code class='block'>
+<script type="c-css">
 /* règles spécifique à l'affichage sur écran \*/
 @media screen {
 }
@@ -564,7 +564,7 @@ Les pages peuvent aussi être imprimée, pour cela on peut définir des règles 
         print-color-adjust: exact;
     }
 }
-</css-code>
+</script>
 
 ⚠ Pour une impression, pensez à potentiellement masquer les en-têtes/pieds de pages, surtout s'ils sont fixed.
 
@@ -574,38 +574,38 @@ Les pages peuvent aussi être imprimée, pour cela on peut définir des règles 
 
 ⚠ Pour une impression PDF, il est préférable d'utiliser Chromium pour un PDF de taille raisonnable.
 
-💡 Vous pouvez indiquez où effectuer les coupures de pages avec <css-code>break-*</css-code>, avoir des options en fonction de si la page est pair ou impair, etc<br/>
+💡 Vous pouvez indiquez où effectuer les coupures de pages avec <script type="c-css">break-*</script>, avoir des options en fonction de si la page est pair ou impair, etc<br/>
 
-💡 <script type="html"><wbr/></script> permet d'insérer un retour à la ligne facultatif.
+💡 <script type="c-html"><wbr/></script> permet d'insérer un retour à la ligne facultatif.
 
 ### Sortir des éléments du flux
 
 CSS permet de sortir des éléments du flux, i.e. de les afficher à une position différente de celle à laquelle ils devraient normalement être.
 
-Par défauts, les éléments sont <css-code>position: static</css-code>, i.e. dans le flux.<br/>
-Les éléments qui ont une valeur différente de <css-code>position</css-code> sont dits *positionnés*.<br/>
-Les éléments positionnés acceptent les propriétés CSS <css-code>top</css-code>, <css-code>right</css-code>, <css-code>bottom</css-code>, <css-code>left</css-code>.
+Par défauts, les éléments sont <script type="c-css">position: static</script>, i.e. dans le flux.<br/>
+Les éléments qui ont une valeur différente de <script type="c-css">position</script> sont dits *positionnés*.<br/>
+Les éléments positionnés acceptent les propriétés CSS <script type="c-css">top</script>, <script type="c-css">right</script>, <script type="c-css">bottom</script>, <script type="c-css">left</script>.
 
 ⚠ Il convient d'éviter autant que possible les éléments positionnés, et d'utiliser à la place, lorsque possible, des flex, grid, margin, etc.
 
-⚠ Les éléments positionnés, bien que sortis du flot, sont assujettis à <css-code>overflow</css-code>.<br/>
+⚠ Les éléments positionnés, bien que sortis du flot, sont assujettis à <script type="c-css">overflow</script>.<br/>
 
-<css-code>position: relative</css-code> déplace un élément relativement à sa position initiale.<br/>
+<script type="c-css">position: relative</script> déplace un élément relativement à sa position initiale.<br/>
 Lorsque possible, il est préférable d'utiliser des marges à la place.<br/>
 💡 En pratique il est surtout utilisé pour rendre un élément positionné.
 
-<css-code>position: absolute</css-code> positionne un élément de manière absolue, par rapport au premier ancêtre positionné.<br/>
+<script type="c-css">position: absolute</script> positionne un élément de manière absolue, par rapport au premier ancêtre positionné.<br/>
 ⚠ Les éléments absolus ne sont pas considérés dans le calcul de la taille de leur père.<br/>
 ⚠ Les éléments absolus peuvent en chevaucher (*overlap*) d'autres :
-- si cela n'est pas voulu, privilégier flex/grid, ou <css-code>float: (left|right)</css-code>.
-- si cela est voulu, <css-code>z-index: 1</css-code> permet d'indiquer l'ordre d'affichage des éléments. Plus le <css-code>z-index</css-code> est grand, plus il sera affiché au-dessus.<br/>
+- si cela n'est pas voulu, privilégier flex/grid, ou <script type="c-css">float: (left|right)</script>.
+- si cela est voulu, <script type="c-css">z-index: 1</script> permet d'indiquer l'ordre d'affichage des éléments. Plus le <script type="c-css">z-index</script> est grand, plus il sera affiché au-dessus.<br/>
 
-<css-code>position: fixed</css-code> positionne l'élément par rapport à la fenêtre.<br/>
-⚠ Il est préférable de privilégier flex/grid, ou <css-code>position: sticky</css-code>
+<script type="c-css">position: fixed</script> positionne l'élément par rapport à la fenêtre.<br/>
+⚠ Il est préférable de privilégier flex/grid, ou <script type="c-css">position: sticky</script>
 
-<css-code>position: sticky</css-code> s'affiche normalement, mais reste aux frontière de son père lorsque l'élément est défilé.<br/>
-⚠ Il faut définir au moins l'une des propriétés <css-code>top</css-code>, <css-code>right</css-code>, <css-code>bottom</css-code>, <css-code>left</css-code>.<br/>
-⚠ Utiliser <css-code>scroll-padding</css-code> lorsque l'élément sticky prend toute la largeur/hauteur.<br/>
+<script type="c-css">position: sticky</script> s'affiche normalement, mais reste aux frontière de son père lorsque l'élément est défilé.<br/>
+⚠ Il faut définir au moins l'une des propriétés <script type="c-css">top</script>, <script type="c-css">right</script>, <script type="c-css">bottom</script>, <script type="c-css">left</script>.<br/>
+⚠ Utiliser <script type="c-css">scroll-padding</script> lorsque l'élément sticky prend toute la largeur/hauteur.<br/>
 💡 Il est notamment très utile pour :
 - les colonnes ou lignes d'en-tête d'une table défilable.
 - les menu flottants.
@@ -647,17 +647,17 @@ Limite de HTML/CSS:
 
 Il arrive que des règles CSS soient contradictoires. Dans l'exemple suivant, le texte doit-il s'afficher en gris ou en noir ? 
 
-<script type="html">
+<script type="c-html">
     <span class='username'>Paul</span>
 </script>
-<css-code class='block d4rk'>
+<script type="c-css">
 .username {
     color: gray;
 }
 span {
     color: black;
 }
-</css-code>
+</script>
 
 Par défaut, CSS applique la règle la plus *spécifique*.
 Pour rester simple, CSS compte le nombre d'identifiant, de classe, de nom de balise, et des autres éléments dans un tableau :
@@ -667,8 +667,8 @@ Pour rester simple, CSS compte le nombre d'identifiant, de classe, de nom de bal
         <tr><th>Règle</th><th>ID</th><th>Classes</th><th>Balise</th><th>Autres</th></tr>
     </thead>
     <tbody>
-        <tr><td><css-code>.username</css-code></td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
-        <tr><td><css-code>span</css-code></td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+        <tr><td><script type="c-css">.username</script></td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+        <tr><td><script type="c-css">span</script></td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
     </tbody>
 </table>
 
@@ -676,13 +676,13 @@ CSS compare alors la spécificité colonne par colonne, de gauche à droite, en 
 
 ### Importance et couches
 
-Il est possible de rendre une déclaration CSS prioritaire via <css-code>!important</css-code> :
+Il est possible de rendre une déclaration CSS prioritaire via <script type="c-css">!important</script> :
 
-<css-code class='block d4rk'>
+<script type="c-css">
 span {
     color: black !important;
 }
-</css-code>
+</script>
 
 Néanmoins, cela pose très vite problème lorsqu'on souhaite ajouter une autre règle CSS encore plus prioritaire. Si son usage peut se justifier dans certains contextes particuliers, il convient cependant de les éviter autant que possible.
 
@@ -690,7 +690,7 @@ Une alternative est d'utiliser les *couches CSS* (*CSS layers*). Le principe est
 
 Cela est notamment très utile lorsqu'on souhaite utiliser des bibliothèques CSS :
 
-<script type="css">
+<script type="c-css">
 /* déclare les couches de la moins prioritaire
 à la plus prioritaire \*/
 @layer libA libB myrules;
@@ -724,11 +724,11 @@ Certains éléments HTML peuvent se substituer à des règles CSS, e.g. :
         <tr><th>HTML</th><th>CSS</th><th></th></tr>
     </thead>
     <tbody>
-        <tr><td><script type="html"><b>A</b></script></td><td><css-code>font-weight: bold;</css-code></td><td><b>A</b></td></tr>
-        <tr><td><script type="html"><i>A</i></script></td><td><css-code>font-style: italic;</css-code></td><td><i>A</i></td></tr>
-        <tr><td><script type="html"><u>A</u></script></td><td><css-code>text-decoration: underline;</css-code></td><td><u>A</u></td></tr>
-        <tr><td><script type="html"><mark>A</mark></script></td><td><css-code>background-color: yellow;</css-code></td><td><mark>A</mark></td></tr>
-        <tr><td><script type="html"><s>A</s></script></td><td></td><td><s>A</s></td></tr>
+        <tr><td><script type="c-html"><b>A</b></script></td><td><script type="c-html">font-weight: bold;</script></td><td><b>A</b></td></tr>
+        <tr><td><script type="c-html"><i>A</i></script></td><td><script type="c-html">font-style: italic;</script></td><td><i>A</i></td></tr>
+        <tr><td><script type="c-html"><u>A</u></script></td><td><script type="c-html">text-decoration: underline;</script></td><td><u>A</u></td></tr>
+        <tr><td><script type="c-html"><mark>A</mark></script></td><td><script type="c-html">background-color: yellow;</script></td><td><mark>A</mark></td></tr>
+        <tr><td><script type="c-html"><s>A</s></script></td><td></td><td><s>A</s></td></tr>
     </tbody>
 </table>
 
@@ -749,9 +749,9 @@ Il arrive cependant qu'on souhaite afficher de manière différente deux éléme
 
 Cependant, la classe est un attribut HTML, il doivent donc autant que possible décrire la *sémantique* (le sens) de l'élément HTML, plus que la manière de l'afficher.
 
-💡 Pour distinguer les colonnes d'une table, on utilise les balises <html-code>colgroup</html-code> et <html-code>col</html-col> :
+💡 Pour distinguer les colonnes d'une table, on utilise les balises <script type="c-html">colgroup</script> et <script type="c-html">col</script> :
 
-<script type="html">
+<script type="c-html">
     <table>
         <colgroup>
             <col class="col_username"></col>
@@ -764,20 +764,20 @@ Cependant, la classe est un attribut HTML, il doivent donc autant que possible d
     </table>
 </script>
 
-<css-code class='block d4rk'>
+<script type="c-css">
 col.col_username {
     font-weight: bold;
 }
 col.col_user_age {
     font-style: italic;
 }
-</css-code>
+</script>
 
 ### Les préprocesseurs CSS
 
 Cependant, cette séparation entre structure (HTML) et affichage (CSS) n'est pas toujours entièrement respectée. Par facilité, il est en effet courant d'utiliser des classes, non pas pour ajouter une sémantique ou désigner un type d'élément, mais pour appliquer des règles CSS sur un ensemble d'éléments HTML, e.g. :
 
-<script type="html">
+<script type="c-html">
     <h1 class="text-3xl font-bold underline">Hello world!</h1>
 </script>
 
@@ -785,17 +785,17 @@ Sur de gros projets, cela permet d'éviter la duplication de règles CSS, ainsi 
 
 En réalité, cela est surtout une solution de contournement aux limites de CSS, qui ne permet pas de réutiliser des règles existantes dans une nouvelle règle, e.g. :
 
-<css-code class="block d4rk">
+<script type="c-css">
 h1 {
     text-decoration: blue underline;
 }
 h2 {
     /* Je veux pareil que h1... \*/
 }
-</css-code>
+</script>
 
 Pour combler les limites de CSS, des *pré-processeurs CSS* (e.g. LESS, SASS) permettent d'ajouter plus de fonctionnalités à CSS :
-<script type="css">
+<script type="c-css">
 @mixin title {
     text-decoration: blue underline;
 }

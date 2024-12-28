@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>CM4 (Web1)</title>
+        <title>CM4 (TW)</title>
         <!--
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="cyan" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
@@ -31,9 +31,9 @@ Les requêtes et réponses HTTP contiennent :
 
 ## Contenus dynamiques
 
-Afin de tester nos pages Web en TP, nous utilisions jusqu'à présent *Live Server* comme serveur Web. Son fonctionnement est très simple : la racine du site Web est associée à un dossier <shell-code class="d4rk"><var>$ROOT</var></shell-code> du serveur. Chaque URL est alors associée à un fichier du serveur. 
+Afin de tester nos pages Web en TP, nous utilisions jusqu'à présent *Live Server* comme serveur Web. Son fonctionnement est très simple : la racine du site Web est associée à un dossier <script type="c-bash"><h>$ROOT</h></script> du serveur. Chaque URL est alors associée à un fichier du serveur. 
 *Live Server* est ainsi un serveur web *statique* (*static web server*) distribuant des fichiers/ressources statiques (*static files/assets*). Ainsi, lorsqu'il reçoit une requête HTTP, il retourne le fichier demandé, e.g. :<br/>
-<shell-code class="d4rk">http://localhost:5000/<var>$PATHNAME</var></shell-code> est associé au fichier <shell-code class="d4rk"><var>$ROOT</var>/<var>$PATHNAME</var></shell-code>.
+<script type="c-bash">http://localhost:5000/<h>$PATHNAME</h></script> est associé au fichier <script type="c-bash"><h>$ROOT</h>/<h>$PATHNAME</h></script>.
 
 Il est cependant possible d'avoir des serveurs *dynamiques* (*dynamic server*) générant le contenu renvoyé en fonction de la requête HTTP reçue. Imaginez un site vendant 5,000 produits différents. Il est évident qu'on ne va pas s'amuser à créer 5,000 pages Web à la main. À la place, on voudrait générer dynamiquement les pages Web à partir :
 - de l'**identifiant** du produit (i.e. quel produit afficher) ;
@@ -78,12 +78,12 @@ Les API REST utilisent 5 *méthodes HTTP* :
 - *DELETE :* supprimer une ressource.
 
 Il est ainsi d'usage d'utiliser les requêtes suivantes afin d'indiquer le type d'opération effectué sur la ressource :
-- <js-code class="d4rk">GET    /<var>$COLLECTION</var>/</js-code> : obtenir la liste des ressources de la collection.
-- <js-code class="d4rk">POST   /<var>$COLLECTION</var>/</js-code> : créer une nouvelle ressource dans la collection.
-- <js-code class="d4rk">GET    /<var>$COLLECTION</var>/<var>$ID</var></js-code> : obtenir la ressource d'identifiant <js-code class="d4rk"><var>$ID</var></js-code>.
-- <js-code class="d4rk">PUT    /<var>$COLLECTION</var>/<var>$ID</var></js-code> : créer ou remplacer la ressource d'identifiant <js-code class="d4rk"><var>$ID</var></js-code>.
-- <js-code class="d4rk">PATCH  /<var>$COLLECTION</var>/<var>$ID</var></js-code> : modifier la ressource d'identifiant <js-code class="d4rk"><var>$ID</var></js-code>.
-- <js-code class="d4rk">DELETE /<var>$COLLECTION</var>/<var>$ID</var></js-code> : supprimer la ressource d'identifiant <js-code class="d4rk"><var>$ID</var></js-code>.
+- <script type="c-js">GET    /<h>$COLLECTION</h>/</script> : obtenir la liste des ressources de la collection.
+- <script type="c-js">POST   /<h>$COLLECTION</h>/</script> : créer une nouvelle ressource dans la collection.
+- <script type="c-js">GET    /<h>$COLLECTION</h>/<h>$ID</h></script> : obtenir la ressource d'identifiant <script type="c-js"><h>$ID</h></script>.
+- <script type="c-js">PUT    /<h>$COLLECTION</h>/<h>$ID</h></script> : créer ou remplacer la ressource d'identifiant <script type="c-js"><h>$ID</h></script>.
+- <script type="c-js">PATCH  /<h>$COLLECTION</h>/<h>$ID</h></script> : modifier la ressource d'identifiant <script type="c-js"><h>$ID</h></script>.
+- <script type="c-js">DELETE /<h>$COLLECTION</h>/<h>$ID</h></script> : supprimer la ressource d'identifiant <script type="c-js"><h>$ID</h></script>.
 
 ⚠ Les requêtes `GET` et `DELETE` ne peuvent contenir de corps (*body*).
 
@@ -115,37 +115,37 @@ Les query strings sont manipulées via la classe `URLSearchParams` :
     <tbody>
         <tr>
             <td><i>Créer</i></td>
-            <td><js-code class="d4rk">new URLSearchParams(<var>$URL</var>.search)</js-code></td>
+            <td><script type="c-js">new URLSearchParams(<h>$URL</h>.search)</script></td>
         </tr>
         <tr>
             <td><i>Générer</i></td>
-            <td><js-code class="d4rk">.toString()</js-code></td>
+            <td><script type="c-js">.toString()</script></td>
         </tr>
         <tr>
             <td><i>Lister</i></td>
-            <td><js-code class="d4rk">.entries()/.keys()/.values()</js-code></td>
+            <td><script type="c-js">.entries()/.keys()/.values()</script></td>
         </tr>
         <tr>
             <td><i>Obtenir</i></td>
-            <td><js-code class="d4rk">.get[All](<var>$N</var>)</js-code></td>
+            <td><script type="c-js">.get[All](<h>$N</h>)</script></td>
         </tr>
         <tr>
             <td><i>Ajouter</i></td>
-            <td><js-code class="d4rk">.set(<var>$N</var>, <var>$V</var>)/.append(<var>$N</var>, <var>$V</var>)</js-code></td>
+            <td><script type="c-js">.set(<h>$N</h>, <h>$V</h>)/.append(<h>$N</h>, <h>$V</h>)</script></td>
         </tr>
         <tr>
             <td><i>Supprimer</i></td>
-            <td><js-code class="d4rk">.delete(<var>$N</var>)</js-code></td>
+            <td><script type="c-js">.delete(<h>$N</h>)</script></td>
         </tr>
         <tr>
             <td><i>Contient ?</i></td>
-            <td><js-code class="d4rk">.has(<var>$N</var>)</js-code></td>
+            <td><script type="c-js">.has(<h>$N</h>)</script></td>
         </tr>
     </tbody>
 </table>
 </center>
 
-💡 L'URL de la page est stockée dans <js-code>document.location</js-code>.
+💡 L'URL de la page est stockée dans <script type="c-js">document.location</script>.
 
 #### Données structurées
 
@@ -180,45 +180,45 @@ Cela comporte de nombreux avantages :
 ### Fetch
 
 Une requête HTTP peut être effectuée au sein de la page Web via `fetch()`:
-<js-code class="block d4rk">
-const response = await fetch(<var>$URL</var>, {
-    method: <var>$HTTP_METHOD</var>,
-    body  : <var>$BODY</var>
+<script type="c-js">
+const response = await fetch(<h>$URL</h>, {
+    method: <h>$HTTP_METHOD</h>,
+    body  : <h>$BODY</h>
 });
-</js-code>
+</script>
 
 Le corps peut être de différent type :
-- <js-code>string</js-code>
-- <js-code>Blob</js-code>/<js-code>File</js-code>
-- <js-code>Uint8Array</js-code>/<js-code>ReadableStream</js-code>
-- <js-code>URLSearchParams</js-code>/<js-code>FormData</js-code>
+- <script type="c-js">string</script>
+- <script type="c-js">Blob</script>/<script type="c-js">File</script>
+- <script type="c-js">Uint8Array</script>/<script type="c-js">ReadableStream</script>
+- <script type="c-js">URLSearchParams</script>/<script type="c-js">FormData</script>
 - etc.
 
-💡 Pour envoyer des données au format, JSON, il convient de les convertir en <js-code>string</js-code> :
-<js-code class="block d4rk">
-const response = await fetch(<var>$URL</var>, {
-    body: JSON.stringify(<var>$DATA</var>)
+💡 Pour envoyer des données au format, JSON, il convient de les convertir en <script type="c-js">string</script> :
+<script type="c-js">
+const response = await fetch(<h>$URL</h>, {
+    body: JSON.stringify(<h>$DATA</h>)
     headers: {
         "Content-Type": "application/json"
     }
 });
-</js-code>
+</script>
 
-💡 <js-code>"Content-Type"</js-code> indique le type des données contenu dans le corps de la requête :
-- <js-code>"text/plain"</js-code> : texte ;
-- <js-code>"application/json"</js-code> : JSON ;
-- <js-code>"application/octet-stream"</js-code> : données binaires.
-- <js-code>"application/x-www-form-urlencoded"</js-code> : <js-code>URLSearchParams</js-code>/<js-code>FormData</js-code> ;
+💡 <script type="c-js">"Content-Type"</script> indique le type des données contenu dans le corps de la requête :
+- <script type="c-js">"text/plain"</script> : texte ;
+- <script type="c-js">"application/json"</script> : JSON ;
+- <script type="c-js">"application/octet-stream"</script> : données binaires.
+- <script type="c-js">"application/x-www-form-urlencoded"</script> : <script type="c-js">URLSearchParams</script>/<script type="c-js">FormData</script> ;
 
 `fetch()` retourne un `Response`, dont le contenu peut être lu via :
-- <js-code>await response.text()</js-code>
-- <js-code>await response.json()</js-code>
-- <js-code>await response.bytes()</js-code> : Uint8Array
-- <js-code>await response.formData()</js-code> : FormData
+- <script type="c-js">await response.text()</script>
+- <script type="c-js">await response.json()</script>
+- <script type="c-js">await response.bytes()</script> : Uint8Array
+- <script type="c-js">await response.formData()</script> : FormData
 
 ⚠ Le corps d'une réponse ne peut être lue qu'une seule fois.
-- <js-code>.bodyUsed</js-code> : indique si le corps a été lu.
-- <js-code>.clone()</js-code> : clone la réponse (permet ainsi plusieurs lectures).
+- <script type="c-js">.bodyUsed</script> : indique si le corps a été lu.
+- <script type="c-js">.clone()</script> : clone la réponse (permet ainsi plusieurs lectures).
 
 #### Status
 
@@ -245,7 +245,7 @@ Contrairement aux WebSockets, les *Server Send Events* ne permettent qu'une comm
 
 Le principe est très simple, il s'agit d'une requête et d'une réponse HTTP normales, à l'exception que la réponse HTTP est maintenue en vie (`keep-alive`) et est écrite petit à petit (`text/event-stream`). Le corps de la réponse suit le format suivant :
 
-```
+<script type="c-text">
 event: $EVENT_NAME
 data: $DATA
 
@@ -254,11 +254,11 @@ data: $DATA
 
 event: $EVENT_NAME
 data: $DATA
-```
+</script>
 
 Côté client, l'utilisation est très simple, il suffit d'écouter des événements d'un `EventSource`.
 
-```javascript
+<script type="c-js">
 // [JS] JavaScript
 
 // Client
@@ -295,7 +295,7 @@ app.get($URL, async function(req, res) {
 
     sse.dispatchEvent($EVENT_NAME, $DATA); // Envoyer un événement.
 });
-```
+</script>
 
 ### Upload/Download
 
@@ -365,18 +365,18 @@ Afin de rendre le code plus lisible, il est fréquent que les frameworks représ
 
 L'affichage d'une page Web se déroule usuellement de la sorte :
 
-```html
-<!DOCTYPE>
-<html>
-    <head>
-        <script src='...' defer></script>
-        <link rel='stylesheet' href='...'></link>
-    </head>
-    <body>
+<script type="c-html">
+    <!DOCTYPE>
+    <html>
+        <head>
+            <script src='...' defer><xscript>
+            <link rel='stylesheet' href='...'></link>
+        </head>
+        <body>
 
-    </body>
-</html>
-```
+        <xbody>
+    </html>
+</script>
 
 1. Le navigateur demande au serveur le fichier HTML correspondant à la page Web à afficher.
 

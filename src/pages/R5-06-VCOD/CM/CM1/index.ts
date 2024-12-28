@@ -1,2 +1,1 @@
-import LISS from "LISS";
-import "struct/menu.ts";
+import "../../../../../libs/LISS2/src/pages/docs/skeleton";
