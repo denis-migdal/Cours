@@ -1,0 +1,19 @@
+#!/usr/bin/bash
+
+VM_NAME="ASTerm"
+USER="zeus"
+IP="192.168.56.101"
+
+#AS_DIR=`pwd`/`dirname $0`
+
+VM_STATUS=`VBoxManage showvminfo "$VM_NAME" | grep State`
+if [[ "$VM_STATUS" != *"running"* ]]; then
+	VBoxManage startvm "$VM_NAME" --type headless
+fi
+
+IS_READY=`VBoxManage guestproperty get ASTerm VMReady`
+if [[ "$IS_READY" != "Value: true" ]]; then
+	VBoxManage guestproperty wait $VM_NAME VMReady
+fi
+
+xfce4-terminal --title ASTerm --color-bg "#400000" --hide-menubar -x ssh $USER@$IP

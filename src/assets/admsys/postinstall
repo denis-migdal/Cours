@@ -1,0 +1,502 @@
+#!/bin/bash
+## @file
+# Post installation script template for debian-like distros.
+#
+# Note! This script expects to be running w/o chroot.
+# Note! When using ubiquity, this is run after installation logs have
+#       been copied to /var/log/installation.
+#
+
+#
+# Copyright (C) 2017-2020 Oracle Corporation
+#
+# This file is part of VirtualBox Open Source Edition (OSE), as
+# available from http://www.virtualbox.org. This file is free software;
+# you can redistribute it and/or modify it under the terms of the GNU
+# General Public License (GPL) as published by the Free Software
+# Foundation, in version 2 as it comes in the "COPYING" file of the
+# VirtualBox OSE distribution. VirtualBox OSE is distributed in the
+# hope that it will be useful, but WITHOUT ANY WARRANTY of any kind.
+#
+
+
+#
+# Globals.
+#
+MY_TARGET="/target"
+MY_LOGFILE="${MY_TARGET}/var/log/vboxpostinstall.log"
+MY_CHROOT_CDROM="/cdrom"
+MY_CDROM_NOCHROOT="/cdrom"
+MY_EXITCODE=0
+MY_DEBUG="" # "yes"
+
+
+#
+# Do we need to exec using target bash?  If so, we must do that early
+# or ash will bark 'bad substitution' and fail.
+#
+if [ "$1" = "--need-target-bash" ]; then
+    # Try figure out which directories we might need in the library path.
+    if [ -z "${LD_LIBRARY_PATH}" ]; then
+        LD_LIBRARY_PATH="${MY_TARGET}/lib"
+    fi
+    for x in \
+        ${MY_TARGET}/lib \
+        ${MY_TARGET}/usr/lib \
+        ${MY_TARGET}/lib/*linux-gnu/ \
+        ${MY_TARGET}/lib32/ \
+        ${MY_TARGET}/lib64/ \
+        ${MY_TARGET}/usr/lib/*linux-gnu/ \
+        ${MY_TARGET}/usr/lib32/ \
+        ${MY_TARGET}/usr/lib64/ \
+        ;
+    do
+        if [ -e "$x" ]; then LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${x}"; fi;
+    done
+    export LD_LIBRARY_PATH
+
+    # Append target bin directories to the PATH as busybox may not have tee.
+    PATH="${PATH}:${MY_TARGET}/bin:${MY_TARGET}/usr/bin:${MY_TARGET}/sbin:${MY_TARGET}/usr/sbin"
+    export PATH
+
+    # Drop the --need-target-bash argument and re-exec.
+    shift
+    echo "******************************************************************************" >> "${MY_LOGFILE}"
+    echo "** Relaunching using ${MY_TARGET}/bin/bash $0 $*" >> "${MY_LOGFILE}"
+    echo "**   LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" >> "${MY_LOGFILE}"
+    echo "**              PATH=${PATH}" >> "${MY_LOGFILE}"
+    exec "${MY_TARGET}/bin/bash" "$0" "$@"
+fi
+
+
+#
+# Commands.
+#
+
+# Logs execution of a command.
+log_command()
+{
+    echo "--------------------------------------------------" >> "${MY_LOGFILE}"
+    echo "** Date:      `date -R`" >> "${MY_LOGFILE}"
+    echo "** Executing: $*" >> "${MY_LOGFILE}"
+    "$@" 2>&1 | tee -a "${MY_LOGFILE}"
+    MY_TMP_EXITCODE="${PIPESTATUS[0]}"
+    if [ "${MY_TMP_EXITCODE}" != "0" ]; then
+        if [ "${MY_TMP_EXITCODE}" != "${MY_IGNORE_EXITCODE}" ]; then
+            echo "** exit code: ${MY_TMP_EXITCODE}" | tee -a "${MY_LOGFILE}"
+            MY_EXITCODE=1;
+        else
+            echo "** exit code: ${MY_TMP_EXITCODE} (ignored)" | tee -a "${MY_LOGFILE}"
+        fi
+    fi
+}
+
+# Logs execution of a command inside the target.
+log_command_in_target()
+{
+    #
+    # We should be using in-target here, however we don't get any stderr output
+    # from it because of log-output. We can get stdout by --pass-stdout, but
+    # that's not helpful for failures.
+    #
+    # So, we try do the chroot prepping that in-target does at the start of the
+    # script (see below) and just use chroot here.
+    #
+    log_command chroot "${MY_TARGET}" "$@"
+    # log_command in-target --pass-stdout "$@" # No stderr output... :-(
+}
+
+# Checks if $1 is a command on the PATH inside the target jail.
+chroot_which()
+{
+    for dir in /bin /usr/bin /sbin /usr/sbin;
+    do
+        if [ -x "${MY_TARGET}${dir}/$1" ]; then
+            return 0;
+        fi
+    done
+    return 1;
+}
+
+#
+# Log header.
+#
+echo "******************************************************************************" >> "${MY_LOGFILE}"
+echo "** VirtualBox Unattended Guest Installation - Late installation actions" >> "${MY_LOGFILE}"
+echo "** Date:    `date -R`" >> "${MY_LOGFILE}"
+echo "** Started: $0 $*" >> "${MY_LOGFILE}"
+
+
+#
+# Setup the target jail ourselves since in-target steals all the output.
+#
+if [ -f /lib/chroot-setup.sh ]; then
+    MY_HAVE_CHROOT_SETUP="yes"
+    . /lib/chroot-setup.sh
+    if chroot_setup; then
+        echo "** chroot_setup: done" | tee -a "${MY_LOGFILE}"
+    else
+        echo "** chroot_setup: failed $?" | tee -a "${MY_LOGFILE}"
+    fi
+else
+    MY_HAVE_CHROOT_SETUP=""
+fi
+
+
+#
+# We want the ISO available inside the target jail.
+#
+if [ -d "${MY_TARGET}${MY_CHROOT_CDROM}" ]; then
+    MY_RMDIR_TARGET_CDROM=
+else
+    MY_RMDIR_TARGET_CDROM="yes"
+    log_command mkdir -p ${MY_TARGET}${MY_CHROOT_CDROM}
+fi
+
+if [ -f "${MY_TARGET}${MY_CHROOT_CDROM}/vboxpostinstall.sh" ]; then
+    MY_UNMOUNT_TARGET_CDROM=
+    echo "** binding cdrom into jail: already done" | tee -a "${MY_LOGFILE}"
+else
+    MY_UNMOUNT_TARGET_CDROM="yes"
+    log_command mount -o bind "${MY_CDROM_NOCHROOT}" "${MY_TARGET}${MY_CHROOT_CDROM}"
+    if [ -f "${MY_TARGET}${MY_CHROOT_CDROM}/vboxpostinstall.sh" ]; then
+        echo "** binding cdrom into jail: success"  | tee -a "${MY_LOGFILE}"
+    else
+        echo "** binding cdrom into jail: failed"   | tee -a "${MY_LOGFILE}"
+    fi
+    if [ "${MY_DEBUG}" = "yes" ]; then
+        log_command find "${MY_TARGET}${MY_CHROOT_CDROM}"
+    fi
+fi
+
+
+#
+# Debug
+#
+if [ "${MY_DEBUG}" = "yes" ]; then
+    log_command id
+    log_command ps
+    log_command ps auxwwwf
+    log_command env
+    log_command df
+    log_command mount
+    log_command_in_target df
+    log_command_in_target mount
+    #log_command find /
+    MY_EXITCODE=0
+fi
+
+
+#
+# Packages needed for GAs.
+#
+echo "--------------------------------------------------" >> "${MY_LOGFILE}"
+echo '** Installing packages for building kernel modules...' | tee -a "${MY_LOGFILE}"
+log_command_in_target apt-get -y install build-essential
+log_command_in_target apt-get -y install linux-headers-$(uname -r)
+
+
+#
+# GAs
+#
+@@VBOX_COND_IS_INSTALLING_ADDITIONS@@
+echo "--------------------------------------------------" >> "${MY_LOGFILE}"
+echo '** Installing VirtualBox Guest Additions...' | tee -a "${MY_LOGFILE}"
+MY_IGNORE_EXITCODE=2  # returned if modules already loaded and reboot required.
+log_command_in_target /bin/bash "${MY_CHROOT_CDROM}/vboxadditions/VBoxLinuxAdditions.run" --nox11
+log_command_in_target /bin/bash -c "udevadm control --reload-rules" # GAs doesn't yet do this.
+log_command_in_target /bin/bash -c "udevadm trigger"                 # (ditto)
+MY_IGNORE_EXITCODE=
+log_command_in_target usermod -a -G vboxsf "@@VBOX_INSERT_USER_LOGIN@@"
+@@VBOX_COND_END@@
+
+
+#
+# Test Execution Service.
+#
+@@VBOX_COND_IS_INSTALLING_TEST_EXEC_SERVICE@@
+echo "--------------------------------------------------" >> "${MY_LOGFILE}"
+echo '** Installing Test Execution Service...' | tee -a "${MY_LOGFILE}"
+log_command_in_target test "${MY_CHROOT_CDROM}/vboxvalidationkit/linux/@@VBOX_INSERT_OS_ARCH@@/TestExecService"
+log_command mkdir -p "${MY_TARGET}/opt/validationkit" "${MY_TARGET}/media/cdrom"
+log_command cp -R ${MY_CDROM_NOCHROOT}/vboxvalidationkit/* "${MY_TARGET}/opt/validationkit/"
+log_command chmod -R u+rw,a+xr "${MY_TARGET}/opt/validationkit/"
+if [ -e "${MY_TARGET}/usr/bin/chcon" -o -e "${MY_TARGET}/bin/chcon" -o -e "${MY_TARGET}/usr/sbin/chcon" -o -e "${MY_TARGET}/sbin/chcon" ]; then
+    MY_IGNORE_EXITCODE=1
+    log_command_in_target chcon -R -t usr_t "/opt/validationkit/"
+    MY_IGNORE_EXITCODE=
+fi
+
+# systemd service config:
+MY_UNIT_PATH="${MY_TARGET}/lib/systemd/system"
+test -d "${MY_TARGET}/usr/lib/systemd/system" && MY_UNIT_PATH="${MY_TARGET}/usr/lib/systemd/system"
+if [ -d "${MY_UNIT_PATH}" ]; then
+    log_command cp "${MY_TARGET}/opt/validationkit/linux/vboxtxs.service" "${MY_UNIT_PATH}/vboxtxs.service"
+    log_command chmod 644 "${MY_UNIT_PATH}/vboxtxs.service"
+    log_command_in_target systemctl -q enable vboxtxs
+
+# System V like:
+elif [ -e "${MY_TARGET}/etc/init.d/" ]; then
+
+    # Install the script.  On rhel6 scripts are under /etc/rc.d/ with /etc/init.d and /etc/rc?.d being symlinks.
+    if [ -d "${MY_TARGET}/etc/rc.d/init.d/" ]; then
+        MY_INIT_D_PARENT_PATH="${MY_TARGET}/etc/rc.d"
+        log_command ln -s "../../../opt/validationkit/linux/vboxtxs" "${MY_INIT_D_PARENT_PATH}/init.d/"
+    else
+        MY_INIT_D_PARENT_PATH="${MY_TARGET}/etc"
+        log_command ln -s    "../../opt/validationkit/linux/vboxtxs" "${MY_INIT_D_PARENT_PATH}/init.d/"
+    fi
+
+    # Use runlevel management script if found.
+    if chroot_which chkconfig; then     # Redhat based sysvinit systems
+        log_command_in_target chkconfig --add vboxtxs
+    elif chroot_which insserv; then     # SUSE-based sysvinit systems
+        log_command_in_target insserv vboxtxs
+    elif chroot_which update-rc.d; then # Debian/Ubuntu-based systems
+        log_command_in_target update-rc.d vboxtxs defaults
+    elif chroot_which rc-update; then   # Gentoo Linux
+        log_command_in_target rc-update add vboxtxs default
+    # Fall back on hardcoded symlinking.
+    else
+        log_command ln -s "../init.d/vboxtxs" "${MY_INIT_D_PARENT_PATH}/rc0.d/K65vboxtxs"
+        log_command ln -s "../init.d/vboxtxs" "${MY_INIT_D_PARENT_PATH}/rc1.d/K65vboxtxs"
+        log_command ln -s "../init.d/vboxtxs" "${MY_INIT_D_PARENT_PATH}/rc6.d/K65vboxtxs"
+        log_command ln -s "../init.d/vboxtxs" "${MY_INIT_D_PARENT_PATH}/rc2.d/S35vboxtxs"
+        log_command ln -s "../init.d/vboxtxs" "${MY_INIT_D_PARENT_PATH}/rc3.d/S35vboxtxs"
+        log_command ln -s "../init.d/vboxtxs" "${MY_INIT_D_PARENT_PATH}/rc4.d/S35vboxtxs"
+        log_command ln -s "../init.d/vboxtxs" "${MY_INIT_D_PARENT_PATH}/rc5.d/S35vboxtxs"
+    fi
+else
+    echo "** error: Unknown init script system." | tee -a "${MY_LOGFILE}"
+fi
+
+@@VBOX_COND_END@@
+
+
+#
+# Run user command.
+#
+@@VBOX_COND_HAS_POST_INSTALL_COMMAND@@
+echo '** Running custom user command ...'      | tee -a "${MY_LOGFILE}"
+log_command @@VBOX_INSERT_POST_INSTALL_COMMAND@@
+@@VBOX_COND_END@@
+
+log_command echo -e "allow-hotplug enp0s8\niface enp0s8 inet static\naddress 192.168.56.101" >> $MY_TARGET/etc/network/interfaces.d/VM_NETWORK
+
+# VMReady
+sed -e '/^session    optional     pam_motd.so/s/^/#/' -i $MY_TARGET/etc/pam.d/sshd
+
+echo "PrintLastLog no" >> $MY_TARGET/etc/ssh/sshd_config
+
+mkdir  $MY_TARGET/home/zeus/.ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCLj5tAoyG1xabz4OPOm3IFW/pn8ewVzuipx+NwhWogDXLbBAY6ls6AlJM6CwUFJRpMn16T5M5zCU2CGyOd8ZS2/6yyieRCjreQSY9oqhJrpOefLGV4gC3TGKQe8f+ttGQ1mnAzmNnI88bxFJvpq++dTREhfIpThb2csnrjs3m0YC3rmP3FiWrQAVvTf6uy4XFoTZ2/TSeIszuPmGZn+2esNo6SMtPIAAKDqphQEX4y8er7lsyzAwKNnSJGkYCQ/BjxxIVdrHG/FZdSITXya9Vi7k8Ui8R/cXP07HFO51F2wUPvxTgYBPN9GYwLhxWgju06TogOuHwrIEA7/wIqP2ENz7XWveSkUVOtdZEtYfB5Kwp2yfW4oA687P7z947Cqq4d6hQ5kdM3GcOuW4qz23/uWOaT2ocPRVcN1OvjWpqIlG8A46gf2UNxhDtBwHdvlWSG2KQppF8SEWXpwOc44KEM/hYtC2SfHllJDV/fFsA5xXj+MUozQv0GT68ErZTYe/X/WORm3wKc2ne0iWFSf0bVcT/EOtqknh8lEr1O9lBWrF0LNE5vcS5SNUaF9ueOkIRKf2dBBI1IfdsgAjKXF/vOqKYiyHINqLY5GJs/XGCvyHIFXCWfSDDLMfUNroyXdB1CygbpR91gDxRu/WlgFweR31LXwBegQ6Tlf4vUAeP/gw== demigda@demigda-Latitude-5400" >> $MY_TARGET/home/zeus/.ssh/authorized_keys
+
+cat > $MY_TARGET/etc/apt/sources.list <<- EOF
+deb https://deb.debian.org/debian stable main contrib non-free-firmware
+deb-src https://deb.debian.org/debian stable main contrib non-free-firmware
+
+deb https://deb.debian.org/debian-security/ stable-security/updates main contrib non-free-firmware
+deb-src https://deb.debian.org/debian-security/ stable-security/updates main contrib non-free-firmware
+
+deb https://deb.debian.org/debian stable-updates main contrib non-free-firmware
+deb-src https://deb.debian.org/debian stable-updates main contrib non-free-firmware
+EOF
+
+# echo 'alias ls="lsd --header"' >> $MY_TARGET/home/zeus/.bashrc
+cat >> $MY_TARGET/home/zeus/.bashrc <<- EOF
+alias ls="lsd --header"
+export HISTTIMEFORMAT="[%F %T] "
+INVITE_COLOR=32
+export PS1='\[\e[${INVITE_COLOR}m\]\[\e[1m\]\u@\h\[\e[22m\] \[\e[1m\]\[\e[22m\] \[\e[1;34m\]🗁  \w\e[0;${INVITE_COLOR}m\]
+\$ \[\e[0m\]'
+EOF
+
+log_command_in_target apt update
+log_command_in_target apt install fonts-font-awesome lsd
+
+# TODO...
+#parse_git_branch() {
+#     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+#}
+
+#export PS1="\u@\h \[\e[32m\]\w \[\e[91m\]\$(parse_git_branch)\[\e[00m\]\$ "
+
+#PS1="$PS1\[\e[32m\]"
+#PS0="\[\e[0m\]"
+
+mkdir -p $MY_TARGET/home/zeus/.config/lsd/
+cat >> $MY_TARGET/home/zeus/.config/lsd/config.yaml <<- EOF
+# == Classic ==
+# This is a shorthand to override some of the options to be backwards compatible
+# with `ls`. It affects the "color"->"when", "sorting"->"dir-grouping", "date"
+# and "icons"->"when" options.
+# Possible values: false, true
+classic: false
+
+# == Blocks ==
+# This specifies the columns and their order when using the long and the tree
+# layout.
+# Possible values: permission, user, group, context, size, date, name, inode, links, git
+blocks:
+  - permission
+  - user
+  - group
+  - size
+  - date
+  - name
+
+# == Color ==
+# This has various color options. (Will be expanded in the future.)
+color:
+  # When to colorize the output.
+  # When "classic" is set, this is set to "never".
+  # Possible values: never, auto, always
+  when: auto
+  # How to colorize the output.
+  # When "classic" is set, this is set to "no-color".
+  # Possible values: default, custom
+  # When "custom" is set, lsd will look in the config directory for `colors.yaml`.
+  theme: default
+
+# == Date ==
+# This specifies the date format for the date column. The freeform format
+# accepts a strftime like string.
+# When "classic" is set, this is set to "date".
+# Possible values: date, locale, relative, '+<date_format>'
+# `date_format` will be a `strftime` formatted value. e.g. `date: '+%d %b %y %X'` will give you a date like this: 17 Jun 21 20:14:55
+date: '+%Y-%M-%d %h:%m:%s'
+
+# == Dereference ==
+# Whether to dereference symbolic links.
+# Possible values: false, true
+dereference: false
+
+# == Display ==
+# What items to display. Do not specify this for the default behavior.
+# Possible values: all, almost-all, directory-only
+# display: all
+
+# == Icons ==
+icons:
+  # When to use icons.
+  # When "classic" is set, this is set to "never".
+  # Possible values: always, auto, never
+  when: auto
+  # Which icon theme to use.
+  # Possible values: fancy, unicode
+  theme: unicode
+  # Separator between icon and the name
+  # Default to 1 space
+  separator: "  "
+
+# == Ignore Globs ==
+# A list of globs to ignore when listing.
+# ignore-globs:
+#   - .git
+
+# == Indicators ==
+# Whether to add indicator characters to certain listed files.
+# Possible values: false, true
+indicators: false
+
+# == Layout ==
+# Which layout to use. "oneline" might be a bit confusing here and should be
+# called "one-per-line". It might be changed in the future.
+# Possible values: grid, tree, oneline
+layout: grid
+
+# == Recursion ==
+recursion:
+  # Whether to enable recursion.
+  # Possible values: false, true
+  enabled: false
+  # How deep the recursion should go. This has to be a positive integer. Leave
+  # it unspecified for (virtually) infinite.
+  # depth: 3
+
+# == Size ==
+# Specifies the format of the size column.
+# Possible values: default, short, bytes
+size: default
+
+# == Permission ==
+# Specify the format of the permission column
+# Possible value: rwx, octal, attributes (windows only), disable
+# permission: rwx
+
+# == Sorting ==
+sorting:
+  # Specify what to sort by.
+  # Possible values: extension, name, time, size, version
+  column: name
+  # Whether to reverse the sorting.
+  # Possible values: false, true
+  reverse: false
+  # Whether to group directories together and where.
+  # When "classic" is set, this is set to "none".
+  # Possible values: first, last, none
+  dir-grouping: none
+
+# == No Symlink ==
+# Whether to omit showing symlink targets
+# Possible values: false, true
+no-symlink: false
+
+# == Total size ==
+# Whether to display the total size of directories.
+# Possible values: false, true
+total-size: false
+
+# == Hyperlink ==
+# Attach hyperlink to filenames
+# Possible values: always, auto, never
+hyperlink: never
+
+# == Symlink arrow ==
+# Specifies how the symlink arrow display, chars in both ascii and utf8
+symlink-arrow: ⇒
+
+# == Header ==
+# Whether to display block headers.
+# Possible values: false, true
+header: true
+EOF
+
+# gdu : quota
+# trash-cli : trash
+# tldr
+
+# micro : meilleur éditeur (not working SSH)
+
+# pipx
+
+#
+# Unmount the cdrom if we bound it and clean up the chroot if we set it up.
+#
+if [ -n "${MY_UNMOUNT_TARGET_CDROM}" ]; then
+    echo "** unbinding cdrom from jail..." | tee -a "${MY_LOGFILE}"
+    log_command umount "${MY_TARGET}${MY_CHROOT_CDROM}"
+fi
+
+if [ -n "${MY_RMDIR_TARGET_CDROM}" ]; then
+    log_command rmdir "${MY_TARGET}${MY_CHROOT_CDROM}"
+fi
+
+if [ -n "${MY_HAVE_CHROOT_SETUP}" ]; then
+    if chroot_cleanup; then
+        echo "** chroot_cleanup: done"      | tee -a "${MY_LOGFILE}"
+    else
+        echo "** chroot_cleanup: failed $?" | tee -a "${MY_LOGFILE}"
+    fi
+fi
+
+
+#
+# Log footer.
+#
+echo "******************************************************************************" >> "${MY_LOGFILE}"
+echo "** Date:            `date -R`" >> "${MY_LOGFILE}"
+echo "** Final exit code: ${MY_EXITCODE}" >> "${MY_LOGFILE}"
+echo "******************************************************************************" >> "${MY_LOGFILE}"
+
+exit ${MY_EXITCODE}
