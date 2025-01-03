@@ -284,23 +284,6 @@ log_command @@VBOX_INSERT_POST_INSTALL_COMMAND@@
 log_command echo -e "allow-hotplug enp0s8\niface enp0s8 inet static\naddress 192.168.56.101" >> $MY_TARGET/etc/network/interfaces.d/VM_NETWORK
 
 # VMReady
-
-cat > $MY_TARGET/etc/systemd/system/VMReady.service <<- EOF
-[Unit]
-Description=VMReady
-After=sshd.target
-
-[Service]
-Type=simple
-User=root
-ExecStart=/usr/bin/VBoxControl guestproperty set VMReady true
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-ln -s /etc/systemd/system/VMReady.service $MY_TARGET/etc/systemd/system/multi-user.target.wants/VMReady.service
-
 sed -e '/^session    optional     pam_motd.so/s/^/#/' -i $MY_TARGET/etc/pam.d/sshd
 
 echo "PrintLastLog no" >> $MY_TARGET/etc/ssh/sshd_config
