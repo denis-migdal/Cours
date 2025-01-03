@@ -3,4 +3,4 @@ package-lock.json
 tsconfig.tsbuildinfo
 answers.*
 .~lock.*
-DS/cur/
+**/DS/cur/
