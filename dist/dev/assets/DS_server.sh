@@ -1,6 +1,8 @@
 #!/usr/bin/bash
 
-ROOT=$(dirname $(readlink -f $0))
+killall python3
+
+ROOT=$(dirname $(readlink -f "$0"))
 # ROOT="/tmp/auds/sujet/R 1-02 BDR/"
 
 IP=$(ip addr | awk '/inet/ && /eth0/{sub(/\/.*$/,"",$2); print $2}')
