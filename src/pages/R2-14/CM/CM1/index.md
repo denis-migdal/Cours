@@ -8,13 +8,7 @@
         <link rel="stylesheet" href="./index.css">
         <script type="module" src="./index.js" blocking="render"></script>
         <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3MBZCHX5K"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-E3MBZCHX5K');
-        </script>
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="633dd9f1-cfd6-4291-9617-99ac4e2a45cf"></script>
     </head>
     <body class="hide_h1">
         <header></header>
