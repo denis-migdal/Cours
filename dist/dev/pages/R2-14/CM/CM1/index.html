@@ -7,8 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="stylesheet" href="./index.css">
         <script type="module" src="./index.js" blocking="render"></script>
-        <!-- Google tag (gtag.js) -->
-        <script defer src="https://cloud.umami.is/script.js" data-website-id="633dd9f1-cfd6-4291-9617-99ac4e2a45cf"></script>
+        <script src="https://scripts.simpleanalyticscdn.com/latest.js" async></script>
     </head>
     <body class="hide_h1">
         <header></header>
