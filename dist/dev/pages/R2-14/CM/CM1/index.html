@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>CM3 (TW)</title>
+        <title>CM1 (AdmSys)</title>
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="stylesheet" href="./index.css">
@@ -11,14 +11,10 @@
     <body class="hide_h1">
         <header></header>
         <main>
-<img
-  src="https://queue.simpleanalyticscdn.com/noscript.gif?timezone=Europe%2FAmsterdam&unique=false"
-  referrerpolicy="no-referrer-when-downgrade"
-  alt=""
-/>
 
 <h1 id="commandes-shell">Commandes SHELL</h1>
-<h2 id="pourquoi-administrer-un-système-">Pourquoi administrer un système ?</h2>
+<h2 id="introduction">Introduction</h2>
+<h3 id="pourquoi-administrer-un-système-">Pourquoi administrer un système ?</h3>
 <p>L&#39;administration d&#39;un ordinateur a (entre autres) pour objectifs :</p>
 <ul>
 <li>d&#39;installer et de configurer les outils nécessaire à vos usages ;</li>
@@ -46,11 +42,54 @@
 <li>être capable d&#39;exploiter les documents fournis (e.g. cheat sheet) ;</li>
 <li>faire preuve de rigueur et de méthode.</li>
 </ul>
-<h2 id="les-lignes-de-commande">Les lignes de commande</h2>
+<h3 id="repl-et-scripts">REPL et scripts</h3>
+<p>Dans le cadre de vos cours précédents, vous avez déjà manipulé plusieurs langages de scripts (R, Python, SQL). Vous utilisiez alors un interpréteur (Rscript, python3, sqlite3) pour exécuter des instructions écrites dans ces langages.</p>
+<p>En Python, vous saisissiez vos instructions dans un fichier <script type="c-text">.py</script> qui était lu et exécuté par l&#39;interpréteur Python. On parlait alors de <em>script Python</em>.</p>
+<p>En revanche, en SQL, vous utilisiez une interface <em>REPL</em> (<em>Read-Eval-Print Loop</em>). Vous écriviez alors une ligne que sqlite3 lisait (<em>read</em>), interprétait (<em>eval</em>), puis vous en affichait le résultat (<em>print</em>). Après chaque exécution, l&#39;interpréteur vous affichait une <strong>invite</strong> (ici <script type="c-text">sqlite> </script>) pour vous indiquer que vous pouviez saisir une nouvelle instruction :</p>
+<script type="c-text">
+    sqlite> SELECT 1+1 as result;
+    ┌────────┐
+    │ result │
+    ├────────┤
+    │ 2      │
+    └────────┘
+    sqlite> 
+</script>
+
+<p>Les interpréteurs supportent bien souvent ces deux modes (scripts et REPL). Il est par exemple tout à fait possible de donner un fichier SQL à sqlite3, ou de lancer python3 en mode REPL :</p>
+<script type="c-python">
+    >>> print("Hello")
+    Hello
+</script>
+
+<p>Pour administrer un système Linux, on utilise principalement <em>Shell</em> (un autre langage de script), avec l&#39;interpréteur shell <em>Bash</em>. Comme pour les autres langages de script, il est possible de l&#39;utiliser avec des <em>scripts Shell</em>, mais aussi via une interface REPL.</p>
+<p>Cependant, le vocabulaire sera légèrement différent. On parlera de :</p>
+<ul>
+<li><em>ligne de commande</em> pour la ligne saisie puis lue par l&#39;interpréteur ;</li>
+<li><em>invite de commande</em> (<em>prompt</em>) pour l&#39;invite ;</li>
+<li><em>interface en lignes de commande</em> (<em>CLI</em>) pour l&#39;interface REPL.</li>
+</ul>
+<h3 id="pourquoi-les-lignes-de-commandes-">Pourquoi les lignes de commandes ?</h3>
+<p>On distingue 3 manières d&#39;intéragir avec un ordinateur :</p>
+<ul>
+<li><strong>CLI</strong> : interface <em>en lignes de commande</em> (<em>Command Line Interface</em>) ;</li>
+<li><strong>GUI</strong> : interface <em>graphique</em> (<em>Graphical User Interface</em>) ;</li>
+<li><strong>TUI</strong> : interface <em>textuelle</em> (<em>Text-based User Interface</em>).</li>
+</ul>
+<p>Pourquoi donc administrer un ordinateur en lignes de commande, plutôt que d&#39;utiliser une interface graphique ?</p>
+<p>La raison première est tout simplement qu&#39;il n&#39;y a pas nécessairement d&#39;interfaces graphiques installées sur l&#39;ordinateur. C&#39;est le généralement cas pour les serveurs afin d&#39;en économiser les ressources (GPU/CPU/RAM/réseau) et de réduire les surfaces d&#39;attaques.</p>
+<p>De plus, les interfaces en lignes de commandes comportent de nombreux avantages par rapport aux interfaces graphiques :</p>
+<ul>
+<li>on peut copier/coller des lignes de commandes (c&#39;est du texte).</li>
+<li>les lignes de commandes sont indépendantes de la langue de l&#39;utilisateur (i.e. pas de traductions).</li>
+<li>on a toute la puissance qu&#39;offre un langage de programmation (variables, conditions, boucles, etc).</li>
+<li>on peut automatiser une série d&#39;instructions en enregistrant les lignes de commandes dans un fichier (script).</li>
+</ul>
+<h2 id="le-shell">Le Shell</h2>
 <h3 id="la-ligne-de-commande">La ligne de commande</h3>
 <p>Une ligne de commande est une manière de formuler, par le biais d&#39;une ligne de texte, une instruction à exécuter. Elle est assimilable à l&#39;appel d&#39;une fonction, avec :</p>
 <ul>
-<li>une <strong>commande</strong> à exécuter ;</li>
+<li>une <strong>commande</strong> à exécuter (≈ une fonction à exécuter) ;</li>
 <li>des <strong>arguments</strong> passés en paramètres de la commande.</li>
 </ul>
 <p>🕮 Les <strong>arguments</strong> sont les <em>valeurs</em> qu&#39;on transmets (appel) aux <strong>paramètres</strong> d&#39;une commande/fonction (définition).</p>
@@ -59,40 +98,179 @@
 <li><i>Fonction python :</i> <script type="c-python">foo(1, 2, 3)</script> ;</li>
 <li><i>Ligne de commande :</i> <script type="c-bash">foo 1 2 3</script>.</li>
 </ul>
-<p>Quand l&#39;ordinateur interprète une ligne de commande, il exécute la commande indiquée par le premier élément, en lui transmettant ses arguments sous la forme d&#39;une liste. En soit, une commande n&#39;est rien de plus qu&#39;un exécutable (script ou programme). Vous pouvez ainsi écrire une commande en Python, et lui faire-faire ce que vous souhaitez :</p>
+<p>Quand l&#39;ordinateur interprète une ligne de commande, il exécute la commande indiquée par le premier élément, en lui transmettant les arguments sous la forme d&#39;une liste.</p>
+<h3 id="les-commandes">Les commandes</h3>
+<p>En soit, une commande n&#39;est rien de plus qu&#39;un exécutable (i.e. un script ou un programme). Vous pouvez ainsi créer une commande en écrivant un simple script Python :</p>
 <script type="c-python">
+    #!/usr/bin/env -S python3
     import sys
 
     print('args', sys.argv) # liste des arguments de la ligne de commande.
 </script>
 
 <p>⚠ <script type="c-python">sys.argv[0]</script> est le nom de la commande.</p>
-<p>🕮 Un <strong>script</strong> est un fichier texte <em>interprété</em> (e.g. Python), quand un <strong>programme</strong> est un fichier <em>compilé</em> (e.g. C/C++).</p>
-<h3 id="pourquoi-les-lignes-de-commandes-">Pourquoi les lignes de commandes ?</h3>
-<p>On distingue 3 manières d&#39;intéragir avec un ordinateur :</p>
+<script type="c-shell">
+    $ foo 1 2 3
+    args ['foo', '1', '2', '3']
+</script>
+
+<p>Vous noterez la première ligne un peu bizarre du script :</p>
+<script type="c-python">
+    #!/usr/bin/env -S python3
+</script>
+
+<p>Cette ligne est le <strong>Shebang</strong>. Il permet d&#39;indiquer à l&#39;ordinateur quel interpréteur utiliser pour exécuter le script (ici python3).<br/>
+Il est aussi possible d&#39;indiquer des arguments à transmettre à l&#39;interpréteur :</p>
+<script type="c-python">
+    #!/usr/bin/env -S <h>$INTERPRETEUR</h> <h>[$INTERPRETEUR_ARGS...]</h>
+</script>
+
+<h3 id="les-arguments">Les arguments</h3>
+<p>Comme nous l&#39;avons vu, une commande reçoit ses différents arguments sous la forme d&#39;un tableau. Elle peut ensuite les interpréter de manière totalement arbitraire.</p>
+<p>Il est cependant préférable d&#39;utiliser une bibliothèque dédiée (e.g. <a href="https://docs.python.org/3/library/argparse.html">argparse</a> en Python) qui fournira diverses fonctionnalités :</p>
 <ul>
-<li><strong>CLI</strong> : interface <em>en lignes de commande</em> (<em>Command Line Interface</em>) ;</li>
-<li><strong>GUI</strong> : interface <em>graphique</em> (<em>Graphical User Interface</em>) ;</li>
-<li><strong>TUI</strong> : interface <em>textuelle</em> (<em>Text-based User Interface</em>).</li>
+<li>interprétation des arguments (<em>arguments parsing</em>) ;</li>
+<li>détection et affichage des erreurs dans l&#39;usage de la commande ;</li>
+<li>génération automatique de la documentation de la commande.</li>
 </ul>
-<p>-&gt; no code</p>
-<p>-&gt; création + exhaustivité.</p>
-<p>-&gt; automatiser (programmer/reproduire/paramétrer - valeurs conditions loops) (si pas prévu) [possible ma casse gueule/couille] / non-interactif.
-    -&gt; série d&#39;instruction : une manière de les représenter.</p>
-<p>-&gt; création =&gt; plus rapide de créer une commande qu&#39;une interface graphique (+ergonomie, dispositions).
--&gt; automatiser (pour ensuite éventuellement programmer) ;
-    -&gt; manière d&#39;enregistrer ces opérations -&gt; donc un langage -&gt; donc on se mort la queue.
--&gt; liberté des options (difficile de faire des GUI exhaustives) ;
--&gt; chaîner des programmes différents (pas vu ici) [prendre sortie de l&#39;un en entrée d&#39;un autre]</p>
-<p>-&gt; multiple commandes : une commande fait une chose et une seule, et le fait bien.</p>
-<p>.</p>
-<p>-&gt; pas dispo (e.g. serveur)
-    -&gt; surface atk
-    -&gt; ressources (CPU/RAM) + network (txt vs image)</p>
-<h3 id="tui-terminal-shell-et-lignes-de-commandes">TUI, Terminal, shell, et lignes de commandes</h3>
+<p>Il suffit alors de déclarer les différents arguments de la commande et la bibliothèque se chargera alors du reste :</p>
+<script type="c-python">
+    import sys
+    from argparse import ArgumentParser
+
+    parser = ArgumentParser()
+
+    # déclarer ici les arguments de la commande
+
+    args = parser.parse_args(sys.argv[1:])
+    print(args) # les arguments après interprétation
+</script>
+
+<p>Les arguments/paramètres <strong>positionnels</strong> suivent le même principe qu&#39;en Python : le i-ème argument positionnel est mis dans le i-ème paramètre positionnel. Avec <a href="https://docs.python.org/3/library/argparse.html">argparse</a>, ils se déclarent ainsi :</p>
+<div class="flex-2">
+    <script type="c-python">
+        parser.add_argument("src")
+        parser.add_argument("dst")
+    </script>
+    <script type="c-shell">
+        $ foo 1 2
+        Namespace(src='1', dst='2')
+    </script>
+</div>
+
+<p>De même, les arguments/paramètres <strong>nommés</strong> fonctionnent de la même manière qu&#39;en Python. Ils ont cependant une syntaxe différente : <script type="c-bash">--<h>$NAME</h> <h>$VALUE</h></script> ou <script type="c-bash">--<h>$NAME</h>=<h>$VALUE</h></script>. Avec <a href="https://docs.python.org/3/library/argparse.html">argparse</a>, ils se déclarent ainsi :</p>
+<div class="flex-2">
+    <script type="c-python">
+        parser.add_argument("--faa")
+        parser.add_argument("--fuu")
+    </script>
+    <script type="c-shell">
+        $ foo --fuu 42 --faa=toto
+        Namespace(faa='toto', fuu='42')
+    </script>
+</div>
+
+<p>Petite nouveauté, les drapeaux (<em>flags</em>), où les paramètres sont des booléans mis à vrai ou faux en fonction de la présence de l&#39;argument. Avec <a href="https://docs.python.org/3/library/argparse.html">argparse</a>, ils se déclarent ainsi :</p>
+<div class="flex-2">
+    <script type="c-python">
+        parser.add_argument("--list",
+                            action="store_true")
+        parser.add_argument("--human",
+                            action="store_true")
+    </script>
+    <script type="c-shell">
+        $ foo --list
+        Namespace(list=True, human=False)
+        $ foo --list --human
+        Namespace(list=True, human=True)
+    </script>
+</div>
+
+<p>Il est aussi possible d&#39;associer une lettre à un paramètre. Il est alors possible de fusionner les arguments de drapeaux :</p>
+<div class="flex-2">
+    <script type="c-python">
+        parser.add_argument("-l", "--list",
+                            action="store_true")
+        parser.add_argument("-H", "--human",
+                            action="store_true")
+    </script>
+    <script type="c-shell">
+        $ foo -l
+        Namespace(list=True, human=False)
+        $ foo -lH
+        Namespace(list=True, human=True)
+    </script>
+</div>
+
+<p>Une fois les paramètres déclarés, vous pouvez alors utiliser la commande et en afficher l&#39;usage :</p>
+<script type="c-shell">
+$ foo --help
+usage: foo [-h] [--faa FAA] [--fuu FUU] [-l] [-H] src dst
+
+positional arguments:
+  src
+  dst
+
+options:
+  -h, --help   show this help message and exit
+  --faa FAA
+  --fuu FUU
+  -l, --list
+  -H, --human
+</script>
+
+<p>💡 <script type="c-text">[]</script> indique le caractère facultatif d&#39;un argument.</p>
+<p>💡 <script type="c-python">add_argument()</script> a de nombreux autres arguments notamment :</p>
 <ul>
-<li>TUI</li>
+<li><script type="c-python">help</script> pour ajouter une description au paramètre qui s'affichera dans l'usage.</li>
+<li><script type="c-python">type</script> pour convertir l'argument en un type python (e.g. booléen, int, etc).</li>
+<li><script type="c-python">choices</script> pour fixer les valeurs possibles pour l'argument.</li>
+<li><script type="c-python">default</script> pour fixer une valeur par défaut si l'argument n'est pas fourni.</li>
+<li><script type="c-python">required</script> pour indiquer si l'argument est requis.</li>
 </ul>
+<p>💡 <a href="https://docs.python.org/3/library/argparse.html">argparse</a> a encore bien d&#39;autres options que vous pourrez découvrir en lisant sa documentation.</p>
+<h3 id="espaces-dans-les-arguments">Espaces dans les arguments</h3>
+<p>Pour inclure un espace dans un argument, il convient de soit les échapper, soit de mettre le texte entre guillements simples :</p>
+<script type="c-shell">
+$ foo 'a b' c\ d
+Namespace(src='a b', dst='c d')
+</script>
+
+<p>💡 Il est aussi possible de ne mettre qu&#39;une partie de l&#39;argument entre guillements :</p>
+<script type="c-shell">
+$ foo a' 'b c\ d
+Namespace(src='a b', dst='c d')
+</script>
+
+<p>💡 <script type="c-bash">$'<h>$TXT</h>'</script> permet d&#39;interpréter les caractères échappés, e.g. :</p>
+<ul>
+<li><script type="c-text">\n</script> : retour à la ligne ;</li>
+<li><script type="c-text">\t</script> : tabulation ;</li>
+<li><script type="c-text">\e</script> : pour le formattage du texte (cf TP).</li>
+</ul>
+<script type="c-python">
+    # commande faa :
+    print( sys.argv[1] )
+</script>
+
+<div class="flex-2">
+    <script type="c-shell">
+        $ faa '-\n\t-'
+        -\n\t-
+    </script>
+    <script type="c-shell">
+        $ faa $'-\n\t-'
+        -
+            -
+    </script>
+</div>
+
+<h2 id="tui-terminal-et-shell">TUI, Terminal, et Shell</h2>
+<p>Term vs shell
+TUI ?</p>
+<p>Transformation des arguments</p>
+<p>Usage du shell/terminal</p>
+<h2 id="quelques-commandes-de-bases">Quelques commandes de bases</h2>
 <h3 id="attendus-rappeler-cmd">Attendus (rappeler cmd)</h3>
 <p>Objectif</p>
 <ul>
@@ -104,6 +282,66 @@
 <p>=&gt; concept vs par coeur comment faire.
 =&gt; compétences (aide docs/cheat sheet) vs connaissances par coeur.
 =&gt; suivre instructions</p>
+<h2 id="y">Y</h2>
+<p>xxx</p>
+<p>Contrairement à une application graphique, qui regroupe un ensemble de fonctionnalités cohérentes, chaque commande ne fait qu&#39;une seule chose, mais le fait bien. Par exemple, un logiciel graphique d&#39;administration de serveurs fournira diverses fonctionnalités pour e.g. :</p>
+<ul>
+<li>obtenir la liste des serveurs ;</li>
+<li>obtenir l&#39;état d&#39;un serveur donné ;</li>
+<li>démarrer un serveur donné ;</li>
+<li>mettre à jour un serveur ;</li>
+<li>etc.</li>
+</ul>
+<p>=&gt; pareil que fonctions.
+Dans le cadre d&#39;une interface en ligne de commande, chacune de ces fonctionnalités correspondra à une commande. Il est alors possible d&#39;automatiser une série d&#39;actions, e.g. démarrer, mettre à jour, puis éteindre un serveur donné :</p>
+<script type="c-python">
+    sid = 1
+
+    server_start (sid)
+    server_update(sid)
+    server_stop  (sid)
+</script>
+
+
+<p>-&gt; chaîner et paramétrer (pas vu ici). =&gt; S4 Test et auto en prog.</p>
+<p>-&gt; ajouter une option aisée :
+    --x -x
+    doc.
+    dictionnaire associatif
+    et traiter.
+    pas de mise en page, d&#39;écran trop chargé ou autre.</p>
+<h2 id="x">X</h2>
+<p>💡 Pour effectuer certaines actions, un executable peut utiliser des bibliothèques, mais aussi appeler d&#39;autres commandes :</p>
+<script type="c-python">
+    # Dans un script Python, exécuter la ligne de commande "foo 1 2 3".
+    print( shell_exec("foo 1 2 3") )
+</script>
+
+<details>
+    <summary>Cliquez pour afficher l'implémentation de <script type="c-python">shell_exec()</script></summary>
+    <script type="c-python">
+        from subprocess import run
+        #
+        def shell_exec(cmd, input=None,  env=None):
+            return run(cmd, input=input, env=env,
+                        executable="/usr/bin/bash",
+                        capture_output=True, text=True, shell=True, check=True)
+    </script>
+</details>
+
+<h3 id="réécritures-de-la-ligne-de-commande-alias--tard">Réécritures de la ligne de commande (alias + tard)</h3>
+<p>Avant d&#39;exécuter la ligne de commande, le shell (Bash) procède éventuellement à quelques réécritures de la ligne de commande. La commande <script type="c-bash">set -x</script> permet d&#39;afficher la ligne de commande réellement exécutée (<script type="c-bash">set +x</script> pour annuler) :</p>
+<script type='c-shell'>
+$ set -x
+$ foo a b
++ foo a b
+</script>
+
+<p>💡 <script type="c-bash">set -x</script> est aussi utilisé pour déboguer les scripts shell, en affichant l&#39;execution du script pas à pas.</p>
+<p>Cela est par exemple le cas lorsqu&#39;on utilise des <em>alias</em>, </p>
+<ul>
+<li>alias (unalias) + liste</li>
+</ul>
 </main>
     </body>
 </html>
