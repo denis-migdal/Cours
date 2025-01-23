@@ -19,8 +19,7 @@
     + TP:TP
         - TP1:TP1
         - TP2:TP2
-        - TP3:TP3
-        - TP4:TP4
+        - TP3-4:TP3-4
 + R3-13:[R 3-12] Identité Numérique
     + CM:CM
         - CM1:CM1

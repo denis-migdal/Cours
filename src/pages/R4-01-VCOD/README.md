@@ -9,3 +9,9 @@ Automatisation
 	-> regex
 	
 -> CI/CD (?)
+
+
+
+[SAE]
+- URL navigateur puis impl scripts python (args n°) => give name
+- idem prod, etc.
