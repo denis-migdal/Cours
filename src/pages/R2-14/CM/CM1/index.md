@@ -94,6 +94,15 @@ De plus, les interfaces en lignes de commandes comportent de nombreux avantages 
 
 ## Le Shell
 
+### L'invite de commande
+
+L'invite de commande (ou *prompt*) indique que l'utilisateur peut saisir une ligne de commande. Elle se termine généralement par <script type="c-shell">$</script> ou <script type="c-shell">#</script>, et peut être personnalisée. Par exemple <script type="c-shell">demigda@demigdal-Latitude-5400:~$</script> indique :
+- l'utilisateur (<script type="c-shell">demigda</script>) ;
+- le nom de l'ordinateur (<script type="c-shell">demigdal-Latitude-5400</script>) ;
+- le répertoire actuel (<script type="c-shell">~</script>), cf CM2.
+
+💡 <script type="c-shell">@</script> se lit "at" en anglais et indique un lieu. Par exemple une adresse mail *denis.migdal@uca.fr* signifie *"le compte <script type="c-text">denis.migdal</script> qui se trouve sur le serveur <script type="c-text">uca.fr</script>"*.
+
 ### La ligne de commande
 
 Une ligne de commande est une manière de formuler, par le biais d'une ligne de texte, une instruction à exécuter. Elle est assimilable à l'appel d'une fonction, avec :
@@ -266,7 +275,7 @@ Namespace(src='a b', dst='c d')
 💡 <script type="c-bash">$'<h>$TXT</h>'</script> permet d'interpréter les caractères échappés, e.g. :
 - <script type="c-text">\n</script> : retour à la ligne ;
 - <script type="c-text">\t</script> : tabulation ;
-- <script type="c-text">\e</script> : pour le formattage du texte (cf TP).
+- <script type="c-text">\e</script> : pour le formattage du texte (cf TP1).
 
 <script type="c-python">
     # commande faa :
@@ -285,97 +294,75 @@ Namespace(src='a b', dst='c d')
     </script>
 </div>
 
-## TUI, Terminal, et Shell
+## Le terminal
 
-Term vs shell
-TUI ?
+### Shell vs Terminal
 
-Transformation des arguments
+- Le *Shell* est le programme qui va **interpréter** et **exécuter** les commandes shell que vous entrerez.
 
-Usage du shell/terminal
+- Le *Terminal* (ou *console*) est l'interface graphique qui permet de faire le lien entre l'utilisateur et le Shell. Il vous permet d'écrire des *lignes de commandes* qui seront envoyées au *Shell*, puis d'en visualiser le résultat.
 
-## Quelques commandes de bases
+🕮 Historiquement, les premiers ordinateurs avaient la taille d'une pièce (e.g. 160m²). Des consoles constituées d'un clavier et d'un écran permettaient d’interagir avec l'ordinateur (mainframe). Vous pouvez voir le shell comme le mainframe, et le terminal comme la console permettant d'interagir avec le mainframe.
 
-### Attendus (rappeler cmd)
+### CLI vs TUI
 
-Objectif
-- liste d'étapes : être capable de suivre rigoureusement des instruction à partir des documents fournis (sujet, cheat sheet, etc).
-- pour cela comprendre les concepts sous-jacent / ce que vous faites, sans savoir tout par coeur.
-- .
+Vous pouvez utiliser deux types d'interfaces au sein d'un terminal :
+- **CLI** (*Command-Line Interface*) : lignes de commande.
+- **TUI** (*Terminal User Interface*) : interactif, avec le clavier et la souris.
 
-Il est attendu de vous que vous soyez capable de suivre de manière **rigoureuse** des instructions 
+<div class='flex-2'>
+    <div>
+        <center>
+            <strong>CLI</strong> (commande "tree")
+        </center>
+        <img src="../../../../assets/admsys/img/cli-example.png"/>
+    </div>
+    <div>
+        <center>
+            <strong>TUI</strong> (commande "gdu")
+        </center>
+        <img src="../../../../assets/admsys/img/tui-example.png"/>
+    </div>
+</div>
 
-=> concept vs par coeur comment faire.
-=> compétences (aide docs/cheat sheet) vs connaissances par coeur.
-=> suivre instructions
+💡 Les interfaces TUI sont moins "standard", mais sont plus ergonomiques. Dans le cadre de ce module, et afin de faciliter votre apprentissage, nous essayerons de proposer des alternatives ergonomique lorsque possible.
 
-## Y
+### Utilisation du terminal
 
-xxx
+Recopier à la main des commandes est sources d'erreurs et de fautes de frappe. Il convient d'utiliser autant que possible les 3 fonctionnalités suivantes :
 
-Contrairement à une application graphique, qui regroupe un ensemble de fonctionnalités cohérentes, chaque commande ne fait qu'une seule chose, mais le fait bien. Par exemple, un logiciel graphique d'administration de serveurs fournira diverses fonctionnalités pour e.g. :
-- obtenir la liste des serveurs ;
-- obtenir l'état d'un serveur donné ;
-- démarrer un serveur donné ;
-- mettre à jour un serveur ;
-- etc.
-
-=> pareil que fonctions.
-Dans le cadre d'une interface en ligne de commande, chacune de ces fonctionnalités correspondra à une commande. Il est alors possible d'automatiser une série d'actions, e.g. démarrer, mettre à jour, puis éteindre un serveur donné :
-
-<script type="c-python">
-    sid = 1
-
-    server_start (sid)
-    server_update(sid)
-    server_stop  (sid)
-</script>
+- **Copier-coller** le texte sélectionné :<br/>
+  ⚠ Copier (<script type="c-text">^+⇧+C</script>) et Coller (<script type="c-text">^+⇧+V</script>) s'effectuent avec un <script type="c-text">⇧</script>.<br/>
+  💡 Le clic-milieu ou clic-molette de la souris copie/colle le texte sélectionné.
+- **Auto-complétion** des commandes et chemins (<script type="c-text">⭾</script>).<br/>
+  💡 <script type="c-text">⭾+⭾</script> affiche les différentes possibilités d'auto-complétion.
+- **Historique** : <script type="c-text">↑</script> et <script type="c-text">↓</script> permettent de naviguer parmi l'historique des lignes de commandes tapées (et potentiellement de les réexécuter).<br/>
+  💡 <script type="c-text">←</script> et <script type="c-text">→</script> permettent ensuite de modifier la ligne de commande.
 
 
--> chaîner et paramétrer (pas vu ici). => S4 Test et auto en prog.
+⚠ <script type="c-text">^+C</script> permet d'arrêter une commande en cours d'exécution.
 
--> ajouter une option aisée :
-    --x -x
-    doc.
-    dictionnaire associatif
-    et traiter.
-    pas de mise en page, d'écran trop chargé ou autre.
+### Quelques commandes utiles
 
-## X
+#### La documentation
 
-💡 Pour effectuer certaines actions, un executable peut utiliser des bibliothèques, mais aussi appeler d'autres commandes :
+- <script type="c-bash">man  <h>$CMD</h></script> (<u>man</u>uel) : affiche la documentation de la commande <script type="c-bash"><h>$CMD</h></script>.
+- <script type="c-bash">tldr <h>$CMD</h></script> (<u>t</u>oo <u>l</u>ong : <u>d</u>idn't <u>r</u>ead) : version simplifiée de <script type="c-bash">man</script>.
+- <script type="c-bash">help <h>$CMD</h></script> : affiche la liste des commandes internes de bash.
 
-<script type="c-python">
-    # Dans un script Python, exécuter la ligne de commande "foo 1 2 3".
-    print( shell_exec("foo 1 2 3") )
-</script>
+#### Le terminal
 
-<details>
-    <summary>Cliquez pour afficher l'implémentation de <script type="c-python">shell_exec()</script></summary>
-    <script type="c-python">
-        from subprocess import run
-        #
-        def shell_exec(cmd, input=None,  env=None):
-            return run(cmd, input=input, env=env,
-                        executable="/usr/bin/bash",
-                        capture_output=True, text=True, shell=True, check=True)
-    </script>
-</details>
+- <script type="c-bash">clear</script> : replace l'invite de commande en haut de la fenêtre.
+- <script type="c-bash">reset</script> : efface complètement le contenu du terminal.
+- <script type="c-bash">exit</script> : quitte le terminal.
 
-### Réécritures de la ligne de commande (alias + tard)
+#### L'historique
 
-Avant d'exécuter la ligne de commande, le shell (Bash) procède éventuellement à quelques réécritures de la ligne de commande. La commande <script type="c-bash">set -x</script> permet d'afficher la ligne de commande réellement exécutée (<script type="c-bash">set +x</script> pour annuler) :
-<script type='c-shell'>
-$ set -x
-$ foo a b
-+ foo a b
-</script>
+- <script type="c-bash">history</script> : affiche l'historique des dernières lignes de commandes exécutées.
+- <script type="c-bash">!!</script> : réexécuter la dernière commande tapée.
+- <script type="c-bash">!<h>$CMD</h></script> : réexécute la dernière commande <script type="c-bash"><h>$CMD</h></script> entrée.
 
-💡 <script type="c-bash">set -x</script> est aussi utilisé pour déboguer les scripts shell, en affichant l'execution du script pas à pas.
-
-Cela est par exemple le cas lorsqu'on utilise des *alias*, 
-
-- alias (unalias) + liste
+## Accès à distance
 
 </main>
     </body>
