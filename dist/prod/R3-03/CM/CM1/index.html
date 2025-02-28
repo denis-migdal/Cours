@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>CM1 (TW)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+    </head>
+    <body>
+        <main>
+
+<h1 id="html5">HTML5</h1>
+<h2 id="introduction">Introduction</h2>
+<h3 id="pourquoi-apprendre-le-web-">Pourquoi apprendre le Web ?</h3>
+<p>Le Web est de nos jours omniprésent, que ce soit via des :</p>
+<ul>
+<li><strong>sites Web</strong> servant d&#39;outils de communication (e.g. portefolio, vitrine, documentation en ligne, etc.) ;</li>
+<li><strong>applications Web</strong> fournissant des services à des utilisateurs sans requérir d&#39;installation, et sans se soucier de la plateforme utilisée.</li>
+</ul>
+<p>En Sciences des Données, vous utilisez déjà (ou utiliserez) du Web pour des :</p>
+<ul>
+<li>formulaires en lignes (e.g. via Google form) ;</li>
+<li>exports Web de tableaux de bords ;</li>
+<li>productions de graphiques interactifs via Plotly, RShiny, etc.</li>
+</ul>
+<p>Il existe une pléthore d&#39;outils pour le Web. En tout premier lieu, il convient donc de choisir les bons outils pour les bons besoins, en fonction des contraintes du projet. Ces outils étant si nombreux, et en constante évolution, qu&#39;il n&#39;est pas possible de tous les étudier dans le cadre de cette formation.</p>
+<p>Il est ainsi nécessaire d&#39;apprendre les bases du Web afin que vous puissiez plus aisément vous adapter à de nouveaux outils, et les adapter à vos besoins et contraintes spécifiques (configurations, plugins, etc).</p>
+<p>La formation ayant une coloration Cybersécurité, nous verrons aussi quelques notions de sécurité Web, vous permettant d&#39;avoir un recul critique sur le Web.</p>
+<h3 id="doù-vient-le-web-">D&#39;où vient le Web ?</h3>
+<h4 id="la-problématique">La problématique</h4>
+<p>Nous sommes en 1990, Tim Berners-Lee travaille au CERN. À l&#39;époque, la documentation technique du CERN était rédigée via SGML, un méta-langage. SGML découpe les documents en 3 parties :</p>
+<ul>
+<li>le <strong>DTD</strong> (Document Type Definition) : la structure/le format du document.</li>
+<li>le <strong>contenu</strong> : les informations contenues dans le document.</li>
+<li>les <strong>feuilles de styles</strong> : comment afficher les informations.</li>
+</ul>
+<p>Le DTD permet l&#39;uniformisation des documents, permettant alors d&#39;aisément traiter des lots de documents, notamment pour des opérations d&#39;indexations, et de recherche.</p>
+<p>Les feuilles de styles, quant à elles permettent de séparer le contenu de la présentation. Les ingénieurs peuvent ainsi écrire plus efficacement le contenu technique sans se soucier de la mise en forme. On ajoute ensuite une feuille de style permettant un affichage uniformisé des informations, mais différencié en fonction du support (écran, feuille A4, livre, etc).</p>
+<p>À l&#39;époque, les chercheurs au CERN travaillaient sur plusieurs lieux géographiques différents. Il était alors nécessaire de partager de la documentation, à distance. Pour cela ils utilisaient un protocole d&#39;échange de fichiers à distance appelé <strong>FTP</strong> (File Transfert Protocol).</p>
+<p>Le problème est que certains documents faisaient référence à d&#39;autres. Pour cela les liens hypertextes sont très pratiques : dans le document, il suffit de cliquer sur le lien pour ouvrir le document référencé.</p>
+<p>Sauf que... les liens hypertextes ne marchent que pour des documents locaux, comment ouvrir des documents à distance ?</p>
+<p>Tim Berners-Lee va alors créer tout un ensemble d&#39;outils et de concepts afin de résoudre ce problème.</p>
+<h4 id="le-début-du-web">Le début du Web</h4>
+<p>En tout premier lieu, il faut pouvoir indiquer la ressource distante référencée, donc avoir un moyen de l&#39;identifier. Pour cela Tim Berners-Lee va créer le concept d&#39;<strong>URL</strong> (Unique Resource Locator), une chaîne de caractère référençant une ressource distante et structurée de la sorte : <script type="c-text"><h>$PROTO</h>://<h>$SERVER</h>/<h>$FILEPATH</h></script>. </p>
+<p>Il faut ensuite pouvoir récupérer cette ressource. Le problème est que FTP a été conçu pour télécharger/uploader des fichiers par lots. Il n&#39;est alors pas très adapté à des téléchargements ponctuels et temporaires de fichiers uniques. Tim Berners-Lee va alors créer <strong>HTTP</strong> (HyperText Transfert Protocol) qui permet d&#39;obtenir très simplement une ressource à partir de son URL.</p>
+<p>Tim Berners-Lee créée aussi le tout premier navigateur Web (<code>WorldWideWeb</code>) capable d&#39;accéder à des ressources distantes à partir de son URL. Il supporte alors les protocoles suivants :</p>
+<ul>
+<li><script type="c-text">http</script></li>
+<li><script type="c-text">ftp</script></li>
+<li><script type="c-text">file</script> : pour lire des ressources locales.</li>
+<li><script type="c-text">news</script> : un ancêtre des forums en ligne.</li>
+</ul>
+<p>Il ne reste alors plus qu&#39;à définir un type de document SGML qui pourra contenir des liens hypertextes URL, et qui s&#39;affichera dans le navigateur. Pour cela Tim Berners-Lee créée <code>HTML</code> (HyperText Markup Langage), une application de SGML.</p>
+<!--
+https://en.wikipedia.org/wiki/File_Transfer_Protocol#Differences_from_HTTP
+https://en.wikipedia.org/wiki/World_Wide_Web#History
+https://en.wikipedia.org/wiki/WorldWideWeb#History
+-->
+
+<h2 id="html">HTML</h2>
+<h3 id="les-balises-html">Les balises HTML</h3>
+<p>HTML est un langage permettant de décrire une <strong>structure</strong> via des <strong>balises</strong>, e.g. :</p>
+<ul>
+<li><script type="c-html"><br/></script> correspond à un retour à la ligne (*<u>br</u>eak line*).</li>
+<li><script type="c-html"><p>texte</p></script> correspond à un paragraphe (*<u>p</u>aragraph*).</li>
+</ul>
+<p>Les éléments qui ne peuvent avoir de contenu s&#39;écrivent avec une balise <strong>auto-fermante</strong> (<em>self-closing tag</em>) qui se présente sous la forme suivante : <script type="c-html"><<h>$NAME</h>/></script>.<br/></p>
+<script type="c-html"><h>$NAME</h></script> est le <b>nom de la balise</b> (<i>tag name</i>), il indique le type de l'élément HTML.
+
+<p>Les éléments qui peuvent avoir du contenu, e.g. un paragraphe peut contenir du texte, s&#39;écrivent sous la forme suivante : <script type="c-html"><<h>$NAME</h>><h>$CONTENT</h></<h>$NAME</h>></script></p>
+<ul>
+<li><script type="c-html"><<h>$NAME</h>></script> est la <b>balise ouvrante</b> (<i>opening tag</i>).</li>
+<li><script type="c-html"></<h>$NAME</h>></script> est la <b>balise fermante</b> (<i>closing tag</i>).</li>
+<li><script type="c-html"><h>$CONTENT</h></script> est le contenu de la balise.</li>
+</ul>
+<p>Vous remarquerez que HTML utilise <script type="c-html"><</script> et <script type="c-html">></script> pour marquer le début et la fin d&#39;une balise. Ainsi, <script type="c-html">soit y<x et y>0</script> est interprété par HTML comme étant une balise.</p>
+<p>Pour éviter cela, on va échapper les caractères utilisés par HTML via des entités HTML (<em>HTML entities</em>) :</p>
+<ul>
+<li><script type="c-html"><</script> devient <script type="c-html">&lt;</script> (<i><u>l</u>esser <u>t</u>han</i>) ;</li>
+<li><script type="c-html">></script> devient <script type="c-html">&gt;</script> (<i><u>g</u>reater <u>t</u>han</i>) ;</li>
+<li><script type="c-html">"</script> devient <script type="c-html">&quot;</script> (<i><u>quot</u>e</i>) ;</li>
+<li><script type="c-html">&</script> devient <script type="c-html">&amp;</script> (<i><u>amp</u>ersand</i>).</li>
+</ul>
+<p>💡 En HTML, les <strong>commentaires</strong> s&#39;écrivent ainsi : <script type="c-html"><!-- <h>$COMMENT</h> --></script></p>
+<h3 id="les-attributs-html">Les attributs HTML</h3>
+<p>Les <strong>attributs HTML</strong> (<em>HTML attribute</em>) permettent de configurer les éléments HTML :</p>
+<ul>
+<li><script type="c-html"><img src="<h>$URL</h>"/></script> affiche l'<u>im</u>a<u>g</u>e présente à l'URL indiquée par l'attribut <script type="c-html">src</script>.</li>
+<li><script type="c-html"><a href="<h>$URL</h>">lien</a></script> est un lien hypertexte pointant sur l'URL indiqué par l'attribut <script type="c-html">href</script>.</li>
+</ul>
+<p>Les attributs HTML sont indiqués dans la balise ouvrante (ou auto-fermante) de l&#39;élément HTML. Le nom de l&#39;attribut est précédé d&#39;un <script type="c-html">=</script> suivi de sa valeur entre guillemets.</p>
+<p>💡 Une même balise HTML peut contenir plusieurs attributs, séparés par un espace :</p>
+<ul>
+<li><script type="c-html"><a href="..." target="_blank">lien</a></script> : ouvrir dans un nouvel onglet.</li>
+<li><script type="c-html"><a href="..." type="text/csv" download="data.csv">lien</a></script>
+<ul>
+<li><script type="c-html">type</script> est le **type MIME** du fichier.</li>
+<li><script type="c-html">download</script> au clic, télécharge la ressource.</li>
+<li><script type="c-html">download="<h>$FILENAME</h>"</script> indique le nom par défaut du fichier téléchargé.</li>
+</ul>
+</li>
+</ul>
+<p>💡 Certains attributs n&#39;ont pas besoin de valeur et configurent l&#39;élément par leur seule présence. Ce sont les <strong>attributs booléens</strong> (<em>boolean attributes</em>), e.g. :</p>
+<ul>
+<li><script type="c-html"><a href="..." type="text/csv" download>lien</a></script></li>
+</ul>
+<p>Chaque type d&#39;élément HTML a sa propre liste d&#39;attributs qui permettent de le configurer. Il existe cependant des attributs appelés <strong>attributs universels</strong> (<em>global attributes</em>) communs à tous les éléments HTML, e.g. :</p>
+<ul>
+<li><script type="c-html">title</script> permet d'afficher une bulle d'information (<i>tooltip</i>) au survol de l'élément.</li>
+</ul>
+<h2 id="données-structurées">Données structurées</h2>
+<h3 id="listes">Listes</h3>
+<p>Une liste est un élément HTML qui contient plusieurs sous éléments (<em><u>l</u>ist <u>i</u>tem</em>). Les listes peuvent être ordonnées (<em><u>o</u>rdered <u>l</u>ist</em>) ou non (<em><u>u</u>nordered <u>l</u>ist</em>).</p>
+<div class="flex-2">
+    <div>
+    <script type="c-html">
+        <ul>
+            <li>Item A</li>
+            <li>Item B</li>
+        </ul>
+    </script>
+    </div>
+    <div>
+<ul>
+    <li>Item A</li>
+    <li>Item B</li>
+</ul>
+    </div>
+</div>
+
+<div class="flex-2">
+    <div>
+        <script type="c-html">
+            <ol>
+                <li>Item A</li>
+                <li>Item B</li>
+            </ol>
+        </script>
+    </div>
+    <div>
+<ol>
+    <li>Item A</li>
+    <li>Item B</li>
+</ol>
+    </div>
+</div>
+
+<h3 id="tableaux">Tableaux</h3>
+<p>Les tableaux (<em>table</em>) sont composés d&#39;un (ou plusieurs) corps (<em><u>t</u>able <u>b</u>ody</em>) contenant des lignes (<em><u>t</u>able <u>r</u>ow</em>), elles-même composée de cellules (<em><u>t</u>able <u>d</u>ata</em>) :</p>
+<div class="flex-2">
+    <div>
+    <script type="c-html">
+        <table>
+            <tbody>
+                <tr><td>A</td><td>B</td></tr>
+                <tr><td>C</td><td>C</td></tr>
+            </tbody>
+        </table>
+    </script>
+    </div>
+    <div>
+<table>
+    <tbody>
+        <tr><td>A</td><td>B</td></tr>
+        <tr><td>C</td><td>C</td></tr>
+    </tbody>
+</table>
+    </div>
+</div>
+
+<p>💡 Il est possible d&#39;ajouter les cellules d&#39;en-têtes (<u>t</u>able <u>h</u>eader), dans le corps de la table, mais aussi dans une en-tête (<u>t</u>able <u>head</u>er) ou un pied (<u>t</u>able <u>foot</u>er) :</p>
+<div class="flex-2">
+    <div>
+        <script type="c-html">
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>Nom</th></tr>
+                </thead>
+                <tbody>
+                    <tr><th>1</th><td>Pierre</td></tr>
+                    <tr><th>2</th><td>Paul</td></tr>
+                </tbody>
+            </table>
+        </script>
+    </div>
+    <div>
+<table>
+    <thead>
+        <tr><th>ID</th><th>Nom</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>1</td><td>Pierre</td></tr>
+        <tr><td>2</td><td>Paul</td></tr>
+    </tbody>
+</table>
+    </div>
+</div>
+
+<h3 id="structure-et-sémantique">Structure et sémantique</h3>
+<p>Par défaut, certains éléments HTML modifient l&#39;affichage du texte :</p>
+<table>
+    <thead>
+        <tr><td>HTML</td><td>Affichage</td><td>Sens</td></tr>
+    </thead>
+    <tbody>
+        <tr><td><script type="c-html"><strong>A</strong></script></td><td><strong>A</strong></td><td>important (<i><u>strong</u> importance</i>)</td></tr>
+        <tr><td><script type="c-html"><em>A</em></script></td><td><em>A</em></td><td>mis en valeur (<i><u>em</u>phasis</i>)</td></tr>
+        <tr><td><script type="c-html"><mark>A</mark></script></td><td><mark>A</mark></td><td>marqué</td></tr>
+        <tr><td><script type="c-html"><ins>A</ins></script></td><td><ins>A</ins></td><td>inséré (<i><u>ins</u>erted</i>)</td></tr>
+        <tr><td><script type="c-html"><del>A</del></script></td><td><del>A</del></td><td>supprimé  (<i><u>del</u>eted</i>)</td></tr>
+    </tbody>
+</table>
+
+<p>De la même manière, les balises <script type="c-html"><h1>A</h1></script> à <script type="c-html"><h6>A</h6></script> permettent d&#39;indiquer différents niveaux de titres.</p>
+<table>
+    <thead>
+        <tr><td>HTML</td><td>Affichage</td><td>Sens</td></tr>
+    </thead>
+    <tbody>
+        <tr><td><script type="c-html"><h1>A</h1></script></td><td><script type="html-output"><h1>A</h1></script></td><td>titre de niveau 1</td></tr>
+        <tr><td><script type="c-html"><h2>A</h2></script></td><td><script type="html-output"><h2>A</h2></script></td><td>titre de niveau 2</td></tr>
+        <tr><td><script type="c-html"><h3>A</h3></script></td><td><script type="html-output"><h3>A</h3></script></td><td>titre de niveau 3</td></tr>
+        <tr><td><script type="c-html"><h4>A</h4></script></td><td><script type="html-output"><h4>A</h4></script></td><td>titre de niveau 4</td></tr>
+        <tr><td><script type="c-html"><h5>A</h5></script></td><td><script type="html-output"><h5>A</h5></script></td><td>titre de niveau 5</td></tr>
+        <tr><td><script type="c-html"><h6>A</h6></script></td><td><script type="html-output"><h6>A</h6></script></td><td>titre de niveau 6</td></tr>
+    </tbody>
+</table>
+
+<p>⚠ Ils ne doivent pas être utilisés pour leur affichage par défaut, qui peut être modifié, mais pour leur <strong>sémantique</strong>, i.e. le <em>sens</em> qu&#39;ils donnent. </p>
+<p>⚠ Il ne doit y avoir qu&#39;un seul <script type="c-html"><h1>A</h1></script> par page.</p>
+<h3 id="sémantique-vs-affichage">Sémantique vs affichage</h3>
+<p>Pour rappel, HTML décrit la <strong>structure</strong> d&#39;une page Web, mais pas la manière dont les éléments doivent être affichés dans la page Web.</p>
+<p>Il est notamment possible d&#39;intégrer e.g. des données sous la forme de listes ou de tableaux. Cependant, les listes et les tableaux ne doivent être utilisés que pour décrire la structure des données. Ils ne doivent pas être utilisés pour positionner des éléments sur une page Web.</p>
+<p>Par exemple, pour afficher une liste d&#39;utilisateurs avec différentes propriétés (e.g. ID, nom, prénom, mails) on utilisera un tableau. En revanche, on évitera de l&#39;utiliser pour un ensemble d&#39;images s&#39;affichant sous la forme d&#39;une grille.</p>
+<p>Un tableau a un nombre de colonnes et de lignes fixe. Une grille quant à elle peut avoir un nombre de colonnes et de lignes variables afin d&#39;adapter l&#39;affichage à l&#39;espace disponible, e.g. lié à la largeur de l&#39;écran.</p>
+<h2 id="structure-dune-page-web">Structure d&#39;une page Web</h2>
+<h3 id="larbre-dom">L&#39;arbre DOM</h3>
+<p>Comme nous l&#39;avons vu, un élément HTML peut contenir du texte ou d&#39;autres éléments HTML. Il est d&#39;ailleurs très fréquent d&#39;utiliser les <strong>conteneurs génériques</strong> :</p>
+<ul>
+<li><script type="c-html"><div>...</div></script> pour grouper un contenu dans un "bloc".</li>
+<li><script type="c-html"><span>...</span></script> se comporte comme du texte inséré à la ligne courante.</li>
+</ul>
+<div class="flex-2">
+    <script type="c-html">
+        <div>
+            A
+            <div>B</div>
+            C
+        </div>
+        <div>
+            D
+            <span>E</span>
+            F
+        </div>
+    </script>
+    <div>
+        <div>
+            A
+            <div>B</div>
+            C
+        </div>
+        <div>
+            D
+            <span>E</span>
+            F
+        </div>
+    </div>
+</div>
+
+<p>On peut représenter cette hiérarchie sous la forme d&#39;un arbre, appelé <strong>arbre DOM</strong> où chaque élément HTML est associé à un noeud (<em>node</em>), et a pour fils son contenu :</p>
+<div class="flex-2">
+    <script type="c-html">
+        <div>
+            A
+            <div>B</div>
+            C
+        </div>
+        <div>
+            D
+            <span>E</span>
+            F
+        </div>
+    </script>
+    <div>
+<pre><code>Document
+├── div
+│   ├── A
+│   ├── div
+│   │   └── B
+│   └── C
+└── div
+    ├── D
+    ├── span
+    │   └── E
+    └── F
+</code></pre>
+    </div>
+</div>
+
+<p>On utilise alors la terminologie suivante :</p>
+<div>
+    <div><b>Racine</b> (<i>root</i>) : le tout premier noeud de l’arbre.</div>
+    <div><pre>Racine
+├── ...
+...
+</pre>
+    </div>
+    <div><b>Père/Fils</b> (<i>parent/child</i>) : noeud (père) contenant d'autres noeuds (fils).</div>
+    <div><pre>Parent
+├── Enfant
+...
+</pre>
+    </div>
+    <div><b>Ancêtre/descendant</b> (<i>ancestor/descendant</i>) : père, ou père d'un ancêtre, (ancêtre) d'un autre noeud (descendant).</div>
+    <div><pre>Ancêtre
+├── Descendant
+... ├── Descendant
+   ...
+</pre>
+    </div>
+    <div><b>Frères</b> (siblings) : noeuds de même père.</div>
+    <div><pre>...
+├── Frère
+└── Frère
+</pre>
+    </div>
+</div>
+
+<h3 id="inspecter-une-page-web">Inspecter une page Web</h3>
+<ul>
+<li>inspecteur / sélecteurs</li>
+</ul>
+<p>Afficher/inspecter l&#39;arbre DOM de la page</p>
+<ul>
+<li>attributs globaux class/id</li>
+<li>sélecteurs (#, .)</li>
+</ul>
+<p>Attributes
+        =&gt; id et #id (unique)
+        =&gt; class : pas besoin unique, séparés par un espace.
+    =&gt; selecteurs + outils ? (inspecteur : all vs clic element - TP?)
+        =&gt; + tagname + #id + .class (+ de choses + tard)
+        =&gt; + attr [attr] / [attr=&quot;&quot;] + plein d&#39;autres, pas la peine de retenir par coeur.
+        =&gt; sémantique (e.g. <article>)</p>
+<h3 id="le-format-dune-page-web">Le format d&#39;une page Web</h3>
+<p>Jusqu&#39;à présent, nous avons vu des éléments HTML permettant de définir le <strong>corps</strong> (contenu) d&#39;une page Web. Cependant une page Web est composée de :</p>
+<ul>
+<li>une <strong>en-tête</strong> (<em>head</em>) définissant les <em>méta-données</em> de la page Web.</li>
+<li>un <strong>corps</strong> (<em>body</em>) définissant le <em>contenu</em> de la page Web.</li>
+</ul>
+<p>Les pages Web suivent ainsi la structure suivante :</p>
+<script type="c-html">
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <title>Page title</title>
+        </head>
+        <body>
+            <!-- CONTENT -->
+        </body\>
+    </html>
+</script>
+
+<p>💡 <script type="c-html"><!DOCTYPE html></script> indique le type du fichier (<u>doc</u>ument <u>type</u>).</p>
+<p>💡 <script type="c-html"><html></html></script> est le noeud racine, aussi appelé la <strong>racine</strong> (<em>root</em>).</p>
+<h2 id="encore-plus-de-balises-et-attributs">Encore plus de balises et attributs...</h2>
+<h3 id="la-documentation">La documentation</h3>
+<p>Le langage HTML contient une pléthore de balises (&gt;135) et d&#39;attributs (&gt;131) différents. Cependant, toutes les balises et tous les attributs ne sont pas à utiliser, certains sont :</p>
+<ul>
+<li><strong>obsolètes</strong> ;</li>
+<li>pas <strong>standards</strong> ;</li>
+<li><strong>expérimentaux</strong> (changements futurs possibles) ;</li>
+<li>pas supportés par tous les navigateurs.</li>
+</ul>
+<p>💡 La <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element">documentation MDN</a> est très utile pour vérifier les attributs que prend un élément HTML donné.</p>
+<p>💡 Le site <a href="https://caniuse.com/?search=portal">caniuse</a> permet de rechercher si un élément ou un attribut est supporté par les navigateurs, et à partir de quelle version.</p>
+<h3 id="balises-sémantiques-et-seo">Balises sémantiques et SEO</h3>
+<p>Beaucoup d&#39;éléments HTML sont en réalité &quot;identiques&quot; et se distinguent que par leur <strong>sémantique</strong>, e.g. :</p>
+<ul>
+<li><script type="c-html"><thead></thead></script> : en-tête de tableau.</li>
+<li><script type="c-html"><tbody></tbody></script> : corps de tableau.</li>
+<li><script type="c-html"><tfoot></tfoot></script> : pied de tableau.</li>
+</ul>
+<p>Ces deux éléments sont en réalité identiques dans leur affichage et comportement, leur seule différence est dans le nom de la balise.</p>
+<p>De la même manière, les éléments <script type="c-html"><strong>A</strong></script>, <script type="c-html"><em>A</em></script>, etc. ont juste un affichage par défaut différent. Affichage qui peut être aisément modifié et interverti.</p>
+<p>💡 L&#39;avantage d&#39;avoir des noms différents est de rendre le code HTML plus explicite, facilitant sa lecture par les machines et les humains. Cependant, à votre niveau, il n&#39;est pas utile de trop en accorder d&#39;importance.</p>
+<p>💡 La facilitation de la compréhension de la structure de votre page Web par des machines (e.g. quel est le titre de la page, quels sont les mots clefs importants, etc), impact notamment le SEO (<u>S</u>earch <u>E</u>ngine <u>O</u>ptimization).</p>
+<h3 id="accessibilité">Accessibilité</h3>
+<p>HTML offre aussi de nombreux attributs afin de faciliter l&#39;accessibilité de vos pages Web, notamment aux personnes souffrant d&#39;handicaps visuels ou moteur.</p>
+<p>L&#39;accessibilité est un métier à part entière, il n&#39;est donc pas attendu de vous que vous produisiez des pages Web accessibles.</p>
+<h3 id="les-composants-web">Les composants Web</h3>
+<p>Comme si cela ne suffisait pas, vous pouvez aussi créer vos propres éléments HTML personnalisés (<em>custom elements</em>).</p>
+<p>Imaginez par exemple une page Web affichant une liste de produits. Chaque produit est structuré et affiché de la même manière avec une image, un nom, et un prix :</p>
+<script type="c-html">
+    <div class="produit">
+        <strong class="nom">Pizza</strong>
+        <img src="/assets/pizza.jpg"/>
+        <div class="prix">16€</div>
+    </div>
+</script>
+
+<p>Vous pourriez copier-coller la même structure pour chaque produit, mais cela comporte de nombreux défauts :</p>
+<ul>
+<li>pour en changer la structure, il faudra tous les modifier (avec risques d&#39;oublie).</li>
+<li>le code HTML devient très lourd et verbeux.</li>
+</ul>
+<p>Pour éviter cela, vous pouvez définir votre propre élément personnalisé :</p>
+<script type="c-html">
+    <prod-card nom="Pizza" prix="16"></prod-card>
+</script>
+
+<p>Ces éléments personnalisés (<em>custom elements</em>) sont créés en associant un nom de balise (doit contenir un <script type="c-html">-</script>) à un composants Web (<em>Web Components</em>) dont vous définirez le contenu en HTML :</p>
+<script type="c-html">
+    <div class="produit">
+        <strong class="nom">${name}</strong>
+        <img src="/assets/${name}.jpg"/>
+        <div class="prix">${price}€</div>
+    </div>
+</script>
+
+<p>Le navigateur remplira alors automatiquement chacun de vos éléments personnalisés par le contenu que vous aurez spécifié. Cela présente de nombreux avantages :</p>
+<ul>
+<li>rend le code plus lisible et explicite.</li>
+<li>permet d&#39;organiser son code en différents modules/fichiers.</li>
+<li>permet une arborescence de projet plus explicite.</li>
+<li>évite les problèmes liés à la duplication de code.</li>
+<li>performances améliorées (temps de téléchargement et vitesse d&#39;exécution).</li>
+</ul>
+<p>💡 Il existe de très nombreuses bibliothèques/framework Web permettant de définir des composants Web. Dans le cadre de ce module, on utilisera LISS à des fins pédagogique pour simplifier la création de vos propres composants Web.</p>
+<p>⚠ Les balises auto-fermantes ne sont pas supportées par les composants Web.</p>
+<h1 id="x">X</h1>
+<h2 id="cm1">CM1</h2>
+<ul>
+<li><p><a href="https://developer.mozilla.org/docs/Web/HTML">https://developer.mozilla.org/docs/Web/HTML</a></p>
+</li>
+<li><p><a href="https://www.w3schools.com/html/">https://www.w3schools.com/html/</a>
+▶ La documentation :
+▶ <a href="https://developer.mozilla.org/docs/Web/HTML">https://developer.mozilla.org/docs/Web/HTML</a>
+▶ <a href="https://www.w3schools.com/html/">https://www.w3schools.com/html/</a>
+▶ Les cours :
+▶ <a href="https://developer.mozilla.org/docs/Learn/HTML/">https://developer.mozilla.org/docs/Learn/HTML/</a>
+Introduction_to_HTML/Getting_started
+▶ Les exemples :
+▶ <a href="https://www.w3schools.com/html/html_examples.asp">https://www.w3schools.com/html/html_examples.asp</a>
+▶ Les r ´ef ´erences :
+▶ <a href="https://developer.mozilla.org/docs/Web/HTML/Element">https://developer.mozilla.org/docs/Web/HTML/Element</a>
+▶ <a href="https://www.w3schools.com/tags/ref_byfunc.asp">https://www.w3schools.com/tags/ref_byfunc.asp</a></p>
+</li>
+<li><p>inspecteur HTML (h4ck cf US)
+▶ Inspecteur : DOM (FF: ctrl + + I / Chr: ctrl + + C ).</p>
+</li>
+</ul>
+<p>-&gt; en-tête (méta-donnée) 
+    -&gt; base (sous-sites) + URI abs/relatif + #?
+💡 Le lien peut être <strong>absolu</strong> (commençant par <code>/</code>) ou <strong>relatif</strong> (commençant par <code>./</code>).<br/>
+💡 Pour les <strong>liens externes</strong>, l&#39;URL doit être précisée, e.g. <code>&quot;https://foo.fr/faa&quot;</code>.
+    -&gt; meta charset (autres méta-données)
+    [onglet] :
+    -&gt; title
+    -&gt; link favicon
+    + juste évoquer + preview (discord/fb/google) -&gt; pas normalisé
+        - &quot;og:&quot; (Discord) [title/desc/image/type/url]
+        - &quot;twitter:&quot;
+        - &quot;description&quot; : google</p>
+</main>
+    </body>
+</html>

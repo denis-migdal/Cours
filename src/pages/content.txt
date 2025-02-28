@@ -1,0 +1,41 @@
++ R1-01:[R 1-01] Tableur et Reporting
+    + CM:CM
+        - CM1:CM1
++ R1-02:[R 1-02] Bases de Données Relationnelles 1
+    + CM:CM
+        - CM1:CM1
++ R2-14:🔒 [R 2-14] Administration Système
+    + CM:CM
+        - CM1:CM1
+    + Fiches:Fiches
+        - A:Construire ASTerm
++ R3-03:🌐 [R 3-03] Technologies Web
+    + CM:CM
+        - CM1:I. HTML5
+        - CM2:II. CSS3
+        - CM3:III. Code côté client
+        - CM4:IV. Architecture client/serveur
+        - CM5:V. Formulaires ?
+    + TP:TP
+        - TP1:TP1
+        - TP2:TP2
+        - TP3-4:TP3-4
++ R3-13:🔒 [R 3-12] Identité Numérique
+    + CM:CM
+        - CM1:CM1
+    + DS:DS
+        - cur:2024-2024
++ R5-06-VCOD:🖳 [R 5-06-VCOD] Developpement Logiciel
+    + CM:CM
+        - CM1:I. Motivations au développement logiciel
+        - CM2:II. Git
+    + DS:DS
+        - cur:2024-2024
++ R5-07-VCOD:🌐 [R 5-07-VCOD] Programmation Web pour la Visualisation
+    + CM:CM
+        - CM1:CM1
+    + DS:DS
+        - cur:2024-2024
+- https://liss.migdal.ovh/:📚 LISS
+- https://vshs.migdal.ovh/:📚 VSHS
+- https://chartshtml.migdal.ovh/:📚 ChartsHTML

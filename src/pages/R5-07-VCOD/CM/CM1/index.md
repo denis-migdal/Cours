@@ -2,14 +2,13 @@
 <html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>CM1 (Dev Log)</title>
-		<meta name="color-scheme" content="dark light">
+        <title>CM1 (PWV)</title>
+        <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="stylesheet" href="./index.css">
-        <script type="module" src="./index.js" blocking="render"></script>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
     </head>
-    <body class="hide_h1">
-        <header></header>
+    <body>
         <main>
 
 ⚠ [Draft] Document en cours de rédaction.

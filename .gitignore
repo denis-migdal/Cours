@@ -1,6 +1,8 @@
+build/TS
 node_modules/
 package-lock.json
-tsconfig.tsbuildinfo
+dist/dev
 answers.*
 .~lock.*
 **/DS/cur/
+todo.md

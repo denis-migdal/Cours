@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>TP1 (Web1)</title>
-        <link rel="stylesheet" href="./index.css">
-        <script type="module" src="./index.js" defer></script>
+        <meta charset="utf8"/>
+        <title>TP1 (TW)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
     </head>
     <body>
-        <header></header>
         <main>
 
 # TP1 : HTML5

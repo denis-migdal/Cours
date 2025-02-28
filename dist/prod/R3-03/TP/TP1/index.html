@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>TP1 (TW)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+    </head>
+    <body>
+        <main>
+
+<h1 id="tp1--html5">TP1 : HTML5</h1>
+<h2 id="consignes">Consignes</h2>
+<p><tp-consignes></tp-consignes></p>
+<h2 id="visual-studio-code">Visual Studio Code</h2>
+<p>Dans le cadre des modules de Web, nous utiliserons l&#39;IDE <em>Visual Studio Code</em>.</p>
+<h3 id="installation-de-visual-studio-code">Installation de Visual Studio Code</h3>
+<p>Visual Studio Code est déjà installé sur vos postes de travail UCA.</p>
+<p>Si vous utilisez un poste de travail personnel, suivez les instructions ci-dessous :</p>
+<ul>
+<li><em>Si vous bénéficiez des droits d’administration sur votre poste de travail :</em><ol>
+<li><a href="https://code.visualstudio.com/download">Téléchargez l’installateur</a> (.deb pour Linux).</li>
+<li>Installez le paquet (<shell-code>dpkg -i code_*.deb</shell-code>).</li>
+<li>S’il manque des dépendances, installez-les (<shell-code>apt -f install</shell-code>).</li>
+</ol>
+</li>
+<li><em>Sinon :</em><ol>
+<li><a href="https://code.visualstudio.com/download">Téléchargez le .tar.gz</a> (64bits) pour Linux.</li>
+<li>Décompressez le .tar.gz dans un dossier <shell-code class="d4rk"><var>$DIR</var></shell-code>.</li>
+<li>Ajoutez le dossier <shell-code class="d4rk"><var>$DIR</var>/VSCode-linux-arm64/bin/</shell-code> à votre <shell-code class="d4rk"><var>$PATH</var></shell-code>.</li>
+</ol>
+</li>
+</ul>
+<h3 id="configuration-de-visual-studio-code">Configuration de Visual Studio Code</h3>
+<ol>
+<li>Dans un terminal, lancez Visual Studio Code via la commande <shell-code>code</shell-code>.<br/>
+⚠ Sur les postes de travail UCA, vous ne pourrez pas installer les extensions si vous lancez Visual Studio Code via l’interface graphique <em>(problèmes de variables d’environnements mal non-définies)</em>.</li>
+<li>Ouvrez la barre latérale des extensions via <key-shortcut>Ctrl+⇧+X</key-shortcut></li>
+<li>Recherchez, puis installez les extensions suivantes :<ol>
+<li><em>HTMLHint</em> : améliore l’affichage du code HTML dans l’éditeur.</li>
+<li><em>Live server</em> : permet de visualiser votre site en temps réel.</li>
+</ol>
+</li>
+</ol>
+<h3 id="utilisation-de-visual-studio-code">Utilisation de Visual Studio Code</h3>
+<p>Vous pouvez alors ouvrir un dossier dans Visual Studio Code :</p>
+<ol>
+<li><em>à partir de Visual Studio Code</em> :<br/>
+<code>Fichier -&gt; Ouvrir le dossier</code>.</li>
+<li><em>à partir d&#39;un explorateur de fichier</em> en cliquant-droit sur le dossier puis :<br/>
+  <code>Ouvrir avec -&gt; Visual Studio Code</code>.</li>
+</ol>
+<p>Vous pouvez alors visualiser et manipuler l&#39;arborescence de votre projet via la barre latérale gauche.</p>
+<p>💡 Pour lancer votre projet dans un navigateur, cliquez sur &quot;Go live&quot; en bas à droite.</p>
+<p>Visual Studio Code offre aussi les fonctionnalités suivantes :</p>
+<ol>
+<li>Auto-complétion.</li>
+<li>Un accès à la documentation MDN au survol d’une balise.</li>
+<li>Réduire/ouvrir les balises <em>(via les petits triangles à gauche des n° de lignes)</em>.</li>
+<li>Navigation dans l&#39;arborescence d&#39;un fichier via la barre au-dessus de l&#39;éditeur.</li>
+</ol>
+<p>Il vous est recommandé d’organiser votre espace de travail de la sorte :</p>
+<ul>
+<li><em>Bureau 1</em> :<ul>
+<li>à gauche, Visual Studio Code</li>
+<li>à droite, votre site Web.</li>
+</ul>
+</li>
+<li><em>Bureau(x) 2+</em> : Le sujet de TP, la documentation, votre cours, etc.</li>
+</ul>
+<h2 id="votre-premier-composant-web">Votre premier composant Web</h2>
+<h3 id="ouvrir-le-projet">Ouvrir le projet</h3>
+<ol>
+<li>Téléchargez, puis décompressez l&#39;archive <a href="../../../../assets/web/W1-TP1.zip">Site Web</a>.</li>
+<li>Ouvrez le dossier dans Visual Studio Code, puis lancez <code>Go Live</code>.</li>
+<li>Vous devriez alors voir un texte s&#39;afficher dans la page Web.</li>
+</ol>
+<p>💡 Le dossier ainsi ouvert est alors la racine (<em>root dir</em>) <shell-code>$ROOT</shell-code> de votre site Web.<br/>
+Dans le navigateur, il correspondra à l&#39;URL <code>http://localhost:5000/</code>.</p>
+<p>Pour rappel, une URL suit la forme suivante : <shell-code class="d4rk"><var>$PROTO</var>//<var>$HOST</var>/<var>$PATHNAME</var></shell-code> :</p>
+<ul>
+<li><shell-code class="d4rk"><var>$PROTO</var></shell-code> : le protocole, ici <shell-code>http:</shell-code>.</li>
+<li><shell-code class="d4rk"><var>$HOST</var></shell-code> : l&#39;hôte, indique l&#39;adresse du serveur Web (où le joindre).</li>
+<li><shell-code class="d4rk"><var>$PATHNAME</var></shell-code> : le chemin (<em>path</em>), indique le fichier demandé.</li>
+</ul>
+<p>💡 Dans votre projet, une telle URL correspondra au fichier <shell-code class="d4rk"><var>$ROOT</var>/<var>$PATHNAME</var></shell-code>.</p>
+<p>💡 Si l&#39;URL correspond à un dossier, par défaut, son fichier <code>index.html</code> sera affiché.</p>
+<h3 id="linspecteur">L&#39;inspecteur</h3>
+<ol>
+<li>Ouvrez l&#39;inspecteur en cliquant-droit sur le texte puis sur <code>Inspecter</code>.</li>
+</ol>
+<p>Vous pouvez alors visualiser et manipuler le DOM de votre page Web.</p>
+<ul>
+<li>En haut, la barre de recherche 🔍 recherche des éléments à partir d&#39;un sélecteur.</li>
+<li>En bas, vous pouvez naviguer parmi les ancêtres de l&#39;élément sélectionné.</li>
+<li>Vous pouvez déplier et replier les éléments en via le triangle à leur gauche.</li>
+</ul>
+<p>💡 Vous remarquerez alors que l&#39;élément personnalisé <html-code>&lt;hello-world&gt;</html-code> contient un &quot;#shadow-root&quot; incluant le contenu affiché du composant Web.</p>
+<p>⚠ Toutes modifications du DOM via l&#39;inspecteur sont locales et temporaires.</p>
+<h3 id="liss">LISS</h3>
+<p>Afin de créer des composants Web simplement, en HTML uniquement, nous utiliserons LISS en mode automatique. LISS offre une <a href="https://github.com/denis-migdal/LISS/blob/V2/doc/fr/auto.md">documentation en français</a> ainsi qu&#39;un <a href="https://denis-migdal.github.io/LISS/dist/dev/pages/playground/?example=auto-html">bac à sable</a> contenant divers exemples. </p>
+<p>Dans le cadre de ce projet, chaque composant Web est défini par un dossier :<br>
+<shell-code class="d4rk"><var>$ROOT</var>/components/<var>$NAME</var>/</shell-code></p>
+<p>Dans ce dossier, le contenu du composant Web est défini par le fichier <shell-code class="d4rk">index.html</shell-code>.</p>
+<p>⚠ Respectez la casse et la convention <shell-code class="d4rk"><var>$ROOT</var>/components/<var>$NAME</var>/index.html</shell-code> sinon votre composant ne fonctionnera pas !</p>
+<ol>
+<li>Lisez la documentation de LISS et visualisez ses examples dans le bac à sable.</li>
+<li>Modifiez le contenu de <html-code>&lt;hello-world&gt;</html-code> afin d&#39;afficher <code>Bonjour le monde ;)</code>.</li>
+<li>Créez un nouveau composant Web <html-code>&lt;my-hello&gt;</html-code> affichant <code>Bonjour ;)</code>.</li>
+<li>Ajoutez ce nouveau composant Web à la page Web.</li>
+<li>Vérifiez que <code>Bonjour ;)</code> s&#39;affiche bien dans la page Web.</li>
+</ol>
+<h2 id="créer-des-composants-web-plus-avancés">Créer des composants Web plus avancés.</h2>
+<h3 id="contenu-dynamique-dépendant-des-attributs-de-lélément">Contenu dynamique dépendant des attributs de l&#39;élément</h3>
+<p>LISS permet d&#39;insérer la valeur d&#39;un attribut de l&#39;élément personnalisé dans son contenu. Plus concrètement, <html-code class="d4rk">${<var>$ATTR_NAME</var>}</html-code> sera remplacé par la valeur de l&#39;attribut <html-code class="d4rk"><var>$ATTR_NAME</var></html-code>.</p>
+<ol>
+<li>Créer un nouveau composant web <html-code>&lt;user-desc&gt;</html-code> contenant :<ul>
+<li>un titre de niveau 2 dont le texte est <html-code>User ${user-id}</html-code>.</li>
+<li>un texte <html-code>Nom : ${user-name}</html-code> suivi d&#39;un retour à la ligne (<em>line <u>br</u>eak</em>).</li>
+<li>un texte <html-code>Prénom : ${user-surname}</html-code> suivi d&#39;un retour à la ligne (<em>line <u>br</u>eak</em>).</li>
+<li>un texte <html-code>Âge : ${user-age}</html-code> suivi d&#39;un retour à la ligne (<em>line <u>br</u>eak</em>).</li>
+</ul>
+</li>
+<li>En vous inspirant de <code>/index.html</code>, créez une nouvelle page <code>/user/</code> via un fichier <code>/user/index.html</code> affichant la description d&#39;un utilisateur John Doe de 42 ans.</li>
+<li>Vérifiez que la page <code>/user/</code> affiche bien la description de l&#39;utilisateur.</li>
+</ol>
+<p>💡 Une telle fonctionnalité est usuellement implémentée en JavaScript, mais LISS permet de cacher cette complexité. Ici, l&#39;attribut n&#39;est pas synchronisé avec le contenu, c&#39;est à dire que si vous modifiez l&#39;attribut via l&#39;inspecteur, sa valeur ne sera pas mise à jour dans le contenu de l&#39;élément personnalisé.</p>
+<p>💡 De nombreux framework web fournissent des fonctionnalités équivalentes et bien plus avancées.</p>
+<h3 id="répéter-un-élément-personnalisé">Répéter un élément personnalisé.</h3>
+<ol>
+<li>À la fin de la page <code>/user/</code> ajoutez un titre de niveau 3 <code>Dernières connexions</code></li>
+<li>Ajoutez une liste ordonnée (<em><u>o</u>rdered <u>l</u>ist</em>) contenant 10 éléments (<em><u>l</u>ist <u>i</u>tem</em>) :<br/>
+<html-code>[2020-02-23] &lt;b&gt;localhost&lt;/b&gt; &lt;em&gt;1h30&lt;/em&gt;</html-code></li>
+<li>Créez un composant personnalisé <html-code>&lt;user-connexion&gt;</html-code> pour <b>remplacer</b> les éléments de cette liste. Ses attributs seront <html-code>date</html-code>, <html-code>host</html-code>, et <html-code>duration</html-code>.</li>
+<li>Vérifiez que la page <code>/user/</code> affiche bien la liste des dernières connexions.</li>
+<li>Quel est l&#39;un des intérêts des composants personnalisés exploité ici ?<pre contenteditable></pre></li>
+</ol>
+<h3 id="hériter-dun-élément-existant">Hériter d&#39;un élément existant</h3>
+<ol>
+<li>Créez une nouvelle page Web <code>/users/</code> contenant un tableau dont la première colonne de l&#39;en-tête sera vide, et les suivantes seront <code>ID</code>, <code>Nom</code>, <code>Prénom</code>, <code>Âge</code>.</li>
+<li>Créez un nouveau composant Web <html-code>&lt;user-line&gt;</html-code> qui correspondra à une ligne du tableau et qui contiendra 5 cellules (<u>t</u>able <u>d</u>ata) :<ul>
+<li>une <u>im</u>a<u>g</u>e dont la <u>s</u>ou<u>rc</u>e sera <html-code>/assets/img/roles/${user-role}.jpg</html-code> ;</li>
+<li>l&#39;identifiant (attribut <html-code>user-id</html-code>) ;</li>
+<li>le prénom (attribut <html-code>user-surname</html-code>) ;</li>
+<li>le nom (attribut <html-code>user-name</html-code>) ;</li>
+<li>l&#39;âge (attribut <html-code>user-age</html-code>) ;</li>
+</ul>
+</li>
+<li>Vérifiez que la page <code>/users/</code> affiche bien un tableau vide.</li>
+<li>Ajoutez 5 lignes au tableau de <code>/users/</code> en utilisant une balise :
+<html-code class="block">&lt;tr is=&quot;user-line&quot;&gt;</html-code>
+💡 3 rôles sont définis : <code>admin</code>, <code>user</code>, et <code>disabled</code>.</li>
+<li>Vérifiez que la page <code>/users/</code> affiche bien 5 utilisateurs.</li>
+<li>Observez une ligne via l&#39;inspecteur. Vous remarquerez que cet élément n&#39;a pas de <code>#shadow-root</code>.</li>
+<li>Intervertissez les colonnes <code>Nom</code> et <code>Prénom</code>.</li>
+<li>Transformez le contenu de la cellule <code>ID</code> en un lien hypertexte renvoyant sur <html-code>/user/?id=${user-id}</html-code>.</li>
+<li>Vérifiez que le lien hypertexte fonctionne bien en cliquant dessus.</li>
+<li>Quel est l&#39;un des intérêts des composants personnalisés exploité ici ?<pre contenteditable></pre></li>
+</ol>
+<p>💡 Pour le moment, <html-code>/user/?id=${user-id}</html-code> affichera toujours le même utilisateur. Nous verrons par la suite comment générer dynamiquement son contenu en fonction de données locales ou externes.</p>
+</main>
+    </body>
+</html>

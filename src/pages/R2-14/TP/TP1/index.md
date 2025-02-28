@@ -2,14 +2,13 @@
 <html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>TP1 (AdmSys)</title>
-		<meta name="color-scheme" content="dark light">
+        <title>TP1 (AdminSys)</title>
+        <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="stylesheet" href="./index.css">
-        <script type="module" src="./index.js" blocking="render"></script>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
     </head>
     <body>
-        <header></header>
         <main>
 
 

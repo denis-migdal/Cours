@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>TP2 (TW)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+    </head>
+    <body>
+        <main>
+
+<h1 id="tp2--css">TP2 : CSS</h1>
+<p>En vous servant du cours, de la cheat sheet CSS, et de la documentation, MDN, effectuez les opérations suivantes.</p>
+<h2 id="le-cadre">Le cadre</h2>
+<ol>
+<li>Créez un nouveau composant Web <code>user-card</code> contenant le nom, prénom et rôle d&#39;un utilisateur.</li>
+<li>Dans ce composant Web ajoutez un fichier <code>index.css</code> :<css-code class="block">
+:host {
+ display   : block;
+ max-width : 200px;
+ background: lightblue;
+}
+</css-code></li>
+<li>Ajoutez-lui une bordure (<em>border</em>) de <code>4px</code>, avec le style <code>solid</code> et de couleur <code>grey</code>.</li>
+<li>Ajoutez lui des coins arrondis avec <code>border-radius: 5px</code>.</li>
+<li>Ajoutez <code>overflow: hidden</code> pour cacher les éléments qui dépassent.</li>
+<li>Forcez un affichage en 4/3 avec <code>aspect-ratio</code>.</li>
+<li>Donnez lui une marge interne (<em>padding</em>) de <code>1em</code>.</li>
+</ol>
+<h2 id="événements-utilisateurs">Événements utilisateurs</h2>
+<ol>
+<li>Lorsque le curseur (<em>cursor</em>) passe dessus, il doit indiquer que l&#39;élément est clickable (<em>pointer</em>) ;</li>
+<li>Empêchez la sélection des textes avec <code>user-select: none</code>.</li>
+</ol>
+<p>Vous indiquerez les règles suivantes via des <em>règles imbriquées</em> (<em>nested rules</em>), i.e. dans :
+<css-code class="block">
+:host(:hover) {
+    /* ... */
+}
+</css-code></p>
+<p>💡 <code>:hover</code> est une pseudo-classe (<em>pseudo-class</em>) servant à indiquer des règles CSS à appliquer lorsque l&#39;élément est survolé par la souris.</p>
+<ol start="3">
+<li>Au survol, l&#39;élément doit devenir opaque (<em>opacity</em>) à <code>50%</code>.</li>
+<li>Utilisez <code>transition: 2s opacity, 1s outline-size</code> pour animer cette transition, testez.</li>
+<li>Au survol, ajoutez un contour (<em>outline</em>) de <code>4px solid</code> jaune. </li>
+<li>Créez l&#39;animation <code>focusin</code> avec <code>@keyframes</code> qui commence à <code>0%</code> avec <code>transform: scale(1);</code> et se termine à <code>100%</code> avec <code>transform: scale(1.2);</code></li>
+<li>Au survol, ajoutez une animation bidirectionelle infinie via <code>animation: 2s focusin infinity alternate</code>.</li>
+</ol>
+<p>Nous allons afficher un petit tooltip personnalisé au survol de l&#39;élément en ajoutant des règles CSS au pseudo-élément (<em>pseudo-element</em>) <code>&amp;:hover ::after</code> :
+8. le contenu sera <code>content: &quot;Cliquez pour visualiser l&#39;utilisateur&quot;</code>.
+9. donnez lui un fond noir et une couleur blanche, ainsi qu&#39;une border d&#39;un pixel blanc.</p>
+<h2 id="style-du-texte">Style du texte</h2>
+<p>💡 <code>&amp;</code> est équivalente au sélecteur parent, i.e. <code>&amp;:hover</code> est équivalent à <code>:host:hover</code>.<br/></p>
+<ol>
+<li>Via CSS, mettez le nom en majuscule (<em>uppercase</em>) et le prénom capitalisé (<em>capitalize</em>).</li>
+<li>Mettez le nom en gras (<em>bold</em>), et le prénom en italique (<em>italic</em>).</li>
+<li>Le nom et le prénom auront une taille de police (<em>font size</em>) de <code>1.2em</code>.</li>
+<li>Le nom et prénom seront sur la même ligne sans retour à la ligne (<code>white-space: nowrap</code>).</li>
+<li>Si le nom/prénom dépasse de la ligne (<code>text overflow</code>), on utilisera une éllipse (<code>ellipsis</code>).</li>
+</ol>
+<h2 id="positionnement">Positionnement</h2>
+<ol>
+<li>Ajoutez un composant Web <code>user-list</code> contenant une dizaine de <code>user-card</code>.</li>
+<li><code>user-list</code> sera affichée (<em>display</em>) en mode <code>flex</code>.</li>
+<li><code>user-list</code> affiche les éléments en colonnes (<em>column</em>) et autorise les retours à la ligne (<em>wrap</em>).</li>
+<li>Les éléments seront séparés par un écart (<em>gap</em>) de <code>10px</code>.</li>
+<li><code>user-card</code> sera positionné en mode <code>relatif</code>.</li>
+<li>le rôle sera positionné de manière absolue (<em>absolute</em>) à <code>0px</code> du haut (<em>top</em>) et de la droite (<em>right</em>).</li>
+</ol>
+<p>Bonus: afficher en mode grille au lieu de flex et/ou jouer avec les <code>place-</code>.</p>
+<h2 id="responsive">Responsive</h2>
+<p>Redimensionnez la fenêtre du navigateur pour voir comment le site se comporte (+ outils navigateurs).</p>
+<ol>
+<li>Créez un nouveau conteneur (<em>container</em>) nommé <code>parent</code> de type <code>size</code> dans <code>user-card</code>.</li>
+<li>Si le conteneur a une largeur inférieure à <code>100px</code> (i.e. <code>@container ( width &lt; 100px )</code>), ne pas afficher le prénom (<code>display:none</code>).</li>
+</ol>
+<h2 id="bonus--color-scheme">Bonus : color scheme</h2>
+</main>
+    </body>
+</html>

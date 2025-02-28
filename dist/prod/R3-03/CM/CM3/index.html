@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>CM3 (TW)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+    </head>
+    <body>
+        <main>
+
+<h1 id="cm3-exécuter-du-code-dans-une-page-web-côté-client">CM3: Exécuter du code dans une page Web (côté client)</h1>
+<h2 id="du-code-sur-le-navigateur-">Du code sur le navigateur ?</h2>
+<p>HTML permet de définir la structure de la page Web, et CSS son affichage.</p>
+<p>Cependant, pour générer du contenu dynamique et gérer les interactions avec l&#39;utilisateur, il est nécessaire de pouvoir exécuter du code arbitraire sur le navigateur.</p>
+<p>Pour cela, le navigateur est capable d&#39;interpréter nativement deux langages :</p>
+<ul>
+<li>le <em>JavaScript</em> ;</li>
+<li>le <em>WebAssembly</em> (une sorte d&#39;assembleur pour navigateur).</li>
+</ul>
+<p>Pour utiliser d&#39;autres langages, il faut alors les convertir soit en JavaScript, soit en WebAssembly (e.g. avec emscriptem).</p>
+<p>⚠ Contrairement à JavaScript, le WebAssembly n&#39;a pas un accès direct au DOM.</p>
+<p>Afin de vous éviter d&#39;avoir à apprendre un nouveau langage, nous utiliserons <em>Brython</em> qui permet d&#39;exécuter du code Python sur le navigateur. L&#39;un des avantages de Brython est qu&#39;il permet d&#39;utiliser les API natives du navigateur.</p>
+<p>Pour les VCOD, nous verrons par la suite TypeScript en <em>Programmation Web</em> (S4) et <em>Programmation Web pour la Visualisation</em> (S5). Vous apprendrez donc un nouveau langage, mais serez déjà familiarisés avec les API utilisées.</p>
+<h3 id="exécuter-du-code-dans-la-page-web">Exécuter du code dans la page Web</h3>
+<p>Dans l&#39;en-tête de la page Web, <script type="c-html"><script></script> permet d&#39;exécuter du code sur la page :</p>
+<script type="c-html">
+<script src="<h>$JS_FILE</h>" type="module" <h>[defer|async]</h>><xscript>
+</script>
+
+<p>💡 <script type="c-html">type="module"</script> indique le type du script (ici un module JavaScript).</p>
+<p>💡 <script type="c-html"><h>[defer|async]</h></script> permet d&#39;indiquer quand exécuter le code inclus :</p>
+<ul>
+<li>par défaut : exécuter le script avant d&#39;interpréter le reste de la page (à éviter).</li>
+<li><script type="c-html">async</script> : continuer à interpréter la page Web pendant que le script se télécharge.</li>
+<li><script type="c-html">defer</script> : commencer à télécharger le script, mais attendre que la page ai finie de se charger avant de l'exécuter.</li>
+</ul>
+<p>⚠ Il recommandé d&#39;attendre que la page ai finie de se charger avant de la manipuler. En effet, si le code HTML n&#39;a pas fini d&#39;être interprété lors de l&#39;exécution du script, certains éléments ne seront pas encore chargés dans le DOM.</p>
+<h3 id="la-console-de-la-page-web">La console de la page Web</h3>
+<p>Les erreurs survenant durant l&#39;exécution du code sont affichées dans la <em>console</em> de la page Web. [TODO: ouvrir la console de la page Web]</p>
+<p>La console gère plusieurs niveau d&#39;affichages dont vous pouvez filtrer l&#39;affichage :</p>
+<ul>
+<li><script type="c-js">console.debug("...")</script></li>
+<li><script type="c-js">console.info("...")</script></li>
+<li><script type="c-js">console.log("...")</script> : par défaut.</li>
+<li><script type="c-js">console.warn("...")</script></li>
+<li><script type="c-js">console.error("...")</script> : affiche aussi la pile d'appel.</li>
+</ul>
+<p>💡 Vous pouvez formatter l&#39;affichage dans la console en préfixant le texte par <code>%c</code>, e.g.
+<js-code class="block">console.log(&quot;%cOK&quot;, &quot;color: red&quot;)</script> </p>
+<p>💡 Vous pouvez manipuler la console via :</p>
+<ul>
+<li><script type="c-js">.clear()</script> : effacer la console.</li>
+<li><script type="c-js">.group[Collapsed](<h>$NAME</h>)</script>/<script type="c-js">.groupEnd()</script> : ouvre/ferme un groupe indenté qui peut être replié (*collapsed*) ou déplié.</li>
+</ul>
+<p>💡 <code>console</code> offre d&#39;autres fonctions d&#39;affichages :</p>
+<ul>
+<li><script type="c-js">.assert(<h>$COND</h>, "...")</script> : affiche une erreur si <script type="c-js">$COND</script> est faux.</li>
+<li><script type="c-js">.dir()/.dirxml()</script> : afficher les propriétés d'un objet.</li>
+<li><script type="c-js">.table(...)</script> : afficher le(s) object(s) sous la forme d'un tableau.</li>
+<li><script type="c-js">.trace()</script> : afficher la pile d'appel.</li>
+</ul>
+<p>💡 Cette console permet aussi d&#39;entrer du code JavaScript à exécuter grâce à une interface <em>REPL</em> (<em>Read–eval–print loop</em>).</p>
+<h3 id="spécificités-de-brython">Spécificités de Brython</h3>
+<p>L&#39;API du navigateur est accessible à partir du module <py-code>browser.window</py-code> :
+<py-code>from browser import window</py-code></p>
+<p>En JavaScript, <script type="c-js">window</script> représente la &quot;fenêtre&quot; de la page Web actuelle. Il contient l&#39;ensemble des variables/classes/fonctions globales de la page Web. En particulier, <script type="c-js">window.document</script> représente l&#39;arbre DOM de la page Web.</p>
+<p>💡 En JavaScript, <script type="c-js">window</script> est implicite, i.e. on peut écrire <script type="c-js">document</script> au lieu de <script type="c-js">window.document</script>. En Brython, il faudra obligatoirement expliciter <script type="c-js">window</script>.</p>
+<p>⚠ Afin que les objets Python s&#39;affichent correctement, il est important d&#39;utiliser la version Brython de <script type="c-js">console</script> en l&#39;important via :
+<py-code class="block">from browser import console</py-code></p>
+<p>⚠ Brython a aussi du mal à distinguer les classes des fonctions JavaScripts. Pour instancier une nouvelle classe il faudra ainsi écrire <py-code>window.URL.new()</py-code> au lieu de <py-code>URL()</py-code>. [TODO: corrigé par SBrython]</p>
+<h2 id="manipulation-du-dom">Manipulation du DOM</h2>
+<h3 id="sélecteurs">Sélecteurs</h3>
+<p>Pour interagir avec le DOM, il convient de sélectionner les éléments HTML sur lesquels on souhaite interagir.</p>
+<p>Pour cela on utilise <script type="c-html">.querySelector[All]()</script> qui retourne le (ou les) <strong>descendants</strong> de <script type="c-html"><h>$ELEM</h></script> correspondant au sélecteur <script type="c-html"><h>$SELECTOR</h></script> :</p>
+<script type="c-html">
+    <h>$ELEM</h>.querySelector[All](<h>$SELECTOR</h>)
+</script>
+
+<p>💡 <script type="c-html">.closest(<h>$S</h>)</script> retourne le premier <strong>ancêtre</strong> correspondant au sélecteur <script type="c-html"><h>$S</h></script>.</p>
+<p>💡 <script type="c-html">.matches(<h>$SELECTOR</h>)</script> retourne un booléen indiquant si l&#39;élément correspond au sélecteur <script type="c-html"><h>$S</h></script>.</p>
+<p>💡 Dans un sélecteur, <script type="c-css">:scope</script> permet de désigner l&#39;élément à partir du lequel on appelle ces fonctions.</p>
+<p>💡 Vous pouvez utiliser ces fonctions sur <script type="c-html">document</script>, mais aussi sur :</p>
+<ul>
+<li><script type="c-html">document.documentElement</script> : la racine (<script type="c-html"><html></script>).</li>
+<li><script type="c-html">document.head</script></li>
+<li><script type="c-html">document.body</script></li>
+</ul>
+<p>💡 Il existe aussi les sélecteurs <a href="https://developer.mozilla.org/en-US/docs/Web/XPath/Introduction_to_using_XPath_in_JavaScript">XPath</a>, plus puissants, mais plus complexes.</p>
+<h3 id="créer-un-élément-html">Créer un élément HTML</h3>
+<p>Vous pouvez aussi créer un élément HTML via :</p>
+<ul>
+<li><script type="c-js"><h>$E</h>.clone(true)</script> : duplique l'élément <script type="c-js"><h>$E</h></script>.</li>
+<li><script type="c-js">document.createElement(<h>$N</h><h>[, {is: $IS}]</h>)</script> : créé un élément de nom <script type="c-js"><h>$N</h></script>.</li>
+</ul>
+<h3 id="manipuler-les-attributs-et-classes">Manipuler les attributs et classes</h3>
+<p>En premier lieu il est possible de modifier les attributs et les classes d&#39;un élément.</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Opération
+            </th>
+            <th>
+                Classes
+            </th>
+            <th>
+                Attributs
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><i>Lister</i></td>
+            <td><script type="c-js"></script></td>
+            <td><script type="c-js">.getAttributeNames()</script></td>
+        </tr>
+        <tr>
+            <td><i>Obtenir</i></td>
+            <td><script type="c-js"></script></td>
+            <td><script type="c-js">.getAttribute(<h>$N</h>)</script></td>
+        </tr>
+        <tr>
+            <td><i>Ajouter</i></td>
+            <td><script type="c-js">.classList.add(<h>$C[,...]</h>)</script></td>
+            <td><script type="c-js">.setAttribute(<h>$N</h>, <h>$V</h>)</script></td>
+        </tr>
+        <tr>
+            <td><i>Supprimer</i></td>
+            <td><script type="c-js">.classList.remove(<h>$C[,...]</h>)</script></td>
+            <td><script type="c-js">.removeAttribute(<h>$N</h>)</script></td>
+        </tr>
+        <tr>
+            <td><i>Basculer</i></td>
+            <td><script type="c-js">.classList.toggle(<h>$C</h><h>[, $F]</h>)</script></td>
+            <td><script type="c-js">.toggleAttribute(<h>$N</h><h>[, $F]</h>)</script></td>
+        </tr>
+        <tr>
+            <td><i>Contient ?</i></td>
+            <td><script type="c-js">.classList.has(<h>$C</h>)</script></td>
+            <td><script type="c-js">.hasAttribute(<h>$N</h>)</script></td>
+        </tr>
+    </tbody>
+</table>
+
+<p>💡 <script type="c-js">.tagName</script> permet d&#39;obtenir le nom de la balise HTML.</p>
+<h3 id="manipuler-les-attributs-data-">Manipuler les attributs data-*</h3>
+<p>Les attributs <script type="c-html">data-*</script> sont un peu particuliers. En effet, ils peuvent être manipulés via <script type="c-js">.(get|set|remove|toggle|has)Attribute()</script>, mais aussi via <script type="c-js">.dataset</script> qui se manipule comme un dictionnaire associatif. Chaque clé <script type="c-js"><h>$KEY</h></script> de <script type="c-js">.dataset</script> correspondant à un attribut <script type="c-html">data-<h>$KEY</h></script> de l&#39;élément HTML.</p>
+<p>Ils sont utilisés afin que les développeurs puissent définir des attributs personnalisés, sans entrer en conflit avec les attributs définis par HTML, e.g. <script type="c-html">data-title</script>.</p>
+<h3 id="manipuler-le-style">Manipuler le style</h3>
+<p>La modification de l&#39;affichage d&#39;un élément se fait usuellement via la modification de ses classes. Il est cependant tout à fait possible de manipuler directement ses propriétés CSS. Dans ce cas de figure, on préfère généralement se limiter à la manipulation des propriétés personnalisées.</p>
+<p>Les styles peuvent être accédés de deux manières distinctes :</p>
+<ul>
+<li><script type="c-js"><h>$E</h>.style</script> : les styles **déclarés** sur <script type="c-js"><h>$E</h></script> ;</li>
+<li><script type="c-js">getComputedStyle(<h>$E</h>)</script> : les styles **calculés** appliqués sur <script type="c-js"><h>$E</h></script> (en lecture seule).</li>
+</ul>
+<p>Il est alors possible d&#39;accéder ou de modifier les propriétés CSS via :</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Opération
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><i>Obtenir</i></td>
+            <td><script type="c-js">.getPropertyValue(<h>$N</h>)</script></td>
+        </tr>
+        <tr>
+            <td><i>Définir</i></td>
+            <td><script type="c-js">.setProperty(<h>$N</h>, <h>$V</h>)</script></td>
+        </tr>
+        <tr>
+            <td><i>Supprimer</i></td>
+            <td><script type="c-js">.removeProperty(<h>$N</h>)</script></td>
+        </tr>
+    </tbody>
+</table>
+
+<p>⚠ Pour obtenir des positions d&#39;éléments aisément comparables, utilisez <script type="c-js">.getBoundingClientRect()</script> qui retourne la position relativement à la zone d&#39;affichage (i.e. la fenêtre).</p>
+<h3 id="manipuler-le-contenu">Manipuler le contenu</h3>
+<p>Il existe beaucoup de manière d&#39;obtenir un (ou des) élément(s) à partir d&#39;un autre. Nous verrons les plus génériques :</p>
+<ul>
+<li><script type="c-js">.parentElement</script> : le père d'un élément.</li>
+<li><script type="c-js">.children</script> : la liste des éléments fils de l'élément.</li>
+<li><script type="c-js">.childNodes</script> : idem, mais inclus aussi les contenus autres, e.g. textes.</li>
+</ul>
+<p>Il existe beaucoup de manière de modifier le contenu d&#39;un élément. Nous verrons les plus génériques :</p>
+<ul>
+<li><script type="c-js">.textContent</script> permet d'accéder et de définir le contenu **textuel** d'un élément.</li>
+<li><script type="c-js">.append(<h>$N[,...]</h>)</script> : ajouter les noeud <script type="c-js"><h>$N</h></script> (éléments ou textes).</li>
+<li><script type="c-js">.remove()</script> : retirer l'élément de son père.</li>
+<li><script type="c-js">.replaceWith(<h>$N</h>)</script> : remplace l'élément par <script type="c-js"><h>$N</h></script> dans son père.</li>
+<li><script type="c-js">.replaceContent(<h>$N[,...]</h>)</script> : remplace le contenu de l'élément par <script type="c-js"><h>$N</h></script>.</li>
+</ul>
+<p>⚠ Un élément ne peut être qu&#39;à un seul endroit à la fois. L&#39;insérer dans un élément le retirera donc de son précédent père.</p>
+<h2 id="événements">Événements</h2>
+<p>-&gt;  [zone d&#39;affichage, comparer des positions sinon infernal]
+-&gt; .scroll()</p>
+<h3 id="principe">Principe</h3>
+<p>-&gt; boucle d&#39;events &amp; promesses async (différent en Python) (corrigé avec SBrython)</p>
+<p>-&gt; trigger</p>
+<h3 id="types-dévents">Types d&#39;évents</h3>
+<p>TODO...</p>
+<h3 id="delegated-events">Delegated events</h3>
+<h3 id="debouncethrottlesetanimationframerequesthoist">Debounce/Throttle/setAnimationFrameRequest/hoist.</h3>
+<ul>
+<li>remove from DOM ?</li>
+</ul>
+<h3 id="signaux">Signaux</h3>
+<h2 id="formulaires-et-manipulation-durl">Formulaires et manipulation d&#39;URL</h2>
+<ul>
+<li>validation (cf CM? avec regex &amp; zod)</li>
+<li>History/location.</li>
+</ul>
+<h2 id="autres-éléments-dintéractions">Autres éléments d&#39;intéractions</h2>
+<p>-&gt; attrs
+-&gt; dialog/popover/details-summary
+-&gt; CSS aussi... / caroussel / etc.</p>
+<h2 id="autres-choses-possibles">Autres choses possibles</h2>
+<ul>
+<li>manipuler le shadowRoot (cf PW?)</li>
+<li>calculs webworker/serviceworker/worklet cf PWV</li>
+<li>stocker côté client (...) cf PWV</li>
+<li>dessiner canvas et animations (...) cf ?</li>
+<li>iframe cf CM4?</li>
+<li>fetch/download CM4?</li>
+<li>générateur cf PWV (infini ou très gros)</li>
+<li>components real API (cf PW)</li>
+</ul>
+<p>-&gt; profile/profileEnd() =&gt; profiler (perfs) -&gt; CM5 ?</p>
+<p>⚠ Pour des raisons de sécurité, ce code arbitraire n&#39;a pas accès aux ressources locales (i.e. sur votre poste de travail), ou aux autres page Web. Imaginez en effet qu&#39;à la simple visite d&#39;une page Web, votre navigateur se mette à exécuter un code supprimant tous vos fichiers !</p>
+<h1 id="old">old</h1>
+<ul>
+<li>cf README.md</li>
+</ul>
+<p>-&gt; order of deps =&gt; dev log.</p>
+<p>@starting-style for animations</p>
+<p>:(user-)valid
+:(user-)invalid
+:has()</p>
+<p>document.
+body/head.
+rootElement.</p>
+<p>activeElement (qui a le focus).
+documentElement</p>
+<h1 id="événements-1">Événements</h1>
+<h2 id="bubble-vs-capture">Bubble vs Capture</h2>
+<p> Dans les navigateurs, les interactions sont gérées via des événements, qui se composent de 2 phases :</p>
+<ul>
+<li><p>capture</p>
+</li>
+<li><p>bubble</p>
+</li>
+</ul>
+<p><strong>Capture :</strong> La phase de capture est descendante, elle part du noeud racine et descend vers le noeud cible (target) final. Par exemple, lorsque vous cliquez sur un élément, l&#39;événement de clic va d&#39;abord partir du document, puis par le body. Le navigateur va propager l&#39;événement en se demandant quel fils de l&#39;élément courant est la cible de l&#39;événement, afin de lui transmettre l&#39;événement, puis recommence de manière récursive, l&#39;élément fils cible devenant l&#39;élément courant.</p>
+<p><strong>Bubble :</strong> La phase de buble est montante, elle part du noeud cible (target) final et remonte vers le noeud racine. Si l&#39;événement se propage dans le DOM (<code>bubble: true</code>), le navigateur va transmettre l&#39;événement à l&#39;élément père de l&#39;élément courant, puis recommence de manière récursive, l&#39;élément père devant l&#39;élément courant.</p>
+<h2 id="écouter-un-événement">Écouter un événement</h2>
+<pre><code class="hljs language-javascript"><span class="hljs-comment">// [JS] Javascript</span>
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">handler</span>(<span class="hljs-params">ev</span>) {
+    <span class="hljs-comment">// ev.currentTarget : $ELEM</span>
+    <span class="hljs-comment">// ev.target : source of the event.</span>
+    <span class="hljs-comment">// ev.type   : $EVENT_TYPE</span>
+    <span class="hljs-comment">// ev.detail : $EVENT_DATA (si CustomEvent, cf plus bas)</span>
+    <span class="hljs-comment">// ev.preventDefault() : annuler l&#x27;action par défaut du navigateur</span>
+    <span class="hljs-comment">// e.g. lorsqu&#x27;on clique sur un lien, empêcher d&#x27;aller vers la page.</span>
+    <span class="hljs-comment">// ev.stopImmediatePropagation() : ne pas appeler les autres</span>
+    <span class="hljs-comment">// handleurs pour cet événement.</span>
+}
+
+$ELEM.<span class="hljs-title function_">addEventListener</span>($EVENT_TYPE, handler);
+<span class="hljs-comment">// ou</span>
+$ELEM.<span class="hljs-title function_">addEventListener</span>($EVENT_TYPE, <span class="hljs-function"><span class="hljs-params">ev</span> =&gt;</span> ... );
+</code></pre><pre><code class="hljs language-python"><span class="hljs-comment"># [🐍] Python</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">handler</span>(<span class="hljs-params">ev</span>):
+    <span class="hljs-comment"># ev.currentTarget : $ELEM</span>
+    <span class="hljs-comment"># ev.target : source of the event.</span>
+    <span class="hljs-comment"># ev.type   : $EVENT_TYPE</span>
+    <span class="hljs-comment"># ev.detail : $EVENT_DATA (si CustomEvent, cf plus bas)</span>
+    <span class="hljs-comment"># ev.preventDefault() : annuler l&#x27;action par défaut du navigateur</span>
+    <span class="hljs-comment"># e.g. lorsqu&#x27;on clique sur un lien, empêcher d&#x27;aller vers la page.</span>
+    <span class="hljs-comment"># ev.stopImmediatePropagation() : ne pas appeler les autres</span>
+    <span class="hljs-comment"># handleurs pour cet événement.</span>
+
+$ELEM.addEventListener($EVENT_TYPE, handler)
+</code></pre><p>📖 <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">Plus d&#39;informations dans la documentation.</a></p>
+<h2 id="écouteur-délégué">Écouteur délégué</h2>
+<p>Il arrive qu&#39;on souhaite écouter des événements sur les descendants d&#39;un élément, qui peuvent être ajoutés, déplacés, supprimés, etc. Le problème est que cela nécessiterait de créer un écouteur pour chaque éléments et de les supprimer/ajouter à chaque modifications du DOM.</p>
+<p>Heureusement, il est possible d&#39;utiliser un écouteur délégué, i.e. d&#39;écouter l&#39;événement sur le descendant (nécessite que l&#39;événement soit <code>bubble</code>, i.e. se propage dans le DOM).</p>
+<pre><code class="hljs language-javascript"><span class="hljs-comment">// [JS] Javascript</span>
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">handler</span>(<span class="hljs-params">ev</span>) {
+    <span class="hljs-keyword">if</span>( ev.<span class="hljs-property">target</span>.<span class="hljs-title function_">matches</span>($CSS_SELECTOR) ) {
+        <span class="hljs-comment">// ...</span>
+    }
+    <span class="hljs-comment">// or</span>
+    <span class="hljs-keyword">let</span> target;
+    <span class="hljs-keyword">if</span>( target = ev.<span class="hljs-property">target</span>.<span class="hljs-title function_">closest</span>($CSS_SELECTOR) ) {
+        <span class="hljs-comment">// ...</span>
+    }
+}
+
+$ELEM.<span class="hljs-title function_">addEventListener</span>($EVENT_TYPE, handler);
+</code></pre><pre><code class="hljs language-python"><span class="hljs-comment"># [🐍] Python</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">handler</span>(<span class="hljs-params">ev</span>):
+    <span class="hljs-keyword">if</span> ev.target.matches($CSS_SELECTOR):
+        <span class="hljs-comment"># ...</span>
+    <span class="hljs-comment"># or</span>
+    <span class="hljs-keyword">if</span> target := ev.target.closest($CSS_SELECTOR):
+        <span class="hljs-comment"># ...</span>
+
+$ELEM.addEventListener($EVENT_TYPE, handler)
+</code></pre><h2 id="créer-un-événement">Créer un événement</h2>
+<pre><code class="hljs language-javascript"><span class="hljs-comment">// [JS] Javascript</span>
+
+$ELEM.<span class="hljs-title function_">dispatchEvent</span>( <span class="hljs-keyword">new</span> <span class="hljs-title class_">Event</span>($EVENT_TYPE) );
+<span class="hljs-comment">// ou</span>
+$ELEM.<span class="hljs-title function_">dispatchEvent</span>( <span class="hljs-keyword">new</span> <span class="hljs-title class_">CustomEvent</span>($EVENT_TYPE, {<span class="hljs-attr">detail</span>: $EVENT_DATA}) );
+</code></pre><pre><code class="hljs language-python"><span class="hljs-comment"># [🐍] Python</span>
+
+$ELEM.dispatchEvent( Event.new($EVENT_TYPE) )
+<span class="hljs-comment"># ou</span>
+$ELEM.dispatchEvent( CustomEvent.new($EVENT_TYPE, {<span class="hljs-string">&quot;detail&quot;</span>: $EVENT_DATA}) )
+</code></pre><p>💡 Vous pouvez aussi ajouter, au 2ème argument, l&#39;option <code>bubble: true</code> pour faire en sorte que l&#39;événement soit bubble, i.e. se propage dans le DOM (par default <code>bubble: false</code>).</p>
+</main>
+    </body>
+</html>

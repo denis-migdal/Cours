@@ -1,3 +1,7 @@
-const WF = require("./build/WebpackFramework");
+import buildConfigs from "./build/WebpackFramework/index.js";
 
-module.exports = async (env, argv) => await WF.buildConfigs();
+export default buildConfigs("./src/", "./dist/${version}/",
+                            {
+                                "@LISS" : "libs/LISS/V3/",
+                                "@Cours": "src/"
+                            });
