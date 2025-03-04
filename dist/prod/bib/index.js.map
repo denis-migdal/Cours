@@ -1,0 +1,1 @@
+{"version":3,"file":"bib/index.js","mappings":"gFAAe,G","sources":["webpack://Cours/./src/pages/bib/index.md"],"sourcesContent":["export default __webpack_public_path__ + \"bib/index.html\";"],"names":[],"sourceRoot":""}
