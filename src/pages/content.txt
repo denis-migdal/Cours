@@ -44,7 +44,8 @@
             - CM2:II. Git
         + DS:DS
             - cur:2024-2024
-    +R6-0?:S6 Programmation Orientée Données
+    + R6-X:S6 Programmation Orientée Données
+        - CM:CM
 - bib:📚 Bibliothèques
     - https://liss.migdal.ovh/:LISS
     - https://vshs.migdal.ovh/:VSHS

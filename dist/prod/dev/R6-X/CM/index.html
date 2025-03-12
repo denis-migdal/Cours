@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>DOP</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/liss/index.css"  rel="stylesheet">
+        <script  src="/skeleton/liss/index.js"  type="module"     blocking="render" async></script>
+    </head>
+    <body>
+        <main>
+
+<p>Parfois on a des calculs assez importants à faire et on ne veut pas que ça prend des années.
+Donc chercher à les exécuter le plus rapidement possible, i.e. optimiser.</p>
+<p>I/ La complexité algorithmique.</p>
+<p>Soit des données de tailles N, l&#39;ordre de grandeur des opérations (N^2), Nlog(N), etc.
+Donc plus la complexité est faible, mieux c&#39;est.</p>
+<p>/!\ Piège : cela est vrai quand N devient grand.
+Pour un N petit, si l&#39;opération est plus rapide, O(N) &lt; O(log(N) ).</p>
+<ul>
+<li>memoize (parfois bien parfois pas bien, dépend) -&gt; dynamic programming -&gt; en gros graphe des opération, calculs qui se répètent.
+  =&gt; on peut réagencer l&#39;ordre des calculs ou faire un cache pour éviter la répétition.</li>
+</ul>
+<p>II/ Le code</p>
+<p>Une opération = un ensemble d&#39;instructions exécutées sur le CPU.
+Certaines opérations sont exécutées plus rapidement que d&#39;autres.</p>
+<p>On peut chercher à optimiser les instructions ce que le CPU exécute.</p>
+<p>E.g. SIMD, etc. instructions pour faire des calculs sur des vecteurs de données, e.g. v1 + v2 =&gt; une seule instruction au lieu de faire une boucle pour sommer les éléments 1 à 1.</p>
+<p>Éviter de faire des instructions inutiles.</p>
+<p>éviter if si possible (en gros CPU prédit, et commence à exécuter en avance) - couteux.
+    =&gt; parfois évitable
+        =&gt; x boolean (true/false)
+        =&gt; opérateur ternaire
+        =&gt; /!\ langages interprété...</p>
+<p>Leur ordre d&#39;exécution (les instructions CPU prennent un ALU + un temps différent), donc organiser pour que ce soit le plus rapide possible, etc.</p>
+<p>Pipeline : commencer des calculs pendant que d&#39;autres se terminent.</p>
+<p>Inlining... (appel de fct coûteux) =&gt; Pure fcts aide optimization (et effets de bords = pas bien de toute façon).</p>
+<p>Etc. etc. etc.</p>
+<p>Le compilateur est plus fort que vous sur les micro-opti.</p>
+<p>III/ Le paralellisme.</p>
+<p>Au lieu de ne faire les calculs que sur un coeur CPU, on peut en faire sur plusieurs coeurs, plusieurs CPU, voire plusieurs ordinateurs/serveurs à la fois (e.g. serveurs de calculs).</p>
+<p>Calculer d&#39;autres trucs pendant qu&#39;un thread est en attente, etc.</p>
+<p><a href="https://en.wikipedia.org/wiki/MapReduce">https://en.wikipedia.org/wiki/MapReduce</a></p>
+<p>GPU !</p>
+<hr>
+<p>/!\ Optimisation prématurée : les parties qu&#39;on souhaite optimiser vs optimisation gratuite.
+=&gt; distinguer ce qui est gratuit (idiomes) de ce qui est coûteux (complexité du code, difficile à maintenir, etc).
+=&gt; distinguer les besoins / benchmarquer/mesurer.</p>
+<p>/!\ JS benchmark (et les langages du genre - généralement scripts faiblement typés)... aie... Optimisations Browser au fur et à mesure que ça s&#39;exécute (plus la fct est appelée). Difficile à prévoir, micro-benchmark difficile car pas real-life, opti e.g. supprime les instructions, fausse les benchmarks.</p>
+<p>Niveau d&#39;opti par le compiler/interpréteur.</p>
+<ul>
+<li>static opti (compiler)</li>
+<li>profiler (GCC)</li>
+<li>during execution (JS)</li>
+</ul>
+<ul>
+<li>(AssemblyScript) + (fast py interpreter ?) Python + modules écrits en C++</li>
+</ul>
+<p>======</p>
+<p>On a parlé des instructions... mais des calculs ce n&#39;est pas que cela... c&#39;est aussi... des DONNÉES.
+Il faut que ces données soient amenés au CPU (ou GPU), avec les instructions, pour qu&#39;il puisse faire ses calculs.</p>
+<p>CPU/GPU : execute instructions TRÈS rapidement ~0.22 ns le cycle -&gt; certaines instructions [rappel 1ns = 1 milliard de secondes].</p>
+<p>Récupérer des données, c&#39;est LENT : </p>
+<p>DDR : ~100+ cycles (et certains plus lents). =&gt; peut monter à 2,000 voire plus...
+    243 to 288
+    30,000,000 (page fault ?).</p>
+<p>=&gt; 10,000,000 : hard-drive
+=&gt; ENCORE PLUS Ethernet (sauf si cluster de serveurs, toussa).</p>
+<p>Heureusement
+=&gt; BEAUCOUP d&#39;optimisation que le CPU (et le langage fait tout seul : prefetch, etc).</p>
+<p>Caches :
+    CPU register : free
+    3 cycles L1   - 64Ko
+    ~12 cycles L2 - 256Ko
+    L3            - 2.5Mo</p>
+<p>+petit + rapide.</p>
+<p>Aussi d&#39;autres problèmes :
+    - allocations :
+        =&gt; GC / allocations : CG - micro-secondes (?)  / real allocation 60 cycles ?
+    - /!\ Accès concurrent : lock/mutex (reader-writer) / etc. [attendre].</p>
+<p>DOP : au lieu de s&#39;intéresser aux instructions exécutées, s&#39;intéresser aux données qu&#39;on manipule/dont on a besoin/comment on va les manipuler.</p>
+<ol>
+<li>Quand on récupère les données, on ne récupère pas 1 bit, mais un chunk de données (=&gt; taille fixe, dépend) - aussi pré-chargements (l&#39;OS/l&#39;interpréteur/compilateur se démerde).</li>
+</ol>
+<p>E.g. parcourir une série de nombre : array vs liste chaînée.
+    =&gt; array chargé en un coup vs liste chaînée jusqu&#39;à un chargement par élément (si next élément pas &quot;proche&quot;).</p>
+<p>i.e. plus les données que je vais manipuler son contiguent en mémoire, plus je vais faciliter le travail du CPU (pas besoin d&#39;aller rechercher les données à chaque instructions).</p>
+<ul>
+<li>SIMD (calculs sur vecteurs) =&gt; seulement si contigu en mémoire/cache... (compiler/interpréteur va optimiser pour vous).</li>
+</ul>
+<p>=&gt; choisir les structures de données appropriées pour mon USAGE.</p>
+<p>Objectifs:
+1/ Réduire la taille de mes données.
+2/ Regrouper les données utiles (quitte à devoir faire quelques instructions en plus).
+3/ Réduire les allocations.</p>
+<p>En faisant cela =&gt; en fonction des usages, parfois gros gains de perfs, même lorsque déjà opti.</p>
+<p>==================================================</p>
+<p>Astuces</p>
+<ul>
+<li><p>éviter des copies inutiles.
+  =&gt; contradiction avec mes autres cours : normal pas le même niveau/besoins. (GUI, complexe sync / cmpute plus &quot;direct&quot;)</p>
+</li>
+<li><p>ordre parcours d&#39;un array à N dimension =&gt; contigue...</p>
+</li>
+<li><p>array : au lieu de splice (recopie), si ordre pas besoin de conserver, juste copier le dernier élément à la place puis réduire taille.
+  =&gt; reprs listes/graphes en array 1D</p>
+</li>
+<li><p>ajouts/suppressions : par chunk lorsque possibles (e.g. filter() - create new ) / mark then delete all at once - in place + keep order.
+  =&gt; filter()/map()
+  =&gt; pre-allocate array .length</p>
+</li>
+<li><p>utiliser des ID/Constantes (nombre) au lieu de strings (+ rapide à comparer) (ou ptrs JS)
+  =&gt; data[USER_NAME] au lieu de data[&quot;user_name&quot;] &lt;= /!\ data.user_name langage compilé pas pareil !!!
+  =&gt; username(data) / username(USER_ID) [inline fcts].</p>
+</li>
+<li><p>pool of unused objects. (profile first)</p>
+</li>
+<li><p>circular buffers / preallocated buffers</p>
+</li>
+<li><p>double buffer : 1 écrit, 1 consomme, puis flip (utilisé dans JV pour dessiner une frame).</p>
+</li>
+<li><p>multi-thread : diviser en chunks indépendant contigus (e.g. 2x2) [évite thread locks] - éviter des dépendances / blocages.</p>
+</li>
+</ul>
+<p>DOP pas que ça.
+Quand on charge des données, on veut charger un max données qui nous intéressent, dont on a besoin tout de suite.
+    =&gt; i.e. moins charger de données inutiles (bon déjà réduire conso mémoire aide).
+    =&gt; i.e. données contiguent, mais EN PLUS, sans &quot;junk&quot;.</p>
+<ul>
+<li>OO : separate data &amp; méthodes (plus facile de rendre les données contiguent dans un array + taille réduite) - méthodes chargées que lorsque besoin - ofc pas d&#39;héritage, toussa.</li>
+<li>Découper les données<ul>
+<li>e.g. SBrython : ASTNodes (utile) + Py code positions (peu utile, pas en même temps) (trouver meilleur exemple).</li>
+<li>ECS (Entity Component System)<ul>
+<li>Entité juste un ID (nombre)</li>
+<li>properties Array[ID] to get.
+  -&gt; good : on peut facilement rajouter des props ;)
+  -&gt; ofc ajout/del + coûteux =&gt; lorsque plus parcouru que modifié.</li>
+<li>Array of struct =&gt; struct of array.</li>
+<li>et pleeeein de techniques : (e.g. index indirections pour sparse / ajout / suppressions ).</li>
+<li>status =&gt; retirer props et faire un array par type de status (! seulement si intéressant vis à vis du besoin).</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>/!\ C&#39;est pour des besoins spécifiques, de performances, pas besoin de jetter l&#39;OO dans 99% des cas !!!</p>
+<p>Data oriented Programming (JS)
+    -&gt; TypeArray
+    -&gt; multiples arrays (struct of arrays)
+    -&gt; memoize
+    -&gt; separate data &amp; fcts
+<a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Performance/JavaScript">https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Performance/JavaScript</a></p>
+<p>==================================================</p>
+<p>/!\ Benchmark : influence le reste du code, évaluer dans son ensemble.
+    -&gt; pas nécessairement le code critique (en durée d&#39;exécution).
+    -&gt; testé en JS (à prendre avec des pincettes - cf problème benchmark JS), j&#39;ai l&#39;impression d&#39;un bon gain de perfs (ex. SBrython).</p>
+</main>
+</body>
+</html>

@@ -64,6 +64,8 @@
     </tbody>
 </table>
 
+💡 Supports de cours imprimables - faire export PDF sur Chromium => x32 moins lourd que sur FF.
+
 </main>
     </body>
 </html>
