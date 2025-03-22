@@ -4,15 +4,9 @@
 [submodule "libs/TPEngine"]
 	path = old broken/TPEngine
 	url = git@github.com:denis-migdal/TPEngine.git
-[submodule "libs/LISS"]
-	path = old broken/LISS
-	url = git@github.com:denis-migdal/LISS.git
 [submodule "libs/WebSlides"]
 	path = old broken/WebSlides
 	url = git@github.com:denis-migdal/WebSlides.git
-[submodule "libs/LISS2"]
-	path = old broken/LISS2
-	url = git@github.com:denis-migdal/LISS.git
 [submodule "libs/LISS3"]
 	path = libs/LISS
 	url = git@github.com:denis-migdal/LISS.git
