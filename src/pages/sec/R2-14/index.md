@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>Cours</title>
+        <title>AdminSys</title>
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link   href="/skeleton/index.css"  rel="stylesheet">

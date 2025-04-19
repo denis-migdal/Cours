@@ -15,6 +15,8 @@
     + R4-09-VCOD:S4 Programmation Web
         + CM:CM
             - CM1:CM1
+        + DS:DS
+            - cur:cur
     + SAE4-02-VCOD:S4 [SAÉ] Collecte Automatisée de données Web
     + R5-07-VCOD:S5-VCOD Programmation Web pour la Visualisation
         + CM:CM
@@ -22,9 +24,17 @@
         + DS:DS
             - cur:2024-2024
 + sec:🔒 Sécurité
-    + R2-14:S2 Administration Système
+    - R2-14:S2 Administration Système
         + CM:CM
             - CM1:CM1
+            - CM2:CM2
+        + Slides:Slides
+            - CM1:CM1
+            - CM2:CM2
+        - cheat:Cheat Sheet
+        + TP:TP
+            - TP1:TP1
+            - TP2:TP2
         + Fiches:Fiches
             - A:Construire ASTerm
     + R3-13:S3 Identité Numérique
@@ -35,9 +45,15 @@
     + R4-10:S4 Réseaux et Sécurité Web
         + CM:CM
             - CM1:CM1
+        + DS:DS
+            - cur:cur
     + SAE6-05:S6 [SAÉ] Pentest, Hacking, et Renforcement
 + dev:🖳 Développement
-    + R4-01:S4 Automatisation et Tests en Programmation
+    + R4-01-VCOD:S4 Automatisation et Tests en Programmation
+        + CM:CM
+            - CM1:CM1
+        + DS:DS
+            - cur:cur
     + R5-06-VCOD:S5-VCOD Developpement Logiciel
         + CM:CM
             - CM1:I. Motivation au développement logiciel

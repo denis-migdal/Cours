@@ -44,7 +44,7 @@
         <tr>
             <th>🔒 Sécurité</th>
             <td></td>
-            <td>Administration Système</td>
+            <td><a href="/sec/R2-14/">Administration Système</a></td>
             <td>Identité numérique</td>
             <td>Réseau et Sécurité Web</td>
             <td></td>

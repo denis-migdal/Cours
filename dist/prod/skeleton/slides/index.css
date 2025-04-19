@@ -1,0 +1,173 @@
+:root {
+    /*size: A5 landscape;*/
+    /*  148mm x 210mm */
+    /* size: 595px 420px // A5 landscape */
+    --slide_height: 420px;
+    --slide_width: calc( var(--slide_height) * 16 / 9 );
+    --webslide_background: none;
+}
+
+body {
+    counter-reset: page_id;
+}
+main > section, main > .ws-frame {
+    position: relative;
+}
+main > section::before, main > .ws-frame::before {
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+    counter-increment: page_id;
+    content: counter(page_id);
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    print-color-adjust:exact;
+    background-color: grey;
+    position: relative;
+}
+main {
+    overflow-x: hidden;
+    position: absolute;
+    top: 0;
+    /*overflow: hidden;*/
+    width: var(--slide_width);
+    background-color: white;
+    & > section, & > .ws-frame {
+        width: var(--slide_width);
+        height: var(--slide_height);
+        overflow-y: scroll;
+        /*background-color: blue;*/
+        border: 1px solid black; /* red */
+        box-sizing: border-box;
+
+        background-image: url('/assets/img/uca/background.png');
+        background-size: cover;
+    }
+}
+@media screen {
+    body {
+        overflow: hidden;
+
+        position: relative;
+        height: 100vh;
+    }
+    main {
+        position: absolute;
+
+        right : 0;
+        bottom: 0;
+        top   : unset ! important;
+        transform-origin: bottom right;
+        scale: var(--scale);
+        height: var(--slide_height);
+        /* --slide_width */
+    }
+}
+@media print {
+    main > section {
+        border: 1px solid white;
+    }
+}
+@page {
+    size: 747px 420px;
+}
+
+p {
+    margin: 0;
+}
+
+ul + p {
+    margin-top: 2rem;
+}
+
+li > ul {
+    margin-top: 0;
+}
+
+ul {
+    margin: 0em 10px;
+    padding: 0 1em;
+    list-style: "▶ ";
+
+    * + & {
+        margin-top: 4px;
+    }
+
+    & > li::marker {
+        color: blue;
+        font-size: 0.8em;
+    }
+
+    /*
+    & > li::before { 
+        content: "";
+        border-color: transparent blue;
+        border-style: solid;
+        border-width: 0.35em 0 0.35em 0.45em;
+        display: block;
+        height: 0;
+        width: 0;
+        left: -1em;
+        top: 0.9em;
+        position: relative;
+    }*/
+}
+
+@font-face {
+	font-family: 'Computer Modern Sans';
+	src: url('/assets/font/cmunss.eot');
+	src: url('/assets/font/cmunss.eot?#iefix') format('embedded-opentype'),
+		 url('/assets/font/cmunss.woff') format('woff'),
+		 url('/assets/font/cmunss.ttf') format('truetype'),
+		 url('/assets/font/cmunss.svg#cmunss') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+@font-face {
+	font-family: 'Computer Modern Sans';
+	src: url('/assets/font/cmunsx.eot');
+	src: url('/assets/font/cmunsx.eot?#iefix') format('embedded-opentype'),
+		 url('/assets/font/cmunsx.woff') format('woff'),
+		 url('/assets/font/cmunsx.ttf') format('truetype'),
+		 url('/assets/font/cmunsx.svg#cmunsx') format('svg');
+	font-weight: bold;
+	font-style: normal;
+}
+
+
+@font-face {
+	font-family: 'Computer Modern Sans';
+	src: url('/assets/font/cmunsi.eot');
+	src: url('/assets/font/cmunsi.eot?#iefix') format('embedded-opentype'),
+		 url('/assets/font/cmunsi.woff') format('woff'),
+		 url('/assets/font/cmunsi.ttf') format('truetype'),
+		 url('/assets/font/cmunsi.svg#cmunsi') format('svg');
+	font-weight: normal;
+	font-style: italic;
+}
+
+
+@font-face {
+	font-family: 'Computer Modern Sans';
+	src: url('/assets/font/cmunso.eot');
+	src: url('/assets/font/cmunso.eot?#iefix') format('embedded-opentype'),
+		 url('/assets/font/cmunso.woff') format('woff'),
+		 url('/assets/font/cmunso.ttf') format('truetype'),
+		 url('/assets/font/cmunso.svg#cmunso') format('svg');
+	font-weight: bold;
+	font-style: italic;
+}
+
+body {
+    font-family: "Computer Modern Sans", sans-serif;
+}
+
+
+
+/*# sourceMappingURL=index.css.map*/

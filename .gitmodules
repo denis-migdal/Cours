@@ -2,10 +2,10 @@
 	path = build/WebpackFramework
 	url = git@github.com:denis-migdal/Webpack-Framework.git
 [submodule "libs/TPEngine"]
-	path = old broken/TPEngine
+	path = libs/TPEngine
 	url = git@github.com:denis-migdal/TPEngine.git
 [submodule "libs/WebSlides"]
-	path = old broken/WebSlides
+	path = libs/WebSlides
 	url = git@github.com:denis-migdal/WebSlides.git
 [submodule "libs/LISS3"]
 	path = libs/LISS
