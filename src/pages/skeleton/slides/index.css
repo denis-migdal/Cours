@@ -9,7 +9,7 @@
 }
 
 @media screen and not (display-mode: fullscreen) {
-    main {
-        top : calc( 50% + 12px ); /* 50% de 24px */
+    body:not(.overview) main {
+        top : calc( 50% + 12px ) !important; /* 50% de 24px */
     }
 }
