@@ -15,7 +15,7 @@
     author    = "Denis MIGDAL"
     mail      = "denis.migdal@uca.fr">
 </frame-uca-title>
-<frame-section>Introduction à SQL ?</frame-section>
+<frame-section>Introduction à SQL</frame-section>
 <frame-uca>
 </frame-uca>
 <frame-uca subsection="Les SGBD">
