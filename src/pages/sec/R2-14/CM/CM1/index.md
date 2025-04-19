@@ -100,7 +100,7 @@ L'invite de commande (ou *prompt*) indique que l'utilisateur peut saisir une lig
 - le nom de l'ordinateur (<script type="c-shell">demigdal-Latitude-5400</script>) ;
 - le répertoire actuel (<script type="c-shell">~</script>), cf CM2.
 
-💡 <script type="c-shell">@</script> se lit "at" en anglais et indique un lieu. Par exemple une adresse mail *denis.migdal@uca.fr* signifie *"le compte <script type="c-text">denis.migdal</script> qui se trouve sur le serveur <script type="c-text">uca.fr</script>"*.
+💡 <script type="c-shell">@</script> se lit "at" en anglais et indique un lieu. Par exemple une adresse mail <script type="c-text">denis.migdal@uca.fr</script> signifie *"le compte <script type="c-text">denis.migdal</script> qui se trouve sur le serveur <script type="c-text">uca.fr</script>"*.
 
 ### La ligne de commande
 
@@ -363,6 +363,6 @@ Recopier à la main des commandes est sources d'erreurs et de fautes de frappe. 
 
 ## Accès à distance
 
-</main>
+        </main>
     </body>
 </html>

@@ -279,6 +279,9 @@ h3::before {
     }
 }
 
-
+.lastmodified {
+    font-size: small;
+    font-style: italic;
+}
 
 /*# sourceMappingURL=index.css.map*/

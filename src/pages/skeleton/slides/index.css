@@ -1,1 +1,15 @@
+@import "@LISS/components/page/menu/index.css";
+@import "@LISS/components/page/color-switch/index.css";
 @import "@WebSlides/pages/skeleton/index.css";
+
+@media (display-mode: fullscreen) {
+    .menu_area, .color-scheme-gui-btn {
+        display: none;
+    }
+}
+
+@media screen and not (display-mode: fullscreen) {
+    main {
+        top : calc( 50% + 12px ); /* 50% de 24px */
+    }
+}

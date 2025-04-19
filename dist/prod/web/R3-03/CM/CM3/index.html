@@ -252,15 +252,15 @@ rootElement.</p>
 documentElement</p>
 <h1 id="événements-1">Événements</h1>
 <h2 id="bubble-vs-capture">Bubble vs Capture</h2>
-<p> Dans les navigateurs, les interactions sont gérées via des événements, qui se composent de 2 phases :</p>
+ Dans les navigateurs, les interactions sont gérées via des événements, qui se composent de 2 phases :
 <ul>
 <li><p>capture</p>
 </li>
 <li><p>bubble</p>
 </li>
 </ul>
-<p><strong>Capture :</strong> La phase de capture est descendante, elle part du noeud racine et descend vers le noeud cible (target) final. Par exemple, lorsque vous cliquez sur un élément, l&#39;événement de clic va d&#39;abord partir du document, puis par le body. Le navigateur va propager l&#39;événement en se demandant quel fils de l&#39;élément courant est la cible de l&#39;événement, afin de lui transmettre l&#39;événement, puis recommence de manière récursive, l&#39;élément fils cible devenant l&#39;élément courant.</p>
-<p><strong>Bubble :</strong> La phase de buble est montante, elle part du noeud cible (target) final et remonte vers le noeud racine. Si l&#39;événement se propage dans le DOM (<code>bubble: true</code>), le navigateur va transmettre l&#39;événement à l&#39;élément père de l&#39;élément courant, puis recommence de manière récursive, l&#39;élément père devant l&#39;élément courant.</p>
+<strong>Capture :</strong> La phase de capture est descendante, elle part du noeud racine et descend vers le noeud cible (target) final. Par exemple, lorsque vous cliquez sur un élément, l&#39;événement de clic va d&#39;abord partir du document, puis par le body. Le navigateur va propager l&#39;événement en se demandant quel fils de l&#39;élément courant est la cible de l&#39;événement, afin de lui transmettre l&#39;événement, puis recommence de manière récursive, l&#39;élément fils cible devenant l&#39;élément courant.
+<strong>Bubble :</strong> La phase de buble est montante, elle part du noeud cible (target) final et remonte vers le noeud racine. Si l&#39;événement se propage dans le DOM (<code>bubble: true</code>), le navigateur va transmettre l&#39;événement à l&#39;élément père de l&#39;élément courant, puis recommence de manière récursive, l&#39;élément père devant l&#39;élément courant.
 <h2 id="écouter-un-événement">Écouter un événement</h2>
 <pre><code class="hljs language-javascript"><span class="hljs-comment">// [JS] Javascript</span>
 

@@ -42,7 +42,7 @@ todo {
 [Disque]   -->   [FILESYSTEM] --> [OS] (lire   (0,1))
 [Disque]   <--   [FILESYSTEM] <-- [OS] (écrire (0,1))
 </script>
-<p><todo>anim...</todo></p>
+<todo>anim...</todo>
 <h3 id="les-dossiers">Les dossiers</h3>
 <p>Un <strong>dossier</strong> (<em>directory</em>), aussi appelé <strong>répertoire</strong> (<em>folder</em>), est un fichier spécial contenant l&#39;inode et le nom des fichiers qu&#39;il inclus.
 Un même fichier peut alors être présent dans plusieurs dossiers à la fois, sous des noms différents. <todo>image</todo></p>
@@ -472,7 +472,7 @@ LABEL=DATA      /               ext4    errors=remount-ro 0       1
 <li><script type="c-text"><dump></script> : obsolète.</li>
 <li><script type="c-text"><pass></script> : l'ordre dans lequel monter le système de fichier (1 pour la racine, 2+ pour les suivants).</li>
 </ul>
-<p>💡 Il est aussi possible de monter des volumes NFS (<em>Network FileSystem</em>) distants,<br>cf <a href="https://doc.ubuntu-fr.org/disque_reseau">https://doc.ubuntu-fr.org/disque_reseau</a></p>
+<p>💡 Il est aussi possible de monter des volumes NFS (<em>Network FileSystem</em>) distants,<br>cf https://doc.ubuntu-fr.org/disque_reseau</p>
 <p>💡 Il est aussi possible de monter des dossiers distants via SSH avec la commande <script type="c-bash">sshfs</script>, cf TP.</p>
 <h2 id="techniques-de-sauvegardes">Techniques de sauvegardes</h2>
 <h3 id="au-niveau-du-disquede-la-partition">Au niveau du disque/de la partition</h3>

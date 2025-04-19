@@ -196,7 +196,7 @@ const response = await fetch(<h>$URL</h>, {
 <li><script type="c-js">"application/octet-stream"</script> : données binaires.</li>
 <li><script type="c-js">"application/x-www-form-urlencoded"</script> : <script type="c-js">URLSearchParams</script>/<script type="c-js">FormData</script> ;</li>
 </ul>
-<p><code>fetch()</code> retourne un <code>Response</code>, dont le contenu peut être lu via :</p>
+<code>fetch()</code> retourne un <code>Response</code>, dont le contenu peut être lu via :
 <ul>
 <li><script type="c-js">await response.text()</script></li>
 <li><script type="c-js">await response.json()</script></li>
@@ -209,7 +209,7 @@ const response = await fetch(<h>$URL</h>, {
 <li><script type="c-js">.clone()</script> : clone la réponse (permet ainsi plusieurs lectures).</li>
 </ul>
 <h4 id="status">Status</h4>
-<p><code>Response</code> indique aussi si la requête s&#39;est bien effectuée :</p>
+<code>Response</code> indique aussi si la requête s&#39;est bien effectuée :
 <ul>
 <li><code>.ok</code> : pas d&#39;erreurs ;</li>
 <li><code>.status</code> : code de status HTTP ;</li>
@@ -286,7 +286,7 @@ app.get($URL, async function(req, res) {
 <p>=&gt; qu&#39;est-ce qu&#39;un Blob/File ?
 =&gt; decode/encode</p>
 <h3 id="websockets">Websockets</h3>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket">https://developer.mozilla.org/en-US/docs/Web/API/WebSocket</a></p>
+<p>https://developer.mozilla.org/en-US/docs/Web/API/WebSocket</p>
 <h2 id="les-formulaires">Les formulaires</h2>
 <p>-&gt; form
     -&gt; input
@@ -294,7 +294,7 @@ app.get($URL, async function(req, res) {
     -&gt; clear</p>
 <p>-&gt; validation + CSS</p>
 <p>/!\ vérifier les donnés côté serveur.</p>
-<p><strong>⚠</strong> Vous ne devez <strong><u><em>JAMAIS</em></u></strong> faire confiance client. En effet, il est très aisé d&#39;envoyer des données arbitraires au serveur. Vous devez ainsi <em><u><strong>SYSTÉMATIQUEMENT</strong></u></em> vérifier la validité des données envoyées par le client (format, valeurs, autorisations, etc).</p>
+<strong>⚠</strong> Vous ne devez <strong><u><em>JAMAIS</em></u></strong> faire confiance client. En effet, il est très aisé d&#39;envoyer des données arbitraires au serveur. Vous devez ainsi <em><u><strong>SYSTÉMATIQUEMENT</strong></u></em> vérifier la validité des données envoyées par le client (format, valeurs, autorisations, etc).
 <h2 id="gestion-des-données">Gestion des données</h2>
 <p>Localstorage/sessionStorage/FileSystem API/cache.</p>
 <h2 id="les-différents-type-de-serveurs-web">Les différents type de serveurs Web</h2>
@@ -310,13 +310,13 @@ app.get($URL, async function(req, res) {
 </ul>
 <p>Pour du contenu dynamique, i.e. généré sur demande par le serveur, il existe plusieurs façons de procéder :</p>
 <ul>
-<li><p><em>CGI :</em> le serveur Web execute le fichier au lieu de transmettre son contenu au client. Il écrit sur l&#39;entrée standard le corps de la requête, et transmet la sortie standard au client. Cette technique est simple mais peu performante.</p>
+<li><em>CGI :</em> le serveur Web execute le fichier au lieu de transmettre son contenu au client. Il écrit sur l&#39;entrée standard le corps de la requête, et transmet la sortie standard au client. Cette technique est simple mais peu performante.
 </li>
-<li><p><em>fastCGI :</em> analogue au CGI, mais plus performant. Un ou plusieurs processus s&#39;executent en contenu et communiquent avec le serveur Web via des sockets IPC, des sockets TCP, ou via des tubes nommés. C&#39;est notamment ce qui est communément utilisé pour PHP, Ruby on rails, etc.</p>
+<li><em>fastCGI :</em> analogue au CGI, mais plus performant. Un ou plusieurs processus s&#39;executent en contenu et communiquent avec le serveur Web via des sockets IPC, des sockets TCP, ou via des tubes nommés. C&#39;est notamment ce qui est communément utilisé pour PHP, Ruby on rails, etc.
 </li>
-<li><p><em>implémenter son propre serveur</em> qui répondra aux requêtes des clients. Le serveur peut alors supporter plusieurs protocoles en sus de HTTP, e.g. des WebSockets, des sockets TCP, etc. Il peut être implémenté dans n&#39;importe quel langage (e.g. Python, JavaScript,  shell), et a donc accès à toutes leurs fonctionnalités et bibliothèques.</p>
+<li><em>implémenter son propre serveur</em> qui répondra aux requêtes des clients. Le serveur peut alors supporter plusieurs protocoles en sus de HTTP, e.g. des WebSockets, des sockets TCP, etc. Il peut être implémenté dans n&#39;importe quel langage (e.g. Python, JavaScript,  shell), et a donc accès à toutes leurs fonctionnalités et bibliothèques.
 </li>
-<li><p><em>rediriger le flux</em> vers un autre serveur (reverse proxy). Quasi-identique à la solution précédente, il a l&#39;avantage de pouvoir bénéficier des fonctionnalités du serveur Web (authentification, cache, etc), ainsi que d&#39;éviter des problèmes de <em>Same Origin Policy</em> (SOP). Il peut aussi permettre de simplifier l&#39;implémentation du serveur, en déléguant la sécurisation de la communication au reverse proxy, i.e. le serveur  envoie et reçoit des données en clair, et le reverse proxy les chiffre et les déchiffre.</p>
+<li><em>rediriger le flux</em> vers un autre serveur (reverse proxy). Quasi-identique à la solution précédente, il a l&#39;avantage de pouvoir bénéficier des fonctionnalités du serveur Web (authentification, cache, etc), ainsi que d&#39;éviter des problèmes de <em>Same Origin Policy</em> (SOP). Il peut aussi permettre de simplifier l&#39;implémentation du serveur, en déléguant la sécurisation de la communication au reverse proxy, i.e. le serveur  envoie et reçoit des données en clair, et le reverse proxy les chiffre et les déchiffre.
 </li>
 </ul>
 <p>Contrôle d&#39;accès :</p>
@@ -375,9 +375,9 @@ app.get($URL, async function(req, res) {
 -&gt; HTTP1vs2vs3</p>
 <p>L&#39;un des objectifs des développeur Web est de dessiner la page Web le plus tôt possible. Pour cela, il va user de diverses techniques :</p>
 <ul>
-<li><p><em>Compresser les fichiers</em> avant de les transmettre, réduisant le temps de téléchargement des ressources nécessaires.</p>
+<li><em>Compresser les fichiers</em> avant de les transmettre, réduisant le temps de téléchargement des ressources nécessaires.
 </li>
-<li><p><em>Réduire la taille des fichiers</em> en</p>
+<li><em>Réduire la taille des fichiers</em> en
 <ul>
 <li><p>supprimant le code inutilisé</p>
 </li>
@@ -391,7 +391,7 @@ app.get($URL, async function(req, res) {
 </li>
 </ul>
 </li>
-<li><p><em>Télécharger ou exécuter plus tard</em> les ressources non-nécessaires à l&#39;affichage, via :</p>
+<li><em>Télécharger ou exécuter plus tard</em> les ressources non-nécessaires à l&#39;affichage, via :
 <ul>
 <li><p>du <em>lazy load</em>, e.g. ne télécharger les images que lorsqu&#39;elles apparaissent à l&#39;écran.</p>
 </li>
@@ -401,7 +401,7 @@ app.get($URL, async function(req, res) {
 </li>
 </ul>
 </li>
-<li><p><em>Réduire le nombre de fichiers téléchargés</em> (on vise généralement 3-4 fichiers par page) :</p>
+<li><em>Réduire le nombre de fichiers téléchargés</em> (on vise généralement 3-4 fichiers par page) :
 <ul>
 <li><p>remplacer l&#39;URL d&#39;une image par <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs">une chaîne de charactère en base64</a>.</p>
 </li>
@@ -415,7 +415,7 @@ app.get($URL, async function(req, res) {
 </li>
 </ul>
 </li>
-<li><p><em>Utiliser des caches</em> pour éviter de re-télécharger à chaque fois certaines ressources :</p>
+<li><em>Utiliser des caches</em> pour éviter de re-télécharger à chaque fois certaines ressources :
 <ul>
 <li><p>un cache basé le protocole HTTP (cf <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching">Cache-Control</a>).</p>
 </li>
@@ -425,7 +425,7 @@ app.get($URL, async function(req, res) {
 </li>
 </ul>
 </li>
-<li><p><em>Pré-télécharger les ressources</em>, en commençant à les télécharger le plus tôt possible :</p>
+<li><em>Pré-télécharger les ressources</em>, en commençant à les télécharger le plus tôt possible :
 <ul>
 <li><p>dans les balises <code>&lt;script&gt;</code>, l&#39;attribut <code>defer</code>.</p>
 </li>
@@ -435,9 +435,9 @@ app.get($URL, async function(req, res) {
 </li>
 <li><p>Pour les site Web massivement visités :</p>
 <ul>
-<li><p><em>distribuer la charge</em> (load balancing) entre plusieurs serveurs (⚠ engendre des problématiques de synchronisations).</p>
+<li><em>distribuer la charge</em> (load balancing) entre plusieurs serveurs (⚠ engendre des problématiques de synchronisations).
 </li>
-<li><p><em>rapprocher le serveur du client</em>, <em>edge computing</em> (contenu dynamique), <em>content delivery network</em> (contenu statique).</p>
+<li><em>rapprocher le serveur du client</em>, <em>edge computing</em> (contenu dynamique), <em>content delivery network</em> (contenu statique).
 </li>
 <li><p>découper son site Web en plusieurs modules/services indépendants hébergés sur plusieurs serveurs (⚠ si les services doivent fréquemment communiquer entre eux cela peut s&#39;avérer contre-productif).</p>
 </li>

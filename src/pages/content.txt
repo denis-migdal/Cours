@@ -31,12 +31,12 @@
         + Slides:Slides
             - CM1:CM1
             - CM2:CM2
-        - cheat:Cheat Sheet
         + TP:TP
             - TP1:TP1
             - TP2:TP2
         + Fiches:Fiches
             - A:Construire ASTerm
+        - cheat:Cheat Sheet
     + R3-13:S3 Identité Numérique
         + CM:CM
             - CM1:CM1
