@@ -35,6 +35,8 @@ jobs:
           fetch-depth: 0
       - name: Restore Timestamps
         uses: chetan/git-restore-mtime-action@v2
+      - name: Create annotation for build error
+        run: echo ls -lh ./dist/prod
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
