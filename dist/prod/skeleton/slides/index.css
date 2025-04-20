@@ -190,13 +190,42 @@ body {
     background-color: light-dark(#AAA, #111);
     position: relative;
 }
-main {
+
+body.overview main {
+    display: grid;
+    grid-template-columns: repeat( var(--nb_frame) , calc(100vw/ var(--nb_frame ) ) );
+    grid-auto-rows: calc(100vw / var(--nb_frame ) * 9 / 16 );
+    gap: 0px;
+
+    top: 24px;
+    width: 100vw;
+    height: calc( 100vh - 24px );
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    & > * {
+
+        outline: 2px solid blue;
+
+        transform-origin: top left;
+        transform: scale( calc( var(--scale) / var(--nb_frame) ) );
+    }
+}
+
+body:not(.overview) main {
+
     overflow: hidden;
-    position: absolute;
-    top: 0;
     /*overflow: hidden;*/
     width: var(--slide_width);
-    background-color: white;
+    top: 0;
+
+}
+
+main {
+    
+    position: absolute;
+
     & > section, & > .ws-frame {
         width: var(--slide_width);
         height: var(--slide_height);
@@ -234,18 +263,19 @@ main {
         position: relative;
         height: 100vh;
     }
-    main {
+    
+    body:not(.overview) main {
+        scale: var(--scale);
+        height: var(--slide_height);
+
         position: absolute;
 
         right : 0;
         bottom: 0;
 
-        transform-origin: top left;
-        scale: var(--scale);
-        height: var(--slide_height);
-
         top : 50%;
         left: 50%;
+        transform-origin: top left;
         transform: translate(-50%, -50%);
         /* --slide_width */
     }
@@ -358,8 +388,8 @@ body {
 }
 
 @media screen and not (display-mode: fullscreen) {
-    main {
-        top : calc( 50% + 12px ); /* 50% de 24px */
+    body:not(.overview) main {
+        top : calc( 50% + 12px ) !important; /* 50% de 24px */
     }
 }
 
