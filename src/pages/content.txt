@@ -26,11 +26,11 @@
 + sec:🔒 Sécurité
     - R2-14:S2 Administration Système
         + CM:CM
-            - CM1:CM1
-            - CM2:CM2
+            - CM1:CM1 - Commandes Shell
+            - CM2:CM2 - Les fichiers
         + Slides:Slides
-            - CM1:CM1
-            - CM2:CM2
+            - CM1:CM1 - Commandes Shell
+            - CM2:CM2 - Les fichiers
         + TP:TP
             - TP1:TP1
             - TP2:TP2

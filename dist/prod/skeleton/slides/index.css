@@ -171,10 +171,10 @@ h3::before {
 body {
     counter-reset: page_id;
 }
-main > section, main > .ws-frame {
+main .ws-frame {
     position: relative;
 }
-main > section::before, main > .ws-frame::before {
+main .ws-frame::after {
     position: absolute;
     bottom: 0;
     right: 5px;
@@ -226,7 +226,7 @@ main {
     
     position: absolute;
 
-    & > section, & > .ws-frame {
+    & .ws-frame {
         width: var(--slide_width);
         height: var(--slide_height);
         overflow-y: scroll;

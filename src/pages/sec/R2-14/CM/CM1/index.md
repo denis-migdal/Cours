@@ -257,6 +257,27 @@ options:
 
 💡 [argparse](https://docs.python.org/3/library/argparse.html) a encore bien d'autres options que vous pourrez découvrir en lisant sa documentation.
 
+## Réécritures de la ligne de commande
+
+### Les alias
+
+<mark>todo</mark>
+<mark>set -x (b4 espaces ?)</mark>
+
+
+Avant d'exécuter la ligne de commande, le shell (Bash) procède éventuellement à quelques réécritures de la ligne de commande. La commande <script type="c-bash">set -x</script> permet d'afficher la ligne de commande réellement exécutée (<script type="c-bash">set +x</script> pour annuler) :
+<script type='c-shell'>
+$ set -x
+$ foo a b
++ foo a b
+</script>
+
+💡 <script type="c-bash">set -x</script> est aussi utilisé pour déboguer les scripts shell, en affichant l'execution du script pas à pas.
+
+Cela est par exemple le cas lorsqu'on utilise des *alias*, 
+
+- alias (unalias) + liste
+
 ### Espaces dans les arguments
 
 Pour inclure un espace dans un argument, il convient de soit les échapper, soit de mettre le texte entre guillements simples :

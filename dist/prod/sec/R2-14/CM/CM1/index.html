@@ -236,6 +236,22 @@ options:
 <li><script type="c-python">required</script> pour indiquer si l'argument est requis.</li>
 </ul>
 <p>💡 <a href="https://docs.python.org/3/library/argparse.html">argparse</a> a encore bien d&#39;autres options que vous pourrez découvrir en lisant sa documentation.</p>
+<h2 id="réécritures-de-la-ligne-de-commande">Réécritures de la ligne de commande</h2>
+<h3 id="les-alias">Les alias</h3>
+<mark>todo</mark>
+<mark>set -x (b4 espaces ?)</mark>
+<p>Avant d&#39;exécuter la ligne de commande, le shell (Bash) procède éventuellement à quelques réécritures de la ligne de commande. La commande <script type="c-bash">set -x</script> permet d&#39;afficher la ligne de commande réellement exécutée (<script type="c-bash">set +x</script> pour annuler) :</p>
+<script type='c-shell'>
+$ set -x
+$ foo a b
++ foo a b
+</script>
+
+<p>💡 <script type="c-bash">set -x</script> est aussi utilisé pour déboguer les scripts shell, en affichant l&#39;execution du script pas à pas.</p>
+<p>Cela est par exemple le cas lorsqu&#39;on utilise des <em>alias</em>, </p>
+<ul>
+<li>alias (unalias) + liste</li>
+</ul>
 <h3 id="espaces-dans-les-arguments">Espaces dans les arguments</h3>
 <p>Pour inclure un espace dans un argument, il convient de soit les échapper, soit de mettre le texte entre guillements simples :</p>
 <script type="c-shell">
