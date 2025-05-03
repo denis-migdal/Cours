@@ -11,9 +11,22 @@
     <body>
         <main>
 
-# Constuire ASTerm
+# Construire ASTerm
 
-Cette fiche détaille le processus de création de ASTerm utilisé dans le cadre de ce TP.
+Cette fiche détaille le processus de création de ASTerm utilisé dans le cadre des TP.
+
+! correct version in UCA session !
+
+1. Copier ASTerm + install dans ~/scratch/public/S2_AdmSys/ (besoin d'un zip...)
+2. Need debian & vbox guest addons iso 
+3. ASTerm_create.sh
+   1. Créer la VM (vm_create.sh)
+   2. Créer le fichier de configuration preseed (preseed_create.sh)
+   3. Installer la VM (vm_install.sh) - missing .iso
+4. Distribuer la VM (ASTerm.install)
+postinstall ???
+
+## Notes:
 
 Preseed => SSH connexion (minimal system, network, SSH)
 Then configure over ssh

@@ -4,3 +4,14 @@
     font-size: small;
     font-style: italic;
 }
+
+img {
+    max-width: 100%;
+}
+
+.terminal {
+    border: 1px solid gray; border-radius: 5px; padding: 5px;
+    & > pre {
+        margin: 0;
+    }
+}

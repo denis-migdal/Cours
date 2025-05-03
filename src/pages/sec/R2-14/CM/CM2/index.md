@@ -16,12 +16,6 @@ todo {
         content: "todo: "
     }
 }
-.terminal {
-    border: 1px solid gray; border-radius: 5px; padding: 5px;
-    & > pre {
-        margin: 0;
-    }
-}
         </style>
     </head>
     <body>

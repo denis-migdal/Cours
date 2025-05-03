@@ -15,32 +15,25 @@
 
 ## Introduction
 
-### Pourquoi administrer un système ?
+### Pourquoi administrer un serveur ?
 
 L'administration d'un ordinateur a (entre autres) pour objectifs :
 - d'installer et de configurer les outils nécessaire à vos usages ;
 - programmer (*schedule*) et automatiser des séries d'actions (e.g. sauvegardes, générations de rapports, etc).
 
-Dans le cadre de votre formation, ce module vous permettra :
-- d'acquérir des notions de cybersécurité relatives au fonctionnement d'un ordinateur ;
-- d'utiliser certains outils métiers (e.g. serveurs de calculs) ;
-- personnaliser et administrer votre poste de travail ou un serveur (e.g. dans une PME).
-
 Ce module se concentrera sur le système d'exploitation Linux. En effet, si Windows domine les parts de marchés pour les ordinateurs de bureaux (69% contre 4,5% pour Linux), Linux est majoritaire sur les serveurs (96,4%), et les mobiles (71% avec Android). Linux est aussi très utilisé comme poste de travail par les développeurs.
 
-En effet les serveurs sont très utiles dans le cadre de vos activités (notamment pour effectuer des calculs intensifs) :
-- ils restent allumés h24 7j/7, avec des protections en cas de coupures d'électricité (e.g. onduleur).
-- ils ont des capacités bien supérieures à un poste de travail classique (e.g. 100+ CPU, 1To+ de RAM, etc).
-- ils mutualisent des ressources (CPU/RAM/licences logicielles) entre plusieurs utilisateurs.
-- ils fournissent des services sans avoir à les installer sur le poste de travail (e.g. Intranet, webmails, etc.).
-- ils permettent de synchroniser des données entre plusieurs postes de travail (e.g. serveur de fichiers).
-- etc.
+### Attentes et objectifs du module
+
+Dans le cadre de votre formation, ce module vous permettra :
+- d'acquérir des notions de cybersécurité relatives au fonctionnement d'un ordinateur ;
+- administrer et personnaliser votre poste de travail ou un serveur (e.g. dans une PME) ;
+- d'utiliser certains outils métiers (e.g. serveurs de calculs).
 
 Dans le cadre de ce module, il ne vous sera pas demandé de retenir les étapes de configurations par coeur, mais d'être capable de suivre des séries d'instructions, en comprenant ce que vous faites, leur effets et raisons. Vous devrez ainsi :
 - comprendre les différents concepts présentés dans ce module ;
 - être capable d'exploiter les documents fournis (e.g. cheat sheet) ;
 - faire preuve de rigueur et de méthode.
-
 
 ### REPL et scripts
 
@@ -83,13 +76,31 @@ On distingue 3 manières d'intéragir avec un ordinateur :
 
 Pourquoi donc administrer un ordinateur en lignes de commande, plutôt que d'utiliser une interface graphique ?
 
-La raison première est tout simplement qu'il n'y a pas nécessairement d'interfaces graphiques installées sur l'ordinateur. C'est le généralement cas pour les serveurs afin d'en économiser les ressources (GPU/CPU/RAM/réseau) et de réduire les surfaces d'attaques.
-
-De plus, les interfaces en lignes de commandes comportent de nombreux avantages par rapport aux interfaces graphiques :
+Les interfaces en lignes de commandes comportent de nombreux avantages par rapport aux interfaces graphiques :
 - on peut copier/coller des lignes de commandes (c'est du texte).
 - les lignes de commandes sont indépendantes de la langue de l'utilisateur (i.e. pas de traductions).
 - on a toute la puissance qu'offre un langage de programmation (variables, conditions, boucles, etc).
 - on peut automatiser une série d'instructions en enregistrant les lignes de commandes dans un fichier (script).
+
+Une autre raison est tout simplement que l'ordinateur n'a pas nécessairement d'interface graphique installée. C'est généralement le cas pour les serveurs, afin d'en économiser les ressources (GPU/CPU/RAM/réseau) et de réduire les surfaces d'attaques.
+
+### Les serveurs
+
+Les **serveurs** sont des ordinateurs fournissant divers **services** à ses utilisateurs :
+- *serveur Web* : héberge un site Web ;
+- *serveur de messagerie* : permet d'envoyer et de recevoir des mails ;
+- *serveurs d'applications* : permet d'utiliser des applications à distances, sans installations, *e.g. Office 365*.
+- *serveur de calculs* : permet d'effectuer des calculs longs et intensifs.
+
+💡 Le terme **service** fait référence au *logiciel*, quand le terme **serveur** peut faire référence au *matériel* ou au *logiciel*.
+
+Les serveurs sont très utiles dans le cadre de vos activités (notamment pour effectuer des calculs intensifs) :
+- ils restent allumés h24 7j/7, avec des protections en cas de coupures d'électricité (e.g. onduleur).
+- ils ont des capacités bien supérieures à un poste de travail classique (e.g. 100+ CPU, 1To+ de RAM, etc).
+- ils mutualisent des ressources (CPU/RAM/licences logicielles) entre plusieurs utilisateurs.
+- ils fournissent des services sans avoir à les installer sur le poste de travail (e.g. Intranet, webmails, etc.).
+- ils permettent de synchroniser des données entre plusieurs postes de travail (e.g. serveur de fichiers).
+- etc.
 
 ## Le Shell
 
@@ -194,7 +205,7 @@ De même, les arguments/paramètres **nommés** fonctionnent de la même manièr
     </script>
 </div>
 
-Petite nouveauté, les drapeaux (*flags*), où les paramètres sont des booléans mis à vrai ou faux en fonction de la présence de l'argument. Avec [argparse](https://docs.python.org/3/library/argparse.html), ils se déclarent ainsi :
+Petite nouveauté, les <b>drapeaux</b> (*flags*), où les paramètres sont des booléens mis à vrai ou faux en fonction de la présence de l'argument. Avec [argparse](https://docs.python.org/3/library/argparse.html), ils se déclarent ainsi :
 
 <div class="flex-2">
     <script type="c-python">
@@ -247,6 +258,8 @@ options:
 </script>
 
 💡 <script type="c-text">[]</script> indique le caractère facultatif d'un argument.
+
+⚠ À l'inverse de Python, les arguments nommés sont usuellement écrits <b>avant</b> les arguments positionnels.
 
 💡 <script type="c-python">add_argument()</script> a de nombreux autres arguments notamment :
 - <script type="c-python">help</script> pour ajouter une description au paramètre qui s'affichera dans l'usage.
@@ -333,13 +346,13 @@ Vous pouvez utiliser deux types d'interfaces au sein d'un terminal :
 <div class='flex-2'>
     <div>
         <center>
-            <strong>CLI</strong> (commande "tree")
+            <strong>CLI</strong> (commande <script type="c-bash">tree</script>)
         </center>
         <img src="../../../../assets/admsys/img/cli-example.png"/>
     </div>
     <div>
         <center>
-            <strong>TUI</strong> (commande "gdu")
+            <strong>TUI</strong> (commande <script type="c-bash">gdu</script>)
         </center>
         <img src="../../../../assets/admsys/img/tui-example.png"/>
     </div>
@@ -356,8 +369,8 @@ Recopier à la main des commandes est sources d'erreurs et de fautes de frappe. 
   💡 Le clic-milieu ou clic-molette de la souris copie/colle le texte sélectionné.
 - **Auto-complétion** des commandes et chemins (<script type="c-text">⭾</script>).<br/>
   💡 <script type="c-text">⭾+⭾</script> affiche les différentes possibilités d'auto-complétion.
-- **Historique** : <script type="c-text">↑</script> et <script type="c-text">↓</script> permettent de naviguer parmi l'historique des lignes de commandes tapées (et potentiellement de les réexécuter).<br/>
-  💡 <script type="c-text">←</script> et <script type="c-text">→</script> permettent ensuite de modifier la ligne de commande.
+- **Historique** : <script type="c-text">↑</script> ou <script type="c-text">↓</script> permettent de naviguer parmi l'historique des lignes de commandes tapées (et potentiellement de les réexécuter).<br/>
+  💡 <script type="c-text">←</script> ou <script type="c-text">→</script> permettent ensuite de modifier la ligne de commande.
 
 
 ⚠ <script type="c-text">^+C</script> permet d'arrêter une commande en cours d'exécution.
@@ -379,10 +392,30 @@ Recopier à la main des commandes est sources d'erreurs et de fautes de frappe. 
 #### L'historique
 
 - <script type="c-bash">history</script> : affiche l'historique des dernières lignes de commandes exécutées.
-- <script type="c-bash">!!</script> : réexécuter la dernière commande tapée.
+- <script type="c-bash">!!</script> : réexécuter la dernière commande entrée.
 - <script type="c-bash">!<h>$CMD</h></script> : réexécute la dernière commande <script type="c-bash"><h>$CMD</h></script> entrée.
 
 ## Accès à distance
+
+Les serveurs sont usuellement installés dans une salle dédiée avec contrôle d’accès, parfois à plusieurs centaines (ou milliers) de km de votre poste de travail. Par exemple, le serveur pourrait être à Clermont-Ferrand alors que votre bureau est à Aurillac.
+
+Bien évidement, vous n'allez pas faire l'aller-retour à Clermont-Ferrand, à chaque ligne de commande que vous souhaitez exécuter sur le serveur. Imaginez que vous deviez régulièrement intervenir sur le serveur, vous passeriez votre temps à faire l’aller-retour Aurillac/Clermont-Ferrand !
+
+Il est ainsi nécessaire de pouvoir accéder au serveur à distance afin d’éviter de tels déplacements chronophages. Pour ce faire, on utilise **SSH** (<u>s</u>ecure <u>sh</u>ell) afin d’envoyer, via Internet, des lignes de commande au serveur, ce en à peine quelques millisecondes.
+
+
+SSH suit une architecture client-serveur avec :
+- un **client SSH** sur le poste de travail ;
+- un **serveur SSH** sur le serveur.
+
+Le *client SSH* permet d’initier une connexion SSH (≈ session SSH) avec le *serveur SSH*. Une fois la connexion établie, le *client SSH* peut alors envoyer des commandes shell au *serveur SSH* qui les exécutera, et en retournera le résultat.
+
+La commande <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h></script> initie une session SSH. Les commandes entrées par la suite sont envoyées au serveur pour être exécutées. Dans les faits, cela revient à ouvrir un terminal du serveur sur votre poste de travail :
+
+<img src='/assets/admsys/img/scheme.svg'/>
+
+💡 <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h> "<h>$CMD</h>"</script> exécute la commande <script type="c-bash">CMD</script> sur le serveur, et retourne immédiatement. 
+
 
         </main>
     </body>

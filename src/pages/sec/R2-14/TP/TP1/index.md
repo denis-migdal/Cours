@@ -11,13 +11,13 @@
     <body>
         <main>
 
+# TP1 (2h)
 
-### Attendus (rappeler cmd) TP?
+## Attendus (rappeler cmd) TP?
 
 Objectif
 - liste d'étapes : être capable de suivre rigoureusement des instruction à partir des documents fournis (sujet, cheat sheet, etc).
 - pour cela comprendre les concepts sous-jacent / ce que vous faites, sans savoir tout par coeur.
-- .
 
 Il est attendu de vous que vous soyez capable de suivre de manière **rigoureuse** des instructions 
 
@@ -25,11 +25,28 @@ Il est attendu de vous que vous soyez capable de suivre de manière **rigoureuse
 => compétences (aide docs/cheat sheet) vs connaissances par coeur.
 => suivre instructions
 
+## Prise en main
+
+- installer ASTerm + se connecter dessus.
+- missing installations (?)
+- prise en main du terminal (#17+#18) + cheat sheet
+- manip fichiers
+
+## Créer une commande
+
 - créer commande (make_cmd)
 - args
-- shell_exec
 - colors
+
+## SSH
+
 - ssh (comprendre) (interactif/non-interactif)
+
+## Modifications des lignes de commande
+
+- spaces
+- alias
+- client vs server
 
 </main>
     </body>
