@@ -393,4 +393,40 @@ body {
     }
 }
 
+/* TODO: move out */
+
+li[mark="🕮"]::marker {
+    content: "🕮 ";
+    color: unset;
+}
+li[mark="💡"]::marker {
+    content: "💡 ";
+    color: unset;
+}
+
+.flex-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+}
+
+img {
+    width: 100%;
+}
+
+ul.flex-2 {
+    gap: 0px;
+}
+
+.terminal {
+    margin-left: 25px;
+    margin-right: 25px;
+
+    background-color: light-dark(white, black);
+    border: 1px solid gray; border-radius: 5px; padding: 5px;
+    & > pre {
+        margin: 0;
+    }
+}
+
 /*# sourceMappingURL=index.css.map*/

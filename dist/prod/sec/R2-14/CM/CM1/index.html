@@ -13,27 +13,19 @@
 
 <h1 id="commandes-shell">Commandes SHELL</h1>
 <h2 id="introduction">Introduction</h2>
-<h3 id="pourquoi-administrer-un-système-">Pourquoi administrer un système ?</h3>
+<h3 id="pourquoi-administrer-un-serveur-">Pourquoi administrer un serveur ?</h3>
 <p>L&#39;administration d&#39;un ordinateur a (entre autres) pour objectifs :</p>
 <ul>
 <li>d&#39;installer et de configurer les outils nécessaire à vos usages ;</li>
 <li>programmer (<em>schedule</em>) et automatiser des séries d&#39;actions (e.g. sauvegardes, générations de rapports, etc).</li>
 </ul>
+<p>Ce module se concentrera sur le système d&#39;exploitation Linux. En effet, si Windows domine les parts de marchés pour les ordinateurs de bureaux (69% contre 4,5% pour Linux), Linux est majoritaire sur les serveurs (96,4%), et les mobiles (71% avec Android). Linux est aussi très utilisé comme poste de travail par les développeurs.</p>
+<h3 id="attentes-et-objectifs-du-module">Attentes et objectifs du module</h3>
 <p>Dans le cadre de votre formation, ce module vous permettra :</p>
 <ul>
 <li>d&#39;acquérir des notions de cybersécurité relatives au fonctionnement d&#39;un ordinateur ;</li>
-<li>d&#39;utiliser certains outils métiers (e.g. serveurs de calculs) ;</li>
-<li>personnaliser et administrer votre poste de travail ou un serveur (e.g. dans une PME).</li>
-</ul>
-<p>Ce module se concentrera sur le système d&#39;exploitation Linux. En effet, si Windows domine les parts de marchés pour les ordinateurs de bureaux (69% contre 4,5% pour Linux), Linux est majoritaire sur les serveurs (96,4%), et les mobiles (71% avec Android). Linux est aussi très utilisé comme poste de travail par les développeurs.</p>
-<p>En effet les serveurs sont très utiles dans le cadre de vos activités (notamment pour effectuer des calculs intensifs) :</p>
-<ul>
-<li>ils restent allumés h24 7j/7, avec des protections en cas de coupures d&#39;électricité (e.g. onduleur).</li>
-<li>ils ont des capacités bien supérieures à un poste de travail classique (e.g. 100+ CPU, 1To+ de RAM, etc).</li>
-<li>ils mutualisent des ressources (CPU/RAM/licences logicielles) entre plusieurs utilisateurs.</li>
-<li>ils fournissent des services sans avoir à les installer sur le poste de travail (e.g. Intranet, webmails, etc.).</li>
-<li>ils permettent de synchroniser des données entre plusieurs postes de travail (e.g. serveur de fichiers).</li>
-<li>etc.</li>
+<li>administrer et personnaliser votre poste de travail ou un serveur (e.g. dans une PME) ;</li>
+<li>d&#39;utiliser certains outils métiers (e.g. serveurs de calculs).</li>
 </ul>
 <p>Dans le cadre de ce module, il ne vous sera pas demandé de retenir les étapes de configurations par coeur, mais d&#39;être capable de suivre des séries d&#39;instructions, en comprenant ce que vous faites, leur effets et raisons. Vous devrez ainsi :</p>
 <ul>
@@ -76,13 +68,31 @@
 <li><strong>TUI</strong> : interface <em>textuelle</em> (<em>Text-based User Interface</em>).</li>
 </ul>
 <p>Pourquoi donc administrer un ordinateur en lignes de commande, plutôt que d&#39;utiliser une interface graphique ?</p>
-<p>La raison première est tout simplement qu&#39;il n&#39;y a pas nécessairement d&#39;interfaces graphiques installées sur l&#39;ordinateur. C&#39;est le généralement cas pour les serveurs afin d&#39;en économiser les ressources (GPU/CPU/RAM/réseau) et de réduire les surfaces d&#39;attaques.</p>
-<p>De plus, les interfaces en lignes de commandes comportent de nombreux avantages par rapport aux interfaces graphiques :</p>
+<p>Les interfaces en lignes de commandes comportent de nombreux avantages par rapport aux interfaces graphiques :</p>
 <ul>
 <li>on peut copier/coller des lignes de commandes (c&#39;est du texte).</li>
 <li>les lignes de commandes sont indépendantes de la langue de l&#39;utilisateur (i.e. pas de traductions).</li>
 <li>on a toute la puissance qu&#39;offre un langage de programmation (variables, conditions, boucles, etc).</li>
 <li>on peut automatiser une série d&#39;instructions en enregistrant les lignes de commandes dans un fichier (script).</li>
+</ul>
+<p>Une autre raison est tout simplement que l&#39;ordinateur n&#39;a pas nécessairement d&#39;interface graphique installée. C&#39;est généralement le cas pour les serveurs, afin d&#39;en économiser les ressources (GPU/CPU/RAM/réseau) et de réduire les surfaces d&#39;attaques.</p>
+<h3 id="les-serveurs">Les serveurs</h3>
+<p>Les <strong>serveurs</strong> sont des ordinateurs fournissant divers <strong>services</strong> à ses utilisateurs :</p>
+<ul>
+<li><em>serveur Web</em> : héberge un site Web ;</li>
+<li><em>serveur de messagerie</em> : permet d&#39;envoyer et de recevoir des mails ;</li>
+<li><em>serveurs d&#39;applications</em> : permet d&#39;utiliser des applications à distances, sans installations, <em>e.g. Office 365</em>.</li>
+<li><em>serveur de calculs</em> : permet d&#39;effectuer des calculs longs et intensifs.</li>
+</ul>
+<p>💡 Le terme <strong>service</strong> fait référence au <em>logiciel</em>, quand le terme <strong>serveur</strong> peut faire référence au <em>matériel</em> ou au <em>logiciel</em>.</p>
+<p>Les serveurs sont très utiles dans le cadre de vos activités (notamment pour effectuer des calculs intensifs) :</p>
+<ul>
+<li>ils restent allumés h24 7j/7, avec des protections en cas de coupures d&#39;électricité (e.g. onduleur).</li>
+<li>ils ont des capacités bien supérieures à un poste de travail classique (e.g. 100+ CPU, 1To+ de RAM, etc).</li>
+<li>ils mutualisent des ressources (CPU/RAM/licences logicielles) entre plusieurs utilisateurs.</li>
+<li>ils fournissent des services sans avoir à les installer sur le poste de travail (e.g. Intranet, webmails, etc.).</li>
+<li>ils permettent de synchroniser des données entre plusieurs postes de travail (e.g. serveur de fichiers).</li>
+<li>etc.</li>
 </ul>
 <h2 id="le-shell">Le Shell</h2>
 <h3 id="linvite-de-commande">L&#39;invite de commande</h3>
@@ -177,7 +187,7 @@ Il est aussi possible d&#39;indiquer des arguments à transmettre à l&#39;inter
     </script>
 </div>
 
-<p>Petite nouveauté, les drapeaux (<em>flags</em>), où les paramètres sont des booléans mis à vrai ou faux en fonction de la présence de l&#39;argument. Avec <a href="https://docs.python.org/3/library/argparse.html">argparse</a>, ils se déclarent ainsi :</p>
+<p>Petite nouveauté, les <b>drapeaux</b> (<em>flags</em>), où les paramètres sont des booléens mis à vrai ou faux en fonction de la présence de l&#39;argument. Avec <a href="https://docs.python.org/3/library/argparse.html">argparse</a>, ils se déclarent ainsi :</p>
 <div class="flex-2">
     <script type="c-python">
         parser.add_argument("--list",
@@ -227,6 +237,7 @@ options:
 </script>
 
 <p>💡 <script type="c-text">[]</script> indique le caractère facultatif d&#39;un argument.</p>
+<p>⚠ À l&#39;inverse de Python, les arguments nommés sont usuellement écrits <b>avant</b> les arguments positionnels.</p>
 <p>💡 <script type="c-python">add_argument()</script> a de nombreux autres arguments notamment :</p>
 <ul>
 <li><script type="c-python">help</script> pour ajouter une description au paramètre qui s'affichera dans l'usage.</li>
@@ -306,13 +317,13 @@ Namespace(src='a b', dst='c d')
 <div class='flex-2'>
     <div>
         <center>
-            <strong>CLI</strong> (commande "tree")
+            <strong>CLI</strong> (commande <script type="c-bash">tree</script>)
         </center>
         <img src="../../../../assets/admsys/img/cli-example.png"/>
     </div>
     <div>
         <center>
-            <strong>TUI</strong> (commande "gdu")
+            <strong>TUI</strong> (commande <script type="c-bash">gdu</script>)
         </center>
         <img src="../../../../assets/admsys/img/tui-example.png"/>
     </div>
@@ -327,8 +338,8 @@ Namespace(src='a b', dst='c d')
 💡 Le clic-milieu ou clic-molette de la souris copie/colle le texte sélectionné.</li>
 <li><strong>Auto-complétion</strong> des commandes et chemins (<script type="c-text">⭾</script>).<br/>
 💡 <script type="c-text">⭾+⭾</script> affiche les différentes possibilités d&#39;auto-complétion.</li>
-<li><strong>Historique</strong> : <script type="c-text">↑</script> et <script type="c-text">↓</script> permettent de naviguer parmi l&#39;historique des lignes de commandes tapées (et potentiellement de les réexécuter).<br/>
-💡 <script type="c-text">←</script> et <script type="c-text">→</script> permettent ensuite de modifier la ligne de commande.</li>
+<li><strong>Historique</strong> : <script type="c-text">↑</script> ou <script type="c-text">↓</script> permettent de naviguer parmi l&#39;historique des lignes de commandes tapées (et potentiellement de les réexécuter).<br/>
+💡 <script type="c-text">←</script> ou <script type="c-text">→</script> permettent ensuite de modifier la ligne de commande.</li>
 </ul>
 <p>⚠ <script type="c-text">^+C</script> permet d&#39;arrêter une commande en cours d&#39;exécution.</p>
 <h3 id="quelques-commandes-utiles">Quelques commandes utiles</h3>
@@ -347,10 +358,23 @@ Namespace(src='a b', dst='c d')
 <h4 id="lhistorique">L&#39;historique</h4>
 <ul>
 <li><script type="c-bash">history</script> : affiche l'historique des dernières lignes de commandes exécutées.</li>
-<li><script type="c-bash">!!</script> : réexécuter la dernière commande tapée.</li>
+<li><script type="c-bash">!!</script> : réexécuter la dernière commande entrée.</li>
 <li><script type="c-bash">!<h>$CMD</h></script> : réexécute la dernière commande <script type="c-bash"><h>$CMD</h></script> entrée.</li>
 </ul>
 <h2 id="accès-à-distance">Accès à distance</h2>
+<p>Les serveurs sont usuellement installés dans une salle dédiée avec contrôle d’accès, parfois à plusieurs centaines (ou milliers) de km de votre poste de travail. Par exemple, le serveur pourrait être à Clermont-Ferrand alors que votre bureau est à Aurillac.</p>
+<p>Bien évidement, vous n&#39;allez pas faire l&#39;aller-retour à Clermont-Ferrand, à chaque ligne de commande que vous souhaitez exécuter sur le serveur. Imaginez que vous deviez régulièrement intervenir sur le serveur, vous passeriez votre temps à faire l’aller-retour Aurillac/Clermont-Ferrand !</p>
+<p>Il est ainsi nécessaire de pouvoir accéder au serveur à distance afin d’éviter de tels déplacements chronophages. Pour ce faire, on utilise <strong>SSH</strong> (<u>s</u>ecure <u>sh</u>ell) afin d’envoyer, via Internet, des lignes de commande au serveur, ce en à peine quelques millisecondes.</p>
+<p>SSH suit une architecture client-serveur avec :</p>
+<ul>
+<li>un <strong>client SSH</strong> sur le poste de travail ;</li>
+<li>un <strong>serveur SSH</strong> sur le serveur.</li>
+</ul>
+<p>Le <em>client SSH</em> permet d’initier une connexion SSH (≈ session SSH) avec le <em>serveur SSH</em>. Une fois la connexion établie, le <em>client SSH</em> peut alors envoyer des commandes shell au <em>serveur SSH</em> qui les exécutera, et en retournera le résultat.</p>
+<p>La commande <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h></script> initie une session SSH. Les commandes entrées par la suite sont envoyées au serveur pour être exécutées. Dans les faits, cela revient à ouvrir un terminal du serveur sur votre poste de travail :</p>
+<img src='/assets/admsys/img/scheme.svg'/>
+
+<p>💡 <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h> "<h>$CMD</h>"</script> exécute la commande <script type="c-bash">CMD</script> sur le serveur, et retourne immédiatement. </p>
         </main>
     </body>
 </html>

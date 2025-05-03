@@ -16,6 +16,10 @@ KEYBOARD="fr"
 COUNTRY="FR"
 TZ="Europe/Paris"
 
+MIRROR="mirror.dsi.uca.fr/"
+MIRROR_DIR="/debian/debian/"
+PROXY="http://proxyau.iut.uca.fr:8080/"
+
 ### Partitioning
 d-i partman-auto/disk string /dev/sda
 d-i partman-auto/method string regular
@@ -68,9 +72,13 @@ echo "@@VBOX_COND_IS_NOT_INSTALLING_ADDITIONS@@d-i clock-setup/ntp boolean true@
 d-i base-installer/kernel/override-image string linux-server
 d-i base-installer/kernel/override-image string linux-image-amd64
 ## @todo use nearest mirror somehow...
-d-i mirror/country string "$COUNTRY"
-## @todo proxy fun...
-d-i mirror/http/proxy string
+d-i mirror/country string manual
+d-i mirror/protocol string http
+d-i mirror/http/hostname string "$MIRROR"
+d-i mirror/http/directory string "$MIRROR_DIR"
+
+d-i mirror/http/proxy string "$PROXY"
+
 d-i pkgsel/install-language-support boolean false
 
 taskel tasksel/first multiselect standard

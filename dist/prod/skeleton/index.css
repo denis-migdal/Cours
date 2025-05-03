@@ -312,4 +312,15 @@ h3::before {
     font-style: italic;
 }
 
+img {
+    max-width: 100%;
+}
+
+.terminal {
+    border: 1px solid gray; border-radius: 5px; padding: 5px;
+    & > pre {
+        margin: 0;
+    }
+}
+
 /*# sourceMappingURL=index.css.map*/

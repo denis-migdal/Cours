@@ -17,48 +17,482 @@
     author    = "Denis MIGDAL"
     mail      = "denis.migdal@uca.fr">
 </frame-uca-title>
-<frame-section name="Section name" id="toto">
-    <frame-subsection name="sub">
-        <frame-subsubsection name="sub">
+<frame-section id="intro" name="Introduction">
+    <frame-subsection id="motivation" name="Pourquoi administrer un système ?">
 
-            <frame-uca subsection="Structure d'une page Web">
-                OK
-            </frame-uca>
-            <frame-uca subsection="Les SGBD">
-            </frame-uca>
-        </frame-subsubsection>
+<frame-uca>
+<div>
+
+<p>Administrer un ordinateur permet de :</p>
+<ul>
+<li>installer/configurer des outils ;</li>
+<li>programmer (<em>schedule</em>) et automatiser, <em>e.g. sauvegardes, générations de rapports</em>.</li>
+</ul>
+</div><div>
+
+<p>Ce module se concentrera sur le système d&#39;exploitation Linux :</p>
+<ul>
+<li>poste de travail des développeurs ;</li>
+<li>très présent sur les serveurs (96,4%).</li>
+</ul>
+</div>
+</frame-uca>
+
+<frame-subsection id="attentes" name="Attentes et objectifs du module">
+
+<frame-uca>
+
+<div>
+
+<p>Objectifs du module :</p>
+<ul>
+<li>notions de cybersécurité sur le fonctionnement des ordinateurs ;</li>
+<li>administrer et personnaliser un poste de travail/serveur ;</li>
+<li>présentations d&#39;outils métiers, <em>e.g. serveurs de calculs</em>, <em>accès à distance</em>.</div><div></li>
+</ul>
+<p>Attentes :</p>
+<ul>
+<li>comprendre les concepts du module ;</li>
+<li>être capable de suivre des instructions avec rigueur et méthode ;</li>
+<li>être capable d&#39;exploiter les documents fournis, <em>e.g. cheat sheet</em>.</div></li>
+</ul>
+</frame-uca>
+
+        </frame-subsection>
+        <frame-subsection id="repl" name="REPL et scripts">
+<frame-uca>
+<div>
+
+<ul>
+<li><strong>interpreteur</strong> : logiciel interprétant des instructions textuelles (e.g. <script type="c-text">python3</script>, <script type="c-text">sqlite3</script>). Deux modes :<ul>
+<li><strong>scripts</strong> : instructions dans un fichier (e.g. <script type="c-text">.py</script>);</li>
+<li><strong>REPL</strong> (<em>Read-Eval-Print Loop</em>) : instructions lues ligne par ligne :</li>
+</ul>
+</li>
+</ul>
+<div class="flex-2">
+    <script type="c-text">
+        sqlite> SELECT 1+1 as result;
+        ┌────────┐
+        │ result │
+        ├────────┤
+        │ 2      │
+        └────────┘
+        sqlite> 
+    </script>
+    <script type="c-python">
+        >>> print("Hello")
+        Hello
+        >>> 
+    </script>
+</div>
+
+</div>
+
+<div>
+
+<p>En administration système :</p>
+<ul>
+<li>langage <strong>Shell</strong>, interpréteur <script type="c-bash">bash</script> ;<ul>
+<li><em>interface en lignes de commande</em> (<em>CLI</em>) : l&#39;interface REPL ;</li>
+<li><em>invite de commande</em> (<em>prompt</em>) : l&#39;invite ;</li>
+<li><em>ligne de commande</em> : ligne d&#39;instruction lue par l&#39;interpréteur.</div></li>
+</ul>
+</li>
+</ul>
+</frame-uca>
+        </frame-subsection>
+        <frame-subsection id="why-cli" name="Pourquoi les lignes de commandes ?">
+<frame-uca>
+
+<div>
+
+<p>3 manières d&#39;intéragir avec un ordinateur :</p>
+<ul>
+<li><strong>CLI</strong> : interface <em>en lignes de commande</em> (<em>Command Line Interface</em>) ;</li>
+<li><strong>GUI</strong> : interface <em>graphique</em> (<em>Graphical User Interface</em>) ;</li>
+<li><strong>TUI</strong> : interface <em>textuelle</em> (<em>Text-based User Interface</em>).</div><div></li>
+</ul>
+<p>Avantages des CLI par rapport GUI :</p>
+<ul>
+<li>possibilité de copier/coller des instructions (c&#39;est du texte).</li>
+<li>automatisation avec des scripts (fichier contenant des lignes de commandes).</li>
+<li>langage de programmation (variables, conditions, boucles, etc).</li>
+<li>interface plus rapide/simple à concevoir.</li>
+<li>serveurs sans interfaces graphiques (réduit surface d&#39;attaque, économise ressources).</div></li>
+</ul>
+</frame-uca>
+        </frame-subsection>
+        <frame-subsection id="servers" name="Les serveurs">
+
+<frame-uca>
+
+<div>
+
+<p>Les <strong>serveurs</strong> (<em>matériel</em>) sont des ordinateurs fournissant un <strong>service</strong> (<em>logiciel</em>) :</p>
+<ul class="flex-2">
+    <li> serveur Web</li>
+    <li> serveur de messagerie</li>
+    <li> serveurs d'applications, <em>e.g. Office 365</em></li>
+    <li> serveur de calculs</li>
+</ul>
+</div>
+
+<p>💡 <strong>serveur</strong> peut aussi faire référence au logiciel.</p>
+<div>
+
+<p>Avantage des serveurs :</p>
+<ul>
+<li><strong>disponibilité</strong> : h24 7j/7, protections <em>e.g. onduleurs</em>.</li>
+<li><strong>performances</strong> : e.g. 100+ CPU, 1To+ de RAM, etc.</li>
+<li><strong>mutualisation des ressources</strong> entre plusieurs utilisateurs.</li>
+<li><strong>services sans installation</strong> sur les postes de travail, <em>e.g. Intranet, webmails, etc.</em></li>
+<li><strong>synchronisation de données</strong> entre plusieurs postes de travail, <em>e.g. serveur de fichiers</em>.</div></li>
+</ul>
+</frame-uca>
+
+</frame-section>
+
+<frame-section name="Le Shell" id="shell">
+    <frame-subsection name="L'invite de commande" id="invite">
+<frame-uca>
+
+<div>
+
+<p>L&#39;invite de commande (ou <em>prompt</em>) :</p>
+<ul>
+<li>indique que l&#39;utilisateur peut saisir une nouvelle ligne de commande.</li>
+<li>affiche des informations (personnalisable).</div></li>
+</ul>
+<div class="terminal">
+<pre><font color="#4CE64C"><b>demigda@demigda-Latitude-5400</b></font>:<font color="#295FCC"><b>~</b></font>$ echo &quot;Hello&quot;
+Hello
+<font color="#4CE64C"><b>demigda@demigda-Latitude-5400</b></font>:<font color="#295FCC"><b>~</b></font>$</pre>
+</div>
+<div>
+
+<p>L&#39;invite <script type="c-shell">demigda@demigdal-Latitude-5400:~$</script> indique ainsi :
+  <div><ul class="flex-2">
+    <li>le nom de l&#39;<b>utilisateur</b> (<script type="c-shell">demigda</script>)</li>
+    <li>le nom de l&#39;<b>ordinateur</b> (<script type="c-shell">demigdal-Latitude-5400</script>)</li>
+    <li>le <b>répertoire</b> actuel (<script type="c-shell">~</script>), cf CM2.</li>
+  </ul></div>
+  <br/>
+  💡 <script type="c-shell">@</script> se lit &quot;at&quot; en anglais et indique un lieu.</p>
+</div>
+
+</frame-uca>
+    </frame-subsection>
+    <frame-subsection name="La ligne de commande" id="command-line">
+<frame-uca>
+
+<div>
+Ligne de commande = instruction à exécuter (≈ appel d'une fonction), avec :
+    <ul>
+        <li>une <b>commande</b> (≈ une fonction) à exécuter ;</li>
+        <li>des <b>arguments</b> passés en <b>paramètres</b>.</li>
+    </ul>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Fonction python :</th><th>Ligne de commande :</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><center><script type="c-python">foo(1, 2, 3)</script></center></td>
+            <td><center><script type="c-bash">foo 1 2 3</script></center></td>
+        </tr>
+    </tbody>
+</table>
+
+<div>
+Différences syntaxiques :
+    <ul class="flex-2">
+        <li>pas de parenthèses ;</li>
+        <li mark="🕮"><b>argument</b> = <i>valeur</i> qu'on transmet (appel).</li>
+        <li>arguments séparés par un espace.</li>
+        <li mark="🕮"><b>paramètre</b> = <i>variable</i> manipulée (définition).</li>
+    </ul>
+</div>
+</frame-uca>
+    </frame-subsection>
+    <frame-subsection name="Les commandes" id="command">
+<frame-uca>
+
+<div>
+
+<p>Commande = <em>exécutable</em> (script ou programme), <em>e.g. un script Python</em> :</p>
+<div class="flex-2">
+    <script type="c-python">
+        #!/usr/bin/env -S python3
+        import sys
+        # liste des arguments reçus :
+        print('args', sys.argv)
+    </script>
+    <div>
+        <script type="c-shell">
+            $ foo 1 2 3
+            args ['foo', '1', '2', '3']
+        </script>
+        ⚠ <script type="c-python">sys.argv[0]</script> est le nom de la commande.
+    </div>
+</div>
+</div><div>
+
+<p>🕮 <strong>Shebang</strong> : indique à l&#39;ordinateur l&#39;interpréteur à utiliser (ici <script type="c-bash">python3</script>).</p>
+<script type="c-python">
+    #!/usr/bin/env -S python3
+</script>
+<i>Syntaxe :</i>
+<script type="c-python">
+    #!/usr/bin/env -S <h>$INTERPRETEUR</h> <h>[$INTERPRETEUR_ARGS...]</h>
+</script>
+</div>
+</frame-uca>
+    </frame-subsection>
+    <frame-subsection name="Les arguments" id="arguments">
+<frame-uca>
+
+<p>La <b>commande</b> reçoit les arguments sous la forme d&#39;un <b>tableau</b>, et les interprète <b>arbitrairement</b>.</p>
+<div>
+
+<p>💡 Les bibliothèques comme <a href="https://docs.python.org/3/library/argparse.html">argparse</a> (Python) fournissent diverses fonctionnalités :</p>
+<ul>
+<li>interprétation des arguments (<em>arguments parsing</em>) ;</li>
+<li>détection et affichage des erreurs d&#39;usage ;</li>
+<li>génération automatique de la documentation.</div></li>
+</ul>
+<div>
+Il suffit alors de déclarer les arguments, la bibliothèque se charge du reste :
+
+<script type="c-python">
+    import sys
+    from argparse import ArgumentParser
+
+    parser = ArgumentParser()
+
+    <h>déclaration des arguments</h>
+
+    args = parser.parse_args(sys.argv[1:])
+    print(args) # les arguments après interprétation
+</script>
+</div>
+</frame-uca><frame-uca>
+
+<div>
+Différents types d'arguments/paramètres :
+<ul>
+    <li><b>positionnels</b> : paramètre déterminé par la <b>position</b> de l'argument.
+    <div class="flex-2">
+        <script type="c-shell">
+            $ foo 1 2
+            Namespace(src='1', dst='2')
+        </script>
+        <script type="c-python">
+            parser.add_argument("src")
+            parser.add_argument("dst")
+        </script>
+    </div>
+    </li>
+    <li><b>nommés</b> : paramètre déterminé par le <b>nom</b> de l'argument (<script type="c-bash">--<h>$NAME</h> <h>$VALUE</h></script> ou <script type="c-bash">--<h>$NAME</h>=<h>$VALUE</h></script>).
+    <div class="flex-2">
+        <script type="c-shell">
+            $ foo --fuu 42 --faa=toto
+            Namespace(faa='toto', fuu='42')
+        </script>
+        <script type="c-python">
+            parser.add_argument("--faa")
+            parser.add_argument("--fuu")
+        </script>
+    </div>
+    </li>
+    <li>
+    les <b>drapeaux</b> (<i>flags</i>) : paramètre booléen dont la valeur dépend de la présence de l'argument.
+    <div class="flex-2">
+        <script type="c-shell">
+            $ foo --list
+            Namespace(list=True, human=False)
+            $ foo --list --human
+            Namespace(list=True, human=True)
+        </script>
+        <script type="c-python">
+            parser.add_argument("-l", "--list",
+                                action="store_true")
+            parser.add_argument("-h", "--human",
+                                action="store_true")
+        </script>
+    </div>
+    </li>
+    <li mark="💡">Il est possible de fusionner les drapeaux d'une lettre : 
+        <script type="c-shell">foo -l -H</script> = <script type="c-shell">foo -lH</script>.
+    </li>
+</ul>
+</div>
+
+</frame-uca>
+<frame-uca>
+
+<div>
+Une fois les paramètres déclarés, l'argument <script type="c-bash">--help</script> permet d'en afficher l'usage :
+
+<script type="c-shell">
+$ foo --help
+usage: foo [-h] [--faa FAA] [--fuu FUU] [-l] [-H] src dst
+
+positional arguments:
+    src
+    dst
+
+options:
+    -h, --help   show this help message and exit
+    --faa FAA
+    --fuu FUU
+    -l, --list
+    -H, --human
+</script>
+
+<p>💡 <script type="c-text">[]</script> = argument facultatif.</p>
+<p>⚠ À l&#39;inverse de Python, les arguments nommés sont usuellement écrits <b>avant</b> les arguments positionnels.</p>
+</div>
+
+<p>💡 <a href="https://docs.python.org/3/library/argparse.html">argparse</a> a encore bien d&#39;autres options que vous pourrez découvrir en lisant sa documentation.
+</frame-uca>
+</frame-subsection></p>
+</frame-section>
+
+<frame-section name="Réécritures de la ligne de commande" id="rewrites">
+    <frame-subsection name="Espaces dans les arguments" id="spaces">
+    <frame-uca></frame-uca>
+    </frame-subsection>
+    <frame-subsection name="Alias" id="alias">
+    <frame-uca></frame-uca>
     </frame-subsection>
 </frame-section>
-<frame-uca subsection="Les SGBD">
-</frame-uca>
 
-<frame-uca subsection="Les SGBD">
-</frame-uca>
+<frame-section name="Le terminal" id="terminal">
+    <frame-subsection name="Shell vs Terminal">
+<frame-uca>
 
-<frame-uca subsection="Les SGBD">
+<ul>
+<li><em>Shell</em> : programme qui <strong>interpréte</strong> et <strong>exécute</strong> les commandes shell.
+</li>
+<li><em>Terminal</em> (ou <em>console</em>) : interface graphique entre l&#39;utilisateur et le Shell.
+</li>
+</ul>
+<p>🕮 Les premiers ordinateurs avaient la taille d&#39;une pièce (e.g. 160m²). Des consoles constituées d&#39;un clavier et d&#39;un écran (≈ terminal) permettaient d’interagir avec l&#39;ordinateur mainframe (≈ shell).</p>
 </frame-uca>
+        </frame-subsection>
+        <frame-subsection name="CLI vs TUI">
+<frame-uca>
 
-<frame-uca subsection="Les SGBD">
+<ul>
+<li><strong>CLI</strong> (<em>Command-Line Interface</em>) : lignes de commande.</li>
+<li><strong>TUI</strong> (<em>Terminal User Interface</em>) : interactif avec clavier et souris (pas standard, + ergonomique).</li>
+</ul>
+<div class='flex-2'>
+    <div>
+        <center>
+            <strong>CLI</strong> (commande <script type="c-bash">tree</script>)
+        </center>
+        <img src="../../../../assets/admsys/img/cli-example.png"/>
+    </div>
+    <div>
+        <center>
+            <strong>TUI</strong> (commande <script type="c-bash">gdu</script>)
+        </center>
+        <img src="../../../../assets/admsys/img/tui-example.png"/>
+    </div>
+</div>
+
 </frame-uca>
+        </frame-subsection>
+        <frame-subsection name="Utilisation du terminal">
+<frame-uca>
 
-<frame-uca subsection="Les SGBD">
+<p>⚠ Recopies à la main ⇒ erreurs et fautes de frappe.</p>
+<ul>
+<li><strong>Copier-coller</strong> : <script type="c-text">^+⇧+C</script> et <script type="c-text">^+⇧+V</script> ou clic-milieu/molette de la souris.<br/>
+⚠ <script type="c-text">^+C</script> arrête la commande en cours d&#39;exécution.<br/><br/></li>
+<li><strong>Auto-complétion</strong> des commandes et chemins : <script type="c-text">⭾</script>.<br/>
+💡 <script type="c-text">⭾+⭾</script> pour affiches les possibilités.<br/><br/></li>
+<li><strong>Historique</strong> : <script type="c-text">↑</script> ou <script type="c-text">↓</script> pour naviguer dans l&#39;historique des lignes de commandes (et les réexécuter) .<br/>
+💡 <script type="c-text">←</script> ou <script type="c-text">→</script> pour  modifier la ligne de commande.<br/><br/></li>
+</ul>
 </frame-uca>
+    </frame-subsection>
+    <frame-subsection name="Quelques commandes utiles" id="utils">
+<frame-uca>
 
-<frame-uca subsection="Les SGBD">
+<div>
+
+<strong>La documentation :</strong>
+<ul>
+<li><script type="c-bash">man  <h>$CMD</h></script> (<u>man</u>uel) : affiche la documentation de la commande <script type="c-bash"><h>$CMD</h></script>.</li>
+<li><script type="c-bash">tldr <h>$CMD</h></script> (<u>t</u>oo <u>l</u>ong : <u>d</u>idn't <u>r</u>ead) : version simplifiée de <script type="c-bash">man</script>.</li>
+<li><script type="c-bash">help <h>$CMD</h></script> : affiche la liste des commandes internes de bash.</li>
+</ul>
+</div><div>
+
+<strong>Le terminal :</strong>
+<ul>
+<li><script type="c-bash">clear</script> : replace l'invite de commande en haut de la fenêtre.</li>
+<li><script type="c-bash">reset</script> : efface complètement le contenu du terminal.</li>
+<li><script type="c-bash">exit</script> : quitte le terminal.</li>
+</ul>
+</div><div>
+
+<strong>L&#39;historique :</strong>
+<ul>
+<li><script type="c-bash">history</script> : affiche l'historique des dernières lignes de commandes exécutées.</li>
+<li><script type="c-bash">!!</script> : réexécuter la dernière commande entrée.</li>
+<li><script type="c-bash">!<h>$CMD</h></script> : réexécute la dernière commande <script type="c-bash"><h>$CMD</h></script> entrée.</li>
+</ul>
+</div>
 </frame-uca>
+    </frame-subsection>
+</frame-section>
+<frame-section name="Accès à distance" id="ssh">
+    <frame-uca> 
 
-<frame-uca subsection="Les SGBD">
-</frame-uca>
+<div>
 
-<frame-uca subsection="Les SGBD">
-</frame-uca>
+<p>Les serveurs sont installés :</p>
+<ul>
+<li>dans une salle dédiée ;</li>
+<li>avec contrôle d’accès ;</li>
+<li>parfois à plusieurs centaines (ou milliers) de km.</li>
+</ul>
+</div><div>
 
-<frame-uca subsection="Les SGBD">
-</frame-uca>
+<p>Nécessité d&#39;accès <strong>à distance</strong> au serveur.</p>
+<ul>
+<li><strong>SSH</strong> (<u>s</u>ecure <u>sh</u>ell) : envoie des lignes de commandes au serveur via Internet (≈ Shell distant).<ul>
+<li><strong>client SSH</strong> : sur le poste de travail (<em>envoie les commandes</em>) ;</li>
+<li><strong>serveur SSH</strong> : sur le serveur (<em>reçoit et exécute les commandes</em>).</li>
+</ul>
+</li>
+</ul>
+</div>
 
-<frame-uca subsection="Les SGBD">
-</frame-uca>
+</frame-uca><frame-uca>
+<div>
 
+<script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h></script> : initie une session SSH (≈ ouvrir un terminal du serveur sur le poste de travail).
+<ul>
+<li>commandes entrées sont envoyées au serveur qui retourne le résultat.</li>
+</ul>
+</div>
+
+<center>
+    <img style="width:60%" src='/assets/admsys/img/scheme.svg'/>
+</center>
+
+<p>💡 <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h> "<h>$CMD</h>"</script> exécute la commande <script type="c-bash">CMD</script> sur le serveur, et retourne immédiatement. </p>
+    </frame-uca>
+</frame-section>
         </main>
     </body>
 </html>
