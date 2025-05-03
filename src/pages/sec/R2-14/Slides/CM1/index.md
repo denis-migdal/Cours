@@ -455,7 +455,39 @@ options:
     </frame-subsection>
 </frame-section>
 <frame-section name="Accès à distance" id="ssh">
-    <frame-uca>    
+    <frame-uca> 
+
+<div>
+
+Les serveurs sont installés :
+- dans une salle dédiée ;
+- avec contrôle d’accès ;
+- parfois à plusieurs centaines (ou milliers) de km.
+
+</div><div>
+
+Nécessité d'accès **à distance** au serveur.
+- **SSH** (<u>s</u>ecure <u>sh</u>ell) : envoie des lignes de commandes au serveur via Internet (≈ Shell distant).
+  - **client SSH** : sur le poste de travail (*envoie les commandes*) ;
+  - **serveur SSH** : sur le serveur (*reçoit et exécute les commandes*).
+
+</div>
+
+</frame-uca><frame-uca>
+
+<div>
+
+<script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h></script> : initie une session SSH (≈ ouvrir un terminal du serveur sur le poste de travail).
+- commandes entrées sont envoyées au serveur qui retourne le résultat.
+
+</div>
+
+<center>
+    <img style="width:60%" src='/assets/admsys/img/scheme.svg'/>
+</center>
+
+💡 <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h> "<h>$CMD</h>"</script> exécute la commande <script type="c-bash">CMD</script> sur le serveur, et retourne immédiatement. 
+
     </frame-uca>
 </frame-section>
 
