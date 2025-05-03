@@ -37,6 +37,7 @@ Ce module se concentrera sur le système d'exploitation Linux :
 </div>
 </frame-uca>
 
+</frame-subsection>
 <frame-subsection id="attentes" name="Attentes et objectifs du module">
 
 <frame-uca>
@@ -146,7 +147,7 @@ Avantage des serveurs :
 </div>
 
 </frame-uca>
-
+</frame-subsection>
 </frame-section>
 
 <frame-section name="Le Shell" id="shell">
@@ -212,6 +213,21 @@ Différences syntaxiques :
         <li>arguments séparés par un espace.</li>
         <li mark="🕮"><b>paramètre</b> = <i>variable</i> manipulée (définition).</li>
     </ul>
+</div>
+
+<div>
+⚠ Si espaces dans l'argument : les échapper, ou de mettre entre guillemets simples :
+    <div class="flex-3">
+        <script type="c-shell">
+        $ foo 'a b'
+        </script>
+        <script type="c-shell">
+        $ foo c\ d
+        </script>
+        <script type="c-shell">
+        $ foo a' 'b
+        </script>
+    </div>
 </div>
 </frame-uca>
     </frame-subsection>
@@ -358,20 +374,51 @@ options:
 </div>
 
 💡 [argparse](https://docs.python.org/3/library/argparse.html) a encore bien d'autres options que vous pourrez découvrir en lisant sa documentation.
+
 </frame-uca>
 </frame-subsection>
+<frame-subsection name="Réécritures des lignes de commande" id="rewrites">
+    <frame-uca>
 
+⚠ Le Shell réécrit les lignes de commande avant de les exécuter.
+
+<div>
+
+<script type="c-bash">set -x</script> : affiche la ligne de commande réellement exécutée (très utile pour déboguer un script) :
+
+<script type="c-shell">
+$ set -x
+$ echo 'Hello'
++ echo Hello
+Hello
+</script>
+</div>
+
+<div>
+
+💡 <script type="c-bash">$'<h>$TEXT</h>'</script> : interpréter les caractères échappés, e.g. :
+<div class="flex-2">
+    <script type="c-shell">
+        $ echo '-\n\t-'
+        -\n\t-
+    </script>
+    <script type="c-shell">
+        $ echo $'-\n\t-'
+        -
+            -
+    </script>
+</div>
+
+<ul class="flex-3">
+    <li><script type="c-text">\n</script> : retour à la ligne ;</li>
+    <li><script type="c-text">\t</script> : tabulation ;</li>
+    <li><script type="c-text">\e</script> : formatage du texte.</li>
+</ul>
+</div>
+
+    </frame-uca>
+</frame-subsection>
 </frame-section>
-
-<frame-section name="Réécritures de la ligne de commande" id="rewrites">
-    <frame-subsection name="Espaces dans les arguments" id="spaces">
-    <frame-uca></frame-uca>
-    </frame-subsection>
-    <frame-subsection name="Alias" id="alias">
-    <frame-uca></frame-uca>
-    </frame-subsection>
-</frame-section>
-
 <frame-section name="Le terminal" id="terminal">
     <frame-subsection name="Shell vs Terminal">
 <frame-uca>
@@ -390,7 +437,7 @@ options:
 - **CLI** (*Command-Line Interface*) : lignes de commande.
 - **TUI** (*Terminal User Interface*) : interactif avec clavier et souris (pas standard, + ergonomique).
 
-<div class='flex-2'>
+<div class="flex-2">
     <div>
         <center>
             <strong>CLI</strong> (commande <script type="c-bash">tree</script>)
@@ -419,42 +466,9 @@ options:
 - **Historique** : <script type="c-text">↑</script> ou <script type="c-text">↓</script> pour naviguer dans l'historique des lignes de commandes (et les réexécuter) .<br/>
   💡 <script type="c-text">←</script> ou <script type="c-text">→</script> pour  modifier la ligne de commande.<br/><br/>
 
-
-
 </frame-uca>
     </frame-subsection>
-    <frame-subsection name="Quelques commandes utiles" id="utils">
-<frame-uca>
-
-<div>
-
-**La documentation :**
-
-- <script type="c-bash">man  <h>$CMD</h></script> (<u>man</u>uel) : affiche la documentation de la commande <script type="c-bash"><h>$CMD</h></script>.
-- <script type="c-bash">tldr <h>$CMD</h></script> (<u>t</u>oo <u>l</u>ong : <u>d</u>idn't <u>r</u>ead) : version simplifiée de <script type="c-bash">man</script>.
-- <script type="c-bash">help <h>$CMD</h></script> : affiche la liste des commandes internes de bash.
-
-</div><div>
-
-**Le terminal :**
-
-- <script type="c-bash">clear</script> : replace l'invite de commande en haut de la fenêtre.
-- <script type="c-bash">reset</script> : efface complètement le contenu du terminal.
-- <script type="c-bash">exit</script> : quitte le terminal.
-
-</div><div>
-
-**L'historique :**
-
-- <script type="c-bash">history</script> : affiche l'historique des dernières lignes de commandes exécutées.
-- <script type="c-bash">!!</script> : réexécuter la dernière commande entrée.
-- <script type="c-bash">!<h>$CMD</h></script> : réexécute la dernière commande <script type="c-bash"><h>$CMD</h></script> entrée.
-
-</div>
-</frame-uca>
-    </frame-subsection>
-</frame-section>
-<frame-section name="Accès à distance" id="ssh">
+<frame-subsection name="Accès à distance" id="ssh">
     <frame-uca> 
 
 <div>
@@ -483,14 +497,90 @@ Nécessité d'accès **à distance** au serveur.
 </div>
 
 <center>
-    <img style="width:60%" src='/assets/admsys/img/scheme.svg'/>
+    <img style="width:60%" src="/assets/admsys/img/scheme.svg"/>
 </center>
 
 💡 <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h> "<h>$CMD</h>"</script> exécute la commande <script type="c-bash">CMD</script> sur le serveur, et retourne immédiatement. 
 
     </frame-uca>
+    </frame-subsection>
 </frame-section>
+<frame-section name="Les commandes" id="Commandes">
+<frame-subsection name="Quelques commandes utiles" id="utils">
+    <frame-uca>
 
+<div>
+
+**La documentation :**
+
+- <script type="c-bash">man  <h>$CMD</h></script> (<u>man</u>uel) : affiche la documentation de la commande <script type="c-bash"><h>$CMD</h></script>.
+- <script type="c-bash">tldr <h>$CMD</h></script> (<u>t</u>oo <u>l</u>ong : <u>d</u>idn't <u>r</u>ead) : version simplifiée de <script type="c-bash">man</script>.
+- <script type="c-bash">help <h>$CMD</h></script> : affiche la liste des commandes internes de bash.
+
+</div><div>
+
+**Le terminal :**
+
+- <script type="c-bash">clear</script> : replace l'invite de commande en haut de la fenêtre.
+- <script type="c-bash">reset</script> : efface complètement le contenu du terminal.
+- <script type="c-bash">exit</script> : quitte le terminal.
+
+</div><div>
+
+**L'historique :**
+
+- <script type="c-bash">history</script> : affiche l'historique des dernières lignes de commandes exécutées.
+- <script type="c-bash">!!</script> : réexécuter la dernière commande entrée.
+- <script type="c-bash">!<h>$CMD</h></script> : réexécute la dernière commande <script type="c-bash"><h>$CMD</h></script> entrée.
+
+</div>
+    </frame-uca>
+    
+    </frame-subsection>
+    <frame-subsection name="Éditer un fichier" id="edit">
+    
+    <frame-uca>
+    
+    <div class="flex-2">
+        <div>
+            <center><script type="c-bash">nano <h>[$FILE]</h></script> (CLI)</center>
+            <img src="/assets/admsys/img/nano.png"/>
+            <i>Raccourcis claviers indiqués en bas de la fenêtre.</i>
+        </div>
+        <div>
+            <center><script type="c-bash">micro <h>[$FILE]</h></script> (TUI)</center>
+            <img src="/assets/admsys/img/micro.png"/>
+            <i>Raccourcis claviers affichés via <script type="c-text">Alt+G</script>.</i>
+        </div>
+    </div>
+    
+    </frame-uca>
+        </frame-subsection>
+    <frame-subsection name="Alias" id="alias">
+        <frame-uca>
+
+- lignes de commandes parfois complexes, dures à retenir/taper.
+- utiliser des alias.
+
+<script type="c-shell">
+$ alias FOO='echo Hello'
+$ set -x
+$ FOO World
++ echo Hello World
+Hello World
+</script>
+
+<div>
+
+- <script type="c-bash">alias <h>$NAME</h>='<h>$VALUE</h>'</script> : définir un alias.
+- <script type="c-bash">alias <h>[$NAME]</h></script> : afficher l'alias <script type="c-bash"><h>$NAME</h></script> (par défaut affiche tous les alias).
+- <script type="c-bash">unalias <h>$NAME</h></script> : supprimer l'alias <script type="c-bash"><h>$NAME</h></script>.
+
+</div>
+
+        </frame-uca>
+        </frame-subsection>
+    </frame-section>
         </main>
     </body>
 </html>

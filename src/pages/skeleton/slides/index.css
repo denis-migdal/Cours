@@ -30,6 +30,11 @@ li[mark="💡"]::marker {
     grid-template-columns: repeat(2, 1fr);
     gap: 4px;
 }
+.flex-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+}
 
 img {
     width: 100%;

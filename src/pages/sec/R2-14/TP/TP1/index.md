@@ -48,6 +48,8 @@ Il est attendu de vous que vous soyez capable de suivre de manière **rigoureuse
 - alias
 - client vs server
 
++ attaque alias
+
 </main>
     </body>
 </html>
