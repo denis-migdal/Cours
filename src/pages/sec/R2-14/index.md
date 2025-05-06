@@ -11,6 +11,12 @@
     <body>
         <main>
 
+- **Semaine 1** : *Commandes Shell* (1h CM, 2h TP) [[PDF](./CM/CM1), [Slides](./Slides/CM1), [TP](./TP/TP1)]
+- **Semaine 2** :
+- **Semaine 3** :
+- **Semaine 4** :
+- **DS** :
+
 </main>
     </body>
 </html>

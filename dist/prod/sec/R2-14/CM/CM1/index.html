@@ -116,6 +116,19 @@
 <li><i>Ligne de commande :</i> <script type="c-bash">foo 1 2 3</script>.</li>
 </ul>
 <p>Quand l&#39;ordinateur interprète une ligne de commande, il exécute la commande indiquée par le premier élément, en lui transmettant les arguments sous la forme d&#39;une liste.</p>
+<p>⚠ Pour inclure des espaces dans un argument, il convient de les échapper, ou de mettre tout ou partie de l&#39;argument entre guillemets simples :</p>
+<div class="flex-3">
+<script type="c-shell">
+$ foo 'a b'
+</script>
+<script type="c-shell">
+$ foo c\ d
+</script>
+<script type="c-shell">
+$ foo a' 'b
+</script>
+</div>
+
 <h3 id="les-commandes">Les commandes</h3>
 <p>En soit, une commande n&#39;est rien de plus qu&#39;un exécutable (i.e. un script ou un programme). Vous pouvez ainsi créer une commande en écrivant un simple script Python :</p>
 <script type="c-python">
@@ -247,57 +260,33 @@ options:
 <li><script type="c-python">required</script> pour indiquer si l'argument est requis.</li>
 </ul>
 <p>💡 <a href="https://docs.python.org/3/library/argparse.html">argparse</a> a encore bien d&#39;autres options que vous pourrez découvrir en lisant sa documentation.</p>
-<h2 id="réécritures-de-la-ligne-de-commande">Réécritures de la ligne de commande</h2>
-<h3 id="les-alias">Les alias</h3>
-<mark>todo</mark>
-<mark>set -x (b4 espaces ?)</mark>
-<p>Avant d&#39;exécuter la ligne de commande, le shell (Bash) procède éventuellement à quelques réécritures de la ligne de commande. La commande <script type="c-bash">set -x</script> permet d&#39;afficher la ligne de commande réellement exécutée (<script type="c-bash">set +x</script> pour annuler) :</p>
-<script type='c-shell'>
+<h3 id="réécriture-des-lignes-de-commande">Réécriture des lignes de commande</h3>
+<p>En réalité, le Shell n&#39;exécute pas directement la ligne de commande entrée, mais opère quelques réécritures avant de l&#39;exécuter. La commande <script type="c-bash">set -x</script> permet d&#39;afficher la ligne de commande réellement exécutée avant chaque exécution :</p>
+<script type="c-shell">
 $ set -x
-$ foo a b
-+ foo a b
+$ echo 'Hello'
++ echo Hello
+Hello
 </script>
 
-<p>💡 <script type="c-bash">set -x</script> est aussi utilisé pour déboguer les scripts shell, en affichant l&#39;execution du script pas à pas.</p>
-<p>Cela est par exemple le cas lorsqu&#39;on utilise des <em>alias</em>, </p>
-<ul>
-<li>alias (unalias) + liste</li>
-</ul>
-<h3 id="espaces-dans-les-arguments">Espaces dans les arguments</h3>
-<p>Pour inclure un espace dans un argument, il convient de soit les échapper, soit de mettre le texte entre guillements simples :</p>
-<script type="c-shell">
-$ foo 'a b' c\ d
-Namespace(src='a b', dst='c d')
-</script>
-
-<p>💡 Il est aussi possible de ne mettre qu&#39;une partie de l&#39;argument entre guillements :</p>
-<script type="c-shell">
-$ foo a' 'b c\ d
-Namespace(src='a b', dst='c d')
-</script>
-
-<p>💡 <script type="c-bash">$'<h>$TXT</h>'</script> permet d&#39;interpréter les caractères échappés, e.g. :</p>
-<ul>
-<li><script type="c-text">\n</script> : retour à la ligne ;</li>
-<li><script type="c-text">\t</script> : tabulation ;</li>
-<li><script type="c-text">\e</script> : pour le formattage du texte (cf TP1).</li>
-</ul>
-<script type="c-python">
-    # commande faa :
-    print( sys.argv[1] )
-</script>
-
+<p>💡 <script type="c-bash">set -x</script> est très utilisé pour déboguer des scripts shell, affichant l&#39;execution du script pas à pas.</p>
+<p>Par exemple, <script type="c-bash">$'<h>$TEXT</h>'</script> permet d&#39;interpréter les caractères échappés, e.g. :</p>
 <div class="flex-2">
     <script type="c-shell">
-        $ faa '-\n\t-'
+        $ echo '-\n\t-'
         -\n\t-
     </script>
     <script type="c-shell">
-        $ faa $'-\n\t-'
+        $ echo $'-\n\t-'
         -
             -
     </script>
 </div>
+<ul class="flex-3">
+    <li><script type="c-text">\n</script> : retour à la ligne ;</li>
+    <li><script type="c-text">\t</script> : tabulation ;</li>
+    <li><script type="c-text">\e</script> : formatage du texte (cf TP1).</li>
+</ul>
 
 <h2 id="le-terminal">Le terminal</h2>
 <h3 id="shell-vs-terminal">Shell vs Terminal</h3>
@@ -342,6 +331,21 @@ Namespace(src='a b', dst='c d')
 💡 <script type="c-text">←</script> ou <script type="c-text">→</script> permettent ensuite de modifier la ligne de commande.</li>
 </ul>
 <p>⚠ <script type="c-text">^+C</script> permet d&#39;arrêter une commande en cours d&#39;exécution.</p>
+<h3 id="accès-à-distance">Accès à distance</h3>
+<p>Les serveurs sont usuellement installés dans une salle dédiée avec contrôle d’accès, parfois à plusieurs centaines (ou milliers) de km de votre poste de travail. Par exemple, le serveur pourrait être à Clermont-Ferrand alors que votre bureau est à Aurillac.</p>
+<p>Bien évidement, vous n&#39;allez pas faire l&#39;aller-retour à Clermont-Ferrand, à chaque ligne de commande que vous souhaitez exécuter sur le serveur. Imaginez que vous deviez régulièrement intervenir sur le serveur, vous passeriez votre temps à faire l’aller-retour Aurillac/Clermont-Ferrand !</p>
+<p>Il est ainsi nécessaire de pouvoir accéder au serveur à distance afin d’éviter de tels déplacements chronophages. Pour ce faire, on utilise <strong>SSH</strong> (<u>s</u>ecure <u>sh</u>ell) afin d’envoyer, via Internet, des lignes de commande au serveur, ce en à peine quelques millisecondes.</p>
+<p>SSH suit une architecture client-serveur avec :</p>
+<ul>
+<li>un <strong>client SSH</strong> sur le poste de travail ;</li>
+<li>un <strong>serveur SSH</strong> sur le serveur.</li>
+</ul>
+<p>Le <em>client SSH</em> permet d’initier une connexion SSH (≈ session SSH) avec le <em>serveur SSH</em>. Une fois la connexion établie, le <em>client SSH</em> peut alors envoyer des commandes shell au <em>serveur SSH</em> qui les exécutera, et en retournera le résultat.</p>
+<p>La commande <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h></script> initie une session SSH. Les commandes entrées par la suite sont envoyées au serveur pour être exécutées. Dans les faits, cela revient à ouvrir un terminal du serveur sur votre poste de travail :</p>
+<img src='/assets/admsys/img/scheme.svg'/>
+
+<p>💡 <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h> '<h>$CMD</h>'</script> exécute la commande <script type="c-bash">CMD</script> sur le serveur, et retourne immédiatement.</p>
+<h2 id="les-commandes-1">Les commandes</h2>
 <h3 id="quelques-commandes-utiles">Quelques commandes utiles</h3>
 <h4 id="la-documentation">La documentation</h4>
 <ul>
@@ -361,20 +365,33 @@ Namespace(src='a b', dst='c d')
 <li><script type="c-bash">!!</script> : réexécuter la dernière commande entrée.</li>
 <li><script type="c-bash">!<h>$CMD</h></script> : réexécute la dernière commande <script type="c-bash"><h>$CMD</h></script> entrée.</li>
 </ul>
-<h2 id="accès-à-distance">Accès à distance</h2>
-<p>Les serveurs sont usuellement installés dans une salle dédiée avec contrôle d’accès, parfois à plusieurs centaines (ou milliers) de km de votre poste de travail. Par exemple, le serveur pourrait être à Clermont-Ferrand alors que votre bureau est à Aurillac.</p>
-<p>Bien évidement, vous n&#39;allez pas faire l&#39;aller-retour à Clermont-Ferrand, à chaque ligne de commande que vous souhaitez exécuter sur le serveur. Imaginez que vous deviez régulièrement intervenir sur le serveur, vous passeriez votre temps à faire l’aller-retour Aurillac/Clermont-Ferrand !</p>
-<p>Il est ainsi nécessaire de pouvoir accéder au serveur à distance afin d’éviter de tels déplacements chronophages. Pour ce faire, on utilise <strong>SSH</strong> (<u>s</u>ecure <u>sh</u>ell) afin d’envoyer, via Internet, des lignes de commande au serveur, ce en à peine quelques millisecondes.</p>
-<p>SSH suit une architecture client-serveur avec :</p>
-<ul>
-<li>un <strong>client SSH</strong> sur le poste de travail ;</li>
-<li>un <strong>serveur SSH</strong> sur le serveur.</li>
-</ul>
-<p>Le <em>client SSH</em> permet d’initier une connexion SSH (≈ session SSH) avec le <em>serveur SSH</em>. Une fois la connexion établie, le <em>client SSH</em> peut alors envoyer des commandes shell au <em>serveur SSH</em> qui les exécutera, et en retournera le résultat.</p>
-<p>La commande <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h></script> initie une session SSH. Les commandes entrées par la suite sont envoyées au serveur pour être exécutées. Dans les faits, cela revient à ouvrir un terminal du serveur sur votre poste de travail :</p>
-<img src='/assets/admsys/img/scheme.svg'/>
+<h4 id="éditer-un-fichier">Éditer un fichier</h4>
+<p>Pour éditer un fichier, vous pouvez utiliser les commandes <script type="c-bash">nano <h>[$FILE]</h></script> (CLI) ou <script type="c-bash">micro <h>[$FILE]</h></script> (TUI) :</p>
+<div class="flex-2">
+    <div>
+        <center><b>nano</b> (CLI)</center>
+        <img src="/assets/admsys/img/nano.png"/>
+        <i>Raccourcis claviers indiqués en bas de la fenêtre.</i>
+    </div>
+    <div>
+        <center><b>micro</b> (TUI)</center>
+        <img src="/assets/admsys/img/micro.png"/>
+        <i>Raccourcis claviers affichés via <script type="c-text">Alt+G</script>.</i>
+    </div>
+</div>
 
-<p>💡 <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h> "<h>$CMD</h>"</script> exécute la commande <script type="c-bash">CMD</script> sur le serveur, et retourne immédiatement. </p>
+<h3 id="les-alias">Les alias</h3>
+<p>Certaines lignes de commandes peuvent être complexes, avec de multiples arguments difficiles à retenir. Il est alors possible de définir des <strong>alias</strong> via la commande <script type="c-bash">alias <h>$NAME</h>='<h>$VALUE</h>'</script>. Le Shell remplacera alors les occurrences de <script type="c-bash"><h>$NAME</h></script> au <strong>début</strong> de la ligne de commandes par la valeur de l&#39;alias :</p>
+<script type="c-shell">
+$ alias FOO='echo Hello'
+$ set -x
+$ FOO World
++ echo Hello World
+Hello World
+</script>
+
+<p>💡 <script type="c-bash">alias <h>[$NAME]</h></script> permet d&#39;afficher l&#39;alias <script type="c-bash"><h>$NAME</h></script> (par défaut affiche tous les alias).</p>
+<p>💡 <script type="c-bash">unalias <h>$NAME</h></script> permet de supprimer l&#39;alias <script type="c-bash"><h>$NAME</h></script>.</p>
         </main>
     </body>
 </html>

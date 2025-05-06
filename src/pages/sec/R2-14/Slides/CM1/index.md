@@ -222,7 +222,7 @@ Différences syntaxiques :
         $ foo 'a b'
         </script>
         <script type="c-shell">
-        $ foo c\ d
+        $ foo a\ b
         </script>
         <script type="c-shell">
         $ foo a' 'b
@@ -288,7 +288,7 @@ Il suffit alors de déclarer les arguments, la bibliothèque se charge du reste 
 
     parser = ArgumentParser()
 
-    <h>déclaration des arguments</h>
+    <h>Déclaration des paramètres</h>
 
     args = parser.parse_args(sys.argv[1:])
     print(args) # les arguments après interprétation
@@ -500,7 +500,7 @@ Nécessité d'accès **à distance** au serveur.
     <img style="width:60%" src="/assets/admsys/img/scheme.svg"/>
 </center>
 
-💡 <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h> "<h>$CMD</h>"</script> exécute la commande <script type="c-bash">CMD</script> sur le serveur, et retourne immédiatement. 
+💡 <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h> '<h>$CMD</h>'</script> exécute la commande <script type="c-bash">CMD</script> sur le serveur, et retourne immédiatement. 
 
     </frame-uca>
     </frame-subsection>
