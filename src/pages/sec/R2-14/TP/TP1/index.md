@@ -153,8 +153,8 @@ Pour cela nous pouvons écrire <script type="c-shell">\e[<h>$CODE[;...]</h>m</sc
 1. Testez la mise en forme avec <script type="c-bash">echo $'\e[1;34mblue\e[0m'</script>.
 2. <q-text>Pourquoi utiliser <script type="c-bash">$''</script> et non <script type="c-bash">''</script> ?</q-text>
 3. <q-text>Affichez "Hello" en italique et magenta :</q-text>
-4. <q-text>Modifiez la commande <script type="c-bash">add</script> afin que le résultat s'affiche en vert et en gras.<br/>⚠ Pour python, il faut utiliser <script type="c-text">\033</script> à la place de <script type="c-text">\e</script>.</q-text>
-5. <q-text>Modifiez la commande <script type="c-bash">add</script> afin que les résultats négatifs s'affichent en rouge clignotant :</q-text>
+4. <q-text>Modifiez la commande <script type="c-bash">add</script> afin que le résultat s'affiche en vert et en gras (si <script type="c-shell">-c</script> activé).<br/>⚠ Pour python, il faut utiliser <script type="c-text">\033</script> à la place de <script type="c-text">\e</script>.</q-text>
+5. <q-text>Modifiez la commande <script type="c-bash">add</script> afin que les résultats négatifs s'affichent en rouge clignotant  (si <script type="c-shell">-c</script> activé) :</q-text>
 
 ## SSH et alias
 
