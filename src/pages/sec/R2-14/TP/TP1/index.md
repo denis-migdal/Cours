@@ -30,7 +30,7 @@
 1. <q-text>Avec <script type="c-bash">nano</script>, ouvrez le fichier <script type="c-text">skeleton</script>.</q-text>
 2. <q-text>Modifiez ce fichier pour qu'il affiche la somme de deux arguments passés en paramètres (sans utiliser argparse).</q-text>
 3. Enregistrez ce fichier sous le nom <script type="c-text">add</script> (<script type="c-text">^+X</script>).
-4. <q-text>Utilisez la commande <script type="c-text">mkcmd</script> afin de transformer ce fichier en commande.</q-text>
+4. <q-text>Utilisez la commande <script type="c-text">mkcmd <h>$FILE</h></script> afin de transformer ce fichier en commande.</q-text>
 5. <q-text>Testez votre nouvelle commande afin d'afficher la somme de 1 et de 2.</q-text>
 
 ## Argparse
