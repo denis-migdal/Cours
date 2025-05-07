@@ -18,7 +18,7 @@
 1. Ouvrez un nouveau terminal (tapez <script type="c-text">Terminal</script> dans <script type="c-text">Activités</script> en haut à gauche).
 2. Installez le serveur en copiant le texte ci-dessous dans le terminal :
 <script type="c-bash">
-/home/UCA/denmigda/scratch/public/S2_AdmSys/ASTerm/ASTerm.install
+/home/scratch/denmigda/public/S2_AdmSys/ASTerm/ASTerm.install
 </script>
 3. Le serveur est désormais lancé. Vous pourrez le retrouver dans la liste des applications sous le nom "ASTerm".
 4. <q-text>Dans l'invite, identifiez le nom du serveur et de l'utilisateur actuel :</q-text>
