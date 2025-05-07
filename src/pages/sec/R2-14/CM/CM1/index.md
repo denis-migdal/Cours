@@ -187,7 +187,7 @@ Il suffit alors de déclarer les différents arguments de la commande et la bibl
 
     parser = ArgumentParser()
 
-    # déclarer ici les arguments de la commande
+    # déclarer ici les paramètres de la commande
 
     args = parser.parse_args(sys.argv[1:])
     print(args) # les arguments après interprétation

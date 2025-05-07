@@ -165,7 +165,7 @@ En réalité la commande <script type="c-bash">ASTerm</script> ouvre un terminal
 1. <q-text>Créez puis testez l'alias <script type="c-bash">hello</script> correspondant à <script type="c-bash">echo Bonjour</script>.</q-text>
 1. <q-text>Utilisez SSH pour exécuter la commande <script type="c-bash">hello</script>. Que se passe-t-il ? Pourquoi ?</q-text>
 1. Lancez SSH en mode interractif via la commande <script type="c-bash">ssh zeus@ASTerm</script>.
-1. <q-text>Lancez les commandes <script type="c-bash">add</script> et <script type="c-bash">hello</script>. Que se passe-t-il ? Pourquoi ?</q-text>
+1. <q-text>Lancez les commandes <script type="c-bash">add</script> puis <script type="c-bash">hello</script>. Que se passe-t-il ? Pourquoi ?</q-text>
 
 </main>
     </body>
