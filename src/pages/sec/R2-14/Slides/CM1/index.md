@@ -242,7 +242,7 @@ Commande = *exécutable* (script ou programme), *e.g. un script Python* :
     <script type="c-python">
         #!/usr/bin/env -S python3
         import sys
-        # liste des arguments reçus :
+        # liste des arguments (strings) reçus :
         print('args', sys.argv)
     </script>
     <div>

@@ -115,7 +115,7 @@
 <li><i>Fonction python :</i> <script type="c-python">foo(1, 2, 3)</script> ;</li>
 <li><i>Ligne de commande :</i> <script type="c-bash">foo 1 2 3</script>.</li>
 </ul>
-<p>Quand l&#39;ordinateur interprète une ligne de commande, il exécute la commande indiquée par le premier élément, en lui transmettant les arguments sous la forme d&#39;une liste.</p>
+<p>Quand l&#39;ordinateur interprète une ligne de commande, il exécute la commande indiquée par le premier élément, en lui transmettant les arguments sous la forme d&#39;une liste de chaînes de caractères.</p>
 <p>⚠ Pour inclure des espaces dans un argument, il convient de les échapper, ou de mettre tout ou partie de l&#39;argument entre guillemets simples :</p>
 <div class="flex-3">
 <script type="c-shell">
@@ -135,7 +135,7 @@ $ foo a' 'b
     #!/usr/bin/env -S python3
     import sys
 
-    print('args', sys.argv) # liste des arguments de la ligne de commande.
+    print('args', sys.argv) # liste des arguments (strings) de la ligne de commande.
 </script>
 
 <p>⚠ <script type="c-python">sys.argv[0]</script> est le nom de la commande.</p>

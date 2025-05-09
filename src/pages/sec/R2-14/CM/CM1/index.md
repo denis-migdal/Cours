@@ -125,7 +125,7 @@ Sa syntaxe est cependant différente des appels de fonction dont vous avez l'hab
 - <i>Fonction python :</i> <script type="c-python">foo(1, 2, 3)</script> ;
 - <i>Ligne de commande :</i> <script type="c-bash">foo 1 2 3</script>.
 
-Quand l'ordinateur interprète une ligne de commande, il exécute la commande indiquée par le premier élément, en lui transmettant les arguments sous la forme d'une liste.
+Quand l'ordinateur interprète une ligne de commande, il exécute la commande indiquée par le premier élément, en lui transmettant les arguments sous la forme d'une liste de chaînes de caractères.
 
 
 ⚠ Pour inclure des espaces dans un argument, il convient de les échapper, ou de mettre tout ou partie de l'argument entre guillemets simples :
@@ -149,7 +149,7 @@ En soit, une commande n'est rien de plus qu'un exécutable (i.e. un script ou un
     #!/usr/bin/env -S python3
     import sys
 
-    print('args', sys.argv) # liste des arguments de la ligne de commande.
+    print('args', sys.argv) # liste des arguments (strings) de la ligne de commande.
 </script>
 
 ⚠ <script type="c-python">sys.argv[0]</script> est le nom de la commande.
