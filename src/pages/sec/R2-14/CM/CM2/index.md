@@ -35,23 +35,38 @@ L'OS ne va pas directement lire/écrire les données sur le disque, mais va util
 
 💡 Chaque fichier est identifié par un entier nommé **inode** (*<u>i</u>ndex <u>node</u>*).
 
-<script type="c-text">
-.         (block binaire)    (fichier)
-[Disque]   -->   [FILESYSTEM] --> [OS] (lire   (0,1))
-[Disque]   <--   [FILESYSTEM] <-- [OS] (écrire (0,1))
-</script>
-<todo>anim...</todo>
+<center>
+    <img class="svg" src="/assets/admsys/img/filesystem.svg"/>
+</center>
 
 ### Les dossiers
 
 Un **dossier** (*directory*), aussi appelé **répertoire** (*folder*), est un fichier spécial contenant l'inode et le nom des fichiers qu'il inclus.
-Un même fichier peut alors être présent dans plusieurs dossiers à la fois, sous des noms différents. <todo>image</todo>
+
+<div class="flex-2">
+<script type="c-text">
+├── faa
+├── fee
+├── fii
+└── fuu
+</script>
+<script type="c-text">
+6577185 faa
+6577189 fee
+6577187 fii
+6577188 fuu
+</script></div>
+
+💡 Un même fichier peut alors être présent dans plusieurs dossiers à la fois, sous des noms différents.
 
 💡 La commande <script type="c-bash">ls <h>$DIR</h></script> permet de lister le contenu d'un dossier :
 <div class="terminal">
 <pre>$ ls foo
 📄  faa  <font color="#0039AA"><b>📂  fee</b></font>  📄  fii  📄  fuu</pre>
 </div>
+
+
+⚠ Les fichiers dont le nom commence par <script type="c-text">.</script> sont des <b>fichiers cachés</b>, et ne s'afficheront qu'avec l'option <script type="c-bash">-a</script> (<u>a</u>ll).
 
 ### Les méta-données d'un fichier
 
@@ -62,9 +77,6 @@ Le système de fichiers enregistre aussi, pour chaque fichier, des méta-donnée
 - son propriétaire ;
 - les droits d'accès au fichier.
 - etc.
-
-
-⚠ Il convient de ne pas confondre ces méta-données, stockées au niveau du système de fichiers, et communes entre tous les fichiers, avec des méta-données stockées dans le fichier, et dépendant de son format (e.g. png, jpeg, pdf, zip).
 
 💡 La commande <script type="c-bash">stat <h>$FILE</h></script> permet d'afficher l'ensemble des méta-données d'un fichier :
 <div class="terminal">
@@ -81,10 +93,12 @@ Changt : 2025-03-29 15:02:19.868310502 +0100
 
 💡 Cependant, en pratique, on se contente généralement d'utiliser la commande <script type="c-bash">ls -lh <h>[-d]</h> <h>$FILE[...]</h></script> :
 <div class="terminal">
-<pre>$ ls -d -lh foo
+<pre>$ ls -lh -d foo
 <u style="text-decoration-style:single">Permissions</u> <u style="text-decoration-style:single"> User  </u> <u style="text-decoration-style:single"> Group </u> <u style="text-decoration-style:single"> Size </u> <u style="text-decoration-style:single">     Date Modified      </u> <u style="text-decoration-style:single"> Name  </u>
 <font color="#0039AA"><b>d</b></font><font color="#44AA44">r</font><font color="#AA5500">w</font><font color="#AA0000">x</font><font color="#44AA44">r</font><font color="#AA5500">w</font><font color="#AA0000">x</font><font color="#44AA44">r</font><font color="#8A8A8A">-</font><font color="#AA0000">x</font>  <font color="#FFFFD7">demigda</font> <font color="#D7D7AF">demigda</font> <font color="#FFFFAF">4.0</font> <font color="#FFFFAF">KB</font> <font color="#00D700">Tue Apr  1 09:16:45 2025</font> <font color="#0039AA"><b>📂  foo</b></font></pre>
 </div>
+
+⚠ Il convient de ne pas confondre ces méta-données, stockées au niveau du système de fichiers, et communes entre tous les fichiers, avec des méta-données stockées dans le fichier, et dépendant de son format (e.g. png, jpeg, pdf, zip).
 
 ### Les permissions
 
@@ -228,21 +242,6 @@ Sous Linux, il existe un ensemble de commandes standards permettant de manipuler
 ⚠ Les fichiers supprimés via <script type="c-bash">rm</script> ne sont pas placés dans la corbeille et sont donc supprimés **définitivement**.<br/>
 Il est ainsi recommandé d'utiliser la commande <script type="c-bash">trash <h>$FILE...</h></script> à la place afin de déplacer les fichiers dans la corbeille.
 
-💡 Pour éditer un fichier, vous pouvez utiliser les commandes <script type="c-bash">nano</script> (CLI) ou <script type="c-bash">micro</script> (TUI) :
-
-<div class="flex-2">
-    <div>
-        <center><b>nano</b> (CLI)</center>
-        <img src="/assets/admsys/img/nano.png"/>
-        <i>Raccourcis claviers indiqués en bas de la fenêtre.</i>
-    </div>
-    <div>
-        <center><b>micro</b> (TUI)</center>
-        <img src="/assets/admsys/img/micro.png"/>
-        <i>Raccourcis claviers affichés via <script type="c-text">Alt+G</script>.</i>
-    </div>
-</div>
-
 ### Ensemble de chemins
 
 Lorsqu'on souhaite manipuler plusieurs fichiers à la fois, e.g. via <script type="c-bash">cp</script>, <script type="c-bash">mv</script>, <script type="c-bash">rm</script>, etc. on préfère éviter d'avoir à écrire leurs chemins uns à uns.
@@ -252,7 +251,7 @@ Pour cela on peut représenter un ensemble de chemins en utilisant les **caract�
 - <script type="c-text">**/</script> : représente 0 à plusieurs <b>dossiers</b>, e.g. <script type='c-bash'>./**/foo.txt</script> : le fichier "foo.txt" dans un des sous dossiers.
 - <script type="c-text">{<h>$VALS,...</h>}</script> : représente une <b>alternative</b>, e.g. <script type="c-bash">./{foo, faa}.txt</script> : "foo.txt" ou "faa.txt" dans le dossier courant.
 
-💡 <script type="c-text">~<h>[$USER]</h>/</script> est un alias représentant le chemin absolu de l'utilisateur <script type="c-text"><h>$USER</h></script> (utilisateur actuel si non précisé).
+💡 <script type="c-text">~<h>[$USER]</h>/</script> est un alias représentant le chemin absolu du home de l'utilisateur <script type="c-text"><h>$USER</h></script> (utilisateur actuel si non précisé).
 
 💡 Afin d'éviter les erreurs dans la saisie d'un chemin, il est très vivement encouragé d'utiliser l'auto-complétion du shell.
 
@@ -395,7 +394,7 @@ Il est aussi possible d'installer plusieurs systèmes d'exploitations sur un mê
 - d'avoir un système d'exploitation de secours ;
 - de tester un système d'exploitation.
 
-💡 Lorsque le système d'exploitation est installé sur une clef USB, on parle alors de live-USB.
+💡 Lorsque le système d'exploitation est installé sur une clef USB, on parle alors de live USB.
 
 ⚠  Il est très vivement recommandé d'avoir au moins un live USB.
 
@@ -491,8 +490,7 @@ PATH              LABEL TYPE  PARTTYPENAME       SIZE FSUSE% FSTYPE
 Maintenant que nous avons un nouveau volume, il nous faut l'ajouter à notre arborescence. C'est à dire choisir un dossier dont le contenu sera celui de notre volume. On appelle cette opération **monter** (*mount*) un volume, et le dossier dans lequel il est monté, le **point de montage** (*mountpoint*) :
 
 <div class="terminal">
-<pre># e2label /dev/nvme0n1p3 DATA
-# lsvol
+<pre># lsvol
 PATH              LABEL TYPE  PARTTYPENAME       SIZE FSUSE% FSTYPE MOUNTPOINT
 /dev/nvme0n1            disk                   238,5G                    
 ├─/dev/nvme0n1p1  EFI   part  EFI System         512M     1% vfat   /boot/efi
@@ -528,59 +526,125 @@ cf https://doc.ubuntu-fr.org/disque_reseau
 
 ## Techniques de sauvegardes
 
-### Au niveau du disque/de la partition
+### Au niveau du volume
 
-dd
+Une méthode triviale de sauvegarde est tout simplement de copier le contenu du volume, octets par octets :
+
+<script type="c-bash">
+dd <h>[conv=sparse]</h> if=<h>$SRC</h> of=<h>$DST</h>
+</script>
+
+Cependant, cette méthode génère des sauvegardes volumineuses, bien qu'il soit possible de les compresser ensuite.
 
 #### RAID
 
-0 : volume plusieurs disques
-1 : miroir : peu performant
-5 : 3+ disques : parité (restore 1 disque perdu)
-6 : idem 5 avec 2 parités.
+Le RAID (<i><u>R</u>edundant <u>A</u>rray of <u>I</u>nexpensive <u>D</u>isk</i>) permet de dupliquer, en temps réel, les données sur plusieurs disques afin d'éviter les pertes de données en cas de défaillance matérielle. Il possède plusieurs "niveaux" :
 
-RAID 0 (striping), RAID 1 (mirroring) and its variants, RAID 5 (distributed parity), and RAID 6 (dual parity). Multiple RAID levels can also be combined or nested, for instance RAID 10 (striping of mirrors) or RAID 01 (mirroring stripe sets).
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th># disques</th>
+            <th>Résilience</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>RAID 0 (striping)</td>
+            <td>volume sur plusieurs disques</td>
+            <td>N</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>RAID 1 (mirroring)</td>
+            <td>duplique un disque</td>
+            <td>1+1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>RAID 5 (distributed parity)</td>
+            <td>bloc de parité b<sub>p</sub> = b<sub>1</sub> ⊕ ... ⊕ b<sub>n</sub></td>
+            <td>N+1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>RAID 6 (dual parity)</td>
+            <td>2 blocs de parité</td>
+            <td>N+2</td>
+            <td>2</td>
+        </tr>
+    </tbody>
+</table>
 
-#### LVM
-
-- pv
-- vg
-- lv
+💡 Il est possible de faire des combinaisons, e.g. RAID 1+0 ou RAID 10.
 
 ### Au niveau du système de fichier
 
-- scp
-- cp -a
+Une autre méthode relativement simple de sauvegarde, est de tout simplement copier les fichiers :
+<script type="c-bash">
+cp -a <h>$SRC...</h> <h>$DST</h>
+</script>
 
-### Sauvegarde incrémentale
+💡 Il est aussi possible de créer une archive compressée :
+<script type="c-bash">
+tar -cf <h>-{z,j}</h> <h>$ARCHIVE</h> <h>$SRC...</h> # compresser
+tar -xf <h>-{z,j}</h> <h>$ARCHIVE</h> <h>$DST</h>    # décompresser
+</script>
 
-- rsync
+Pour une copie vers/à partir d'un ordinateur distant, il est bien évidemment possible de monter un volume ou partition distante, puis d'effectuer la copie.
 
-Sauvegarde incrémentales
--> ln
-LN/Liens symboliques ~> loop interdit...
-vs mount bind... (vs liens symbolique).
+Plus pratique, on peut utiliser <script type="c-bash">scp</script> (<u>s</u>ecure <u>c</u>opy <u>p</u>rotocol), où les chemins sont de la forme <script type="c-text"><h>[$USER@$SERVER:]$PATH</h></script> :
+<script type="c-bash">
+scp -a <h>$SRC...</h> <h>$DST</h>
+</script>
 
-### Historique
+#### Sauvegarde incrémentale
 
-Dossier partagé.
+Pour le moment on effectuait une **sauvegarde complète**, i.e. la sauvegarde de l'ensemble des données.
 
--> Seafile => collaboratif !!!
+On se retrouve alors avec des fichiers identiques, dupliqués dans les différentes sauvegardes. Or si la majorité des fichiers ne changent pas d’une sauvegarde sur l’autre, cela peut très vite prendre beaucoup de place pour rien.
 
--> GIT -> rapide principe, /etc souvent
-    -> des solutions + adaptées/spécifiques ofc
+Afin d'accélérer les sauvegardes et d'en réduire le poids, il est possible d'effectuer des <b>sauvegardes incrémentales</b>, i.e. de ne sauvegarder que les modifications depuis la dernière sauvegarde. Cela est possible avec <script type="c-bash">rsync</script>, similaire à <script type="c-bash">scp</script>, mais offrant bien plus de fonctionnalités (dont les sauvegardes incrémentale).
 
-### Instantanés (LVM)
+💡 Son utilisation n’étant pas simple, nous vous fournirons, un script basé sur <script type="c-bash">rsync</script>, facilitant son usage.
+
+
+Les sauvegardes incrémentales utilisent souvent des **liens physiques** (*hard links*) permettant de placer un même fichier à plusieurs endroit différents (donc dans plusieurs sauvegardes), tout en évitant sa copie.
+
+La commande <script type="c-bash">ln [-s] <h>$SRC</h> <h>$DST</h></script> (<u>l</u>i<u>n</u>k) permet de créer des liens physiques (ou <u>s</u>ymbolique).
+
+💡 Le fichier ne sera réellement supprimé que lorsque toutes ses occurrences seront supprimées.
+
+⚠ Il n'est pas possible de faire un lien physique d'un dossier. Pour cela il faudra utiliser un <b>lien symbolique</b>, un fichier spécial qui contiendra le chemin de la cible.
+
+Le principe est alors simple : pour chaque fichier, s’il n’a pas été modifié depuis la dernière sauvegarde, on crée un lien physique pointant sur sa dernière version sauvegardée, sinon, on copie le fichier. Une sauvegarde sera alors un dossier que vous pourrez parcourir, supprimer, renommer, modifier, etc. comme s’il avait été créé via <script type="c-bash">cp -a</script>.
+
+#### Gestionnaire de version
+
+Pour des fichiers de configurations, on souhaite généralement effectuer des sauvegardes plus intelligentes. Pour cela on n'utilise un <b>gestionnaire de version</b>, comme Git (que vous verrez plus tard dans votre formation), permettant de :
+- ajouter une description aux versions.
+- comparer deux versions.
+- gérer, et maintenir plusieurs versions en parallèle.
+- annuler une modification précise.
+- intégration avec des interfaces Web et des fonctionnalités comme les issues.
+
+#### Synchronisation de fichiers
+
+Dans le cas de dossiers partagés entre plusieurs utilisateurs, on souhaite généralement conserver un historique de chaque modifications afin d'en avoir un suivi, et d'être capable, lorsque nécessaire, de restaurer un fichier à une version ultérieure.
+
+Pour cela on utilisera usuellement un logiciel de synchronisation de fichiers, comme Seafile.
+
+### LVM [todo]
 
 LVM
 
 Snapshots
 -> lvm
 
-## ?
-
--> config fichiers cachés
--> chiffrement + tard
+- pv
+- vg
+- lv
 
 </main>
     </body>

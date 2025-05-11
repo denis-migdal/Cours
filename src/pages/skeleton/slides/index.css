@@ -35,9 +35,25 @@ li[mark="💡"]::marker {
     grid-template-columns: repeat(3, 1fr);
     gap: 4px;
 }
+.flex-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+}
 
 img {
     width: 100%;
+
+    &.svg {
+        width:60%;
+        background-color:white;
+        border-radius:5px;
+        padding:5px
+    }
+}
+
+ul+p {
+    margin-top: 0.75rem;
 }
 
 ul.flex-2 {

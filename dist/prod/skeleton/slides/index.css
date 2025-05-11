@@ -171,6 +171,11 @@ h3::before {
 body {
     counter-reset: page_id;
 }
+
+u {
+    text-decoration: underline 1px solid light-dark(black, white);
+}
+
 main .ws-frame {
     position: relative;
 }
@@ -301,6 +306,11 @@ li > ul {
     margin-top: 0;
 }
 
+ol {
+    margin: 0em 10px;
+    padding: 0 1em;
+}
+
 ul {
     margin: 0em 10px;
     padding: 0 1em;
@@ -414,9 +424,25 @@ li[mark="💡"]::marker {
     grid-template-columns: repeat(3, 1fr);
     gap: 4px;
 }
+.flex-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+}
 
 img {
     width: 100%;
+
+    &.svg {
+        width:60%;
+        background-color:white;
+        border-radius:5px;
+        padding:5px
+    }
+}
+
+ul+p {
+    margin-top: 0.75rem;
 }
 
 ul.flex-2 {
