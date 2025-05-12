@@ -888,7 +888,7 @@ LVM offre alors différentes fonctionnalités :
 
 - <script type="c-bash">cp -a <h>$SRC...</h> <h>$DST</h></script> : copier les <b>fichiers</b> en conservant les méta-données (<u>a</u>rchive).
 - <script type="c-bash">tar -cf <h>-{z,j}</h> <h>$ARCHIVE</h> <h>$SRC...</h></script> : créer une archive <b>compressée</b>.
-- <script type="c-bash">scp -a <h>$SRC...</h> <h>$DST</h></script> (<u>s</u>ecure <u>c</u>opy <u>p</u>rotocol) : copie <b>à distance</b> (chemins = <script type="c-text"><h>[$USER@$SERVER:]$PATH</h></script>)
+- <script type="c-bash">scp -r <h>$SRC...</h> <h>$DST</h></script> (<u>s</u>ecure <u>c</u>opy <u>p</u>rotocol) : copie <b>à distance</b> (chemins = <script type="c-text"><h>[$USER@$SERVER:]$PATH</h></script>)
     
 </div>
 

@@ -616,7 +616,7 @@ Pour une copie vers/à partir d'un ordinateur distant, il est bien évidemment p
 
 Plus pratique, on peut utiliser <script type="c-bash">scp</script> (<u>s</u>ecure <u>c</u>opy <u>p</u>rotocol), où les chemins sont de la forme <script type="c-text"><h>[$USER@$SERVER:]$PATH</h></script> :
 <script type="c-bash">
-scp -a <h>$SRC...</h> <h>$DST</h>
+scp -r <h>$SRC...</h> <h>$DST</h>
 </script>
 
 #### Sauvegarde incrémentale

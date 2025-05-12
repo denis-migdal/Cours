@@ -545,7 +545,7 @@ tar -xf <h>-{z,j}</h> <h>$ARCHIVE</h> <h>$DST</h>    # décompresser
 <p>Pour une copie vers/à partir d&#39;un ordinateur distant, il est bien évidemment possible de monter un volume ou partition distante, puis d&#39;effectuer la copie.</p>
 <p>Plus pratique, on peut utiliser <script type="c-bash">scp</script> (<u>s</u>ecure <u>c</u>opy <u>p</u>rotocol), où les chemins sont de la forme <script type="c-text"><h>[$USER@$SERVER:]$PATH</h></script> :</p>
 <script type="c-bash">
-scp -a <h>$SRC...</h> <h>$DST</h>
+scp -r <h>$SRC...</h> <h>$DST</h>
 </script>
 
 <h4 id="sauvegarde-incrémentale">Sauvegarde incrémentale</h4>
