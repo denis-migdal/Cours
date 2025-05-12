@@ -39,6 +39,15 @@ L'OS ne va pas directement lire/écrire les données sur le disque, mais va util
     <img class="svg" src="/assets/admsys/img/filesystem.svg"/>
 </center>
 
+Un **volume** est un *espace de stockage*, il peut ainsi être :
+- un disque entier ;
+- une *partie* de disque (**partition**) ;
+- un ensemble de partitions ;
+- une clef USB ;
+- etc.
+
+Sur un ordinateur personnel, on n'utilise généralement qu'un seul système de fichier, sur un seul volume (le disque entier).
+
 ### Les dossiers
 
 Un **dossier** (*directory*), aussi appelé **répertoire** (*folder*), est un fichier spécial contenant l'inode et le nom des fichiers qu'il inclus.
@@ -347,6 +356,8 @@ Par convention, on distingue alors 7 sous-dossiers (pas entièrement consistant)
 
 💡 Par défaut, lorsque vous entrez une commande, le shell va rechercher, puis exécuter, le fichier de même nom présent dans <script type="c-text">/usr/bin/</script> ou <script type="c-text">/usr/local/bin/</script>.
 
+💡 La commande <script type="c-text">type <h>$CMD</h></script> permet d'afficher le type et l'emplacement de la commande <script type="c-text"><h>$CMD</h></script>.
+
 ⚠ Les fichiers temporaires sont usuellement enregistrés dans <script type="c-text">/tmp/</script>. Cependant, il convient d'en générer aléatoirement les noms afin d'éviter des conflits.
 
 💡 Il est aussi possible d'installer ses applications locales dans <script type="c-text">/opt/<h>$NAME</h>/</script>, évitant ainsi d'avoir à en disperser le contenu, entre ses executables, bibliothèques, et configurations.
@@ -371,32 +382,7 @@ Sous Linux les fichiers sont organisés comme suit :
 
 ## Volumes et partitions
 
-Un **volume** est un *espace de stockage*, il peut ainsi être :
-- un disque entier ;
-- une *partie* de disque (**partition**) ;
-- un ensemble de partitions ;
-- une clef USB ;
-- etc.
-
-Sur un ordinateur personnel, on n'utilise généralement qu'un seul système de fichier, sur un seul volume (le disque entier).
-
 ### Motivations
-
-#### Séparer les données du système d'exploitation
-
-Il est possible, et même recommandé, d'enregistrer les données et le système d'exploitation sur deux volumes différents. Cela permet en effet de (ré)installer le système d'exploitation sans effacer les données déjà présentes.
-
-⚠ Il est très vivement recommandé de sauvegarder ses données avant toutes opérations de ce genre.
-
-
-Il est aussi possible d'installer plusieurs systèmes d'exploitations sur un même ordinateur, qu'on pourra alors choisir au démarrage. Cela permet :
-- d'avoir un dual boot Linux-Windows ;
-- d'avoir un système d'exploitation de secours ;
-- de tester un système d'exploitation.
-
-💡 Lorsque le système d'exploitation est installé sur une clef USB, on parle alors de live USB.
-
-⚠  Il est très vivement recommandé d'avoir au moins un live USB.
 
 #### Utiliser différents systèmes de fichiers
 
@@ -422,6 +408,23 @@ Or, un volume ne peut contenir qu'un seul système de fichier. Ainsi, si on souh
 - <script type="c-text">NTFS</script> pour Windows ;
 - <script type="c-text">APFS</script> pour Apple ;
 - <script type="c-text">FAT32</script> pour les clefs USB ;
+
+
+#### Séparer les données du système d'exploitation
+
+Il est possible, et même recommandé, d'enregistrer les données et le système d'exploitation sur deux volumes différents. Cela permet en effet de (ré)installer le système d'exploitation sans effacer les données déjà présentes.
+
+⚠ Il est très vivement recommandé de sauvegarder ses données avant toutes opérations de ce genre.
+
+
+Il est aussi possible d'installer plusieurs systèmes d'exploitations sur un même ordinateur, qu'on pourra alors choisir au démarrage. Cela permet :
+- d'avoir un dual boot Linux-Windows ;
+- d'avoir un système d'exploitation de secours ;
+- de tester un système d'exploitation.
+
+💡 Lorsque le système d'exploitation est installé sur une clef USB, on parle alors de live USB.
+
+⚠  Il est très vivement recommandé d'avoir au moins un live USB.
 
 ### Créer et formatter une partition
 
@@ -579,9 +582,26 @@ Le RAID (<i><u>R</u>edundant <u>A</u>rray of <u>I</u>nexpensive <u>D</u>isk</i>)
 
 💡 Il est possible de faire des combinaisons, e.g. RAID 1+0 ou RAID 10.
 
+#### LVM
+
+<b>LVM</b> (<i><u>L</u>ogical <u>V</u>olume <u>M</u>anager</i>) est un logiciel permettant de gérer les volumes d'un ordinateur. Pour cela :
+1. on formate des volumes alors appelés <b>volumes physiques</b> (<i><u>p</u>hysical <u>v</u>olume</i>) :<br/>
+   <script type="c-bash">pvcreate <h>$VOLUME...</h></script>
+2. qu'on regroupe ensuite au sein d'un <b>groupe de volume</b> (<i><u>v</u>olume <u>g</u>roup</i> ≈ disque virtuel) :<br/>
+   <script type="c-bash">vgcreate <h>$VG_NAME</h> <h>$VOLUME...</h></script>
+3. qu'on redécoupe ensuite en **volumes logiques** (<i><u>l</u>ogicial <u>v</u>olume</i> ≈ partition virtuelle) :<br/>
+   <script type="c-bash">lvcreate --name <h>$LV_NAME</h> <h>$VG_NAME</h> <h>{-l 100%FREE,--size 10GB}</h></script>
+
+LVM offre alors différentes fonctionnalités :
+- RAID : <script type="c-bash">--type raid1 --nosync</script>
+- instantanés (<i>snapshots</i>) du système de fichier ;
+- etc.
+
+💡 Bien évidemment LVM possède de très nombreuses commandes permettant de manipuler les PV, VG, et LV.
+
 ### Au niveau du système de fichier
 
-Une autre méthode relativement simple de sauvegarde, est de tout simplement copier les fichiers :
+Une autre méthode relativement simple de sauvegarde, est de tout simplement copier les fichiers (<u>a</u>rchive) :
 <script type="c-bash">
 cp -a <h>$SRC...</h> <h>$DST</h>
 </script>
@@ -610,9 +630,9 @@ Afin d'accélérer les sauvegardes et d'en réduire le poids, il est possible d'
 💡 Son utilisation n’étant pas simple, nous vous fournirons, un script basé sur <script type="c-bash">rsync</script>, facilitant son usage.
 
 
-Les sauvegardes incrémentales utilisent souvent des **liens physiques** (*hard links*) permettant de placer un même fichier à plusieurs endroit différents (donc dans plusieurs sauvegardes), tout en évitant sa copie.
+Les sauvegardes incrémentales utilisent souvent des **liens physiques** (*hard links*) permettant de placer un même fichier (inode) à plusieurs endroit différents (donc dans plusieurs sauvegardes), tout en évitant sa copie.
 
-La commande <script type="c-bash">ln [-s] <h>$SRC</h> <h>$DST</h></script> (<u>l</u>i<u>n</u>k) permet de créer des liens physiques (ou <u>s</u>ymbolique).
+La commande <script type="c-bash">ln [-s] <h>$SRC</h> <h>$DST</h></script> (<u>l</u>i<u>n</u>k) permet de créer un lien physique (ou <u>s</u>ymbolique).
 
 💡 Le fichier ne sera réellement supprimé que lorsque toutes ses occurrences seront supprimées.
 
@@ -631,20 +651,37 @@ Pour des fichiers de configurations, on souhaite généralement effectuer des sa
 
 #### Synchronisation de fichiers
 
-Dans le cas de dossiers partagés entre plusieurs utilisateurs, on souhaite généralement conserver un historique de chaque modifications afin d'en avoir un suivi, et d'être capable, lorsque nécessaire, de restaurer un fichier à une version ultérieure.
+Dans le cas de dossiers partagés entre plusieurs utilisateurs, on souhaite généralement conserver un historique de chaque modifications afin d'en avoir un suivi, et d'être capable, lorsque nécessaire, de restaurer un fichier à une version précédente.
 
 Pour cela on utilisera usuellement un logiciel de synchronisation de fichiers, comme Seafile.
 
-### LVM [todo]
+#### Exportations/Importations
 
-LVM
+Certains logiciels (e.g. les SGBD) permettent d'exporter et d'importer leurs données, par exemple en faisant un *dump* d'une base de donnée. Le format de l'export dépend du logiciel, et est généralement adapté aux besoins spécifiques du logiciel.
 
-Snapshots
--> lvm
+### Instantanés
 
-- pv
-- vg
-- lv
+Que se passe-t-il aussi si le serveur modifie des fichiers pendant la sauvegarde ?<br/>
+La sauvegarde se retrouverait dans un état invalide, avec un mix de fichiers pré-modifications et post-modifications.
+
+Une sauvegarde nécessite ainsi généralement l'arrêt des services du serveur. Or les opérations de sauvegardes peuvent être longues, de plusieurs minutes à plusieurs heures. Ce qui est autant de temps pendant lesquel les services seront indisponibles.
+
+
+La solution est alors de créer un instantané (snapshot) du système de fichier à un instant donné, et d’effectuer la sauvegarde à partir de cet instantané :
+
+<script type="c-bash">
+# arrêt des services
+lvcreate -s --name <h>$LV_NAME</h>-snap <h>$LV_NAME</h> <h>{-l 100%FREE,--size 10GB}</h>
+# redémarrage des services
+# sauvegarde
+</script>
+
+Lors de la modifications d'un bloc, l'instantané enregistrera le bloc original. Ainsi lorsqu'on cherchera à récupérer un bloc, LVM ira le rechercher dans l'instantané, puis dans le volume originel si non trouvé (i.e. pas modifié).
+
+⚠ Une fois la sauvegarde effectuée, il faudra bien penser à supprimer l'instantané :
+<script type="c-bash">
+lvremove <h>$LV_NAME</h>-snap
+</script>
 
 </main>
     </body>

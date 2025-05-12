@@ -12,39 +12,122 @@
         <main>
 
 <h1 id="tp2-2h">TP2 (2h)</h1>
-<h2 id="manipulations-de-fichiers">Manipulations de fichiers</h2>
-<ul>
-<li>prise en main</li>
-</ul>
+<h2 id="commandes-shell-1h">Commandes Shell (1h)</h2>
+<p>[TODO] : update ASTerm
+[TODO] : doc
+[TODO] : lsd + trash</p>
+<p>Vous utilisez des lignes de commandes afin d&#39;effectuer les opérations suivantes.</p>
+<h3 id="lister">Lister</h3>
+<ol>
+<li><q-text> Affichez le répertoire de travail actuel.</q-text></li>
+<li><q-text> Comment expliquez vous que le résultat de la commande soit différente de l&#39;invite ?</q-text></li>
+<li><q-text> Affichez le contenu du dossier racine (<strong>sans</strong> les fichiers cachés).</q-text></li>
+<li><q-text> Affichez le contenu du dossier courant (<strong>avec</strong> les fichiers cachés).</q-text></li>
+<li></q-text>Affichez le contenu du dossier courant (<strong>avec</strong> les fichiers cachés <strong>et</strong> les détails).</q-text></li>
+<li><q-text>Quelle est la taille et date de dernière modification du fichier <script type="c-text">.bashrc</script> ?</q-text></li>
+<li><q-text>Recherchez dans le dossier <script type="c-text">/var/log/</script> les fichiers d&#39;extension <script type="c-text">.log</script>.</q-text></li>
+</ol>
+<h3 id="navigation">Navigation</h3>
+<ol>
+<li><q-text>Allez dans le dossier racine (chemin <strong>absolu</strong>).</q-text></li>
+<li><q-text>Allez dans votre dossier home.</q-text></li>
+<li><q-text>Retournez au dossier précédent.</q-text></li>
+<li><q-text>Allez dans le home de <script type="c-text">zeus</script> en utilisant <script type="c-text">~<h>$USER</h></script>.</q-text></li>
+<li><q-text>Allez dans le dossier <script type="c-text">/var/log/</script> via un chemin <strong>relatif</strong>).</q-text></li>
+</ol>
+<h3 id="création-et-édition-de-fichiers">Création et édition de fichiers</h3>
+<ol>
+<li><q-text>Créez un nouveau fichier <script type="c-text">/tmp/test</script> vide.</q-text></li>
+<li><q-text>En <strong>une seule</strong> ligne de commande créez l&#39;arborescence ci-dessous :  <script type="c-bash">
+ 📂 /tmp/
+ ├── 📂 A
+ │   ├── 📂 1
+ │   └── 📂 2
+ └── 📂 B
+     ├── 📂 1
+     └── 📂 2
+  </script></q-text></li>
+</ol>
+<h3 id="déplacer-copier-et-renommer">Déplacer, copier et renommer</h3>
+<ol>
+<li><q-text> <strong>Copiez</strong> le <strong>dossier</strong> <script type="c-bash">B/</script> dans le dossier <script type="c-bash">A/</script>.</q-text></li>
+<li><q-text> <strong>Déplacez</strong> <script type="c-bash">A/B/</script> dans le dossier <script type="c-bash">A/1/</script>.</q-text></li>
+<li><q-text> <strong>Déplacez et renommez</strong> le dossier <script type="c-bash">A/1/B/</script> en <script type="c-bash">/tmp/C</script>.</q-text></li>
+<li><q-text> <strong>Copiez et renommez</strong> le <strong>dossier</strong> <script type="c-bash">C/</script> en <script type="c-bash">/tmp/D</script>.</q-text></li>
+<li><q-text> <strong>Copiez</strong> les <strong>dossiers</strong> <script type="c-bash">{A,B,C}/</script> du serveur vers le dossier <script type="c-bash">/tmp/</script> du poste de travail.</q-text></li>
+</ol>
+<h3 id="supprimer-des-fichiers">Supprimer des fichiers</h3>
+<ol>
+<li><q-text> Placez les dossiers <script type="c-bash">B/2/</script> et <script type="c-bash">A/2/</script> dans la corbeille.</q-text></li>
+<li><q-text> Listez le contenu de la corbeille.</q-text></li>
+<li><q-text> Restaurez le dossier <script type="c-bash">A/2/</script>.</q-text></li>
+<li><q-text> Videz la corbeille.</q-text></li>
+<li><q-text> Avec la commande <script type="c-bash">rm</script>, supprimez le dossier <script type="c-bash">A/2/</script>.</q-text></li>
+<li><q-text> Ce dossier apparaît-il dans la corbeille ? Pourquoi ?</q-text></li>
+</ol>
 <h2 id="fichiers-de-configuration">Fichiers de configuration</h2>
-<ul>
-<li><p>alias bashrc -&gt; lsd -&gt; ajouter alias hello.</p>
+<h3 id="bashrc"><script type="c-text">.bashrc</script></h3>
+<p>Le <script type="c-text">.bashrc</script> est un script Shell exécuté au démarrage d&#39;un nouveau Shell. Il permet notamment d&#39;ajouter des alias de manière permanente.</p>
+<ol>
+<li>Ajoutez une ligne de commande <b>à la fin</b> du fichier <script type="c-text">.bashrc</script> afin d&#39;ajouter l&#39;alias <script type="c-bash">hello</script>.</li>
+<li><q-text>Expliquez en quoi le fait qu&#39;un tiers puisse modifier notre <script type="c-text">.bashrc</script> constitue une faille de sécurité.</q-text></li>
+</ol>
+<h3 id="créer-une-commande">Créer une commande</h3>
+<p>La commande <script type="c-bash">type <h>$CMD</h></script> permet d&#39;afficher la nature et l&#39;emplacement d&#39;une commande.</p>
+<ol>
+<li><q-text>Où est enregistrée la commande <script type="c-bash">mkcmd</script> ?</q-text></li>
+<li><q-text>Que faisait exactement la commande <script type="c-bash">mkcmd</script> ?</q-text></li>
+<li><q-text>Quel est l&#39;intérêt de faire un lien physique dans <script type="c-bash">mkcmd</script> ?</q-text></li>
+<li><q-text>Pourquoi ne pas utiliser ici un lien symbolique ?</q-text></li>
+<li><q-text>Pourquoi <script type="c-bash">mkcmd</script> utilise-t-il <script type="c-bash">relpath</script> ?</q-text></li>
+<li><q-text>Où faudrait-il enregistrer les commandes pour les rendre accessibles à tous ?</q-text></li>
+<li><q-text>Quels droits faudrait-il alors donner à ces commandes ?</q-text></li>
+<li>Expliquez pourquoi les faits suivants constitueraient une faille de sécurité :<ul>
+<li><q-text>un tiers a le droit d&#39;écriture sur mon script.</q-text></li>
+<li><q-text>un tiers a le droit d&#39;écriture sur le dossier contenant mon script.</q-text></li>
+</ul>
 </li>
-<li><p>créer une commande</p>
-<ul>
-<li>PATH fixé par bashrc (variable d&#39;environnement vu au S4).</li>
-<li>en gros dans certains dossiers, qu&#39;on peut modifier.</li>
-</ul>
-<ul>
-<li>relpath</li>
-<li>chmod +x
--&gt; ln/ls (deux fichiers à la fois).</li>
-</ul>
-</li>
-<li><p>ssh config</p>
-<ul>
-<li>SSH keys</li>
-<li>SSH alias</li>
-</ul>
-</li>
-<li><p>SSHFS / SCP</p>
-</li>
-</ul>
-<h2 id="sauvegardes-">Sauvegardes ?</h2>
-<ul>
-<li>lsvol</li>
-<li>sauvegardes ?</li>
-</ul>
+</ol>
+<h3 id="configuration-de-ssh">Configuration de SSH</h3>
+<h4 id="alias-ssh">Alias SSH</h4>
+<p>Retenir et écrire l’adresse IP du serveur à chaque connexion au serveur via SSH est
+enquiquinant. Pour éviter cela, on utilise des <strong>alias SSH</strong>, permettant d&#39;écrire <script type="c-bash">ssh <h>$ALIAS</h></script> au lieu de <script type="c-bash">ssh <h>$USER</h>@<h>$SERVER</h></script>. Les alias sont définis dans la configuration du client SSH (<script type="c-text">~/.ssh/config</script>) comme suit :</p>
+<script type="c-bash">
+Host <h>$ALIAS</h> # ssh ALIAS => ssh USER@SERVER
+  User <h>$USER</h>
+  HostName <h>$SERVER</h>
+  IdentityFile <h>$PRIVKEY_PATH</h> # si clé SSH
+  IdentitiesOnly yes         # si IdentityFile
+</script>
+
+<p>💡 L’autocomplétion du shell marche aussi pour les alias SSH.</p>
+<ol>
+<li><q-text><u><b>Sur l&#39;hôte</b></u>, créez un nouvel alias <script type="c-text">AdmSys</script> permettant de vous connecter en tant que <script type="c-text">zeus</script>.</q-text></li>
+<li><q-text>Connectez au serveur en utilisant cet alias.</q-text></li>
+</ol>
+<h4 id="clé-ssh">Clé SSH</h4>
+<p>Renseigner son un mot de passe à chaque fois qu’on utilise SSH est enquiquinant, et potentiellement peu sécurisé si le mot de passe est trop faible. On préfère ainsi généralement utiliser une <strong>clé SSH</strong> permettant aux utilisateurs de se connecter au serveur sans mot de passe.</p>
+<p>Le principe est alors très simple, l&#39;utilisateur :</p>
+<ol>
+<li>génère une paire de clés via <script type="c-bash">keygen</script>.</li>
+<li>enregistre la clef <em>publique</em> dans le serveur (dans <script type="c-text">~/.ssh/authorized_keys</script>).</li>
+<li>indique au client SSH la clef <em>privée</em> à utiliser (cf suite).</li>
+</ol>
+<p>À chaque connexion SSH, le client donne alors une preuve qu&#39;il a connaissance de la clef privée, que le serveur est capable de vérifier grâce à la clef publique.</p>
+<ol>
+<li><u><b>Sur l&#39;hôte</b></u>, générez une nouvelle clé SSH grâce à la commande <script type="c-bash">ssh-keygen</script>.<br/>
+💡 Vous nommerez la clé <script type="c-text">AdmSys</script>.<br/>
+⚠ Ne renseignez pas de mot de passe.</li>
+<li><q-text><u><b>Sur l&#39;hôte</b></u>, déplacez les clés générées dans <script type="c-text">~/.ssh/keys/{priv/,pub/}</script>.</q-text></li>
+<li><q-text><u><b>Sur l&#39;hôte</b></u>, ajoutez le chemin de la clef privée à l&#39;alias <script type="c-text">AdmSys</script>.</q-text></li>
+<li><q-text><u><b>Sur le serveur</b></u>, créez le dossier <script type="c-text">~zeus/.ssh/</script>.</q-text></li>
+<li><q-text>Transférez la clé publique dans le fichier <script type="c-text">~zeus/.ssh/authorized_keys</script>.</q-text></li>
+<li><q-text>Ouvrez une nouvelle session SSH en tant que <script type="c-text">zeus</script>.</q-text></li>
+<li><q-text>Dupliquez l&#39;alias SSH <script type="c-text">AdmSys</script> que vous nommerez <script type="c-text">AdmSysPwd</script>.</q-text></li>
+<li><q-text>À cet alias, ajoutez l&#39;option <script type="c-text">PubkeyAuthentication no</script>.<br/>
+⚠ C’est Authentication et non Authenti<b><u>fi</u></b>cation.</q-text></li>
+<li><q-text>Utilisez <script type="c-text">AdmSysPwd</script> afin de vous connecter via mot de passe.</q-text></li>
+</ol>
 </main>
     </body>
 </html>

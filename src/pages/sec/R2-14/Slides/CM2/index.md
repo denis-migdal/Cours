@@ -44,6 +44,24 @@ L'OS utilise un **système de fichiers** (*filesystem*) déterminant où et comm
 
 </frame-uca>
 
+
+<frame-uca>
+
+<div>
+
+Un **volume** est un *espace de stockage* :
+- disque entier ;
+- *partie* de disque (**partition**) ;
+- ensemble de partitions ;
+- clef USB ;
+- etc.
+
+</div>
+
+💡 Sur un ordinateur personnel, généralement un seul système de fichier, sur le disque entier.
+
+</frame-uca>
+
     <frame-subsection id="directories" name="Les dossiers">
 
 <frame-uca>
@@ -239,6 +257,12 @@ Ces droits peuvent être attribués à :
 
 <div>
 
+**Chemin absolu** (*absolute path*) : en partant de la **racine**, chemin à emprunter pour atteindre le fichier.
+
+</div>
+
+<div>
+
 Sous Linux tous les fichiers sont contenus dans le dossier **racine** (*root directory*), noté <script type="c-text">/</script> :
 <div class="terminal">
 <pre>
@@ -250,11 +274,6 @@ Sous Linux tous les fichiers sont contenus dans le dossier **racine** (*root dir
         <font color="#8A8A8A">├── </font>📄 fii
         <font color="#8A8A8A">└── </font>📄 fuu</pre>
 </div>
-
-</div><div>
-
-**Chemin absolu** (*absolute path*) : en partant de la **racine**, chemin à emprunter pour atteindre le fichier.
-
 💡 <script type="c-text">/tmp/foo/faa</script> est le chemin absolu de <script type="c-text">faa</script>.
 
 </div><div>
@@ -273,47 +292,34 @@ Sous Linux tous les fichiers sont contenus dans le dossier **racine** (*root dir
 
 <div>
 
+**Chemin relatif** (*relative path*) : en partant du **dossier de travail**, chemin pour atteindre le fichier.
+- <script type="c-text">./foo/faa</script> : chemin relatif de <script type="c-text">faa</script> à partir de <script type="c-text">/tmp/</script>.
+- <script type="c-text">./../../</script> : chemin relatif de <script type="c-text">/tmp/</script> à partir de <script type="c-text">/tmp/foo/fee/</script>, avec <script type="c-text">../</script> le dossier parent. 
+
+</div>
+<div>
+
 **Dossier de travail** (*working directory*), noté <script type="c-text">./</script> : dossier dans lequel on se trouve actuellement.
+- <script type="c-bash">cd <h>$DIR</h></script> (<i><u>c</u>hange <u>d</u>irectory</i>) : se déplacer dans le dossier <script type="c-bash"><h>$DIR</h></script>.
+- <script type="c-bash">pwd</script> (<i><u>p</u>rint <u>w</u>orking <u>d</u>irectory</i>) : afficher le dossier de travail.
+<div class="terminal"><pre>$ pwd
+/tmp/foo
+</pre></div>
+
+</div><div>
 
 💡 Ce dossier est indiqué dans l'**invite de commande** : <div class="terminal"><pre><font color="#4CE64C"><b>demigda@demigda-Latitude-5400</b></font>:<font color="#295FCC"><b>/tmp/foo</b></font>$</pre></div>
 
-</div>
-
-
-<div>
-
-**Chemin relatif** (*relative path*) : en partant du **dossier de travail**, chemin pour atteindre le fichier.
-
-💡 <script type="c-text">./foo/faa</script> est le chemin relatif de <script type="c-text">faa</script> à partir de <script type="c-text">/tmp/</script>.
-
-</div>
-
-<div>
-
-<ul>
-    <li mark="💡"> <script type="c-text">../</script> représente le parent d'un dossier. 
-
-- <script type="c-text">./../../</script> est le chemin relatif de <script type="c-text">/tmp/</script> à partir de <script type="c-text">/tmp/foo/fee/</script>.
-
-</li></ul>
 </div>
 
 </frame-uca><frame-uca>
 
 <div>
 
-💡 <script type="c-bash">cd <h>$DIR</h></script> (*<u>c</u>hange <u>d</u>irectory*) : se déplacer dans le dossier <script type="c-bash"><h>$DIR</h></script>.
-
-💡 <script type="c-bash">pwd</script> (*<u>p</u>rint <u>w</u>orking <u>d</u>irectory*) : afficher le dossier de travail.
-<div class="terminal"><pre>$ pwd
-/tmp/foo
-</pre></div>
-    
-</div>
-
-<div>
-
 ⚠ Dans un script, les chemins relatifs sont évalués relativement au <b>dossier de travail</b> actuel.
+
+</div>
+<div>
 
 💡 Pour placer le dossier de travail à l'emplacement du script :
 <div class="flex-2">
@@ -375,8 +381,8 @@ Commandes standards pour manipuler les fichiers :
 </div><div>
 
 - Représenter un ensemble de chemins avec les **caractères de remplacements** (*wildcard*) :
-  - <script type="c-text">*</script> : 0 à plusieurs <b>caractères</b>, <i>e.g. <script type='c-bash'>./*.txt</script> : tous les fichiers d'extension ".txt"</i>.
-  - <script type="c-text">**/</script> : 0 à plusieurs <b>dossiers</b>, <i>e.g. <script type='c-bash'>./**/a.txt</script> : le fichier "a.txt" dans un des sous dossiers</i>.
+  - <script type="c-text">*</script> : 0 à plusieurs <b>caractères</b>, <i>e.g. <script type="c-bash">./*.txt</script> : tous les fichiers d'extension ".txt"</i>.
+  - <script type="c-text">**/</script> : 0 à plusieurs <b>dossiers</b>, <i>e.g. <script type="c-bash">./**/a.txt</script> : le fichier "a.txt" dans un des sous dossiers</i>.
   - <script type="c-text">{<h>$VALS,...</h>}</script> : une <b>alternative</b>, <i>e.g. <script type="c-bash">./{foo, faa}.txt</script> : "./foo.txt" ou "./faa.txt"</i>.
 
 </div>
@@ -400,24 +406,48 @@ Commandes standards pour manipuler les fichiers :
 
 <frame-uca>
 
-Une sauvegarde n'est réellement utile que lorsqu'on perd ses données, i.e. lorsqu'il est déjà trop tard. Il est ainsi nécessaire d'anticiper et d'effectuer régulièrement des sauvegardes de ses données afin de se prémunir contre d'éventuelles pertes.
+<div>
 
-Ces pertes peuvent survenir suite à une erreur de manipulation, à un acte de cyberdélinquance, à une défaillance du matériel, à un incendie, etc. Elles sont usuellement rares, mais le coût d'une perte de données élevé.
+- Les pertes de données...
+<ul class="flex-2">
+    <li>erreur de manipulations ;</li>
+    <li>acte de cyberdélinquance ;</li>
+    <li>défaillance du matériel ;</li>
+    <li>incendie.</li>
+</ul>
 
-Les pertes de données ont un triple coût :
-- le coût de la remise en service ;
-- le coût de l'interruption des activités ;
-- le coût de l'impossibilité d'honorer des obligations contractuelles.
+</div>
+<div>
 
-Ces coûts peuvent engendrer la faillite d'une entreprise, en effet 60% des entreprises victimes d'un rançongiciel déposent le bilan peu après l'attaque. La perte de données peut en effet concerner des <u>décennies</u> de travail, que ce soit des données clients ou fournisseurs, des outils développés en interne dont les développeurs ont quitté l'entreprise depuis longtemps, etc. De plus le temps d’interruption et de restauration des services constitue un manque à gagner pour l'entreprise, et impacte sa réputation.
+- ... ont un coût élevé...
+    <ul class="flex-2">
+        <li>remise en service</li>
+        <li>interruption des activités</li>
+    </ul>
+    <ul>
+        <li>impossibilité d'honorer des obligations contractuelles.</li>
+    </ul>
 
-Plus grave encore, lorsque ces pertes de données touchent des hôpitaux, où une dégradation des services peut se traduire en vies humaines.
+</div>
+<div>
 
-⚠ Il est ainsi vital d'effectuer <u>régulièrement</u> des sauvegardes, en s'assurant que la procédure de restauration est fonctionnelle, et peut être rapidement mise en place.
+- ... avec des conséquences graves :
+    <ul class="flex-2">
+        <li>pertes de contrats</li>
+        <li>pertes de données clients/fournisseurs</li>
+        <li>perte de réputation</li>
+        <li>faillite d'entreprise</li>
+        <li>vies humaines (e.g. hôpitaux)</li>
+    </ul>
+</div>
+<div>
 
-⚠ Il est important que les sauvegardes soient stockées dans des lieux différents afin de se prémunir contre des incidents pouvant toucher toute une zone (e.g. cambriolages, incendies, inondations, etc).
-
-⚠ De la même manière des sauvegardes sur des disques coupés du réseau permettent de se protéger contre des attaques touchant l'intégralité du système informatique (e.g. rançongiciel).
+⚠ Il est ainsi vital d'effectuer <u>régulièrement</u> des sauvegardes :
+- en vérifiant la procédure de restauration ;
+- stockées dans des lieux différents <i>(e.g. cambriolages, incendies, inondations)</i>.
+- sur des disques coupés du réseau <i>(e.g. rançongiciel)</i>.
+- réellement utile qu'une fois qu'il est trop tard.
+</div>
 
 </frame-uca>
 </frame-subsection><frame-subsection id="organize" name="Organiser ses fichiers">
@@ -542,13 +572,17 @@ Par exemple :
 
 💡 <script type="c-text">/usr/{,local/}<h>[s]bin</h>/</script>, <script type="c-text">~/.local/<h>bin</h>/</script> : contiennent les commandes (fichier de même nom).
 
+💡 <script type="c-text">type <h>$CMD</h></script> : donne le type et emplacement de la commande.
+
 💡 <script type="c-text">/opt/<h>$NAME</h>/</script> : alternative à <script type="c-text">/usr/local/*/<h>$NAME</h>/</script>.
 
 </div><div>
 
 ⚠ Conventions pas toujours très bien respectées :
-- <script type="c-text">~/.ssh/</script> : configuration SSH d'un utilisateur (cf TP).
-- <script type="c-text">~/.bashrc</script> : configuration du shell d'un utilisateur (cf TP).
+<ul class="flex-2">
+    <li><script type="c-text">~/.bashrc</script> : config. du shell d'un utilisateur.</li>
+    <li> <script type="c-text">~/.ssh/</script> : config. SSH d'un utilisateur.</li>
+</ul>
 
 </div>
 
@@ -558,51 +592,8 @@ Par exemple :
 
 <frame-section id="volumes" name="Volumes et partitions">
 
-<frame-uca>
-
-<div>
-
-Un **volume** est un *espace de stockage* :
-- disque entier ;
-- *partie* de disque (**partition**) ;
-- ensemble de partitions ;
-- clef USB ;
-- etc.
-
-</div>
-
-💡 Sur un ordinateur personnel, généralement un seul système de fichier, sur le disque entier.
-
-</frame-uca>
 <frame-subsection id="motivations" name="Motivations">
-<frame-subsubsection id="separate" name="séparer les données du système d'exploitation">
-
-<frame-uca>
-
-<div>
-
-Séparer données et OS sur deux volumes différents.
-- permet de (ré)installer l'OS sans effacer les données.
-
-⚠ Sauvegardez vos données avant toutes opérations de ce genre !
-
-</div><div>
-
-Possibilité, sur un même ordinateur, d'installer plusieurs OS (qu'on choisi au démarrage) pour :
-- avoir un dual boot Linux-Windows ;
-- avoir un système d'exploitation de secours ;
-- tester un système d'exploitation.
-
-</div><div>
-
-💡 <b>live USB</b> : clef USB surlaquelle un système d'exploitation est installé.
-
-⚠  Il est très vivement recommandé d'avoir au moins un live USB.
-
-</div>
-
-</frame-uca>
-</frame-subsubsection><frame-subsubsection id="several" name="utiliser différents systèmes de fichiers">
+    <frame-subsubsection id="several" name="utiliser différents systèmes de fichiers">
 
 <frame-uca>
 
@@ -649,6 +640,33 @@ Il faut alors <b>découper</b> les ressources de stockages en plusieurs volumes.
     <li><script type="c-text">FAT32</script> pour les clefs USB ;</li>
 </ul>
 
+
+</div>
+
+</frame-uca>
+</frame-subsubsection><frame-subsubsection id="separate" name="séparer les données du système d'exploitation">
+
+<frame-uca>
+
+<div>
+
+Séparer données et OS sur deux volumes différents.
+- permet de (ré)installer l'OS sans effacer les données.
+
+⚠ Sauvegardez vos données avant toutes opérations de ce genre !
+
+</div><div>
+
+Possibilité, sur un même ordinateur, d'installer plusieurs OS (qu'on choisi au démarrage) pour :
+- avoir un dual boot Linux-Windows ;
+- avoir un système d'exploitation de secours ;
+- tester un système d'exploitation.
+
+</div><div>
+
+💡 <b>live USB</b> : clef USB surlaquelle un système d'exploitation est installé.
+
+⚠  Il est très vivement recommandé d'avoir au moins un live USB.
 
 </div>
 
@@ -751,7 +769,7 @@ PATH              LABEL TYPE  PARTTYPENAME       SIZE FSUSE% FSTYPE MOUNTPOINT
 
 <div>
 
-<script type="c-text">/etc/fstab</script> (<i><u>F</u>ile<u>S</u>ystem <u>TAB</u>le</i>) : liste les systèmes de fichiers à monter au démarrage de la machine :
+<script type="c-text">/etc/fstab</script> (<i><u>F</u>ile<u>S</u>ystem <u>Tab</u>le</i>) : liste les systèmes de fichiers à monter au démarrage de la machine :
 
 <script type="c-text">
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
@@ -775,6 +793,224 @@ cf https://doc.ubuntu-fr.org/disque_reseau
 
 </frame-uca>
 </frame-subsection>
+</frame-section><frame-section id="sav" name="Techniques de sauvegardes">
+<frame-subsection id="sav_vol" name="Au niveau du volume">
+
+<frame-uca>
+
+<div>
+
+- <script type="c-bash">dd <h>[conv=sparse]</h> if=<h>$SRC</h> of=<h>$DST</h></script> : copier le contenu du volume <b>octets par octets</b>.<br/>
+  ⚠ Sauvegardes volumineuses, possibilité compresser par la suite.
+
+</div><div>
+
+<b>RAID</b> (<i><u>R</u>edundant <u>A</u>rray of <u>I</u>nexpensive <u>D</u>isk</i>) : duplique les données sur plusieurs disques pour se protéger en cas de défaillance matérielle.
+
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th># disques</th>
+            <th>Résilience</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>RAID 0 (striping)</td>
+            <td>volume sur plusieurs disques</td>
+            <td>N</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>RAID 1 (mirroring)</td>
+            <td>duplique un disque</td>
+            <td>1+1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>RAID 5 (distributed parity)</td>
+            <td>bloc de parité b<sub>p</sub> = b<sub>1</sub> ⊕ ... ⊕ b<sub>n</sub></td>
+            <td>N+1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>RAID 6 (dual parity)</td>
+            <td>2 blocs de parité</td>
+            <td>N+2</td>
+            <td>2</td>
+        </tr>
+    </tbody>
+</table>
+
+💡 Possibilité de faire des combinaisons, <i>e.g. RAID 1+0 ou RAID 10</i>.
+
+</frame-uca>
+
+<frame-uca>
+
+<div>
+
+<b>LVM</b> (<i><u>L</u>ogical <u>V</u>olume <u>M</u>anager</i>) : permet de gérer les volumes d'un ordinateur.
+1. <b>volumes physiques</b> (<i><u>p</u>hysical <u>v</u>olume</i>) : volumes formatés pour LVM.<br/>
+   <script type="c-bash">pvcreate <h>$VOLUME...</h></script>
+2. <b>groupe de volume</b> (<i><u>v</u>olume <u>g</u>roup</i> ≈ disque virtuel) : ensemble de volumes physiques.<br/>
+   <script type="c-bash">vgcreate <h>$VG_NAME</h> <h>$VOLUME...</h></script>
+3. **volumes logiques** (<i><u>l</u>ogicial <u>v</u>olume</i> ≈ partition virtuelle) : partition d'un groupe de volumes.<br/>
+   <script type="c-bash">lvcreate --name <h>$LV_NAME</h> <h>$VG_NAME</h> <h>{-l 100%FREE,--size 10GB}</h></script>
+
+</div>
+
+<div>
+
+LVM offre alors différentes fonctionnalités :
+- RAID : <script type="c-bash">--type raid1 --nosync</script>
+- instantanés (<i>snapshots</i>) du système de fichier ;
+- etc.
+</div>
+
+
+💡 LVM possède de très nombreuses commandes pour manipuler les PV, VG, et LV.
+
+</frame-uca>
+
+</frame-subsection><frame-subsection id="sav_file" name="Au niveau du système de fichier">
+<frame-uca>
+
+
+<div>
+
+<b>Sauvegarde complète :</b> sauvegarde l'ensemble des données.
+
+
+- <script type="c-bash">cp -a <h>$SRC...</h> <h>$DST</h></script> : copier les <b>fichiers</b> en conservant les méta-données (<u>a</u>rchive).
+- <script type="c-bash">tar -cf <h>-{z,j}</h> <h>$ARCHIVE</h> <h>$SRC...</h></script> : créer une archive <b>compressée</b>.
+- <script type="c-bash">scp -a <h>$SRC...</h> <h>$DST</h></script> (<u>s</u>ecure <u>c</u>opy <u>p</u>rotocol) : copie <b>à distance</b> (chemins = <script type="c-text"><h>[$USER@$SERVER:]$PATH</h></script>)
+    
+</div>
+
+<div>
+
+<b>Problèmes :</b>
+- fichiers non-modifiés dupliqués d'une sauvegarde sur l'autre.
+- lent, prend beaucoup de place pour rien.
+
+</div>
+<div>
+
+<b>Sauvegardes incrémentales</b> : ne sauvegarde que les <b>modifications</b> depuis la dernière sauvegarde.
+- <script type="c-bash">rsync</script> : permet de faire des sauvegardes incrémentales (usage similaire à <script type="c-bash">scp</script>).<br/>
+💡 Un script basé sur <script type="c-bash">rsync</script> sera fourni en TP afin de faciliter son usage.
+
+</div>
+
+</frame-uca><frame-uca>
+
+<div>
+
+- On veut pouvoir parcourir et manipuler les sauvegardes incrémentales comme si créée via <script type="c-bash">cp -a</script>.
+<ul class="flex-2">
+    <li>si modifié : copier le fichier.</li>
+    <li>sinon : créer un lien physique.</li>
+</ul>
+</div>
+
+<div>
+
+**Lien physique** (*hard link*) : place un même fichier (inode) dans plusieurs dossiers, sans le copier.
+
+- fichier supprimé lorsque toutes les occurrences sont supprimées.
+
+</div><div>
+
+<b>Lien symbolique</b> : fichier spécial contenant le chemin de la cible (pour les dossiers/entre volumes).
+
+- fichier supprimé lorsque la cible est supprimée.
+
+</div>
+
+<div>
+
+<script type="c-bash">ln [-s] <h>$SRC</h> <h>$DST</h></script> (<u>l</u>i<u>n</u>k) : crée un lien physique (ou <u>s</u>ymbolique).
+
+</div>
+
+</frame-uca>
+
+<frame-uca>
+
+<div>
+
+<b>Gestionnaire de version</b> (e.g. Git) : sauvegardes plus intelligentes (e.g. pour code/configs), permet de :
+<ul class="flex-2">
+    <li>ajouter une description aux versions.</li>
+    <li>comparer deux versions.</li>
+    <li>gérer plusieurs versions en parallèle.</li>
+    <li>annuler une modification précise.</li>
+</ul>
+<ul>
+    <li>intégration avec des interfaces Web et des fonctionnalités comme les issues.</li>
+</ul>
+
+</div>
+
+<div>
+    
+<b>Synchronisation de fichiers</b> (e.g. Seafile) : conserve un historique de chaque modifications en temps réel.
+- pour dossiers partagés entre plusieurs utilisateurs.
+- permet de restaurer un fichier à une version précédente.
+
+</div>
+
+<div>
+
+<b>Exportations/Importations</b> (e.g. *dump* d'une base SQL) :
+- format de l'export généralement adapté aux besoins spécifiques du logiciel.
+
+</div>
+
+</frame-uca>
+
+</frame-subsection>
+<frame-subsection id="snapshots" name="Instantanés">
+<frame-uca>
+
+<div>
+
+Les opérations de sauvegardes peuvent être longues, de plusieurs minutes à plusieurs heures.
+- que se passe-t-il si le serveur modifie des fichiers pendant la sauvegarde ?
+  - mix de fichiers pré/post modifications ⇒ état incohérent/invalide.
+- services indisponibles pendant la sauvegarde.
+</div>
+
+<div>
+
+<b>Solution :</b> créer un instantané (snapshot) du système de fichier, et effectuer la sauvegarde de l'instantané.
+- si modification d'un bloc, stocke la version originelle dans l'instantané.
+- si bloc non-modifié, ira le rechercher dans le volume originel.
+
+</div><div>
+
+<script type="c-bash">
+# arrêt des services
+lvcreate -s --name <h>$LV_NAME</h>-snap <h>$LV_NAME</h> <h>{-l 100%FREE,--size 10GB}</h>
+# redémarrage des services
+# save...
+lvremove <h>$LV_NAME</h>-snap
+</script>
+
+⚠ Bien penser à supprimer l'instantané une fois la sauvegarde effectuée.
+
+</div>
+
+</frame-uca>
+
+</frame-subsection>
+
+
 </frame-section>
 
         </main>

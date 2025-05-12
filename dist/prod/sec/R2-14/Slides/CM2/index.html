@@ -42,6 +42,24 @@
 
 </frame-uca>
 
+
+<frame-uca>
+
+<div>
+
+<p>Un <strong>volume</strong> est un <em>espace de stockage</em> :</p>
+<ul>
+<li>disque entier ;</li>
+<li><em>partie</em> de disque (<strong>partition</strong>) ;</li>
+<li>ensemble de partitions ;</li>
+<li>clef USB ;</li>
+<li>etc.</li>
+</ul>
+</div>
+
+<p>💡 Sur un ordinateur personnel, généralement un seul système de fichier, sur le disque entier.</p>
+</frame-uca>
+
     <frame-subsection id="directories" name="Les dossiers">
 <frame-uca>
 
@@ -237,6 +255,11 @@
 
 <div>
 
+<strong>Chemin absolu</strong> (<em>absolute path</em>) : en partant de la <strong>racine</strong>, chemin à emprunter pour atteindre le fichier.
+</div>
+
+<div>
+
 <p>Sous Linux tous les fichiers sont contenus dans le dossier <strong>racine</strong> (<em>root directory</em>), noté <script type="c-text">/</script> :</p>
 <div class="terminal">
 <pre>
@@ -248,11 +271,8 @@
         <font color="#8A8A8A">├── </font>📄 fii
         <font color="#8A8A8A">└── </font>📄 fuu</pre>
 </div>
+💡 <script type="c-text">/tmp/foo/faa</script> est le chemin absolu de <script type="c-text">faa</script>.
 
-</div><div>
-
-<strong>Chemin absolu</strong> (<em>absolute path</em>) : en partant de la <strong>racine</strong>, chemin à emprunter pour atteindre le fichier.
-<p>💡 <script type="c-text">/tmp/foo/faa</script> est le chemin absolu de <script type="c-text">faa</script>.</p>
 </div><div>
 
 <p>💡 Par convention, on suffixe le nom des dossiers par <script type="c-text">/</script>, e.g. <script type="c-text">/tmp/foo/fee/</script>.</p>
@@ -266,42 +286,34 @@
 
 <div>
 
-<strong>Dossier de travail</strong> (<em>working directory</em>), noté <script type="c-text">./</script> : dossier dans lequel on se trouve actuellement.
-<p>💡 Ce dossier est indiqué dans l&#39;<strong>invite de commande</strong> : <div class="terminal"><pre><font color="#4CE64C"><b>demigda@demigda-Latitude-5400</b></font>:<font color="#295FCC"><b>/tmp/foo</b></font>$</pre></div></p>
-</div>
-
-
-<div>
-
 <strong>Chemin relatif</strong> (<em>relative path</em>) : en partant du <strong>dossier de travail</strong>, chemin pour atteindre le fichier.
-<p>💡 <script type="c-text">./foo/faa</script> est le chemin relatif de <script type="c-text">faa</script> à partir de <script type="c-text">/tmp/</script>.</p>
+<ul>
+<li><script type="c-text">./foo/faa</script> : chemin relatif de <script type="c-text">faa</script> à partir de <script type="c-text">/tmp/</script>.</li>
+<li><script type="c-text">./../../</script> : chemin relatif de <script type="c-text">/tmp/</script> à partir de <script type="c-text">/tmp/foo/fee/</script>, avec <script type="c-text">../</script> le dossier parent.</li>
+</ul>
 </div>
-
 <div>
 
+<strong>Dossier de travail</strong> (<em>working directory</em>), noté <script type="c-text">./</script> : dossier dans lequel on se trouve actuellement.
 <ul>
-    <li mark="💡"> <script type="c-text">../</script> représente le parent d'un dossier. 
-
-<ul>
-<li><script type="c-text">./../../</script> est le chemin relatif de <script type="c-text">/tmp/</script> à partir de <script type="c-text">/tmp/foo/fee/</script>.</li>
+<li><script type="c-bash">cd <h>$DIR</h></script> (<i><u>c</u>hange <u>d</u>irectory</i>) : se déplacer dans le dossier <script type="c-bash"><h>$DIR</h></script>.</li>
+<li><script type="c-bash">pwd</script> (<i><u>p</u>rint <u>w</u>orking <u>d</u>irectory</i>) : afficher le dossier de travail.
+<div class="terminal"><pre>$ pwd
+/tmp/foo
+</pre></div></li>
 </ul>
-</li></ul>
+</div><div>
+
+<p>💡 Ce dossier est indiqué dans l&#39;<strong>invite de commande</strong> : <div class="terminal"><pre><font color="#4CE64C"><b>demigda@demigda-Latitude-5400</b></font>:<font color="#295FCC"><b>/tmp/foo</b></font>$</pre></div></p>
 </div>
 
 </frame-uca><frame-uca>
 <div>
 
-<p>💡 <script type="c-bash">cd <h>$DIR</h></script> (<em><u>c</u>hange <u>d</u>irectory</em>) : se déplacer dans le dossier <script type="c-bash"><h>$DIR</h></script>.</p>
-<p>💡 <script type="c-bash">pwd</script> (<em><u>p</u>rint <u>w</u>orking <u>d</u>irectory</em>) : afficher le dossier de travail.</p>
-<div class="terminal"><pre>$ pwd
-/tmp/foo
-</pre></div>
-    
+<p>⚠ Dans un script, les chemins relatifs sont évalués relativement au <b>dossier de travail</b> actuel.</p>
 </div>
-
 <div>
 
-<p>⚠ Dans un script, les chemins relatifs sont évalués relativement au <b>dossier de travail</b> actuel.</p>
 <p>💡 Pour placer le dossier de travail à l&#39;emplacement du script :</p>
 <div class="flex-2">
     <div>
@@ -359,8 +371,8 @@
 
 <ul>
 <li>Représenter un ensemble de chemins avec les <strong>caractères de remplacements</strong> (<em>wildcard</em>) :<ul>
-<li><script type="c-text">*</script> : 0 à plusieurs <b>caractères</b>, <i>e.g. <script type='c-bash'>./*.txt</script> : tous les fichiers d'extension ".txt"</i>.</li>
-<li><script type="c-text">**/</script> : 0 à plusieurs <b>dossiers</b>, <i>e.g. <script type='c-bash'>./**/a.txt</script> : le fichier "a.txt" dans un des sous dossiers</i>.</li>
+<li><script type="c-text">*</script> : 0 à plusieurs <b>caractères</b>, <i>e.g. <script type="c-bash">./*.txt</script> : tous les fichiers d'extension ".txt"</i>.</li>
+<li><script type="c-text">**/</script> : 0 à plusieurs <b>dossiers</b>, <i>e.g. <script type="c-bash">./**/a.txt</script> : le fichier "a.txt" dans un des sous dossiers</i>.</li>
 <li><script type="c-text">{<h>$VALS,...</h>}</script> : une <b>alternative</b>, <i>e.g. <script type="c-bash">./{foo, faa}.txt</script> : "./foo.txt" ou "./faa.txt"</i>.</li>
 </ul>
 </li>
@@ -384,19 +396,49 @@
 
 <frame-uca>
 
-<p>Une sauvegarde n&#39;est réellement utile que lorsqu&#39;on perd ses données, i.e. lorsqu&#39;il est déjà trop tard. Il est ainsi nécessaire d&#39;anticiper et d&#39;effectuer régulièrement des sauvegardes de ses données afin de se prémunir contre d&#39;éventuelles pertes.</p>
-<p>Ces pertes peuvent survenir suite à une erreur de manipulation, à un acte de cyberdélinquance, à une défaillance du matériel, à un incendie, etc. Elles sont usuellement rares, mais le coût d&#39;une perte de données élevé.</p>
-<p>Les pertes de données ont un triple coût :</p>
+<div>
+
 <ul>
-<li>le coût de la remise en service ;</li>
-<li>le coût de l&#39;interruption des activités ;</li>
-<li>le coût de l&#39;impossibilité d&#39;honorer des obligations contractuelles.</li>
+<li>Les pertes de données...<ul class="flex-2">
+  <li>erreur de manipulations ;</li>
+  <li>acte de cyberdélinquance ;</li>
+  <li>défaillance du matériel ;</li>
+  <li>incendie.</li>
+</ul></li>
 </ul>
-<p>Ces coûts peuvent engendrer la faillite d&#39;une entreprise, en effet 60% des entreprises victimes d&#39;un rançongiciel déposent le bilan peu après l&#39;attaque. La perte de données peut en effet concerner des <u>décennies</u> de travail, que ce soit des données clients ou fournisseurs, des outils développés en interne dont les développeurs ont quitté l&#39;entreprise depuis longtemps, etc. De plus le temps d’interruption et de restauration des services constitue un manque à gagner pour l&#39;entreprise, et impacte sa réputation.</p>
-<p>Plus grave encore, lorsque ces pertes de données touchent des hôpitaux, où une dégradation des services peut se traduire en vies humaines.</p>
-<p>⚠ Il est ainsi vital d&#39;effectuer <u>régulièrement</u> des sauvegardes, en s&#39;assurant que la procédure de restauration est fonctionnelle, et peut être rapidement mise en place.</p>
-<p>⚠ Il est important que les sauvegardes soient stockées dans des lieux différents afin de se prémunir contre des incidents pouvant toucher toute une zone (e.g. cambriolages, incendies, inondations, etc).</p>
-<p>⚠ De la même manière des sauvegardes sur des disques coupés du réseau permettent de se protéger contre des attaques touchant l&#39;intégralité du système informatique (e.g. rançongiciel).</p>
+</div>
+<div>
+
+<ul>
+<li>... ont un coût élevé...  <ul class="flex-2">
+      <li>remise en service</li>
+      <li>interruption des activités</li>
+  </ul>
+  <ul>
+      <li>impossibilité d'honorer des obligations contractuelles.</li>
+  </ul></li>
+</ul>
+</div>
+<div>
+
+<ul>
+<li>... avec des conséquences graves :  <ul class="flex-2">
+      <li>pertes de contrats</li>
+      <li>pertes de données clients/fournisseurs</li>
+      <li>perte de réputation</li>
+      <li>faillite d'entreprise</li>
+      <li>vies humaines (e.g. hôpitaux)</li>
+  </ul>
+</div>
+<div></li>
+</ul>
+<p>⚠ Il est ainsi vital d&#39;effectuer <u>régulièrement</u> des sauvegardes :</p>
+<ul>
+<li>en vérifiant la procédure de restauration ;</li>
+<li>stockées dans des lieux différents <i>(e.g. cambriolages, incendies, inondations)</i>.</li>
+<li>sur des disques coupés du réseau <i>(e.g. rançongiciel)</i>.</li>
+<li>réellement utile qu&#39;une fois qu&#39;il est trop tard.</div></li>
+</ul>
 </frame-uca>
 </frame-subsection><frame-subsection id="organize" name="Organiser ses fichiers">
 <frame-uca>
@@ -518,14 +560,16 @@
 <div>
 
 <p>💡 <script type="c-text">/usr/{,local/}<h>[s]bin</h>/</script>, <script type="c-text">~/.local/<h>bin</h>/</script> : contiennent les commandes (fichier de même nom).</p>
+<p>💡 <script type="c-text">type <h>$CMD</h></script> : donne le type et emplacement de la commande.</p>
 <p>💡 <script type="c-text">/opt/<h>$NAME</h>/</script> : alternative à <script type="c-text">/usr/local/*/<h>$NAME</h>/</script>.</p>
 </div><div>
 
 <p>⚠ Conventions pas toujours très bien respectées :</p>
-<ul>
-<li><script type="c-text">~/.ssh/</script> : configuration SSH d'un utilisateur (cf TP).</li>
-<li><script type="c-text">~/.bashrc</script> : configuration du shell d'un utilisateur (cf TP).</li>
+<ul class="flex-2">
+    <li><script type="c-text">~/.bashrc</script> : config. du shell d'un utilisateur.</li>
+    <li> <script type="c-text">~/.ssh/</script> : config. SSH d'un utilisateur.</li>
 </ul>
+
 </div>
 
 </frame-uca>
@@ -534,50 +578,8 @@
 
 <frame-section id="volumes" name="Volumes et partitions">
 
-<frame-uca>
-
-<div>
-
-<p>Un <strong>volume</strong> est un <em>espace de stockage</em> :</p>
-<ul>
-<li>disque entier ;</li>
-<li><em>partie</em> de disque (<strong>partition</strong>) ;</li>
-<li>ensemble de partitions ;</li>
-<li>clef USB ;</li>
-<li>etc.</li>
-</ul>
-</div>
-
-<p>💡 Sur un ordinateur personnel, généralement un seul système de fichier, sur le disque entier.</p>
-</frame-uca>
 <frame-subsection id="motivations" name="Motivations">
-<frame-subsubsection id="separate" name="séparer les données du système d'exploitation">
-
-<frame-uca>
-
-<div>
-
-<p>Séparer données et OS sur deux volumes différents.</p>
-<ul>
-<li>permet de (ré)installer l&#39;OS sans effacer les données.</li>
-</ul>
-<p>⚠ Sauvegardez vos données avant toutes opérations de ce genre !</p>
-</div><div>
-
-<p>Possibilité, sur un même ordinateur, d&#39;installer plusieurs OS (qu&#39;on choisi au démarrage) pour :</p>
-<ul>
-<li>avoir un dual boot Linux-Windows ;</li>
-<li>avoir un système d&#39;exploitation de secours ;</li>
-<li>tester un système d&#39;exploitation.</li>
-</ul>
-</div><div>
-
-<p>💡 <b>live USB</b> : clef USB surlaquelle un système d&#39;exploitation est installé.</p>
-<p>⚠  Il est très vivement recommandé d&#39;avoir au moins un live USB.</p>
-</div>
-
-</frame-uca>
-</frame-subsubsection><frame-subsubsection id="several" name="utiliser différents systèmes de fichiers">
+    <frame-subsubsection id="several" name="utiliser différents systèmes de fichiers">
 
 <frame-uca>
 
@@ -621,6 +623,32 @@ Il faut alors <b>découper</b> les ressources de stockages en plusieurs volumes.
 </ul>
 
 
+</div>
+
+</frame-uca>
+</frame-subsubsection><frame-subsubsection id="separate" name="séparer les données du système d'exploitation">
+
+<frame-uca>
+
+<div>
+
+<p>Séparer données et OS sur deux volumes différents.</p>
+<ul>
+<li>permet de (ré)installer l&#39;OS sans effacer les données.</li>
+</ul>
+<p>⚠ Sauvegardez vos données avant toutes opérations de ce genre !</p>
+</div><div>
+
+<p>Possibilité, sur un même ordinateur, d&#39;installer plusieurs OS (qu&#39;on choisi au démarrage) pour :</p>
+<ul>
+<li>avoir un dual boot Linux-Windows ;</li>
+<li>avoir un système d&#39;exploitation de secours ;</li>
+<li>tester un système d&#39;exploitation.</li>
+</ul>
+</div><div>
+
+<p>💡 <b>live USB</b> : clef USB surlaquelle un système d&#39;exploitation est installé.</p>
+<p>⚠  Il est très vivement recommandé d&#39;avoir au moins un live USB.</p>
 </div>
 
 </frame-uca>
@@ -718,7 +746,7 @@ PATH              LABEL TYPE  PARTTYPENAME       SIZE FSUSE% FSTYPE MOUNTPOINT
 </frame-uca><frame-uca>
 <div>
 
-<script type="c-text">/etc/fstab</script> (<i><u>F</u>ile<u>S</u>ystem <u>TAB</u>le</i>) : liste les systèmes de fichiers à monter au démarrage de la machine :
+<script type="c-text">/etc/fstab</script> (<i><u>F</u>ile<u>S</u>ystem <u>Tab</u>le</i>) : liste les systèmes de fichiers à monter au démarrage de la machine :
 
 <script type="c-text">
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
@@ -744,6 +772,221 @@ cf https://doc.ubuntu-fr.org/disque_reseau</li>
 
 </frame-uca>
 </frame-subsection>
+</frame-section><frame-section id="sav" name="Techniques de sauvegardes">
+<frame-subsection id="sav_vol" name="Au niveau du volume">
+
+<frame-uca>
+
+<div>
+
+<ul>
+<li><script type="c-bash">dd <h>[conv=sparse]</h> if=<h>$SRC</h> of=<h>$DST</h></script> : copier le contenu du volume <b>octets par octets</b>.<br/>
+⚠ Sauvegardes volumineuses, possibilité compresser par la suite.</li>
+</ul>
+</div><div>
+
+<b>RAID</b> (<i><u>R</u>edundant <u>A</u>rray of <u>I</u>nexpensive <u>D</u>isk</i>) : duplique les données sur plusieurs disques pour se protéger en cas de défaillance matérielle.
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th># disques</th>
+            <th>Résilience</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>RAID 0 (striping)</td>
+            <td>volume sur plusieurs disques</td>
+            <td>N</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>RAID 1 (mirroring)</td>
+            <td>duplique un disque</td>
+            <td>1+1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>RAID 5 (distributed parity)</td>
+            <td>bloc de parité b<sub>p</sub> = b<sub>1</sub> ⊕ ... ⊕ b<sub>n</sub></td>
+            <td>N+1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>RAID 6 (dual parity)</td>
+            <td>2 blocs de parité</td>
+            <td>N+2</td>
+            <td>2</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>💡 Possibilité de faire des combinaisons, <i>e.g. RAID 1+0 ou RAID 10</i>.</p>
+</frame-uca>
+
+<frame-uca>
+
+<div>
+
+<b>LVM</b> (<i><u>L</u>ogical <u>V</u>olume <u>M</u>anager</i>) : permet de gérer les volumes d&#39;un ordinateur.
+<ol>
+<li><b>volumes physiques</b> (<i><u>p</u>hysical <u>v</u>olume</i>) : volumes formatés pour LVM.<br/><script type="c-bash">pvcreate <h>$VOLUME...</h></script></li>
+<li><b>groupe de volume</b> (<i><u>v</u>olume <u>g</u>roup</i> ≈ disque virtuel) : ensemble de volumes physiques.<br/><script type="c-bash">vgcreate <h>$VG_NAME</h> <h>$VOLUME...</h></script></li>
+<li><strong>volumes logiques</strong> (<i><u>l</u>ogicial <u>v</u>olume</i> ≈ partition virtuelle) : partition d&#39;un groupe de volumes.<br/><script type="c-bash">lvcreate --name <h>$LV_NAME</h> <h>$VG_NAME</h> <h>{-l 100%FREE,--size 10GB}</h></script></li>
+</ol>
+</div>
+
+<div>
+
+<p>LVM offre alors différentes fonctionnalités :</p>
+<ul>
+<li>RAID : <script type="c-bash">--type raid1 --nosync</script></li>
+<li>instantanés (<i>snapshots</i>) du système de fichier ;</li>
+<li>etc.</div></li>
+</ul>
+<p>💡 LVM possède de très nombreuses commandes pour manipuler les PV, VG, et LV.</p>
+</frame-uca>
+
+</frame-subsection><frame-subsection id="sav_file" name="Au niveau du système de fichier">
+<frame-uca>
+<div>
+
+<b>Sauvegarde complète :</b> sauvegarde l&#39;ensemble des données.
+<ul>
+<li><script type="c-bash">cp -a <h>$SRC...</h> <h>$DST</h></script> : copier les <b>fichiers</b> en conservant les méta-données (<u>a</u>rchive).</li>
+<li><script type="c-bash">tar -cf <h>-{z,j}</h> <h>$ARCHIVE</h> <h>$SRC...</h></script> : créer une archive <b>compressée</b>.</li>
+<li><script type="c-bash">scp -a <h>$SRC...</h> <h>$DST</h></script> (<u>s</u>ecure <u>c</u>opy <u>p</u>rotocol) : copie <b>à distance</b> (chemins = <script type="c-text"><h>[$USER@$SERVER:]$PATH</h></script>)</li>
+</ul>
+</div>
+
+<div>
+
+<b>Problèmes :</b>
+<ul>
+<li>fichiers non-modifiés dupliqués d&#39;une sauvegarde sur l&#39;autre.</li>
+<li>lent, prend beaucoup de place pour rien.</li>
+</ul>
+</div>
+<div>
+
+<b>Sauvegardes incrémentales</b> : ne sauvegarde que les <b>modifications</b> depuis la dernière sauvegarde.
+<ul>
+<li><script type="c-bash">rsync</script> : permet de faire des sauvegardes incrémentales (usage similaire à <script type="c-bash">scp</script>).<br/>
+💡 Un script basé sur <script type="c-bash">rsync</script> sera fourni en TP afin de faciliter son usage.</li>
+</ul>
+</div>
+
+</frame-uca><frame-uca>
+<div>
+
+<ul>
+<li>On veut pouvoir parcourir et manipuler les sauvegardes incrémentales comme si créée via <script type="c-bash">cp -a</script>.<ul class="flex-2">
+  <li>si modifié : copier le fichier.</li>
+  <li>sinon : créer un lien physique.</li>
+</ul>
+</div></li>
+</ul>
+<div>
+
+<strong>Lien physique</strong> (<em>hard link</em>) : place un même fichier (inode) dans plusieurs dossiers, sans le copier.
+<ul>
+<li>fichier supprimé lorsque toutes les occurrences sont supprimées.</li>
+</ul>
+</div><div>
+
+<b>Lien symbolique</b> : fichier spécial contenant le chemin de la cible (pour les dossiers/entre volumes).
+<ul>
+<li>fichier supprimé lorsque la cible est supprimée.</li>
+</ul>
+</div>
+
+<div>
+
+<script type="c-bash">ln [-s] <h>$SRC</h> <h>$DST</h></script> (<u>l</u>i<u>n</u>k) : crée un lien physique (ou <u>s</u>ymbolique).
+
+</div>
+
+</frame-uca>
+
+<frame-uca>
+
+<div>
+
+<b>Gestionnaire de version</b> (e.g. Git) : sauvegardes plus intelligentes (e.g. pour code/configs), permet de :
+<ul class="flex-2">
+    <li>ajouter une description aux versions.</li>
+    <li>comparer deux versions.</li>
+    <li>gérer plusieurs versions en parallèle.</li>
+    <li>annuler une modification précise.</li>
+</ul>
+<ul>
+    <li>intégration avec des interfaces Web et des fonctionnalités comme les issues.</li>
+</ul>
+
+</div>
+
+<div>
+    
+<b>Synchronisation de fichiers</b> (e.g. Seafile) : conserve un historique de chaque modifications en temps réel.
+<ul>
+<li>pour dossiers partagés entre plusieurs utilisateurs.</li>
+<li>permet de restaurer un fichier à une version précédente.</li>
+</ul>
+</div>
+
+<div>
+
+<b>Exportations/Importations</b> (e.g. <em>dump</em> d&#39;une base SQL) :
+<ul>
+<li>format de l&#39;export généralement adapté aux besoins spécifiques du logiciel.</li>
+</ul>
+</div>
+
+</frame-uca>
+
+</frame-subsection>
+<frame-subsection id="snapshots" name="Instantanés">
+<frame-uca>
+
+<div>
+
+<p>Les opérations de sauvegardes peuvent être longues, de plusieurs minutes à plusieurs heures.</p>
+<ul>
+<li>que se passe-t-il si le serveur modifie des fichiers pendant la sauvegarde ?<ul>
+<li>mix de fichiers pré/post modifications ⇒ état incohérent/invalide.</li>
+</ul>
+</li>
+<li>services indisponibles pendant la sauvegarde.</div></li>
+</ul>
+<div>
+
+<b>Solution :</b> créer un instantané (snapshot) du système de fichier, et effectuer la sauvegarde de l&#39;instantané.
+<ul>
+<li>si modification d&#39;un bloc, stocke la version originelle dans l&#39;instantané.</li>
+<li>si bloc non-modifié, ira le rechercher dans le volume originel.</li>
+</ul>
+</div><div>
+
+<script type="c-bash">
+# arrêt des services
+lvcreate -s --name <h>$LV_NAME</h>-snap <h>$LV_NAME</h> <h>{-l 100%FREE,--size 10GB}</h>
+# redémarrage des services
+# save...
+lvremove <h>$LV_NAME</h>-snap
+</script>
+
+<p>⚠ Bien penser à supprimer l&#39;instantané une fois la sauvegarde effectuée.</p>
+</div>
+
+</frame-uca>
+
+</frame-subsection>
+
+
 </frame-section>
 
         </main>

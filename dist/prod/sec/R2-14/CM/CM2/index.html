@@ -35,6 +35,15 @@ todo {
     <img class="svg" src="/assets/admsys/img/filesystem.svg"/>
 </center>
 
+<p>Un <strong>volume</strong> est un <em>espace de stockage</em>, il peut ainsi être :</p>
+<ul>
+<li>un disque entier ;</li>
+<li>une <em>partie</em> de disque (<strong>partition</strong>) ;</li>
+<li>un ensemble de partitions ;</li>
+<li>une clef USB ;</li>
+<li>etc.</li>
+</ul>
+<p>Sur un ordinateur personnel, on n&#39;utilise généralement qu&#39;un seul système de fichier, sur un seul volume (le disque entier).</p>
 <h3 id="les-dossiers">Les dossiers</h3>
 <p>Un <strong>dossier</strong> (<em>directory</em>), aussi appelé <strong>répertoire</strong> (<em>folder</em>), est un fichier spécial contenant l&#39;inode et le nom des fichiers qu&#39;il inclus.</p>
 <div class="flex-2">
@@ -311,6 +320,7 @@ Il est ainsi recommandé d&#39;utiliser la commande <script type="c-bash">trash 
 </table>
 
 <p>💡 Par défaut, lorsque vous entrez une commande, le shell va rechercher, puis exécuter, le fichier de même nom présent dans <script type="c-text">/usr/bin/</script> ou <script type="c-text">/usr/local/bin/</script>.</p>
+<p>💡 La commande <script type="c-text">type <h>$CMD</h></script> permet d&#39;afficher le type et l&#39;emplacement de la commande <script type="c-text"><h>$CMD</h></script>.</p>
 <p>⚠ Les fichiers temporaires sont usuellement enregistrés dans <script type="c-text">/tmp/</script>. Cependant, il convient d&#39;en générer aléatoirement les noms afin d&#39;éviter des conflits.</p>
 <p>💡 Il est aussi possible d&#39;installer ses applications locales dans <script type="c-text">/opt/<h>$NAME</h>/</script>, évitant ainsi d&#39;avoir à en disperser le contenu, entre ses executables, bibliothèques, et configurations.</p>
 <p>⚠ Malheureusement, ces conventions ne sont pas toujours très bien respectées. Par exemple :</p>
@@ -331,27 +341,7 @@ Il est ainsi recommandé d&#39;utiliser la commande <script type="c-bash">trash 
 <p>💡 Pour de <strong>gros</strong> fichiers temporaire, on utilisera généralement <script type="c-text">/var/tmp/</script> au lieu de <script type="c-text">/tmp/</script>.</p>
 <p>⚠ Pour des raisons de sécurité les utilisateurs ne peuvent (sauf exceptions) modifier que les fichiers contenus dans leur propre home. <script type="c-text">/tmp/</script> et <script type="c-text">/var/tmp/</script> sont deux exceptions à cela.</p>
 <h2 id="volumes-et-partitions">Volumes et partitions</h2>
-<p>Un <strong>volume</strong> est un <em>espace de stockage</em>, il peut ainsi être :</p>
-<ul>
-<li>un disque entier ;</li>
-<li>une <em>partie</em> de disque (<strong>partition</strong>) ;</li>
-<li>un ensemble de partitions ;</li>
-<li>une clef USB ;</li>
-<li>etc.</li>
-</ul>
-<p>Sur un ordinateur personnel, on n&#39;utilise généralement qu&#39;un seul système de fichier, sur un seul volume (le disque entier).</p>
 <h3 id="motivations-1">Motivations</h3>
-<h4 id="séparer-les-données-du-système-dexploitation">Séparer les données du système d&#39;exploitation</h4>
-<p>Il est possible, et même recommandé, d&#39;enregistrer les données et le système d&#39;exploitation sur deux volumes différents. Cela permet en effet de (ré)installer le système d&#39;exploitation sans effacer les données déjà présentes.</p>
-<p>⚠ Il est très vivement recommandé de sauvegarder ses données avant toutes opérations de ce genre.</p>
-<p>Il est aussi possible d&#39;installer plusieurs systèmes d&#39;exploitations sur un même ordinateur, qu&#39;on pourra alors choisir au démarrage. Cela permet :</p>
-<ul>
-<li>d&#39;avoir un dual boot Linux-Windows ;</li>
-<li>d&#39;avoir un système d&#39;exploitation de secours ;</li>
-<li>de tester un système d&#39;exploitation.</li>
-</ul>
-<p>💡 Lorsque le système d&#39;exploitation est installé sur une clef USB, on parle alors de live USB.</p>
-<p>⚠  Il est très vivement recommandé d&#39;avoir au moins un live USB.</p>
 <h4 id="utiliser-différents-systèmes-de-fichiers">Utiliser différents systèmes de fichiers</h4>
 <p>Comme nous l&#39;avons vu précédemment, les différents dossiers d&#39;un système Linux peuvent avoir différents besoins :</p>
 <ul>
@@ -378,6 +368,17 @@ Il est ainsi recommandé d&#39;utiliser la commande <script type="c-bash">trash 
 <li><script type="c-text">APFS</script> pour Apple ;</li>
 <li><script type="c-text">FAT32</script> pour les clefs USB ;</li>
 </ul>
+<h4 id="séparer-les-données-du-système-dexploitation">Séparer les données du système d&#39;exploitation</h4>
+<p>Il est possible, et même recommandé, d&#39;enregistrer les données et le système d&#39;exploitation sur deux volumes différents. Cela permet en effet de (ré)installer le système d&#39;exploitation sans effacer les données déjà présentes.</p>
+<p>⚠ Il est très vivement recommandé de sauvegarder ses données avant toutes opérations de ce genre.</p>
+<p>Il est aussi possible d&#39;installer plusieurs systèmes d&#39;exploitations sur un même ordinateur, qu&#39;on pourra alors choisir au démarrage. Cela permet :</p>
+<ul>
+<li>d&#39;avoir un dual boot Linux-Windows ;</li>
+<li>d&#39;avoir un système d&#39;exploitation de secours ;</li>
+<li>de tester un système d&#39;exploitation.</li>
+</ul>
+<p>💡 Lorsque le système d&#39;exploitation est installé sur une clef USB, on parle alors de live USB.</p>
+<p>⚠  Il est très vivement recommandé d&#39;avoir au moins un live USB.</p>
 <h3 id="créer-et-formatter-une-partition">Créer et formatter une partition</h3>
 <p>Un volume peut être identifié par 3 éléments :</p>
 <ul>
@@ -515,8 +516,22 @@ dd <h>[conv=sparse]</h> if=<h>$SRC</h> of=<h>$DST</h>
 </table>
 
 <p>💡 Il est possible de faire des combinaisons, e.g. RAID 1+0 ou RAID 10.</p>
+<h4 id="lvm">LVM</h4>
+<b>LVM</b> (<i><u>L</u>ogical <u>V</u>olume <u>M</u>anager</i>) est un logiciel permettant de gérer les volumes d&#39;un ordinateur. Pour cela :
+<ol>
+<li>on formate des volumes alors appelés <b>volumes physiques</b> (<i><u>p</u>hysical <u>v</u>olume</i>) :<br/><script type="c-bash">pvcreate <h>$VOLUME...</h></script></li>
+<li>qu&#39;on regroupe ensuite au sein d&#39;un <b>groupe de volume</b> (<i><u>v</u>olume <u>g</u>roup</i> ≈ disque virtuel) :<br/><script type="c-bash">vgcreate <h>$VG_NAME</h> <h>$VOLUME...</h></script></li>
+<li>qu&#39;on redécoupe ensuite en <strong>volumes logiques</strong> (<i><u>l</u>ogicial <u>v</u>olume</i> ≈ partition virtuelle) :<br/><script type="c-bash">lvcreate --name <h>$LV_NAME</h> <h>$VG_NAME</h> <h>{-l 100%FREE,--size 10GB}</h></script></li>
+</ol>
+<p>LVM offre alors différentes fonctionnalités :</p>
+<ul>
+<li>RAID : <script type="c-bash">--type raid1 --nosync</script></li>
+<li>instantanés (<i>snapshots</i>) du système de fichier ;</li>
+<li>etc.</li>
+</ul>
+<p>💡 Bien évidemment LVM possède de très nombreuses commandes permettant de manipuler les PV, VG, et LV.</p>
 <h3 id="au-niveau-du-système-de-fichier">Au niveau du système de fichier</h3>
-<p>Une autre méthode relativement simple de sauvegarde, est de tout simplement copier les fichiers :</p>
+<p>Une autre méthode relativement simple de sauvegarde, est de tout simplement copier les fichiers (<u>a</u>rchive) :</p>
 <script type="c-bash">
 cp -a <h>$SRC...</h> <h>$DST</h>
 </script>
@@ -538,8 +553,8 @@ scp -a <h>$SRC...</h> <h>$DST</h>
 <p>On se retrouve alors avec des fichiers identiques, dupliqués dans les différentes sauvegardes. Or si la majorité des fichiers ne changent pas d’une sauvegarde sur l’autre, cela peut très vite prendre beaucoup de place pour rien.</p>
 <p>Afin d&#39;accélérer les sauvegardes et d&#39;en réduire le poids, il est possible d&#39;effectuer des <b>sauvegardes incrémentales</b>, i.e. de ne sauvegarder que les modifications depuis la dernière sauvegarde. Cela est possible avec <script type="c-bash">rsync</script>, similaire à <script type="c-bash">scp</script>, mais offrant bien plus de fonctionnalités (dont les sauvegardes incrémentale).</p>
 <p>💡 Son utilisation n’étant pas simple, nous vous fournirons, un script basé sur <script type="c-bash">rsync</script>, facilitant son usage.</p>
-<p>Les sauvegardes incrémentales utilisent souvent des <strong>liens physiques</strong> (<em>hard links</em>) permettant de placer un même fichier à plusieurs endroit différents (donc dans plusieurs sauvegardes), tout en évitant sa copie.</p>
-<p>La commande <script type="c-bash">ln [-s] <h>$SRC</h> <h>$DST</h></script> (<u>l</u>i<u>n</u>k) permet de créer des liens physiques (ou <u>s</u>ymbolique).</p>
+<p>Les sauvegardes incrémentales utilisent souvent des <strong>liens physiques</strong> (<em>hard links</em>) permettant de placer un même fichier (inode) à plusieurs endroit différents (donc dans plusieurs sauvegardes), tout en évitant sa copie.</p>
+<p>La commande <script type="c-bash">ln [-s] <h>$SRC</h> <h>$DST</h></script> (<u>l</u>i<u>n</u>k) permet de créer un lien physique (ou <u>s</u>ymbolique).</p>
 <p>💡 Le fichier ne sera réellement supprimé que lorsque toutes ses occurrences seront supprimées.</p>
 <p>⚠ Il n&#39;est pas possible de faire un lien physique d&#39;un dossier. Pour cela il faudra utiliser un <b>lien symbolique</b>, un fichier spécial qui contiendra le chemin de la cible.</p>
 <p>Le principe est alors simple : pour chaque fichier, s’il n’a pas été modifié depuis la dernière sauvegarde, on crée un lien physique pointant sur sa dernière version sauvegardée, sinon, on copie le fichier. Une sauvegarde sera alors un dossier que vous pourrez parcourir, supprimer, renommer, modifier, etc. comme s’il avait été créé via <script type="c-bash">cp -a</script>.</p>
@@ -553,17 +568,28 @@ scp -a <h>$SRC...</h> <h>$DST</h>
 <li>intégration avec des interfaces Web et des fonctionnalités comme les issues.</li>
 </ul>
 <h4 id="synchronisation-de-fichiers">Synchronisation de fichiers</h4>
-<p>Dans le cas de dossiers partagés entre plusieurs utilisateurs, on souhaite généralement conserver un historique de chaque modifications afin d&#39;en avoir un suivi, et d&#39;être capable, lorsque nécessaire, de restaurer un fichier à une version ultérieure.</p>
+<p>Dans le cas de dossiers partagés entre plusieurs utilisateurs, on souhaite généralement conserver un historique de chaque modifications afin d&#39;en avoir un suivi, et d&#39;être capable, lorsque nécessaire, de restaurer un fichier à une version précédente.</p>
 <p>Pour cela on utilisera usuellement un logiciel de synchronisation de fichiers, comme Seafile.</p>
-<h3 id="lvm-todo">LVM [todo]</h3>
-<p>LVM</p>
-<p>Snapshots
--&gt; lvm</p>
-<ul>
-<li>pv</li>
-<li>vg</li>
-<li>lv</li>
-</ul>
+<h4 id="exportationsimportations">Exportations/Importations</h4>
+<p>Certains logiciels (e.g. les SGBD) permettent d&#39;exporter et d&#39;importer leurs données, par exemple en faisant un <em>dump</em> d&#39;une base de donnée. Le format de l&#39;export dépend du logiciel, et est généralement adapté aux besoins spécifiques du logiciel.</p>
+<h3 id="instantanés">Instantanés</h3>
+<p>Que se passe-t-il aussi si le serveur modifie des fichiers pendant la sauvegarde ?<br/>
+La sauvegarde se retrouverait dans un état invalide, avec un mix de fichiers pré-modifications et post-modifications.</p>
+<p>Une sauvegarde nécessite ainsi généralement l&#39;arrêt des services du serveur. Or les opérations de sauvegardes peuvent être longues, de plusieurs minutes à plusieurs heures. Ce qui est autant de temps pendant lesquel les services seront indisponibles.</p>
+<p>La solution est alors de créer un instantané (snapshot) du système de fichier à un instant donné, et d’effectuer la sauvegarde à partir de cet instantané :</p>
+<script type="c-bash">
+# arrêt des services
+lvcreate -s --name <h>$LV_NAME</h>-snap <h>$LV_NAME</h> <h>{-l 100%FREE,--size 10GB}</h>
+# redémarrage des services
+# sauvegarde
+</script>
+
+<p>Lors de la modifications d&#39;un bloc, l&#39;instantané enregistrera le bloc original. Ainsi lorsqu&#39;on cherchera à récupérer un bloc, LVM ira le rechercher dans l&#39;instantané, puis dans le volume originel si non trouvé (i.e. pas modifié).</p>
+<p>⚠ Une fois la sauvegarde effectuée, il faudra bien penser à supprimer l&#39;instantané :</p>
+<script type="c-bash">
+lvremove <h>$LV_NAME</h>-snap
+</script>
+
 </main>
     </body>
 </html>
