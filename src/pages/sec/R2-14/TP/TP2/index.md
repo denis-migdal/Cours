@@ -27,7 +27,7 @@ Vous utilisez des lignes de commandes afin d'effectuer les opérations suivantes
 2. <q-text> Comment expliquez vous que le résultat de la commande soit différente de l'invite ?</q-text>
 1. <q-text> Affichez le contenu du dossier racine (**sans** les fichiers cachés).</q-text>
 1. <q-text> Affichez le contenu du dossier courant (**avec** les fichiers cachés).</q-text>
-1. </q-text>Affichez le contenu du dossier courant (**avec** les fichiers cachés **et** les détails).</q-text>
+1. <q-text>Affichez le contenu du dossier courant (**avec** les fichiers cachés **et** les détails).</q-text>
 1. <q-text>Quelle est la taille et date de dernière modification du fichier <script type="c-text">.bashrc</script> ?</q-text>
 1. <q-text>Recherchez dans le dossier <script type="c-text">/var/log/</script> les fichiers d'extension <script type="c-text">.log</script>.</q-text>
 
