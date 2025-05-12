@@ -12,7 +12,7 @@
         <main>
 
 - **Semaine 1** : *Commandes Shell* (1h CM, 2h TP) [[PDF](./CM/CM1), [Slides](./Slides/CM1), [TP](./TP/TP1)]
-- **Semaine 2** :
+- **Semaine 2** :  *Les fichiers* (1h CM, 2h TP) [[PDF](./CM/CM2), [Slides](./Slides/CM2), [TP](./TP/TP2)]
 - **Semaine 3** :
 - **Semaine 4** :
 - **DS** :
