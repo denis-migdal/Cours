@@ -19,7 +19,9 @@
 [TODO] : doc
 [TODO] : lsd + trash
 
-Vous utilisez des lignes de commandes afin d'effectuer les opérations suivantes.
+Vous utilisez des lignes de commandes afin d'effectuer les opérations suivantes sur ASTerm.
+
+Pour lancer ASTerm, vous taperez la commande <script type="c-bash">ASTerm</script> dans le terminal.
 
 ### Lister
 
