@@ -119,7 +119,7 @@ Host <h>$ALIAS</h> # ssh ALIAS => ssh USER@SERVER
 Renseigner son un mot de passe à chaque fois qu’on utilise SSH est enquiquinant, et potentiellement peu sécurisé si le mot de passe est trop faible. On préfère ainsi généralement utiliser une **clé SSH** permettant aux utilisateurs de se connecter au serveur sans mot de passe.
 
 Le principe est alors très simple, l'utilisateur :
-1. génère une paire de clés via <script type="c-bash">keygen</script>.
+1. génère une paire de clés via <script type="c-bash">ssh-keygen</script>.
 2. enregistre la clef *publique* dans le serveur (dans <script type="c-text">~/.ssh/authorized_keys</script>).
 3. indique au client SSH la clef *privée* à utiliser (cf suite).
 
