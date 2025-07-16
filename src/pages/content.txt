@@ -37,6 +37,8 @@
         + Fiches:Fiches
             - A:Construire ASTerm
         - cheat:Cheat Sheet
+        + DS:DS
+            - cur:2024-2025
     + R3-13:S3 Identité Numérique
         + CM:CM
             - CM1:CM1
