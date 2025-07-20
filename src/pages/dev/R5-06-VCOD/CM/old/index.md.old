@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="utf8"/>
-        <title>CM1 (DevLog)</title>
-        <meta name="color-scheme" content="dark light">
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link   href="/skeleton/index.css"  rel="stylesheet">
-        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
-    </head>
-    <body>
-        <main>
 
-⚠ [Draft] Document en cours de rédaction.
+# OLD
 
 # Motivation au développement logiciel
 
@@ -337,7 +325,3 @@ memoization : cacher les résultats e.g. Fibbo
 -> start from the end
 
 https://www.youtube.com/watch?v=Hdr64lKQ3e4
-
-</main>
-    </body>
-</html>

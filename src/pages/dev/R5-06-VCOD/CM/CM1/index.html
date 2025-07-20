@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>CM1 (DevLog)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+    </head>
+    <body>
+        <main>
+            <h1>Analyse : cas d'utilisations et activités</h1>
+
+            <h2>Qu'est-ce que l'Analyse ?</h2>
+            
+            <h3>Les différentes phases du développement</h3>
+
+            <p>Dans le cadre d'un projet, on peut distinguer différentes étapes :
+                <ol>
+                    <li><b><i>Analyse</i></b> : déterminer ce qu'on <b>veut faire</b>.</li>
+                    <li><b><i>Conception</i></b> : déterminer <b>comment faire</b>.</li>
+                    <li><b><i>Implémentation</i></b> : traduire les étapes précédentes en code, i.e. <b>faire</b>, </li>
+                    <li><b><i>Intégration et Déploiement</i></b> : intégrer le code produit (livrables) au projet puis le pousser en <b>production</b>.</li>
+                    <li><b><i>Maintenance</i></b> : évolution du code après sa mise en production (e.g. correction de bugs, ajout de fonctionalités, etc).</li>
+                </ol>
+            </p>
+
+            <p>À ces différentes étapes, on ajoute des phases de <b><i>tests</i></b> (vus en cours d'<i>Automatisations et Tests en Programmation</i>), afin de garantir la qualité et conformité du code produit.</p>
+
+            <p>La <b><i>planification</i></b> de ces différentes étapes dépend du cycle de développement (modèle en cascade, cycle en V, cycle itératif, etc) choisi. Les différents cycles de développement seront étudiés dans un autre cours.
+            </p>
+
+            <h3>Objectifs de l'Analyse</h3>
+
+            <p>L'étape d'analyse, i.e. déterminer de ce qu'on veut faire permet de cadrer le projet afin d'éviter de partir dans tous les sens, voire dans la mauvaise direction. Elle sert notamment d'échanger avec le <b>client</b> autours de ses <b>besoins et contraintes</b>, afin de produire un <b>cahier des charges</b> qui <b>spécifie</b> ce qui devra être fait, et aura valeur <b>contractuelle</b>.</p>
+
+            <p>Lors de cette étape, il est important de distinguer les <b>envies</b> du client de ses <b>besoins</b>. Il est en effet important de ne pas trop anticiper d'hypothétiques besoins futurs, qui prendront du temps de développement, risquent de complexifier le code, et constitueront du code supplémentaire à maintenir. Cela impacte donc les phases de conception, implémentation, et maintenance. Il ainsi est souvent préférable d'implémenter de telles fonctionnalités par la suite, lorsque le besoin se manifeste réellement.
+                
+            C'est le principe <b>YAGNI</b> (<i>You ain't gonna need it</i>) : tu ne vas pas en avoir besoin.</p>
+
+            <p>Un projet informatique a des ressources limitées (temps, personnes), il est ainsi fréquent de ne pas pouvoir tout faire. Or, selon la loi de Pareto, ~20% des fonctionnalités répondent à ~80% des usages. Il est ainsi nécessaire de <b>prioriser les besoins</b>, afin de se concentrer sur les plus importants.
+            Une stratégie est alors de déterminer l'ensemble minimal des fonctionnalités nécessaires au produit, le <b>MVP</b> (<i>Minimum Viable Product</i>), afin d'obtenir un produit exploitable le plus rapidement possible. Il est ensuite possible de faire évoluer le produit en fonction des retours, ou lui ajouter de nouvelles fonctionnalités par cycles itératifs.
+            </p>
+
+            <p>Il est aussi possible de réaliser des <b>maquettes</b>, <b>prototypes</b>, ou <b>preuves de concepts</b> (<b>PoC</b> - <i>Proof of Concept</i>) pour faciliter les échanges avec le client sur la base d'éléments plus tangibles. On se concentre alors plus sur la structure visuelle de l'interface graphique, en simulant grossièrement les différentes actions. Par exemple, certaines maquettes pouvent se limiter à de simples slides de présentations.
+            </p>
+
+            <h2>UML</h2>
+
+            <p>UML est un langage de modélisation graphique fournissant 14 types de diagrammes. Ces diagrammes sont utilisé à la fois pour réfléchir, communiquer, et documenter. Bien évidemment, ces diagrammes sont à utiliser en fonction des ressources et contraintes du projet. Un code de TP produit en 2 minutes dans le cadre d'un exercice, n'aura pas les mêmes contraintes qu'un code critique d'une centrale nucléaire.</p>
+
+            <p>Ainsi, même si UML est très utile en soit, tous les diagrammes ne le sont pas nécessairement pour tous les projets. Il convient donc de ne pas trop abuser de UML (<i>death by UML fever</i>).</p>
+
+            <h3>Les cas d'utilisations</h3>
+
+            <p>Le cahier des charges décrit, entres autres, les différents <b>cas d'utilisations</b> (<i>use case</i>) du système, i.e. l'ensemble des actions possibles d'un <i>acteur</i> (≈ rôle assumé par une entité externe au système) sur le système (≈ fonctionnalités). Un cas d'utilisation décrit alors, en langage non-technique, l’interaction d'un acteur sur le système en vu d'un objectif donné. Par example : <i>"<u>Passer commande :</u> l'utilisateur connecté valide son panier puis procède au payement."</i>
+            </p>
+
+            <p>Dans ce cadre, UML fournit le <i>diagramme de cas d'utilisation</i>, afin de réfléchir aux différents usages et acteurs du système. Il permet une représentation graphique et synthétique des cas d'utilisations décrits dans le cahier des charges :</p>
+
+            <img style="width: 40%;" src="/assets/devlog/usecase.svg"/>
+
+            <todo>- expliquer formalisme de base</todo>
+
+            <p><b>Astuce 1 :</b> Vous pouvez utiliser un code couleur afin d'indiquer le niveau d'importance de chaque cas d'utilisations (e.g. pour le MVP). Par exemple, <i>"Retirer du panier"</i>, bien qu'importante, n'est pas la fonctionnalité la plus prioritaire.</p>
+
+            <p><b>Astuce 2 :</b> il est conseillé de préfixer les cas d'utilisations par une référence permettant de retrouver plus aisément sa description dans le cahier des charges. e.g. <i>"1.2 Retirer du panier"</i>.</p>
+
+            <p><b>Astuce 3 :</b> Ce diagramme doit rester visuel et lisible. Il ne faut ainsi pas hésiter à découper ce diagramme en plusieurs diagrammes, en regroupant les cas d'utilisations par acteurs, ou par groupes de fonctionnalités :</p>
+
+            <img style="width: 80%;" src="/assets/devlog/usecase2.svg"/>
+
+
+            <h3>Activités</h3>
+
+            <p>Pour décrire visuellement un cas d'utilisation, il est possible d'utiliser un <b>diagramme d'activité</b> où chaque noeud correspond à une action :</p>
+
+            <img style="width:40%" src="/assets/devlog/activité.svg"/>
+
+            <todo>- expliquer formalisme de base</todo>
+            <todo>Plus de détails https://laurent-audibert.developpez.com/Cours-UML/?page=diagramme-activites</todo>
+        </main>
+    </body>
+</html>

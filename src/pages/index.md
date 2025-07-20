@@ -18,13 +18,41 @@
         }
     </style>
     <thead>
-        <tr><th></th><th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th><th>S6</th></tr>
+        <tr><th></th><th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th></tr>
     </thead>
     <tbody>
         <tr>
             <th>🏫 Accueil</th>
-            <td>Prise en main des outils informatiques</td>
+            <td>Accueil Numérique</td>
             <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>🔒 Sécurité</th>
+            <td>Introduction à la Cybersécurité</td>
+            <td><a href="/sec/R2-14/">Administration Système avec Linux</a></td>
+            <td>Cryptographie et réseaux</td>
+            <td>Identité numérique</td>
+            <td>Pentest, Hacking, et Renforcement</td>
+        </tr>
+        <tr>
+            <th>🖳&nbsp;Développement</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Automatisation et Test en Programmation
+            <hr/>
+            <i>SAÉ croisée</i></td>
+            <td><a href="/dev/R5-06-VCOD/">Développement logiciel</a></td>
+        </tr>
+        <tr>
+            <th colspan="7"><i>Anciens cours</i></th>
+        </tr>
+        <tr>
+            <th>⛁ Bases de données</th>
+            <td>Tableur<hr/>Bases de données relationnelles 1</td>
             <td></td>
             <td></td>
             <td></td>
@@ -39,32 +67,9 @@
             <hr/>
             <i>SAÉ Collecte Automatisée de données Web</i></td>
             <td>Programmation Web pour la Visualisation</td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>🔒 Sécurité</th>
-            <td></td>
-            <td><a href="/sec/R2-14/">Administration Système</a></td>
-            <td>Identité numérique</td>
-            <td>Réseau et Sécurité Web</td>
-            <td></td>
-            <td>Pentest, Hacking, et Renforcement</td>
-        </tr>
-        <tr>
-            <th>🖳&nbsp;Développement</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Automatisation et Test en Programmation
-            <hr/>
-            <i>SAÉ croisée</i></td>
-            <td>Développement logiciel</td>
-            <td>Programmation Orientée Données</td>
         </tr>
     </tbody>
 </table>
-
-💡 Supports de cours imprimables - faire export PDF sur Chromium => x32 moins lourd que sur FF.
 
 </main>
     </body>
