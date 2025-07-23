@@ -52,7 +52,7 @@
         </tr>
         <tr>
             <th>⛁ Bases de données</th>
-            <td>Tableur<hr/>Bases de données relationnelles 1</td>
+            <td>Tableur<hr/><a href="/bdd/R1-02/">Bases de données relationnelles 1</a></td>
             <td></td>
             <td></td>
             <td></td>

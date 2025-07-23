@@ -1,7 +1,0 @@
-@import "../../../struct/struct.css";
-/*@import "../../../../node_modules/highlight.js/styles/1c-light.min.css";*/
-@import "../../../struct/vscode.css";
-
-summary > :is(h1,h2,h3) {
-display: inline-block;
-}

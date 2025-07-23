@@ -1,3 +1,8 @@
+- DS
+- compléter usages des diagrammes UML
+- slides
+- TP/TD
+
 Sources à lire
 ==============
 

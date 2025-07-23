@@ -1,28 +1,5 @@
 + :🏫 Accueil
     + R1-13:Prise en main des outils informatiques
-+ web:🌐 Web
-    + R3-03:S3 Technologies Web
-        + CM:CM
-            - CM1:I. HTML5
-            - CM2:II. CSS3
-            - CM3:III. Code côté client
-            - CM4:IV. Architecture client/serveur
-            - CM5:V. Formulaires ?
-        + TP:TP
-            - TP1:TP1
-            - TP2:TP2
-            - TP3-4:TP3-4
-    + R4-09-VCOD:S4 Programmation Web
-        + CM:CM
-            - CM1:CM1
-        + DS:DS
-            - cur:cur
-    + SAE4-02-VCOD:S4 [SAÉ] Collecte Automatisée de données Web
-    + R5-07-VCOD:S5-VCOD Programmation Web pour la Visualisation
-        + CM:CM
-            - CM1:CM1
-        + DS:DS
-            - cur:2024-2024
 + sec:🔒 Sécurité
     - R2-14:S2 Administration Système
         + CM:CM
@@ -65,14 +42,55 @@
             - cur:2024-2024
     + R6-X:S6 Programmation Orientée Données
         - CM:CM
+--
 - bib:📚 Bibliothèques
     - https://liss.migdal.ovh/:LISS
     - https://vshs.migdal.ovh/:VSHS
     - https://chartshtml.migdal.ovh/:ChartsHTML
-+old:old
-    + R1-01:Tableur et Reporting
+--
++ bdd:⛁ Bases de données (old)
+    - R1-01:Tableur et Reporting
         + CM:CM
             - CM1:CM1
-    + R1-02:Bases de Données Relationnelles 1
+    - R1-02:Bases de Données Relationnelles 1
         + CM:CM
             - CM1:CM1
+            - CM2:CM2
+            - CM3:CM3
+            - CM4:CM4
+        + Slides:Slides
+            - CM1:CM1
+            - CM2:CM2
+            - CM3:CM3
+            - CM4:CM4
+        + TP:TP
+            - TP1:TP1
+            - TP2:TP2
+            - TP3:TP3
+            - TP4:TP4
+            - TP5:TP5
+        - cheat:Cheat Sheet
+        + DS:DS
++ web:🌐 Web (old)
+    + R3-03:S3 Technologies Web
+        + CM:CM
+            - CM1:I. HTML5
+            - CM2:II. CSS3
+            - CM3:III. Code côté client
+            - CM4:IV. Architecture client/serveur
+            - CM5:V. Formulaires ?
+        + TP:TP
+            - TP1:TP1
+            - TP2:TP2
+            - TP3-4:TP3-4
+    + R4-09-VCOD:S4 Programmation Web
+        + CM:CM
+            - CM1:CM1
+        + DS:DS
+            - cur:cur
+    + SAE4-02-VCOD:S4 [SAÉ] Collecte Automatisée de données Web
+    + R5-07-VCOD:S5-VCOD Programmation Web pour la Visualisation
+        + CM:CM
+            - CM1:CM1
+        + DS:DS
+            - cur:2024-2024
