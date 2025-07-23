@@ -11,7 +11,6 @@
 
 - CM
   -> 1h/séance suffisant.
-  -> séparer le support en 4.
   -> améliorer les exemples, rédiger les détails non-rédigés.
   -> améliorer/ajouter les exemples interactifs/animations
     -> CM2
