@@ -11,19 +11,17 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 */
 
 /*!
-  Highlight.js v11.10.0 (git: 366a8bd012)
-  (c) 2006-2024 Josh Goebel <hello@joshgoebel.com> and other contributors
+  Highlight.js v11.11.1 (git: 08cb242e7d)
+  (c) 2006-2025 Josh Goebel <hello@joshgoebel.com> and other contributors
   License: BSD-3-Clause
  */
 
-/*! `bash` grammar compiled for Highlight.js 11.10.0 */
+/*! `bash` grammar compiled for Highlight.js 11.11.1 */
 
-/*! `css` grammar compiled for Highlight.js 11.10.0 */
+/*! `css` grammar compiled for Highlight.js 11.11.1 */
 
-/*! `javascript` grammar compiled for Highlight.js 11.10.0 */
+/*! `plaintext` grammar compiled for Highlight.js 11.11.1 */
 
-/*! `plaintext` grammar compiled for Highlight.js 11.10.0 */
+/*! `shell` grammar compiled for Highlight.js 11.11.1 */
 
-/*! `shell` grammar compiled for Highlight.js 11.10.0 */
-
-/*! `typescript` grammar compiled for Highlight.js 11.10.0 */
+/*! `typescript` grammar compiled for Highlight.js 11.11.1 */

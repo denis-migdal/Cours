@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="33cm" height="14cm" viewBox="220 25 642 268" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Arrière-plan">
+    <rect style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="322" y="47" width="170" height="215" rx="0" ry="0"/>
+    <g>
+      <ellipse style="fill: #0000ff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #0000ff" cx="264" cy="48.6533" rx="6" ry="6"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #0000ff" x1="240" y1="60.6533" x2="288" y2="60.6533"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #0000ff" x1="264" y1="54.6533" x2="264" y2="84.6533"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #0000ff" x1="264" y1="84.6533" x2="240" y2="110.653"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #0000ff" x1="264" y1="84.6533" x2="288" y2="110.653"/>
+      <text font-size="12.7998" style="fill: #0000ff; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="264" y="134.534">
+        <tspan x="264" y="134.534">Utilisateur</tspan>
+      </text>
+    </g>
+    <g>
+      <ellipse style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" cx="412.112" cy="84.7792" rx="72.4124" ry="32"/>
+      <text font-size="12.7998" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="412.112" y="80.6602">
+        <tspan x="412.112" y="80.6602">Rechercher</tspan>
+        <tspan x="412.112" y="96.6602">un produit</tspan>
+      </text>
+    </g>
+    <g>
+      <ellipse style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" cx="416.65" cy="156.252" rx="65.95" ry="32"/>
+      <text font-size="12.7998" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="416.65" y="152.133">
+        <tspan x="416.65" y="152.133">Visionner</tspan>
+        <tspan x="416.65" y="168.133">un produit</tspan>
+      </text>
+    </g>
+    <g>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="289,84.6533 311,84.6533 311,84.7792 335.228,84.7792 "/>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="327.464,89.7792 337.464,84.7792 327.464,79.7792 "/>
+    </g>
+    <g>
+      <ellipse style="fill: #00ff00; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #038e02" cx="561.556" cy="187.8" rx="6" ry="6"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #038e02" x1="537.556" y1="199.8" x2="585.556" y2="199.8"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #038e02" x1="561.556" y1="193.8" x2="561.556" y2="223.8"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #038e02" x1="561.556" y1="223.8" x2="537.556" y2="249.8"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #038e02" x1="561.556" y1="223.8" x2="585.556" y2="249.8"/>
+      <text font-size="12.7998" style="fill: #038e02; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="561.556" y="273.681">
+        <tspan x="561.556" y="273.681">Utilisateur</tspan>
+        <tspan x="561.556" y="289.681">connecté</tspan>
+      </text>
+    </g>
+    <g>
+      <ellipse style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" cx="759.131" cy="224.325" rx="82.575" ry="27.525"/>
+      <text font-size="12.7998" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="759.131" y="228.206">
+        <tspan x="759.131" y="228.206">Passer commande</tspan>
+      </text>
+    </g>
+    <g>
+      <ellipse style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" cx="758.812" cy="81.1187" rx="79.5562" ry="26.5187"/>
+      <text font-size="12.7998" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="758.812" y="84.9998">
+        <tspan x="758.812" y="84.9998">Ajouter au panier</tspan>
+      </text>
+    </g>
+    <g>
+      <ellipse style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" cx="758.162" cy="151.569" rx="77.9062" ry="25.9687"/>
+      <text font-size="12.7998" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="758.162" y="155.45">
+        <tspan x="758.162" y="155.45">Retirer du panier</tspan>
+      </text>
+    </g>
+    <g>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="586.556,223.8 632.906,223.8 632.906,81.1187 674.784,81.1187 "/>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="667.02,86.1187 677.02,81.1187 667.02,76.1187 "/>
+    </g>
+    <g>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="594.352,223.8 632.556,223.8 632.556,151.569 675.784,151.569 "/>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="668.02,156.569 678.02,151.569 668.02,146.569 "/>
+    </g>
+    <g>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="586.556,223.8 632.556,223.8 632.556,224.325 672.084,224.325 "/>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="664.32,229.325 674.32,224.325 664.32,219.325 "/>
+    </g>
+    <rect style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="654.556" y="45.8" width="207" height="215" rx="0" ry="0"/>
+    <g>
+      <ellipse style="fill: #0000ff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #0000ff" cx="562.45" cy="44.8" rx="6" ry="6"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #0000ff" x1="538.45" y1="56.8" x2="586.45" y2="56.8"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #0000ff" x1="562.45" y1="50.8" x2="562.45" y2="80.8"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #0000ff" x1="562.45" y1="80.8" x2="538.45" y2="106.8"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #0000ff" x1="562.45" y1="80.8" x2="586.45" y2="106.8"/>
+      <text font-size="12.7998" style="fill: #0000ff; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="562.45" y="130.681">
+        <tspan x="562.45" y="130.681">Utilisateur</tspan>
+      </text>
+    </g>
+    <g>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="289,84.6533 311,84.6533 311,156.252 346.228,156.252 "/>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="338.464,161.252 348.464,156.252 338.464,151.252 "/>
+    </g>
+    <g>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="562.45,153.036 562.45,171.8 561.625,171.8 561.625,148.8 561.556,148.8 561.556,169.8 "/>
+      <polygon style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" fill-rule="evenodd" points="570.45,153.036 562.45,137.036 554.45,153.036 "/>
+    </g>
+    <g>
+      <ellipse style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" cx="414.524" cy="224.931" rx="66.0562" ry="22.0187"/>
+      <text font-size="12.7998" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="414.524" y="228.812">
+        <tspan x="414.524" y="228.812">Se connecter</tspan>
+      </text>
+    </g>
+    <g>
+      <ellipse style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" cx="264.358" cy="188.385" rx="6" ry="6"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x1="240.358" y1="200.385" x2="288.358" y2="200.385"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x1="264.358" y1="194.385" x2="264.358" y2="224.385"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x1="264.358" y1="224.385" x2="240.358" y2="250.385"/>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x1="264.358" y1="224.385" x2="288.358" y2="250.385"/>
+      <text font-size="12.7998" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="264.358" y="274.267">
+        <tspan x="264.358" y="274.267">Utilisateur</tspan>
+        <tspan x="264.358" y="290.267">non-connecté</tspan>
+      </text>
+    </g>
+    <g>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="289.358,224.385 318.913,224.385 318.913,224.931 343.996,224.931 "/>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="336.232,229.931 346.232,224.931 336.232,219.931 "/>
+    </g>
+    <g>
+      <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="264,156.889 264,170.704 264.241,170.704 264.241,149.385 264.358,149.385 264.358,170.385 "/>
+      <polygon style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" fill-rule="evenodd" points="272,156.889 264,140.889 256,156.889 "/>
+    </g>
+  </g>
+</svg>

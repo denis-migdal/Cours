@@ -5,7 +5,7 @@
 	path = libs/TPEngine
 	url = git@github.com:denis-migdal/TPEngine.git
 [submodule "libs/WebSlides"]
-	path = libs/WebSlides
+	path = old broken/WebSlides
 	url = git@github.com:denis-migdal/WebSlides.git
 [submodule "libs/LISS3"]
 	path = libs/LISS

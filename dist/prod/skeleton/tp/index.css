@@ -13,6 +13,10 @@ script, style {
 summary {
     cursor: pointer;
 }
+
+ol > li > ol {
+    list-style-type: lower-alpha;
+}
 table { 
     margin-left: auto;
     margin-right: auto;
@@ -312,10 +316,32 @@ h3::before {
     font-style: italic;
 }
 
+todo {
+    display: block;
+
+    background-color: yellow;
+    color: black;
+    padding: 2px;
+    border-radius: 4px;
+
+    &::before {
+        content: "[TODO] "
+    }
+}
+
+p {
+    text-align: justify;
+}
+
 img {
     max-width: 100%;
 
-    &.svg {
+    &[src$=".svg"] {
+
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+
         width:60%;
         background-color:white;
         border-radius:5px;
