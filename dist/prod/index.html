@@ -22,7 +22,7 @@
     </thead>
     <tbody>
         <tr>
-            <th>🏫 Accueil</th>
+            <th>👋 Accueil</th>
             <td>Accueil Numérique</td>
             <td></td>
             <td></td>

@@ -1,4 +1,4 @@
-+ :🏫 Accueil
++ :👋 Accueil
     + R1-13:Prise en main des outils informatiques
 + sec:🔒 Sécurité
     - R2-14:S2 Administration Système
