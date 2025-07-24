@@ -1,0 +1,10 @@
+:host {
+    display: block;
+
+    & sql-queries {
+        display: none;
+    }
+    & sql-option {
+        display: none;
+    }
+}

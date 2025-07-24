@@ -5,8 +5,8 @@
         <title>BDR1 (CM2)</title>
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link   href="/skeleton/index.css"  rel="stylesheet">
-        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+        <link   href="/skeleton/bdr/index.css"  rel="stylesheet">
+        <script  src="/skeleton/bdr/index.js"  type="module"     blocking="render" async></script>
     </head>
     <body>
         <main>

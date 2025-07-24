@@ -35,26 +35,11 @@
 
 var sqlite3InitModule = (() => {
   //var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
-  const ROOT = ["localhost", "127.0.0.1"].includes(location.hostname) ? "/dist/dev/" : "/Cours/dist/dev/";
-  const _scriptDir = `${ROOT}assets/sql/sqlite3.wasm`;
+  const _scriptDir = "/assets/sql/sqlite3.wasm";
 
   return (
 function(config) {
   var sqlite3InitModule = config || {};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 var Module = typeof sqlite3InitModule != 'undefined' ? sqlite3InitModule : {};
@@ -66,18 +51,12 @@ Module['ready'] = new Promise(function(resolve, reject) {
   readyPromiseReject = reject;
 });
 
-
-
-
-
-
 const sqlite3InitModuleState = globalThis.sqlite3InitModuleState
       || Object.assign(Object.create(null),{
         debugModule: ()=>{}
       });
 delete globalThis.sqlite3InitModuleState;
 sqlite3InitModuleState.debugModule('globalThis.location =',globalThis.location);
-
 
 Module['locateFile'] = function(path, prefix) {
   'use strict';

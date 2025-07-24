@@ -1,255 +1,50 @@
-import {db2} from "../LastTPEngine/TP/old TP Engine/SQLite.ts";
+import {LISS} from "@LISS/src/extensions"
+import define from "@LISS/src/define";
 
-// LISS
+import {db2} from "@sqlite/SQLite";
+import Script, { raw2html, unindent } from "@LISS/components/code/code-script";
 
-import LISS from "../LISS/index";
+// ensure this is upgraded.
+import "../SQLOutput";
+import SQLOutput from "../SQLOutput";
 
-const content = `
-    <slot name="select"></slot>
-    <slot name="options"></slot>
-    <slot></slot>
-    <slot name="pre"></slot>
-    <div class="choices">
-        <div class="options"></div>
-        <div class="query"></div>
-    </div>
-    <pre class="hljs"><code><div class="result"></div></code></pre>
-    <div class="spacing"></div>
-    <slot name="post"></slot>`;
+const html = require("!!raw-loader!./index.html").default;
+const css  = require("!!raw-loader!./index.css" ).default;
 
-const css = `
-    :host([option]) pre {
-        margin: 0;
-    }
+const theme  = require("!!raw-loader!@LISS/components/code/Tomorrow.css" ).default;
 
-    :host {
-        font-size: 14px;
-        line-height: 19px;
-    }
-
-    .selected, .highlight {
-        background-color: gold;
-    }
-    :host .spacing {
-        flex-grow: 1;
-    }
-    :host .query pre.hljs {
-        padding-right: 0;
-
-        & > code > div {
-            padding-right: 0;
-        }
-    }
-    :host pre.hljs {
-
-        margin: 2px;
-
-        & > code > div {
-           padding: 8px;
-        }
-    }
-    .options pre {
-        position: relative;
-        padding-bottom: 4px;
-        padding-right: 25px;
-
-        &.withdesc {
-            padding-top: 0px;
-        }
-    }
-    .options pre::after {
-        content: ">";
-        position: absolute;
-        right: 0px;
-        top: 0px;
-        height: 100%;
-        width: 25px;
-        background-color: orange;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        
-    }
-    .options pre:hover {
-        opacity: 0.5;
-    }
-    :host {
-        /*display: inline-flex;*/
-        display: flex;
-        gap: 5px;
-    }
-    slot:not([name="post"]):not([name="pre"]) {
-        display: none;
-    }
-    span.value {
-        border: 1px solid black;
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-
-    .option {
-        cursor: pointer;
-    }
-
-    .error {
-        background-color: #FFA07A !important;
-    }
-
-    .query > pre .value {
-        position: relative;
-        margin-right: 13px;
-    }
-
-    .query > pre .value::after {
-
-        right: -18px;
-        position: absolute;
-        content: "🖉";
-    }
-
-    :host > pre.hljs {
-        /*flex-grow: 1;*/
-    }
-
-    :host .desc {
-        margin-left: -0.5em;
-        /*position: absolute;
-        top: 0px;
-        left: 0px;*/
-
-        font-size: 14px;
-        line-height: 19px;
-
-        width: calc(100% + 0.5em);
-        border-left: none;
-        border-top: none;
-        padding-left: 5px;
-        font-style: italic;
-
-        box-sizing: border-box;
-
-        background-color: lightgray;
-        opacity: 0.6;
-    }
-
-    pre {
-        padding: 0.5em;
-        background-color: white;
-        color: black;
-    }
-
-    code {
-        font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
-    }
-
-    /* Tomorrow Theme */
-    /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
-    /* Original theme - https://github.com/chriskempson/tomorrow-theme */
-
-    /* Tomorrow Comment */
-    .hljs-comment,
-    .hljs-quote {
-        color: #8e908c;
-    }
-
-    /* Tomorrow Red */
-    .hljs-variable,
-    .hljs-template-variable,
-    .hljs-tag,
-    .hljs-name,
-    .hljs-selector-id,
-    .hljs-selector-class,
-    .hljs-regexp,
-    .hljs-deletion {
-        color: #c82829;
-    }
-
-    /* Tomorrow Orange */
-    .hljs-number,
-    .hljs-built_in,
-    .hljs-builtin-name,
-    .hljs-literal,
-    .hljs-type,
-    .hljs-params,
-    .hljs-meta,
-    .hljs-link {
-        color: #f5871f;
-    }
-
-    /* Tomorrow Yellow */
-    .hljs-attribute {
-        color: #eab700;
-    }
-
-    /* Tomorrow Green */
-    .hljs-string,
-    .hljs-symbol,
-    .hljs-bullet,
-    .hljs-addition {
-        color: #718c00;
-    }
-
-    /* Tomorrow Blue */
-    .hljs-title,
-    .hljs-section {
-        color: #4271ae;
-    }
-
-    /* Tomorrow Purple */
-    .hljs-keyword,
-    .hljs-selector-tag {
-        color: #8959a8;
-    }
-
-    .hljs {
-        display: block;
-        overflow-x: auto;
-        color: #4d4d4c;
-        padding: 0.5em;
-    }
-
-    .hljs-emphasis {
-        font-style: italic;
-    }
-
-    .hljs-strong {
-        font-weight: bold;
-    }
-`;
-
-/*
-const styles = [...document.querySelectorAll('style')].map(s => {
-    let style = new CSSStyleSheet();
-    style.replaceSync(s.textContent);
-    return style;
-});*/
-
+// used in CM.
 class SQLInteractive extends LISS({
-    content,
-    css: [css],
-    attributes: ["full-reset", "option"]
+    html,
+    css: [theme, css],
 }) {
 
-    #result   = "";
-    #query    = null;
-    #options  = null;
-    #input    = null;
-    #selected = null;
+    #output = this.content.querySelector<SQLOutput>('sql-output')!;
 
-    #selectQuery = null;
+    #result   = this.content.querySelector<HTMLElement>(".result" )!;
+    #query    = this.content.querySelector<HTMLElement>(".query"  )!;
+    #options  = this.content.querySelector<HTMLElement>(".options")!;
 
-    onAttrChanged(name, _old, value) {
+    #selectQuery: string     |null = null;
+    #selected   : HTMLElement|null = null;
+
+    #input      : HTMLElement;
+    
+    static observedAttributes = ["full-reset", "option"];
+
+    override attributeChangedCallback(name: string,
+                                      oldval: string|null,
+                                      newval: string|null) {
         if(name !== "option")
             return;
 
-        setOption(+value);
+        this.setOption(+newval!);
     }
 
-    setOption(idx) {
+    setOption(idx: number) {
 
         for(let i = 0; i < this.#options.children.length; ++i) {
-            const opt = this.#options.children[i];
+            const opt = this.#options.children[i] as HTMLElement;
             opt.style.setProperty("display", i === idx ? null : "none");
             if( i === idx)
                 opt.click();
@@ -257,23 +52,20 @@ class SQLInteractive extends LISS({
         this.#query.style.setProperty("display", "none");
 
         this.host.style.setProperty("flex-wrap", "wrap");
-
     }
 
     constructor() {
         super();
 
-        this.#result   = this.content.querySelector(".result");
-        this.#query    = this.content.querySelector(".query");
-        this.#options  = this.content.querySelector(".options");
- 
-        let selectQuery = this.content.querySelector("slot[name='select']").assignedElements();
+        let selectQuery = this.content.querySelector<HTMLSlotElement>("slot[name='select']")!.assignedElements();
         if(selectQuery.length === 1)
-            this.#selectQuery  = selectQuery[0].textContent;
+            this.#selectQuery  = selectQuery[0].textContent!;
 
         this.#options.addEventListener("click", (ev) => {
 
-            let option = ev.target.closest(".option");
+            const target = ev.target as HTMLElement;
+
+            let option = target.closest<HTMLElement>(".option");
             if(option === null)
                 return;
             ev.preventDefault();
@@ -283,12 +75,8 @@ class SQLInteractive extends LISS({
             option.classList.add('selected');
             this.#selected = option;
 
-            this.lastVars = {};
-
-            const optsvalues = option.querySelectorAll('.value');
+            const optsvalues = option.querySelectorAll<HTMLElement>('.value');
             for( let optsvalue of optsvalues) { // not optimal but it works
-
-                this.lastVars[optsvalue.dataset.name] = optsvalue.textContent;
 
                 const values = this.#input.querySelectorAll(`.value[data-name="${optsvalue.dataset.name}"]`);
                 for(let value of values)
@@ -298,62 +86,29 @@ class SQLInteractive extends LISS({
             this.#execQuery( );
         });
 
-        let query = this.content.querySelector("slot:not([name])").assignedElements()[0];
-        //TODO: find & replace...
+        let query = this.content.querySelector<HTMLSlotElement>("slot:not([name])")!.assignedElements()[0];
 
-        this.#input = query.cloneNode(true);
+        let options = this.content.querySelector<HTMLSlotElement>("slot[name='options']")!.assignedElements() as HTMLElement[];
 
-        this.#query.append(this.#input);
+        const raw = unindent(query.textContent!);
 
-        let options = this.content.querySelector("slot[name='options']").assignedElements();
+        const option_template = document.createElement('template');
+        option_template.innerHTML = `<div class="code">${raw2html(raw, "sql")}</div>`;
 
-        const childNodes = [...this.#input.children[0].childNodes];
-
-        for(let i = 0; i < childNodes.length; ++i) {
-
-            const node = childNodes[i];
-            if( node.nodeType !== Node.TEXT_NODE)
-                continue;
-
-            let text = node.textContent;
-            let start = text.indexOf('$');
-            if( start === -1)
-                continue;
-
-            let result = [];
-
-            while( start !== -1) { // not optimal but it works...
-                
-                let end = text.slice(start+1).search(/[\W]/);
-                
-                if( end === -1) {
-                    console.log( text, start, text.slice(start+1) );
-                    throw new Error('End of SQL variable not found (you likely used a reserved keyword)');
-                }
-                end += start + 1;
-
-                const value = document.createElement("span");
-                value.classList.add("value");
-                value.dataset.name = text.slice(start+1, end).toLowerCase();
-
-                result.push(... text.slice(0, start), value );
-
-                text = text.slice(end);
-                start = text.indexOf('$');
-            }
-
-            result.push(text);
-
-            node.replaceWith(...result);
+        const vars = option_template.content.querySelectorAll<HTMLElement>("h");
+        for(let i = 0; i < vars.length; ++i) {
+            vars[i].classList.add('value');
+            vars[i].dataset.name = vars[i].textContent!.slice(1).toLowerCase();
         }
 
-        let option_template = this.#input.cloneNode(true);
+        this.#input = option_template.content.cloneNode(true).childNodes[0] as HTMLElement;
+        this.#query.append(this.#input);
 
-        const values = this.#input.querySelectorAll('.value');
+        const values = this.#input.querySelectorAll<HTMLElement>('.value');
         for(let value of values) {
 
             value.toggleAttribute('contenteditable');
-            if( ! value.dataset.name.startsWith('m_') ) {
+            if( ! value.dataset.name!.startsWith('m_') ) {
                 value.addEventListener('keypress', (ev) => {
 
                     if(ev.key === "Enter") {
@@ -364,19 +119,20 @@ class SQLInteractive extends LISS({
                 });
             }
 
-
             value.addEventListener('input', (ev) => {
+
+                const target = ev.target as HTMLElement;
 
                 if(this.#selected !== null)
                     this.#selected.classList.remove('selected');
                 this.#input.classList.add('selected');
                 this.#selected = this.#input;
 
-                const syncinputs = this.#input.querySelectorAll(`.value[data-name="${ev.target.dataset.name}"]`);
+                const syncinputs = this.#input.querySelectorAll(`.value[data-name="${target.dataset.name}"]`);
                 for( let input of syncinputs ) {
                     if(input === ev.target)
                         continue;
-                    input.textContent = ev.target.textContent;
+                    input.textContent = target.textContent;
                 }
 
                 this.#execQuery();
@@ -385,13 +141,13 @@ class SQLInteractive extends LISS({
 
         for(let option of options) {
 
-            const opt = option_template.cloneNode(true);
+            const opt = option_template.content.cloneNode(true).childNodes[0] as HTMLElement;
             opt.classList.add("option");
 
-            const values = opt.querySelectorAll('.value');
+            const values = opt.querySelectorAll<HTMLElement>('.value');
             for(let value of values) {
-                const name  = value.dataset.name;
-                value.textContent = option.dataset[ name ];
+                const name  = value.dataset.name!;
+                value.textContent = option.dataset[ name ]!;
             }
 
             if( option.textContent !== "") {
@@ -399,27 +155,29 @@ class SQLInteractive extends LISS({
 
                 const desc = document.createElement('div');
                 desc.classList.add("desc");
-                desc.textContent = option.textContent.trim() + " :";
+                desc.textContent = option.textContent!.trim() + " :";
 
-                opt.firstElementChild.before(desc);
+                opt.firstElementChild!.before(desc);
             }
 
             this.#options.append( opt );
         }
 
-        if( this.attrs.option !== null) {
-            this.setOption(+this.attrs.option);
+        const opt_attr = this.getAttribute('option');
+        if( opt_attr !== null) {
+            this.setOption(+opt_attr);
             return;
         }
 
         if( this.#selectQuery === null)
-            this.#options.firstElementChild.click();
+            (this.#options.firstElementChild! as HTMLElement).click();
     }
 
     #getQuery() {
 
         let query = "";
-        for(let elem of this.#input.firstElementChild.childNodes ) {
+
+        for(let elem of this.#input!.childNodes ) {
 
             const content = elem.textContent;
             if(content === "" && elem instanceof HTMLElement && elem.classList.contains("value")) {
@@ -434,8 +192,9 @@ class SQLInteractive extends LISS({
 
     #execQuery() {
 
-
-        let queries = this.#getQuery().split(';\n').slice(0,-1).map( q => q + ";");
+        let queries = this.#getQuery().split(';')
+                                      .slice(0,-1)
+                                      .map( q => q.trim() + ";");
 
         // build queries to execute...
 
@@ -486,14 +245,14 @@ class SQLInteractive extends LISS({
         let results = db2.exec_many(exec_queries);
         this.updateResult(exec_queries, results);
         
-        if( this.attrs["full-reset"] === "true")
+        if( this.getAttribute("full-reset") === "true")
             db2.fullReset();
         else
             db2.reset();
     }
 
 
-    #hline(colsizes) {
+    #hline(colsizes: number[]) {
         let result = '+';
         for(let colsize of colsizes)
             result += "".padEnd(colsize + 2, "-") + '+';
@@ -501,10 +260,10 @@ class SQLInteractive extends LISS({
         return result;
     }
 
-    #padRow(row, colsizes) {
+    #padRow(row: string[], colsizes: number[]) {
         return row.map( (_, i) => row[i].padEnd(colsizes[i] + 1, " ") );
     }
-    #rawline(row) {
+    #rawline(row: string) {
         let result = "|";
         for(let i = 0; i < row.length; ++i)
             result += " " + row[i] + "|";
@@ -514,7 +273,7 @@ class SQLInteractive extends LISS({
 
     }
 
-    #line(row, colsizes) {
+    #line(row: string[], colsizes: number[]) {
         let result = "|";
         for(let i = 0; i < colsizes.length; ++i)
             result += " " + row[i].padEnd(colsizes[i] + 1, " ") + "|";
@@ -523,7 +282,10 @@ class SQLInteractive extends LISS({
         return result;
     }
 
-    updateResult(queries, datas) {
+    updateResult(queries: any[], datas: any[]) {
+
+        this.#output.setQueriesTemplates(queries); //TODO: not ideal...
+        this.#output.addResult({}, datas);
 
         this.#input.classList.remove('error');
         this.#result.classList.remove('error');
@@ -578,12 +340,12 @@ class SQLInteractive extends LISS({
 
             const headers = Object.keys(data[0]);
             const results = [
-                ... data.map(entry => Object.values(entry).map(value => {
+                ... data.map( (entry: any) => Object.values(entry).map(value => {
                         if( value === null )
                             return 'N/A';
                         if(typeof value === 'string')
                             return `'${value}'`;
-                        return value.toString()
+                        return value!.toString()
                     }) )   
             ];
     
@@ -614,12 +376,12 @@ class SQLInteractive extends LISS({
                 if( ! (key in data[j]) )
                     key = "name";
 
-                let cmp_line = compare_to.find( e => e[key] === data[j][key]); // h4cky
+                let cmp_line = compare_to.find( (e:any) => e[key] === data[j][key]); // h4cky
 
                 row = this.#padRow(row, colsizes);
 
                 if( cmp_line === undefined) {
-                    row = row.map( c => `<strong><em>${c}</em></strong>`);
+                    row = row.map( (c:any) => `<strong><em>${c}</em></strong>`);
                     let line = this.#rawline(row);
                     result_text += `<span class="highlight">${line}</span>`;
                     continue;
@@ -649,11 +411,11 @@ class SQLInteractive extends LISS({
         }}) );
     }
 
-    #lastDatas = null;
+    #lastDatas: any[]|null = null;
 
     get lastDatas() {
         return this.#lastDatas;
     }
 }
 
-LISS.define("sql-interactive", SQLInteractive)
+define("sql-interactive", SQLInteractive)

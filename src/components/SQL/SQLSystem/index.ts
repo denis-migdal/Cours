@@ -1,31 +1,21 @@
-// @ts-nocheck
+import {LISS} from "@LISS/src/extensions"
+import define from "@LISS/src/define";
 
-import LISS, { ShadowCfg } from "../../LISS/index";
-import {db2} from "../SQLite";
-import SQLOutput from "./SQLOutput";
+import {db2} from "@sqlite/SQLite";
 
-const css = `
-    :host {
+import "../SQLOutput";
+// import SQLOutput from "../SQLOutput";
 
-        display: block;
+const css = require("!!raw-loader!./index.css").default;
 
-        & sql-queries {
-            display: none;
-        }
-        & sql-option {
-            display: none;
-        }
-    }
-`;
-
+// used in slides.
 class SQLSystem extends LISS({
-    attributes: ["active"],
     css,
-    shadow: ShadowCfg.NONE,
-    dependencies: [LISS.whenDefined('sql-output')]
+    mode: null
 }) {
 
-    #output: SQLOutput;
+    //TODO
+    //#output: SQLOutput;
 
     constructor() {
         super();
@@ -36,24 +26,31 @@ class SQLSystem extends LISS({
         if( output_html === null)
             throw new Error('No output specified - auto-create not implemented');
 
-        this.#output = LISS.getLISSSync(output_html);
-        this.#output.setQueriesTemplates(queries);
+        //TODO...
+        //this.#output = LISS.getLISSSync(output_html);
+        //this.#output.setQueriesTemplates(queries);
 
         const vars = [...this.content.querySelectorAll('sql-option')].map( e => JSON.parse(e.textContent!.trim()) );
 
         const exec_queries = vars.map( v => this.#generate_queries(queries, v) );
         for(let i = 0; i < vars.length; ++i) {
             let results = db2.exec_many(exec_queries[i]);
-            this.#output.addResult(vars[i], results);
+            //TODO
+            //this.#output.addResult(vars[i], results);
             //db2.reset();
             db2.fullReset();
         }
-
-        this.#output.setActive(+this.attrs.active!);
+        //TODO
+        //this.#output.setActive(+this.getAttribute("active")!);
     }
 
-    protected override onAttrChanged() {
-        this.#output.setActive(+this.attrs.active!);
+    static observedAttributes = ["active"];
+
+    override attributeChangedCallback(name: string,
+                                      oldval: string|null,
+                                      newval: string|null) {
+        //TODO
+        //this.#output.setActive(+newval!);
     }
 
     #generate_queries(queries: string[], vars: Record<string, any>) {
@@ -67,8 +64,6 @@ class SQLSystem extends LISS({
             return `${value}${end_space}`;
         }) );
     }
-
 }
 
-
-LISS.define("sql-system", SQLSystem);
+define("sql-system", SQLSystem);

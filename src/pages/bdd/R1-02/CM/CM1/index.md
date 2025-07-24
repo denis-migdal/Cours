@@ -5,8 +5,8 @@
         <title>BDR1 (CM1)</title>
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link   href="/skeleton/index.css"  rel="stylesheet">
-        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+        <link   href="/skeleton/bdr/index.css"  rel="stylesheet">
+        <script  src="/skeleton/bdr/index.js"  type="module"     blocking="render" async></script>
     </head>
     <body>
         <main>
@@ -311,15 +311,16 @@ SELECT <h>$COLS[,...]</h> FROM <h>$TABLE</h>;
 ### Sélection des colonnes
 
 <sql-interactive id="col-sql">
+  <script type="c-sql">
+    SELECT <h>$COLS</h> FROM Users;
+  </script>
+  <sql-option title="Retourner toutes les colonnes">{"cols": "*"  }</sql-option>
+  <sql-option title="Retourner une seule colonne"  >{"cols": "Nom"}</sql-option>
+  <sql-option title="Retourner plusieurs colonnes" >{"cols": "ID, Prenom"}</sql-option>
   <sql-dymtable slot="post" id="col-table" table="Users"></sql-dymtable>
-  <span slot="options" data-cols="*">Retourner toutes les colonnes</span>
-  <span slot="options" data-cols="Nom">Retourner une seule colonne</span>
+  <span slot="options" data-cols="*"       >Retourner toutes les colonnes</span>
+  <span slot="options" data-cols="Nom"     >Retourner une seule colonne</span>
   <span slot="options" data-cols="ID, Prenom">Retourner plusieurs colonnes</span>
-
-<script type="c-sql">
-SELECT <h>$COLS</h> FROM Users;
-</script>
-
 </sql-interactive>
 
 <script type="module">

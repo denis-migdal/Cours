@@ -1,13 +1,8 @@
-//TODO: better (assets)
-import "../../old broken/SQL/sqlite/sqlite3.js";
-require("../pages/R1-02/CM/sqlite3.wasm");
-//require("../../../struct/sqlite/sqlite3.wasm");
-
-import * as s from "../../old broken/SQL/sqlite/sqlite3.js";
-const sqlite3 = (await s()).sqlite3.oo1;
+import "./sqlite3.js";
 
 // @ts-ignore
-// const sqlite3 = (await sqlite3InitModule!()).oo1;
+const sqlite3 = (await globalThis.sqlite3InitModule()).oo1;
+
 type TABLE_DESC = {
     schema      : Record<string, string>,
     constraints?: string,

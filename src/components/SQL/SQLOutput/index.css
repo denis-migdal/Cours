@@ -1,0 +1,44 @@
+::slotted(:is(.sql_query, .sql_result)) {
+    white-space: pre;
+}
+
+::slotted(.sql_query span.hljs-operator) {
+        background-color: gold;
+}
+
+:host {
+
+    display: block;
+    
+    & .sql_query span.vars {
+        background-color: gold;
+    }
+
+    & .sql_result span.highlight {
+        background-color: gold;
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    & :is(.sql_query, .sql_result) {
+
+        white-space: pre;
+
+        /* overlay */
+        display: grid;
+        grid-template-columns: 1fr;
+
+        & > * {
+            margin: 0;
+            grid-row-start: 1;
+            grid-column-start: 1;
+        }
+
+        & > :not(.active) {
+            visibility: hidden
+        }
+    }
+    /*&.error {
+        background-color: rgb(255, 160, 122) !important;
+    }*/
+}

@@ -1,133 +1,45 @@
-// @ts-nocheck
-
-import LISS, { ShadowCfg } from "../../LISS/index";
-
-const hljs = require('highlight.js');
-
-const css = `
-    :host {
-        display: block;
-
-        & .sql_query span.vars {
-            background-color: gold;
-        }
-
-        & .sql_result span.highlight {
-            background-color: gold;
-            font-weight: bold;
-            font-style: italic;
-        }
-
-        & :is(.sql_query, .sql_result) {
-
-            /* overlay */
-            display: grid;
-            grid-template-columns: 1fr;
-
-            & > * {
-                margin: 0;
-                grid-row-start: 1;
-                grid-column-start: 1;
-            }
-
-            & > :not(.active) {
-                visibility: hidden
-            }
-        }
-
-        /*&.error {
-            background-color: rgb(255, 160, 122) !important;
-        }*/
-    }
-`;
+import {LISS, WithBare, WithContent, WithInput} from "@LISS/src/extensions"
+import define from "@LISS/src/define";
+import { keepSpaces } from "@LISS/components/code/code-script";
 
 export type SelectResult = Record<string, any>[];
 export type Result = null|string|SelectResult;
 
-export default class SQLOutput extends LISS({
-    shadow: ShadowCfg.NONE,
-    css
-}){
+const css = require("!!raw-loader!./index.css").default;
 
-    #queries = [...this.content.querySelectorAll(".sql_query" )];
-    #results = [...this.content.querySelectorAll(".sql_result")];
+export default class SQLResult extends LISS({css},
+                                            WithBare,
+                                            WithContent,
+                                            WithInput<Result>) {
 
-    setActive(id: number) {
+    constructor() {
+        super();
 
-        for(let elem of this.content.querySelectorAll('.active') )
-            elem.classList.remove('active');
+        this._input.listen( () => {
 
-        for(let query  of this.#queries)
-            query.children [id]?.classList.add('active');
-        for(let result of this.#results)
-            result.children[id]?.classList.add('active');
-    }
+            const value = this._input.value;
 
-    #queriesTemplates!: string[];
-    setQueriesTemplates( queries: string[] ) {
-        this.#queriesTemplates = queries.map( query => {
-
-            // code highlight
-            query = query.replaceAll("$", "__");
-            return hljs.highlight(query, { language: "sql" }).value;
+            this.content.innerHTML = keepSpaces(this.#buildResult(value));
         });
     }
 
-    // [Query]
-    addResult( vars: Record<string, string>, results: Result[] ) {
 
-        for(let query_out of this.#queries) {
-
-            const id = +query_out.getAttribute('q')! - 1;
-            
-            let query = document.createElement("pre");
-            let query_txt = this.#queriesTemplates[id];
-
-            // vars placeholders
-            query_txt = query_txt.replaceAll(/__([\w]*)/g, (_, name) => {
-
-                let content = vars[name] ?? " ";
-                return content.split("\n").map( e => `<span class="vars">${e}</span>`).join("\n");
-            });
-
-            //if sqlite>...
-            query.innerHTML = "sqlite> " + query_txt.replaceAll("\n", "\n   ...> ") + "\n";
-
-            query_out.append(query);
-        }
-
-        for(let result_out of this.#results) {
-
-            const id = +result_out.getAttribute('q')! - 1;
-
-            //TODO: highlight cells/lines/?
-            let result = document.createElement("pre");
-
-            let sim_to = undefined;
-            if( result_out.hasAttribute("similar_to") )
-                sim_to = +result_out.getAttribute("similar_to")! - 1;
-
-            result.innerHTML = this.#buildResult(results, id, sim_to);
-
-            result_out.append(result);
-        }
-    }
-
-    //TODO: compare...
-    #buildResult(_results: Result[], id: number, similar_to?: number) {
-
-        const result = _results[id];
+    #buildResult(result: Result) {
 
         if( result == null)
             return "";
 
+        const sim_to     = undefined;
+        const compare_to = null;
+/*
+    //TODO
         const query = this.#queriesTemplates[id];
         
         let sim_to = undefined;
         if( similar_to !== undefined)
             sim_to = _results[similar_to] as SelectResult;
 
-        let compare_to = null;
+        let compare_to = null; // same query
         if( Array.isArray(result) ) {
             compare_to = _results.filter( (v, i) => {
                 if( i === id)
@@ -137,7 +49,7 @@ export default class SQLOutput extends LISS({
 
             if( compare_to.length === 0)
                 compare_to = null;
-        }
+        }*/
 
         if(result === null)
             return "";
@@ -193,11 +105,11 @@ export default class SQLOutput extends LISS({
 
             let highlights: boolean|Array<number> = false;
 
-            if( sim_to !== undefined && cols_highlight.length === 0)
-                highlights = sim_to.find( l => l[key] === result[j][key] ) !== undefined;
+            /*if( sim_to !== undefined && cols_highlight.length === 0)
+                highlights = sim_to.find( l => l[key] === result[j][key] ) !== undefined;*/
 
             if( compare_to !== null) {
-
+/*
                 let lines = compare_to.map( res => res!.find( l => l[key] === result[j][key] ) );
 
                 highlights = lines.includes(undefined);
@@ -212,7 +124,7 @@ export default class SQLOutput extends LISS({
 
                     if( ! highlights.length )
                         highlights = false;
-                }
+                }*/
             }
 
             output.addLine(row, highlights);
@@ -222,9 +134,8 @@ export default class SQLOutput extends LISS({
         
         return output.html;
     }
-}
 
-LISS.define("sql-output", SQLOutput);
+}
 
 // TODO: highlight...
 class OutputBuilder {
@@ -283,3 +194,5 @@ class OutputBuilder {
         return this.#html;
     }
 }
+
+define("sql-result", SQLResult);
