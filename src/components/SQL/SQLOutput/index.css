@@ -1,11 +1,3 @@
-::slotted(:is(.sql_query, .sql_result)) {
-    white-space: pre;
-}
-
-::slotted(.sql_query span.hljs-operator) {
-        background-color: gold;
-}
-
 :host {
 
     display: block;

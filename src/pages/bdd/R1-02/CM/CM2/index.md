@@ -36,16 +36,20 @@ VALUES <h>($VALS[,...])[,...]</h>;
   💡 Vous pouvez créer plusieurs entrées à la fois en les séparant par une virgule.
 
 <sql-interactive>
-  <span slot="options" data-m_vals="(NULL, 'Doe', 'Jon', 32)">Écrire une entrée</span>
-  <span slot="options" data-m_vals="(NULL, 'Doe',    'Jon', 32),
-       (NULL, 'Sawyer', 'Tom', 15)">Écrire plusieurs entrées</span>
-
-<script type="c-sql">
-VALUES <h>$M_VALS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      VALUES <h>$M_VALS</h>;
+    </script>
+    <sql-option desc="Écrire une entrée">
+      {"m_vals": "(NULL, 'Doe', 'Jon', 32)"}
+    </sql-option>
+    <sql-option desc="Écrire plusieurs entrées">
+      {"m_vals": "(NULL, 'Doe',    'Jon', 32),\n       (NULL, 'Sawyer', 'Tom', 15)"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
-
 
 ### Insérer des entrées
 
@@ -59,17 +63,26 @@ INSERT INTO <h>$TABLENAME</h> <h>$VALUES_OR_SELECT</h>;
   💡 Vous pouvez insérer plusieurs entrées à la fois en les séparant par une virgule.
 
 <sql-interactive>
-  <span slot='select'>SELECT * FROM Users;</span>
-  <span slot="options" data-m_vals="(NULL, 'Doe', 'Jon', 32)">Insérer une entrée</span>
-  <span slot="options" data-m_vals="      (NULL, 'Doe',    'Jon', 32),
-       (NULL, 'Sawyer', 'Tom', 15)">Insérer plusieurs entrées</span>
-  <span slot="options" data-cols="(Prenom, Nom)" data-m_vals="('Jon', 'Doe')">Insérer une entrée sans renseigner Age</span>
-
-<script type="c-sql">
-INSERT INTO Users <h>$COLS</h> VALUES
-<h>$M_VALS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      INSERT INTO Users <h>$COLS</h>
+        VALUES <h>$M_VALS</h>;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM Users;
+    </script>
+    <sql-option desc="Insérer une entrée">
+      {"m_vals": "(NULL, 'Doe', 'Jon', 32)"}
+    </sql-option>
+    <sql-option desc="Insérer plusieurs entrées">
+      {"m_vals": "(NULL, 'Doe',    'Jon', 32),\n         (NULL, 'Sawyer', 'Tom', 15)"}
+    </sql-option>
+    <sql-option desc="Insérer une entrée sans renseigner Age">
+      {"cols": "(Prenom, Nom  )", "m_vals": "         ('Jon' , 'Doe')"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 💡 Vous pouvez aussi ne renseigner les valeurs que pour certaines colonnes dont vous indiquez les noms avant <script type="c-sql"><h>$VALUES_OR_SELECT</h></script>. Dans ce cas, les colonnes non renseignées vaudront <script type="c-sql">NULL</script>.
@@ -89,18 +102,30 @@ UPDATE <h>$TABLENAME</h> SET <h>$COL = $VAL[,...]</h> WHERE <h>$COND</h>;
 💡 Vous pouvez modifier plusieurs colonnes à la fois en séparant les <script type="c-sql"><h>$COL = $VAL</h></script> par une virgule.
 
 <sql-interactive>
-  <span slot='select'>SELECT * FROM Users;</span>
-  <span slot="options" data-vals="Nom = 'Durand'" data-cond="Nom == 'Durant'">Modifier une colonne</span>
-  <span slot="options" data-vals="Nom = 'Durand', Prenom='Théo'" data-cond="ID == 2">Modifier plusieurs colonnes</span>
-  <span slot="options" data-vals="Age = 23" data-cond="Age == 43">Plusieurs entrées modifiées</span>
-  <span slot="options" data-vals="Age = Age + 10" data-cond="Nom LIKE 'D%'">Valeur calculée à partir de l'entrée</span>
-
-<script type="c-sql">
-UPDATE Users
-  SET <h>$VALS</h>
-  WHERE <h>$COND</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      UPDATE Users
+         SET <h>$VALS</h>
+       WHERE <h>$COND</h>;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM Users;
+    </script>
+    <sql-option desc="Modifier une colonne">
+      {"vals": "Nom = 'Durand'", "cond": "Nom == 'Durant'"}
+    </sql-option>
+    <sql-option desc="Modifier plusieurs colonnes">
+      {"vals": "Nom = 'Durand', Prenom='Théo'", "cond": "ID == 2"}
+    </sql-option>
+    <sql-option desc="Plusieurs entrées modifiées">
+      {"vals": "Age = 23", "cond": "Age == 43"}
+    </sql-option>
+    <sql-option desc="Valeur calculée à partir de l'entrée">
+      {"vals": "Age = Age + 10", "cond": "Nom LIKE 'D%'"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 💡 Vous pouvez calculer les nouvelles valeurs à partir des valeurs initiales de l'entrée.
@@ -118,15 +143,25 @@ DELETE FROM <h>$TABLENAME</h> WHERE <h>$COND</h>;
 - <script type="c-sql"><h>$COND</h></script> indique quelles entrées doivent être supprimées.
 
 <sql-interactive>
-  <span slot='select'>SELECT * FROM Users;</span>
-  <span slot="options" data-cond="Age < 18">Supprimer les entrées où Age > 18</span>
-  <span slot="options" data-cond="Age > 18">Supprimer les entrées où Age > 18</span>
-  <span slot="options" data-cond="ID == 2">Supprimer un utilisateur donné</span>
-
-<script type="c-sql">
-DELETE FROM Users WHERE <h>$COND</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      DELETE FROM Users WHERE <h>$COND</h>;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM Users;
+    </script>
+    <sql-option desc="Supprimer les entrées où Age > 18">
+      {"cond": "Age < 18"}
+    </sql-option>
+    <sql-option desc="Supprimer les entrées où Age > 18">
+      {"cond": "Age > 18"}
+    </sql-option>
+    <sql-option desc="Supprimer un utilisateur donné">
+      {"cond": "ID == 2"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ⚠ Il est possible d'avoir des utilisateurs avec le même nom et/ou prénoms. Il est ainsi préférable, autant que possible, d'effectuer la condition <script type="c-sql"><h>$COND</h></script> les ID pour s'assurer de supprimer les bonnes entrées, et non celles d'homonymes.
@@ -138,17 +173,25 @@ Il est bien souvent important de pré-traiter les données avant de les utiliser
 Pré-traiter les données permet alors de s'assurer de l'uniformité des données, i.e. que les données manipulées suivent le même format, facilitant e.g. leur comparaisons. Pré-traiter les données avant insertions permet aussi de s'assurer de la cohérence et consistance de la base de données.
 
 💡 Il est possible de **tester** les différentes fonctions de prétraitements en effectuant soit une requête :
-- <script type="c-sql">SELECT</script> **sans** la clause <script type="c-sql">FROM</script> (ou avec <script type="c-sql">FROM DUAL</script> pour certains SGBD) :
-- <script type="c-sql">SELECT</script> **avec** la clause <script type="c-sql">FROM (VALUES <h>$VALUES</h>)</script>.
+- <script type="c-sql">SELECT</script> <b>sans</b> la clause <script type="c-sql">FROM</script> (ou avec <script type="c-sql">FROM DUAL</script> pour certains SGBD) :
+- <script type="c-sql">SELECT</script> <b>avec</b> la clause <script type="c-sql">FROM (VALUES <h>$VALUES</h>)</script>.
+
 
 <sql-interactive>
-  <span slot="options" data-col1="'nom'" data-col2="UPPER('nom')">Mettre en majuscules</span>
-  <span slot="options" data-col1="1.2" data-col2="ROUND(1.2)">Arrondir</span>
-
-<script type="c-sql">
-SELECT <h>$COL1</h> as BEFORE, <h>$COL2</h> as AFTER;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$COL1</h> as BEFORE,
+             <h>$COL2</h> as AFTER;
+    </script>
+    <sql-option desc="Mettre en majuscules">
+      {"col1": "'nom'       ", "col2": "UPPER('nom')"}
+    </sql-option>
+    <sql-option desc="Arrondir">
+      {"col1": "1.2       "  , "col2": "ROUND(1.2)"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ⚠ Dans les requêtes <script type="c-sql">SELECT</script>, il ne faut pas trop abuser de ces pré-traitements pour les valeurs retournées. Il est souvent préférable de gérer des données structurées en SQL, et de gérer leur pré-traitement via le langage utilisé par votre application (e.g. Python, R, JavaScript, etc). Cela permet notamment de pouvoir réutiliser une même requête pour différents usages.
@@ -160,16 +203,28 @@ SELECT <h>$COL1</h> as BEFORE, <h>$COL2</h> as AFTER;
 Avec SQL, vous pouvez utiliser les opérateurs et fonctions arithmétiques classiques :
 
 <sql-interactive>
-  <span slot="options" data-cols="1+1, 4%3, 4/3, 4/3.0">Opérations mathématiques</span>
-  <span slot="options" data-cols="FLOOR(1.2), ROUND(1.2), CEIL(1.2)">Arrondis</span>
-  <span slot="options" data-cols="ABS(1), ABS(-1)">Valeur absolue</span>
-  <span slot="options" data-cols="RANDOM()">Entier aléatoire</span>
-  <span slot="options" data-cols="ABS(RANDOM()) % 10">Entier aléatoire (dans [[0;10[[)</span>
-
-<script type="c-sql">
-SELECT $COLS;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$COLS</h>;
+    </script>
+    <sql-option desc="Opérations mathématiques">
+      {"cols": "1+1, 4%3, 4/3, 4/3.0"}
+    </sql-option>
+    <sql-option desc="Arrondis">
+      {"cols": "FLOOR(.2),ROUND(.2),CEIL(.2)"}
+    </sql-option>
+    <sql-option desc="Valeur absolue">
+      {"cols": "ABS(1), ABS(-1)"}
+    </sql-option>
+    <sql-option desc="Entier aléatoire">
+      {"cols": "RANDOM()"}
+    </sql-option>
+    <sql-option desc="Entier aléatoire (dans [[0;10[[)">
+      {"cols": "ABS(RANDOM()) % 10"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ⚠ <script type="c-sql">/</script> utilisé avec des nombres entiers effectuera la division entière. Si vous souhaitez faire la division décimale, vous devez avoir au moins une opérande décimale.
@@ -181,7 +236,6 @@ SELECT $COLS;
   💡 Certains SGBD proposent une fonction <script type="c-sql">RAND()</script> permettant de générer un réel dans <script type="c-sql">[0,1[</script>.<br/>
 
 💡 Vous avez aussi beaucoup d'autres fonctions trigonométriques, de logs, etc.
-
 
 ### Sur les dates
 
@@ -196,16 +250,28 @@ Les SGBD fournissent donc des fonctions permettant de manipuler les dates qui s'
 Il est aussi fréquent d'utiliser des **timestamps**, e.g. l'unix timestamp, qui représente une date par le nombre de secondes écoulées depuis le 1er janvier 1970. Il permet notamment d'aisément comparer et stocker des dates.
 
 <sql-interactive>
-  <span slot="options" data-cols="DATE(), TIME(), DATETIME()">Date et/ou heure actuelle</span>
-  <span slot="options" data-cols="DATE(), STRFTIME('%d/%m/%Y', DATE())">Formatter une date</span>
-  <span slot="options" data-cols="UNIXEPOCH('now')">Timestamp actuel</span>
-  <span slot="options" data-cols="DATETIME(10, 'unixepoch')">Convertir un timestamp (10) en date</span>
-  <span slot="options" data-cols="TIMEDIFF('now', '2001-01-01')">Calculer la durée entre deux dates</span>
-
-<script type="c-sql">
-SELECT <h>$COLS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$COLS</h>;
+    </script>
+    <sql-option desc="Date et/ou heure actuelle">
+      {"cols": "DATE(), TIME(), DATETIME()"}
+    </sql-option>
+    <sql-option desc="Formatter une date">
+      {"cols": "DATE(), STRFTIME('%d/%m/%Y', DATE())"}
+    </sql-option>
+    <sql-option desc="Timestamp actuel">
+      {"cols": "UNIXEPOCH('now')"}
+    </sql-option>
+    <sql-option desc="Convertir un timestamp (10) en date">
+      {"cols": "DATETIME(10, 'unixepoch')"}
+    </sql-option>
+    <sql-option desc="Calculer la durée entre deux dates">
+      {"cols": "TIMEDIFF('now', '2001-01-01')"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 - <script type="c-sql">DATE()</script>/<script type="c-sql">TIME()</script>/<script type="c-sql">DATETIME()</script> : retourne la date et/ou l'heure actuelle.
@@ -224,15 +290,25 @@ D'un utilisateur à un autre, la casse des lettres dans les chaines de caractèr
 Les chaînes de caractères sont généralement stockées sur des colonnes à taille variables. Mais il arrive que pour des raisons d'optimisations, elles soient stockées sur des colonnes à tailles fixes. Dès lors, pour stocker une chaîne de caractère d'une taille moindre, on lui ajoutera généralement des espaces en début ou fin de chaîne (*pad*). L'opération inverse consiste à retirer les espaces en début ou fin de chaîne (*trim*).
 
 <sql-interactive>
-  <span slot="options" data-cols="LOWER('Hello'), UPPER('Hello')">Transformer la casse</span>
-  <span slot="options" data-cols="LENGTH('23'), LENGTH(32)">Taille</span>
-  <span slot="options" data-cols="TRIM(' w '), LTRIM(' w '), RTRIM(' w ')">Retirer les espaces en début/fin</span>
-  <span slot="options" data-cols="FORMAT('{x=%.2f, y=%.2f}', 1.2, 1.)">Formatter des données</span>
-
-<script type="c-sql">
-SELECT <h>$COLS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$COLS</h>;
+    </script>
+    <sql-option desc="Transformer la casse">
+      {"cols": "LOWER('Hello'), UPPER('Hello')"}
+    </sql-option>
+    <sql-option desc="Taille">
+      {"cols": "LENGTH('23'), LENGTH(32)"}
+    </sql-option>
+    <sql-option desc="Retirer les espaces en début/fin">
+      {"cols": "TRIM(' w '),LTRIM(' w '),RTRIM(' w ')"}
+    </sql-option>
+    <sql-option desc="Formatter des données">
+      {"cols": "FORMAT('{x=%.2f, y=%.2f}', 1.2, 1.)"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 - <script type="c-sql">LOWER(<h>$W</h>)</script>/<script type="c-sql">UPPER(<h>$W</h>)</script> : transforme tous les caractères en minuscules/majuscules.
@@ -257,7 +333,6 @@ Il existe bien d'autres fonctions que nous ne verrons pas dans le cadre de ce co
 
 </details>
 
-
 <details>
   <summary>
 
@@ -268,14 +343,22 @@ Il existe bien d'autres fonctions que nous ne verrons pas dans le cadre de ce co
 ### Sur les valeurs nulles
 
 <sql-interactive>
-  <span slot="options" data-cols="NULL"></span>
-  <span slot="options" data-cols="COALESCE(NULL, 4)"></span>
-  <span slot="options" data-cols="COALESCE(NULL, NULL)"></span>
-
-<script type="c-sql">
-SELECT <h>$COLS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$COLS</h>;
+    </script>
+    <sql-option>
+      {"cols": "NULL"}
+    </sql-option>
+    <sql-option>
+      {"cols": "COALESCE(NULL, 4)"}
+    </sql-option>
+    <sql-option>
+      {"cols": "COALESCE(NULL, NULL)"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 - <script type="c-sql">COALESCE(<h>$args[,...]</h>)</script> : renvoie la première valeur non nulle (ou null si toutes nulles).
@@ -283,14 +366,22 @@ SELECT <h>$COLS</h>;
 ### Conversions
 
 <sql-interactive>
-  <span slot="options" data-col_cast="'1.2' AS REAL">Convertir en réel</span>
-  <span slot="options" data-col_cast="'1.2' AS INT">Convertir en entier</span>
-  <span slot="options" data-col_cast="1.2 AS TEXT">Convertir en texte</span>
-
-<script type="c-sql">
-SELECT CAST( <h>$COL_CAST</h> );
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT CAST( <h>$COL_CAST</h> );
+    </script>
+    <sql-option desc="Convertir en réel">
+      {"col_cast": "'1.2' AS REAL"}
+    </sql-option>
+    <sql-option desc="Convertir en entier">
+      {"col_cast": "'1.2' AS INT"}
+    </sql-option>
+    <sql-option desc="Convertir en texte">
+      {"col_cast": "1.2 AS TEXT"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 - <script type="c-sql">CAST(<h>$V</h> AS <h>$T</h>)</script> : converti la valeur <script type="c-sql"><h>$V</h></script> dans le type <script type="c-sql"><h>$T</h></script>.<br/>
@@ -303,14 +394,23 @@ SELECT CAST( <h>$COL_CAST</h> );
 💡 Vous pouvez aussi concaténer des colonnes en utilisant l'opérateur <script type="c-sql">||</script> :
 
 <sql-interactive>
-  <span slot="options" data-col_concat="Nom">Nom</span>
-  <span slot="options" data-col_concat="Nom || ' ' || Prenom">Nom Prenom</span>
-  <span slot="options" data-col_concat="Nom || ' (' || Age || ')'">Nom (Age)</span>
-
-<script type="c-sql">
-SELECT <h>$COL_CONCAT</h> as User FROM Users;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$COL_CONCAT</h> as User
+        FROM Users;
+    </script>
+    <sql-option desc="Nom">
+      {"col_concat": "Nom"}
+    </sql-option>
+    <sql-option desc="Nom Prenom">
+      {"col_concat": "Nom || ' ' || Prenom"}
+    </sql-option>
+    <sql-option desc="Nom (Age)">
+      {"col_concat": "Nom || ' (' || Age || ')'"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ⚠ Attention à ne pas abuser des concaténations. Il est bien souvent préférable de récupérer des données structurées, puis de gérer leurs formatages et affichages via le langage utilisé par votre application (e.g. Python, R, JavaScript, etc). Cela permet notamment de pouvoir réutiliser une même requête pour différents usages.
@@ -322,17 +422,23 @@ SELECT <h>$COL_CONCAT</h> as User FROM Users;
 De manière **rare**, il est possible qu'on souhaite effectuer des conditions.
 
 <sql-interactive>
-  <span slot="options" data-age='2'>Utilisateur mineur</span>
-  <span slot="options" data-age='20'>Utilisateur majeur</span>
-
-<script type="c-sql">
-SELECT (CASE
-  WHEN Age < 0  THEN '???'
-  WHEN Age < 18 THEN 'mineur'
-                ELSE 'majeur'
-END) as Status FROM (SELECT <h>$Age</h> as Age);
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT (CASE
+        WHEN Age < 0  THEN '???'
+        WHEN Age < 18 THEN 'mineur'
+                      ELSE 'majeur'
+      END) as Status FROM (SELECT <h>$Age</h> as Age);
+    </script>
+    <sql-option desc="Utilisateur mineur">
+      {"age": "2"}
+    </sql-option>
+    <sql-option desc="Utilisateur majeur">
+      {"age": "20"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 Le format est relativement simple :
@@ -378,14 +484,20 @@ SELECT Filename, Filesize FROM Files WHERE Filehash == SHA256(<h>$FILECONTENT</h
 Une agrégation permet de regrouper, au sein d'une même ligne, plusieurs entrées, e.g. pour obtenir la liste des nombres de produits vendus, par dates ou par produits : 
 
 <sql-interactive>
-  <span slot="options" data-grp='Ref'>Agrégé par références</span>
-  <span slot="options" data-grp='Date'>Agrégé par dates</span>
-
-<script type="c-sql">
-SELECT <h>$GRP</h>, GROUP_CONCAT(Q)
-  FROM Produits GROUP BY <h>$GRP</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$GRP</h>, GROUP_CONCAT(Q)
+        FROM Produits GROUP BY <h>$GRP</h>;
+    </script>
+    <sql-option desc="Agrégé par références">
+      {"grp": "Ref"}
+    </sql-option>
+    <sql-option desc="Agrégé par dates">
+      {"grp": "Date"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 Pour cela, on utilise la clause <script type="c-sql">GROUP BY <h>$COLS[,...]</h></script> qui permet de fusionner, au sein d'une même ligne, les entrées dont les valeurs de <script type="c-sql"><h>$COLS[,...]</h></script> sont égales. Vous trouverez ci-dessous une représentation visuelle d'une agrégation :
@@ -424,19 +536,30 @@ Pour cela, on utilise la clause <script type="c-sql">GROUP BY <h>$COLS[,...]</h>
 
 Vous remarquerez alors que les lignes contiennent plusieurs valeurs pour une même colonne. Il convient alors d'utiliser une **fonction d'agrégation** qui prendra la liste des valeurs et retournera une valeur unique. Par exemple, <script type="c-sql">GROUP_CONCAT(Q)</script> concatène, pour chaque ligne, la colonne <script type="c-sql">Q</script> de ses entrées :
 
-
 <sql-interactive>
-  <span slot="options" data-op='GROUP_CONCAT(Q)' data-grp="Ref">Concaténation</span>
-  <span slot="options" data-op='SUM(Q)' data-grp="Date">Somme</span>
-  <span slot="options" data-op='AVG(Q)' data-grp="Ref">Moyenne</span>
-  <span slot="options" data-op='MIN(Q)' data-grp="Date">Minimum</span>
-  <span slot="options" data-op='MAX(Q)' data-grp="Date">Maximum</span>
-
-<script type="c-sql">
-SELECT <h>$GRP</h>, <h>$OP</h>
-  FROM Produits GROUP BY <h>$GRP</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$GRP</h>, <h>$OP</h>
+        FROM Produits GROUP BY <h>$GRP</h>;
+    </script>
+    <sql-option desc="Concaténation">
+      {"grp": "Ref", "op": "GROUP_CONCAT(Q)"}
+    </sql-option>
+    <sql-option desc="Somme">
+      {"grp": "Date", "op": "SUM(Q)"}
+    </sql-option>
+    <sql-option desc="Moyenne">
+      {"grp": "Ref", "op": "AVG(Q)"}
+    </sql-option>
+    <sql-option desc="Minimum">
+      {"grp": "Date", "op": "MIN(Q)"}
+    </sql-option>
+    <sql-option desc="Maximum">
+      {"grp": "Date", "op": "MAX(Q)"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 - <script type="c-sql">GROUP_CONCAT(<h>$COL</h>)</script> : concatène les valeurs.
@@ -454,15 +577,23 @@ SELECT <h>$GRP</h>, <h>$OP</h>
 💡 Il est aussi possible de compter les entrées/valeurs de chaque lignes :
 
 <sql-interactive>
-  <span slot="options" data-op='COUNT(*)' data-grp="Date">Compte le nombre d'entrées</span>
-  <span slot="options" data-op='COUNT(Q)' data-grp="Date">Compte les valeurs non-nulles</span>
-  <span slot="options" data-op='COUNT(DISTINCT Q)' data-grp="Date">Compte les valeurs distinctes</span>
-
-<script type="c-sql">
-SELECT <h>$GRP</h>, <h>$OP</h>
-  FROM Produits GROUP BY <h>$GRP</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$GRP</h>, <h>$OP</h>
+        FROM Produits GROUP BY <h>$GRP</h>;
+    </script>
+    <sql-option desc="Compte le nombre d'entrées">
+      {"grp": "Date", "op": "COUNT(*)"}
+    </sql-option>
+    <sql-option desc="Compte les valeurs">
+      {"grp": "Date", "op": "COUNT(Q)"}
+    </sql-option>
+    <sql-option desc="Compte les valeurs distinctes">
+      {"grp": "Date", "op": "COUNT(DISTINCT Q)"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 - <script type="c-sql">COUNT(*)</script> : compte le nombre d'entrées.
@@ -474,32 +605,47 @@ SELECT <h>$GRP</h>, <h>$OP</h>
 Jusqu'à présent, nous utilisions la clause <script type="c-sql">WHERE</script> pour sélectionner les entrées à récupérer. Cependant, la clause <script type="c-sql">WHERE</script> filtre les entrées **avant** leur agrégation au sein d'une même ligne. Ainsi, l'usage d'une fonction d'agrégation dans sa condition générera un message d'erreur :
 
 <sql-interactive>
-  <span slot="options" data-aggr=""    data-cond=">=10" data-cols="Q">Retirer des entrées avant agrégation</span>
-  <span slot="options" data-aggr=""    data-cond=">=20" data-cols="Q">Retirer des entrées avant agrégation</span>
-  <span slot="options" data-aggr="SUM" data-cond=">=20" data-cols="Q">Fonction d'agrégation génère erreur</span>
-
-<script type="c-sql">
-SELECT Date, GROUP_CONCAT(<h>$COLS</h>) FROM Produits
-  WHERE <h>$AGGR</h>(<h>$COLS</h>) <h>$COND</h>
-  GROUP BY Date;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT Date, GROUP_CONCAT(<h>$COLS</h>) FROM Produits
+        WHERE <h>$AGGR</h>(<h>$COLS</h>) <h>$COND</h>
+        GROUP BY Date;
+    </script>
+    <sql-option desc="Retirer des entrées avant agrégation">
+      {"aggr": "", "cond": ">=10", "cols": "Q"}
+    </sql-option>
+    <sql-option desc="Retirer des entrées avant agrégation">
+      {"aggr": "", "cond": ">=10", "cols": "Q"}
+    </sql-option>
+    <sql-option desc="Fonction d'agrégation génère erreur">
+      {"aggr": "SUM", "cond": ">=20", "cols": "Q"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 Pour filtrer les lignes **après** l'agrégation, il convient alors d'utiliser la clause <script type="c-sql">HAVING <h>$COND</h></script> :
 
 <sql-interactive>
-  <span slot="options" data-grp='Date' data-lcondp="" data-lcond="SUM(Q)" data-rcond =">= 0">Sans alias d'agrégat</span>
-  <span slot="options" data-grp='Date' data-lcondp="SUM(Q) as" data-lcond="Total" data-rcond =">= 30">Lignes dont la somme est >= 30</span>
-  <span slot="options" data-grp='Date' data-lcondp="SUM(Q) as" data-lcond="Total" data-rcond =">= 50">Lignes dont la somme est >= 50</span>
-
-<script type="c-sql">
-SELECT <h>$GRP</h>, <h>$LCONDP</h> <h>$LCOND</h> FROM Produits
-  GROUP BY <h>$GRP</h> HAVING <h>$LCOND</h> <h>$RCOND</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$GRP</h>, <h>$LCONDP</h> <h>$LCOND</h> FROM Produits
+        GROUP BY <h>$GRP</h> HAVING <h>$LCOND</h> <h>$RCOND</h>;
+    </script>
+    <sql-option desc="Sans alias d'agrégat">
+      {"grp": "Date", "lcondp": "", "lcond": "SUM(Q)", "rcond": ">= 0"}
+    </sql-option>
+    <sql-option desc="Lignes dont la somme est >= 30">
+      {"grp": "Date", "lcondp": "SUM(Q) as", "lcond": "Total", "rcond": ">= 30"}
+    </sql-option>
+    <sql-option desc="Lignes dont la somme est >= 50">
+      {"grp": "Date", "lcondp": "SUM(Q) as", "lcond": "Total", "rcond": ">= 50"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
-
-</main>
+      </main>
     </body>
 </html>

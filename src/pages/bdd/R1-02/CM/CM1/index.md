@@ -311,16 +311,17 @@ SELECT <h>$COLS[,...]</h> FROM <h>$TABLE</h>;
 ### Sélection des colonnes
 
 <sql-interactive id="col-sql">
-  <script type="c-sql">
-    SELECT <h>$COLS</h> FROM Users;
-  </script>
-  <sql-option title="Retourner toutes les colonnes">{"cols": "*"  }</sql-option>
-  <sql-option title="Retourner une seule colonne"  >{"cols": "Nom"}</sql-option>
-  <sql-option title="Retourner plusieurs colonnes" >{"cols": "ID, Prenom"}</sql-option>
-  <sql-dymtable slot="post" id="col-table" table="Users"></sql-dymtable>
-  <span slot="options" data-cols="*"       >Retourner toutes les colonnes</span>
-  <span slot="options" data-cols="Nom"     >Retourner une seule colonne</span>
-  <span slot="options" data-cols="ID, Prenom">Retourner plusieurs colonnes</span>
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$COLS</h> FROM Users;
+    </script>
+    <sql-option desc="Retourner toutes les colonnes">{"cols": "*"}</sql-option>
+    <sql-option desc="Retourner une seule colonne"  >{"cols": "Nom"}</sql-option>
+    <sql-option desc="Retourner plusieurs colonnes" >{"cols": "ID, Prenom"}</sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
+  <sql-dymtable id="col-table" table="Users"></sql-dymtable>
 </sql-interactive>
 
 <script type="module">
@@ -347,29 +348,40 @@ SELECT <h>$COLS[,...]</h> FROM <h>$TABLE</h>;
 
 💡 Dans le cadre d'une requête SQL, vous pouvez temporairement associer un alias à une colonne grâce au mot clé <script type="c-sql">as</script> :
 
-<sql-interactive>
-  <span slot="options" data-col_as="">Requête normale</span>
-  <span slot="options" data-col_as="as User">Renommer une colonne</span>
-
-<script type="c-sql">
-SELECT Nom <h>$COL_AS</h>, Age FROM Users;
-</script>
-
+<sql-interactive id="col-sql">
+  <sql-selector>
+    <script type="c-sql">
+      SELECT Nom <h>$COL_AS</h>, Age FROM Users;
+    </script>
+    <sql-option desc="Requête normale"     >{"col_as": ""       }</sql-option>
+    <sql-option desc="Renommer une colonne">{"col_as": "as User"}</sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ### Trier par ordre croissant/décroissant les lignes
 
 La clause <script type="c-sql">ORDER BY <h>$COL [DESC|ASC][,...]</h></script> permet de trier les lignes retournées par ordre croissant (<script type="c-sql">ASC</script>) ou décroissant (<script type="c-sql">DESC</script>).
 
-<sql-interactive>
-  <span slot="options" data-row_sort="Age ASC">Trier par Age croissant</span>
-  <span slot="options" data-row_sort="Age DESC">Trier par Age décroissant</span>
-  <span slot="options" data-row_sort="Age DESC, Nom ASC">Trier par Age décroissant, puis par Nom croissant</span>
-
-<script type="c-sql">
-SELECT * FROM Users ORDER BY <h>$ROW_SORT</h>;
-</script>
-
+<sql-interactive id="col-sql">
+  <sql-selector>
+    <script type="c-sql">
+      SELECT * FROM Users
+           ORDER BY <h>$ROW_SORT</h>;
+    </script>
+    <sql-option desc="Trier par Age croissant">
+      {"row_sort": "Age ASC"}
+    </sql-option>
+    <sql-option desc="Trier par Age décroissant">
+      {"row_sort": "Age DESC"}
+    </sql-option>
+    <sql-option desc="Trier par Age décroissant, puis par Nom croissant">
+      {"row_sort": "Age DESC, Nom ASC"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ## Selection des lignes
@@ -391,15 +403,23 @@ Il est ainsi possible de sélectionner des lignes de différentes manières :
 
 La manière générique de filter les lignes à retourner est d'ajouter une clause <script type="c-sql">WHERE <h>$COND</h></script> à la requête. Seules les lignes pour lesquelles <script type="c-sql"><h>$COND</h></script> est vraie seront retournées.
 
-<sql-interactive id="row-sql">
-  <sql-dymtable slot="post" id="row-table" table="Users"></sql-dymtable>
-  <span slot="options" data-cond="Age > 18">Retourner les entrées où Age > 18</span>
-  <span slot="options" data-cond="Nom == 'Doe'">Retourner les entrées où Nom est "Doe"</span>
 
-<script type="c-sql">
-SELECT * FROM Users WHERE <h>$COND</h>;
-</script>
-
+<sql-interactive id="col-sql">
+  <sql-selector>
+    <script type="c-sql">
+      SELECT * FROM Users
+              WHERE <h>$COND</h>;
+    </script>
+    <sql-option desc="Retourner les entrées où Age > 18">
+      {"cond": "Age > 18"}
+    </sql-option>
+    <sql-option desc="Retourner les entrées où Nom est 'Doe'">
+      {"cond": "Nom == 'Doe'"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
+  <sql-dymtable id="row-table" table="Users"></sql-dymtable>
 </sql-interactive>
 
 
@@ -427,15 +447,25 @@ SELECT * FROM Users WHERE <h>$COND</h>;
 
 💡 La structure d'une condition est très simple, utilisant les opérateurs de comparaison que vous connaissez déjà : <script type="c-sql">></script>, <script type="c-sql"><</script>, <script type="c-sql">>=</script>, <script type="c-sql"><=</script>, <script type="c-sql">!=</script>.
 
+
 <sql-interactive>
-  <span slot="options" data-cond="ID > 1">Comparaison simple</span>
-  <span slot="options" data-cond="Prenom == Nom">Comparaison entre 2 colonnes</span>
-  <span slot="options" data-cond="0 < Age < 18">Chaîner les opérateurs produit un résultat étrange</span>
-
-<script type="c-sql">
-SELECT Age, Nom, Prenom FROM Users WHERE <h>$COND</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT Age, Nom, Prenom FROM Users
+       WHERE <h>$COND</h>;
+    </script>
+    <sql-option desc="Comparaison simple">
+      {"cond": "ID > 1"}
+    </sql-option>
+    <sql-option desc="Comparaison entre 2 colonnes">
+      {"cond": "Prenom == Nom"}
+    </sql-option>
+    <sql-option desc="Chaîner les opérateurs produit un résultat étrange">
+      {"cond": "0 < Age < 18"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 💡 Vous pouvez utiliser les noms de colonnes comme opérandes, même si elles n'apparaissent pas dans les colonnes à retourner.
@@ -443,8 +473,8 @@ SELECT Age, Nom, Prenom FROM Users WHERE <h>$COND</h>;
 ⚠ Comme vous le constatez dans l'exemple ci-dessus, bien que cela soit syntaxiquement valide, <strong>chaîner les opérateurs de comparaisons ne produira pas le résultat attendu</strong>.<br/>
 Vous ne devez ainsi pas écrire, e.g. <script type="c-sql">0 < Age < 18</script>, mais (cf suite du cours) :
 <ul>
-  <li>soit <code>0 < Age AND Age < 18</code> ;</li>
-  <li>soit <code>Age BETWEEN 0 AND 18</code> .</li>
+  <li>soit <script type="c-sql">0 < Age AND Age < 18</script> ;</li>
+  <li>soit <script type="c-sql">Age BETWEEN 0 AND 18</script> .</li>
 </ul>
 
 #### Opérateurs logiques
@@ -452,14 +482,23 @@ Vous ne devez ainsi pas écrire, e.g. <script type="c-sql">0 < Age < 18</script>
 Vous pouvez composer des conditions à l'aide d'opérateurs logiques que vous connaissez déjà : <script type="c-sql">AND</script>, <script type="c-sql">OR</script>, <script type="c-sql">NOT</script>.
 
 <sql-interactive>
-  <span slot="options" data-cond="Age > 18 AND Age < 45">Intersection (et)</span>
-  <span slot="options" data-cond="Age > 18 OR Age < 45">Union (ou)</span>
-  <span slot="options" data-cond="NOT ( Age > 18 )">Négation (non)</span>
-
-<script type="c-sql">
-SELECT Age, Nom, Prenom FROM Users WHERE <h>$COND</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT Age, Nom, Prenom FROM Users
+       WHERE <h>$COND</h>;
+    </script>
+    <sql-option desc="Intersection (et)">
+      {"cond": "Age > 18 AND Age < 45"}
+    </sql-option>
+    <sql-option desc="Union (ou)">
+      {"cond": "Age > 18 OR Age < 45"}
+    </sql-option>
+    <sql-option desc="Négation (non)">
+      {"cond": "NOT ( Age > 18 )"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 💡 Vous pouvez aussi utiliser des parenthèses.
@@ -467,15 +506,26 @@ SELECT Age, Nom, Prenom FROM Users WHERE <h>$COND</h>;
 #### Autres opérateurs
 
 <sql-interactive>
-  <span slot="options" data-cond="Age IS NULL">Entrées où Age vaut null</span>
-  <span slot="options" data-cond="Nom IN ('Doe', 'Nescio')">Entrées où Nom est dans la liste</span>
-  <span slot="options" data-cond="Age BETWEEN 0 AND 18">Entrées où Age est compris entre 0 et 18</span>
-  <span slot="options" data-cond="Nom LIKE 'D%'">Entrées où Nom commence par "D"</span>
-
-<script type="c-sql">
-SELECT Age, Nom, Prenom FROM Users WHERE <h>$COND</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT Age, Nom, Prenom FROM Users
+       WHERE <h>$COND</h>;
+    </script>
+    <sql-option desc="Entrées où Age vaut null">
+      {"cond": "Age IS NULL"}
+    </sql-option>
+    <sql-option desc="Entrées où Nom est dans la liste">
+      {"cond": "Nom IN ('Doe', 'Nescio')"}
+    </sql-option>
+    <sql-option desc="Entrées où Age est compris entre 0 et 18">
+      {"cond": "Age BETWEEN 0 AND 18"}
+    </sql-option>
+    <sql-option desc="Entrées où Nom commence par 'D'">
+      {"cond": "Nom LIKE 'D%'"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 - <script type="c-sql">IS <h>[NOT]</h> NULL</script> : si la valeur est nulle/n'est pas nulle.<br/>
@@ -497,13 +547,19 @@ SELECT Age, Nom, Prenom FROM Users WHERE <h>$COND</h>;
 La clause <script type="c-sql">DISTINCT</script> permet de supprimer les doublons dans les lignes retournées :
 
 <sql-interactive>
-  <span slot="options" data-row_distinct="">Requête normale</span>
-  <span slot="options" data-row_distinct="DISTINCT">Ne pas retourner les doublons</span>
-
-<script type="c-sql">
-SELECT <h>$ROW_DISTINCT</h> Age FROM Users;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$ROW_DISTINCT</h> Age FROM Users;
+    </script>
+    <sql-option desc="Requête normale">
+      {"row_distinct": ""}
+    </sql-option>
+    <sql-option desc="Ne pas retourner les doublons">
+      {"row_distinct": "DISTINCT"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ### Tops et pagination
@@ -512,16 +568,24 @@ SELECT <h>$ROW_DISTINCT</h> Age FROM Users;
 
 La clause <script type="c-sql">LIMIT <h>$N</h></script> permet de ne récupérer que les <script type="c-sql"><h>$N</h></script> premières entrées retournées. Souvent utilisée avec la clause <script type="c-sql">ORDER BY</script>, elle permet notamment de générer des tops, e.g. les X utilisateurs les plus jeunes.
 
-
 <sql-interactive>
-  <span slot="options" data-pagination="1">Ne récupérer que la première entrée</span>
-  <span slot="options" data-pagination="2">Ne récupérer que les deux premières entrées</span>
-  <span slot="options" data-orderby="ORDER BY Age" data-pagination="1">Ne récupérer que l'utilisateur le plus jeune</span>
-
-<script type="c-sql">
-SELECT * FROM Users <h>$ORDERBY</h> LIMIT <h>$PAGINATION</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT * FROM Users
+        <h>$ORDERBY</h> LIMIT <h>$PAGINATION</h>;
+    </script>
+    <sql-option desc="Ne récupérer que la première entrée">
+      {"pagination": "1"}
+    </sql-option>
+    <sql-option desc="Ne récupérer que les deux premières entrées">
+      {"pagination": "2"}
+    </sql-option>
+    <sql-option desc="Ne récupérer que l'utilisateur le plus jeune">
+      {"pagination": "1", "orderby": "ORDER BY Age"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 #### Pagination
@@ -530,18 +594,31 @@ Lorsqu'une requête retourne des milliers de lignes, il peut être coûteux de t
 
 Pour cela, on utilisera la clause <script type="c-sql">LIMIT 50</script> afin de ne récupérer que 50 entrées par requêtes. En conjonction, on utilisera la clause <script type="c-sql">OFFSET <h>$P</h>*50</script> qui permet de ne pas récupérer les <script type="c-sql"><h>$P</h>*50</script> premières entrées retournées. <script type="c-sql"><h>$P</h>+1</script> étant alors le numéro de la page actuelle.
 
-<sql-interactive id="pagination-sql">
-  <sql-dymtable slot="post" id="pagination-table" table="Users"></sql-dymtable>
-  <span slot="options" data-pagination="1" data-p="0">Page 1 (1 entrée par page)</span>
-  <span slot="options" data-pagination="1" data-p="1">Page 2 (1 entrée par page)</span>
-  <span slot="options" data-pagination="1" data-p="2">Page 3 (1 entrée par page)</span>
-  <span slot="options" data-pagination="2" data-p="0*2">Page 1 (2 entrée par page)</span>
-  <span slot="options" data-pagination="2" data-p="1*2">Page 2 (2 entrée par page)</span>
-
-<script type="c-sql">
-SELECT * FROM Users LIMIT <h>$PAGINATION</h> OFFSET <h>$P</h> ;
-</script>
-
+<sql-interactive>
+  <sql-selector>
+    <script type="c-sql">
+      SELECT * FROM Users
+              LIMIT <h>$PAGINATION</h> OFFSET <h>$P</h>;
+    </script>
+    <sql-option desc="Page 1 (1 entrée par page)">
+      {"pagination": "1", "p": "0"}
+    </sql-option>
+    <sql-option desc="Page 2 (1 entrée par page)">
+      {"pagination": "1", "p": "1"}
+    </sql-option>
+    <sql-option desc="Page 3 (1 entrée par page)">
+      {"pagination": "1", "p": "2"}
+    </sql-option>
+    <sql-option desc="Page 1 (2 entrée par page)">
+      {"pagination": "2", "p": "0*2"}
+    </sql-option>
+    <sql-option desc="Page 2 (2 entrée par page)">
+      {"pagination": "2", "p": "1*2"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
+  <sql-dymtable id="pagination-table" table="Users"></sql-dymtable>
 </sql-interactive>
 
 <script type="module">
@@ -599,15 +676,15 @@ Par exemple lors d'une requête <script type="c-sql">SELECT</script>:
 
 <div style="display:flex">
   <ol id="order-list">
-    <li step="1">On récupère la table (clause <code>FROM</code>).</li>
+    <li step="1">On récupère la table (clause <script type="c-sql">FROM</script>).</li>
     <li step="2" class="warning"><em>Alias de colonnes définies ici.</em></li>
-    <li step="3">On filtre les entrées (clause <code>WHERE</code>).</li>
-    <li class="later">On groupe les entrées en lignes (clause <code>GROUP BY</code>).</li>
+    <li step="3">On filtre les entrées (clause  <script type="c-sql">WHERE</script>).</li>
+    <li class="later">On groupe les entrées en lignes (clause  <script type="c-sql">GROUP BY</script>).</li>
     <li class="later warning"><em>Alias de colonnes d'agrégats définies ici.</em></li>
-    <li class="later">On filtre les lignes agrégées (clause <code>HAVING</code>).</li>
-    <li class="warning" step="4">On supprime les doublons (clause <code>SELECT DISTINCT</code>).</li>
-    <li step="5">On trie les lignes (clause <code>ORDER BY</code>).</li>
-    <li step="6">On limite le nombre de lignes retournées (clauses <code>LIMIT</code>/<code>OFFSET</code>).</li>
+    <li class="later">On filtre les lignes agrégées (clause  <script type="c-sql">HAVING</script>).</li>
+    <li class="warning" step="4">On supprime les doublons (clause  <script type="c-sql">SELECT DISTINCT</script>).</li>
+    <li step="5">On trie les lignes (clause  <script type="c-sql">ORDER BY</script>).</li>
+    <li step="6">On limite le nombre de lignes retournées (clauses  <script type="c-sql">LIMIT</script>/<script type="c-sql">OFFSET</script>).</li>
   </ol>
   <div>
     <div style="text-align: center">

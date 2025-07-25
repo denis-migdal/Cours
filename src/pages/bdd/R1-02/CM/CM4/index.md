@@ -28,22 +28,24 @@ Ces opérations s'utilisent sous la forme suivante :
 
 <script type="c-sql">
 SELECT <h>$QUERY_1</h>
-<h>UNION [ALL]|INTERSECT|EXCEPT</h>
+  <h>UNION [ALL]|INTERSECT|EXCEPT</h>
 SELECT <h>$QUERY_2</h>
 </script>
 
 <sql-interactive>
-  <span slot="options" data-op='UNION'></span>
-  <span slot="options" data-op='UNION ALL'></span>
-  <span slot="options" data-op='INTERSECT'></span>
-  <span slot="options" data-op='EXCEPT'></span>
-
-<script type="c-sql">
-SELECT * FROM Produits
-<h>$OP</h>
-SELECT Nom, Prenom, Age FROM Users;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+    SELECT * FROM Produits
+      <h>$OP</h>
+    SELECT Nom, Prenom, Age FROM Users;
+    </script>
+    <sql-option>{"op": "UNION"}</sql-option>
+    <sql-option>{"op": "UNION ALL"}</sql-option>
+    <sql-option>{"op": "INTERSECT"}</sql-option>
+    <sql-option>{"op": "EXCEPT"}</sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ## Sous requêtes
@@ -55,15 +57,25 @@ Vous pouvez utiliser le résultat d'une requête <script type="c-sql">SELECT</sc
 
 Par exemple, pour utiliser une sous-requête dans une condition <script type="c-sql">WHERE</script> :
 
+
 <sql-interactive>
-  <span slot="options" data-cond='>' data-subquery='SELECT AVG(ID) FROM T2'>Sous-requête (op. de comparaison sur une valeur)</span>
-  <span slot="options" data-cond='>' data-subquery='SELECT ID FROM T2'>Sous-requête (op. de comparaison sur une liste)</span>
-  <span slot="options" data-cond='IN' data-subquery='SELECT ID FROM T2'>Sous-requête (IN)</span>
-
-<script type="c-sql">
-SELECT * FROM T1 WHERE ID <h>$COND</h> ( <h>$SUBQUERY</h> );
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT * FROM T1
+       WHERE ID <h>$COND</h> (<h>$SUBQUERY</h>);
+    </script>
+    <sql-option desc="Sous-requête (op. de comparaison sur une valeur)">
+      {"cond": ">", "subquery": "SELECT AVG(ID) FROM T2"}
+    </sql-option>
+    <sql-option desc="Sous-requête (op. de comparaison sur une liste)">
+      {"cond": ">", "subquery": "SELECT ID FROM T2"}
+    </sql-option>
+    <sql-option desc="Sous-requête (IN)">
+      {"cond": "IN", "subquery": "SELECT ID FROM T2"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 💡 Les opérateurs de comparaisons utilisés sur une liste retourneront vrai si la condition est vraie pour au moins un élément de la liste.
@@ -78,14 +90,18 @@ Lorsque la sous-requête dépend d'une colonne de la requête principale, elle e
 - <script type="c-sql">ANY</script>/<script type="c-sql">SOME</script> ou <script type="c-sql">ALL</script> au lieu d'utiliser certaines fonctions d'agrégations.
 
 <sql-interactive>
-  <span slot="options" data-cond='EXISTS'>Sous-requête corrélée</span>
-
-<script type="c-sql">
-SELECT * FROM T1 WHERE <h>$COND</h> (
-  SELECT ID FROM T2 WHERE T2.ID = T1.ID
-);
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+    SELECT * FROM T1 WHERE <h>$COND</h> (
+      SELECT ID FROM T2 WHERE T2.ID = T1.ID
+    );
+    </script>
+    <sql-option desc="Sous-requête corrélée">
+      {"cond": "EXISTS"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 En effet, une sous-requête non-corrélée n'étant exécutée qu'une seule fois, il est intéressant de l'évaluer entièrement en amont (i.e. récupérer toutes les lignes), pour ensuite utiliser son résultat, à chaque entrée de la requête principale, lors de l'évaluation la clause <script type="c-sql">WHERE</script>, sans avoir à le recalculer à chaque fois.
@@ -449,17 +465,21 @@ En réalité, il existe 3 types de jointures fréquemment utilisées :
 - <script type="c-sql">FULL</script> (plus rare) : comme <script type="c-sql">LEFT</script>, mais ajoute au résultat les entrées de <script type="c-sql"><h>$T2</h></script> dont aucune entrée de <script type="c-sql"><h>$T1</h></script> ne correspond.<br/>
   💡 Il est équivalant à l'union de <script type="c-sql"><h>$T1</h> LEFT JOIN <h>$T2</h></script> et <script type="c-sql"><h>$T2</h> LEFT JOIN <h>$T1</h></script>.
 
-<sql-interactive id="join2_sql">
-  <span slot="options" data-jointype='INNER'></span>
-  <span slot="options" data-jointype='LEFT' ></span>
-  <span slot="options" data-jointype='RIGHT'></span>
-  <span slot="options" data-jointype='FULL' ></span>
-  <sql-dymtable slot="post" id="join2_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1 FULL JOIN T2 USING(ID)" header="T1 JOIN T2"></sql-dymtable>
 
-<script type="c-sql">
-SELECT * FROM T1 NATURAL <h>$JOINTYPE</h> JOIN T2;
-</script>
-
+<sql-interactive>
+  <sql-selector>
+    <script type="c-sql">
+      SELECT * FROM T1
+       NATURAL <h>$JOINTYPE</h> JOIN T2;
+    </script>
+    <sql-option>{"jointype": "INNER"}</sql-option>
+    <sql-option>{"jointype": "LEFT"}</sql-option>
+    <sql-option>{"jointype": "RIGHT"}</sql-option>
+    <sql-option>{"jointype": "FULL"}</sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
+  <sql-dymtable id="join2_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1 FULL JOIN T2 USING(ID)" header="T1 JOIN T2"></sql-dymtable>
 </sql-interactive>
 
 <script type="module">
@@ -510,26 +530,43 @@ Il se peut que vous souhaitiez expliciter les colonnes sur lesquelles effectuer 
 💡 Il est recommandé d'utiliser <script type="c-sql">USING</script> au lieu de jointures naturelles (i.e. avec <script type="c-sql">NATURAL</script>) afin d'éviter des jointures accidentelles.
 
 <sql-interactive>
-  <span slot="options" data-jointype='NATURAL'>Jointure naturelle (à éviter)</span>
-  <span slot="options" data-joincond='USING(ID)'>Jointure explicite (noms de colonnes identiques)</span>
-  <span slot="options" data-joincond='ON T1.T1 == T2.T2'>Jointure explicite (noms de colonnes différentes)</span>
-
-<script type="c-sql">
-SELECT * FROM T1 <h>$JOINTYPE</h> INNER JOIN T2 <h>$JOINCOND</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT * FROM T1 <h>$JOINTYPE</h>
+         INNER JOIN T2 <h>$JOINCOND</h>;
+    </script>
+    <sql-option desc="Jointure naturelle (à éviter)">
+      {"jointype": "INNER"}
+    </sql-option>
+    <sql-option desc="Jointure explicite (noms de colonnes identiques)">
+      {"joincond": "USING(ID)"}
+    </sql-option>
+    <sql-option desc="Jointure explicite (noms de colonnes différentes)">
+      {"joincond": "ON T1.T1 == T2.T2"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ⚠ Si deux colonnes ont le même nom, seule la première sera affichée. Si vous souhaitez afficher la seconde, il est alors nécessaire de la renommer :
 
 <sql-interactive>
-  <span slot="options" data-cols='*'>Sans renommer les colonnes de même noms</span>
-  <span slot="options" data-cols='*, T2.ID as ID2'>En renommant les colonnes de même noms</span>
-
-<script type="c-sql">
-SELECT <h>$COLS</h> FROM T1 INNER JOIN T2 USING(ID);
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT <h>$COLS</h>
+            FROM T1
+      INNER JOIN T2 USING(ID);
+    </script>
+    <sql-option desc="Sans renommer les colonnes de même noms">
+      {"cols": "*"}
+    </sql-option>
+    <sql-option desc="En renommant les colonnes de même noms">
+      {"cols": "*, T2.ID as ID2"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 <!--

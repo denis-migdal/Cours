@@ -18,14 +18,20 @@
 La structure d'une table, appelée **schémas**, est constituée du nom et du type de chaque colonne :
 
 <sql-interactive>
-  <span slot="options" data-tablename="'Users'">Schéma de la table Users</span>
-  <span slot="options" data-tablename="'Produits'">Schéma de la table Produits</span>
-
-<script type="c-sql">
-SELECT * FROM
-pragma_table_xinfo(<h>$TABLENAME</h>);
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT * FROM
+        pragma_table_xinfo(<h>$TABLENAME</h>);
+    </script>
+    <sql-option desc="Schéma de Users">
+      {"tablename": "'Users'"}
+    </sql-option>
+    <sql-option desc="Schéma de Produits">
+      {"tablename": "'Produits'"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 - <script type="c-sql">cid</script> est l'identifiant de la colonne.
@@ -49,31 +55,25 @@ pragma_table_xinfo(<h>$TABLENAME</h>);
     <tr>
       <td>SQLite</td>
       <td>
-
-<script type="c-sql">
-SELECT * FROM pragma_table_xinfo(<h>$TABLENAME<h>);
-</script>
-
-</td>
+        <script type="c-sql">
+          SELECT * FROM pragma_table_xinfo(<h>$TABLENAME</h>);
+        </script>
+      </td>
     </tr><tr>
       <td>PostgreSQL</td>
       <td>
-
-<script type="c-sql">
-SELECT * FROM information_schema.columns 
-WHERE table_name == <h>$TABLENAME</h>;
-</script>
-
-</td>
+        <script type="c-sql">
+          SELECT * FROM information_schema.columns 
+          WHERE table_name == <h>$TABLENAME</h>;
+        </script>
+      </td>
     </tr><tr>
       <td>MySQL</td>
       <td>
-
-<script type="c-sql">
-DESCRIBE <h>$TABLENAME</h>;
-</script>
-
-</td>
+        <script type="c-sql">
+          DESCRIBE <h>$TABLENAME</h>;
+        </script>
+      </td>
     </tr>
   </tbody>
 </table>
@@ -101,17 +101,25 @@ CREATE TABLE <h>[IF NOT EXISTS]</h> <h>$TABLENAME</h> (<h>$COLNAME $COLTYPE[,
 ⚠ Si vous utilisez SQLite, il faut ajouter <script type="c-sql">STRICT</script> à la fin de la requête SQL afin de le forcer à vérifier les types des colonnes lors des opérations sur la table.
 
 <sql-interactive>
-  <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="('Crayon', 4)">Création d'une table</span>
-  <span slot="options" data-m_cols="(Ref TEXT, Q INT)" data-m_vals="(4, 'Crayon')">Violation contrainte de type</span>
-
-<script type="c-sql">
-CREATE TABLE T
-      <h>$M_COLS</h> STRICT;
-INSERT INTO T VALUES
-      <h>$M_VALS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+    CREATE TABLE T
+          <h>$M_COLS</h> STRICT;
+    INSERT INTO T VALUES
+          <h>$M_VALS</h>;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM T;
+    </script>
+    <sql-option desc="Création d'une table">
+      {"m_cols": "(Ref TEXT, Q INT)", "m_vals": "('Crayon', 4)"}
+    </sql-option>
+    <sql-option desc="Violation contrainte de type">
+      {"m_cols": "(Ref TEXT, Q INT)", "m_vals": "(4, 'Crayon')"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 #### IF NOT EXISTS
@@ -123,16 +131,22 @@ Si la table existe déjà, une erreur sera lancée. Pour éviter cela, vous pouv
 ⚠ Si le schéma de table du <script type="c-sql">IF NOT EXISTS</script> est différent de la table existante, aucune erreur ne sera lancée.
 
 <sql-interactive>
-  <span slot="options" data-ifexists="">Re-création d'une table</span>
-  <span slot="options" data-ifexists="IF NOT EXISTS">Avec IF NOT EXISTS</span>
-
-<script type="c-sql">
-CREATE TABLE T
-      (Date TEXT) STRICT;
-CREATE TABLE <h>$IFEXISTS</h> T
-      (Date INT) STRICT;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      CREATE TABLE T
+            (Date TEXT) STRICT;
+      CREATE TABLE <h>$IFEXISTS</h> T
+            (Date INT) STRICT;
+    </script>
+    <sql-option desc="Re-création d'une table">
+      {"ifexists": ""}
+    </sql-option>
+    <sql-option desc="Avec IF NOT EXISTS">
+      {"ifexists": "IF NOT EXISTS"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 #### CREATE TABLE AS
@@ -142,18 +156,26 @@ CREATE TABLE <h>$IFEXISTS</h> T
 ⚠ Cette méthode ne permet pas de préciser les contraintes de la table ainsi créez. Ainsi, il est préférable de d'abord créer une table vide (avec ses contraintes) avec <script type="c-sql">CREATE TABLE</script>, puis de la remplir avec <script type="c-sql">INSERT INTO</script>.
 
 <sql-interactive>
-  <span slot="select">SELECT * FROM T;</span>
-  <span slot="options" data-cols="*" data-tablename="Produits" data-cond="1==1"></span>
-  <span slot="options" data-cols="Date, Q" data-tablename="Produits" data-cond="Ref == 'Gomme'"></span>
-
-<script type="c-sql">
-CREATE TABLE T AS
-    SELECT <h>$COLS</h>
-    FROM <h>$TABLENAME</h>
-    WHERE <h>$COND</h>;
-SELECT * FROM T;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      CREATE TABLE T AS
+          SELECT <h>$COLS</h>
+          FROM <h>$TABLENAME</h>
+          WHERE <h>$COND</h>;
+      SELECT * FROM T;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM T;
+    </script>
+    <sql-option>
+      {"cols": "*", "tablename": "Produits", "cond": "1==1"}
+    </sql-option>
+    <sql-option>
+      {"cols": "Date, Q", "tablename": "Produits", "cond": "Ref == 'Gomme'"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ⚠ Sur SQLite, les tables créées de cette manière ne sont pas <script type="c-sql">STRICT</script>.
@@ -163,14 +185,20 @@ SELECT * FROM T;
 💡 Pour références, les requêtes SQL utilisées pour créer les tables des exemples peuvent être visualisées ci-dessous :
 
 <sql-interactive>
-  <span slot="options" data-tablename="'Produits'">CREATE TABLE pour Produits</span>
-  <span slot="options" data-tablename="'Users'">CREATE TABLE pour Users</span>
-
-<script type="c-sql">
-SELECT sql FROM sqlite_schema
-WHERE name == <h>$TABLENAME</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      SELECT sql FROM sqlite_schema
+      WHERE name == <h>$TABLENAME</h>;
+    </script>
+    <sql-option desc="CREATE TABLE pour Produits">
+      {"tablename": "'Produits'"}
+    </sql-option>
+    <sql-option desc="CREATE TABLE pour Users">
+      {"tablename": "'Users'"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ### Suppression d'une table
@@ -183,16 +211,24 @@ TRUNCATE TABLE <h>$TABLENAME</h>;
 </script>
 
 <sql-interactive>
-  <span slot="select">SELECT name, type, "notnull", dflt_value, pk, hidden
+  <sql-selector>
+    <script type="c-sql">
+      <h>$COMMAND</h> Produits;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT name, type, "notnull", dflt_value, pk, hidden
         FROM pragma_table_xinfo('Produits');
-SELECT COUNT(*) as "NB ENTRIES" FROM Produits;</span>
-  <span slot="options" data-command="DROP TABLE">Suppression de la table</span>
-  <span slot="options" data-command="DELETE FROM">Suppression des entrées</span>
-
-<script type="c-sql">
-<h>$COMMAND</h> Produits;
-</script>
-
+      SELECT COUNT(*) as "NB ENTRIES" FROM Produits;
+    </script>
+    <sql-option desc="Suppression de la table">
+      {"command": "DROP TABLE"}
+    </sql-option>
+    <sql-option desc="Suppression des entrées">
+      {"command": "DELETE FROM"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 💡 Dans certains SGBD, <script type="c-sql">DROP TABLE</script> supporte une clause <script type="c-sql">IF EXISTS</script>. Ainsi, si vous souhaitez créer une table vide, vous pouvez la <script type="c-sql">DROP TABLE IF EXISTS</script> avant sa création pour vous assurer de la construire correctement.
@@ -212,18 +248,28 @@ ALTER TABLE <h>$TABLENAME</h> <h>(RENAME|ADD|DROP)</h> COLUMN <h>$COLNAME</h> 
 - <script type="c-sql">DROP</script> supprime une colonne (<script type="c-sql"><h>$OPT</h></script> = <script type="c-sql"> </script>).
 
 <sql-interactive>
-  <span slot="select">SELECT name, type, "notnull", dflt_value, pk, hidden
-        FROM pragma_table_xinfo('Produits');</span>
-  <span slot="options" data-command="RENAME" data-colname="Ref" data-opts="TO Prod">Renommer une colonne</span>
-  <span slot="options" data-command="ADD" data-colname="Sum" data-opts="INT">Ajouter une colonne</span>
-  <span slot="options" data-command="DROP" data-colname="Date" data-opts="">Supprimer une colonne</span>
-
-<script type="c-sql">
-ALTER TABLE Produits
-  <h>$COMMAND</h> COLUMN <h>$COLNAME</h> <h>$OPTS</h>;
-SELECT * FROM Produits;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      ALTER TABLE Produits
+        <h>$COMMAND</h> COLUMN <h>$COLNAME</h> <h>$OPTS</h>;
+      SELECT * FROM Produits;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT name, type, "notnull", dflt_value, pk, hidden
+        FROM pragma_table_xinfo('Produits');
+    </script>
+    <sql-option desc="Renommer une colonne">
+      {"command": "RENAME", "colname": "Ref", "opts": "TO Prod"}
+    </sql-option>
+    <sql-option desc="Ajouter une colonne">
+      {"command": "ADD", "colname": "Sum", "opts": "INT"}
+    </sql-option>
+    <sql-option desc="Supprimer une colonne">
+      {"command": "DROP", "colname": "Date", "opts": ""}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ⚠ Renommer ou supprimer la colonne d'une table n'est pas anodin. En effet, si ces colonnes sont utilisées ailleurs, e.g. dans des requêtes SQL, ces dernières ne fonctionneront plus correctement.
@@ -247,20 +293,32 @@ Afin de garantir la cohérence et consistence des tables, il est possible de dé
 Lors de la création de la table, il est possible de spécifier des contraintes sur des colonnes. Pour ce faire, on ajoute le(s) contrainte(s) après le type de la colonne :
 
 <sql-interactive>
-  <span slot="select">SELECT * FROM T;</span>
-  <span slot="options" data-cstrnt="DEFAULT 'D'" data-vals="(1)" data-cols='(A)' >Valeur par défaut</span>
-  <span slot="options" data-cstrnt="NOT NULL" data-vals="(1, NULL)">Valeur non-nulle</span>
-  <span slot="options" data-cstrnt="UNIQUE" data-vals="(1, 2), (1, 2)">Valeur unique</span>
-  <span slot="options" data-cstrnt="CHECK(B == UPPER(B) )" data-vals="(1, 'Nom')" >Condition sur la valeur</span>
-
-<script type="c-sql">
-CREATE TABLE T ( A TEXT,
-    B TEXT <h>$CSTRNT</h>
-  ) STRICT;
-INSERT INTO  T <h>$COLS</h> VALUES
-    <h>$VALS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      CREATE TABLE T ( A TEXT,
+          B TEXT <h>$CSTRNT</h>
+        ) STRICT;
+      INSERT INTO T <h>$COLS</h>
+           VALUES <h>$VALS</h>;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM T;
+    </script>
+    <sql-option desc="Valeur par défaut">
+      {"cstrnt": "DEFAULT 'D'", "vals": "(1)", "cols": "(A)"}
+    </sql-option>
+    <sql-option desc="Valeur non-nulle">
+      {"cstrnt": "NOT NULL", "vals": "(1)", "cols": "(A)"}
+    </sql-option>
+    <sql-option desc="Valeur unique">
+      {"cstrnt": "UNIQUE", "vals": "(1, 2), (1, 2)"}
+    </sql-option>
+    <sql-option desc="Condition sur la valeur">
+      {"cstrnt": "CHECK(B == UPPER(B) )", "vals": "(1, 'Nom')"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 - <script type="c-sql">DEFAULT <h>$VAL</h></script> : valeur par défaut si non renseignée lors d'un <script type="c-sql">INSERT</script>.
@@ -274,18 +332,25 @@ INSERT INTO  T <h>$COLS</h> VALUES
 Les contraintes <script type="c-sql">UNIQUE</script> et <script type="c-sql">CHECK</script> peuvent dépendre de plusieurs colonnes. Dans ce cas, la contrainte est ajoutée après la liste des colonnes :
 
 <sql-interactive>
-  <span slot="options" data-cstrnt="UNIQUE(A,B)" data-vals="(1, 2), (1, 2)">Colonnes uniques</span>
-  <span slot="options" data-cstrnt="CHECK(B != A)" data-vals="(1, 1)" >Condition</span>
-
-<script type="c-sql">
-CREATE TABLE T (
-    A TEXT, B TEXT,
-    <h>$CSTRNT</h>
-  ) STRICT;
-INSERT INTO  T VALUES
-    <h>$VALS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      CREATE TABLE T ( A TEXT, B TEXT,
+                       <h>$CSTRNT</h>
+                     ) STRICT;
+      INSERT INTO  T VALUES <h>$VALS</h>;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM T;
+    </script>
+    <sql-option desc="Colonnes uniques">
+      {"cstrnt": "UNIQUE(A, B)", "vals": "(1, 2), (1, 2)" }
+    </sql-option>
+    <sql-option desc="Condition">
+      {"cstrnt": "CHECK(B != A)", "vals": "(1, 1)"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 ### Colonnes générées
@@ -293,19 +358,26 @@ INSERT INTO  T VALUES
 Il est possible de générer la valeur d'une colonne à partir des valeurs d'autres colonnes grâce à la contrainte <script type="c-sql">AS</script> :
 
 <sql-interactive>
-  <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-cstrnt="(PU*Q )" data-vals="(1,2), (3,4)">Colonne générée virtuelle</span>
-  <span slot="options" data-cstrnt="(PU*Q) STORED" data-vals="(1,2), (3,4)">Colonne générée stockée</span>
-
-<script type="c-sql">
-CREATE TABLE T (
-    PU INT, Q INTEGER,
-    T INT AS <h>$CSTRNT</h>
-  ) STRICT;
-INSERT INTO  T VALUES
-    <h>$VALS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      CREATE TABLE T (PU INT,
+                      Q  INT,
+                      T  INT AS <h>$CSTRNT</h>
+                     ) STRICT;
+      INSERT INTO  T VALUES <h>$VALS</h>;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM T;
+    </script>
+    <sql-option desc="Colonne générée virtuelle">
+      {"cstrnt": "(PU*Q)", "vals": "(1,2), (3,4)" }
+    </sql-option>
+    <sql-option desc="Colonne générée stockée">
+      {"cstrnt": "(PU*Q) STORED", "vals": "(1,2), (3,4)"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 💡 <script type="c-sql">STORED</script> signifie que la valeur sera calculée lors des insertions/modifications puis stockées. Si absent, la valeur sera recalculée à chaque accès.
@@ -325,20 +397,27 @@ Une clef primaire est un index un peu spécial accélérant encore plus les rech
 Elle est créée via une contrainte <script type="c-sql">PRIMARY KEY</script> et implique les contraintes <script type="c-sql">UNIQUE NOT NULL</script>. Il ne peut y avoir qu'une clef primaire par table.
 
 <sql-interactive>
-  <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-pk="TEXT PRIMARY KEY" data-vals="('1'), ('2')">Clé primaire (texte)</span>
-  <span slot="options" data-pk="TEXT PRIMARY KEY" data-vals="('1'), ('1')">Clé primaire (dupliquée)</span>
-  <span slot="options" data-pk="INTEGER
-      PRIMARY KEY AUTOINCREMENT" data-vals="(NULL), (NULL)">Clé primaire (auto-incrément)</span>
-
-<script type="c-sql">
-CREATE TABLE T (
-    K <h>$PK</h>
-  ) STRICT;
-INSERT INTO  T VALUES
-    <h>$VALS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      CREATE TABLE T (K <h>$PK</h>
+                     ) STRICT;
+      INSERT INTO  T VALUES <h>$VALS</h>;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM T;
+    </script>
+    <sql-option desc="Clé primaire (texte)">
+      {"pk": "TEXT PRIMARY KEY", "vals": "('1'), ('2')"}
+    </sql-option>
+    <sql-option desc="Clé primaire (dupliquée)">
+      {"pk": "TEXT PRIMARY KEY", "vals": "('1'), ('1')"}
+    </sql-option>
+    <sql-option desc="Clé primaire (auto-incrément)">
+      {"pk": "INTEGER PRIMARY KEY\n                  AUTOINCREMENT", "vals": "(NULL), (NULL)"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 💡 La contrainte <script type="c-sql">AUTOINCREMENT</script> permet d'automatiquement incrémenter la clef primaire des entrées insérées. Elle ne peut être utilisée que sur une colonne <script type="c-sql">INTEGER PRIMARY KEY</script>.
@@ -346,19 +425,25 @@ INSERT INTO  T VALUES
 💡 Comme avec la contrainte <script type="c-sql">UNIQUE</script>, il est aussi possible de créer une clef primaire sur plusieurs colonnes via contrainte de table :
 
 <sql-interactive>
-  <span slot='select'>SELECT * FROM T;</span>
-  <span slot="options" data-pk="PRIMARY KEY(ID, CODE)" data-vals="(1, 'E')">Clé primaire (multi-cols)</span>
-
-<script type="c-sql">
-CREATE TABLE T (
-    ID INT, CODE TEXT,
-    <h>$PK</h>
-  ) STRICT;
-INSERT INTO  T VALUES
-    <h>$VALS</h>;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      CREATE TABLE T (
+          ID INT, CODE TEXT,
+          <h>$PK</h>
+        ) STRICT;
+      INSERT INTO  T VALUES <h>$VALS</h>;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM T;
+    </script>
+    <sql-option desc="Clé primaire (multi-cols)">
+      {"pk": "PRIMARY KEY(ID, CODE)", "vals": "(1, 'E')"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
+
 
 💡 Certains SGBD créent automatiquement, pour chaque table, une clef primaire cachée nommée <script type="c-sql">ROWID</script>.
 
@@ -381,19 +466,29 @@ FOREIGN KEY(<h>$FK[,...]</h>) REFERENCES <h>$T[($PK[,...])]</h>
 💡 Si la/les colonne(s) de la table référencée ne sont pas spécifiées, la/les colonne(s) de la clef primaire sont utilisée(s).
 
 <sql-interactive>
-  <span slot='select'>SELECT * FROM T;
-SELECT * FROM Users;</span>
-  <span slot="options" data-fk="REFERENCES Users" data-vals="(1, 'E')">Clef étrangère existante</span>
-  <span slot="options" data-fk="REFERENCES Users" data-vals="(4, 'E')">Clef étrangère non-existante</span>
-  <span slot="options" data-fk="REFERENCES Users" data-vals="(NULL, 'E')">Clef étrangère nulle</span>
-
-<script type="c-sql">
-CREATE TABLE T (ID INT <h>$FK</h>, C TEXT
-  ) STRICT;
-INSERT INTO  T VALUES
-    $VALS;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      CREATE TABLE T (ID INT <h>$FK</h>,
+                      C  TEXT
+                     ) STRICT;
+      INSERT INTO  T VALUES <h>$VALS</h>;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM T;
+      SELECT * FROM Users;
+    </script>
+    <sql-option desc="Clef étrangère existante">
+      {"fk": "REFERENCES Users", "vals": "(1, 'E')"}
+    </sql-option>
+    <sql-option desc="Clef étrangère non-existante">
+      {"fk": "REFERENCES Users", "vals": "(4, 'E')"}
+    </sql-option>
+    <sql-option desc="Clef étrangère nulle">
+      {"fk": "REFERENCES Users", "vals": "(NULL, 'E')"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
 </sql-interactive>
 
 💡 La clé étrangère peut être nulle (sauf si contrainte <script type="c-sql">NOT NULL</script>).
@@ -423,27 +518,35 @@ Une flèche est aussi tirée des clefs étrangères jusqu'aux clefs primaires qu
 💡 En fonction des besoins, il est possible d'ajouter plus ou moins de détails, comme e.g. les types et contraintes de colonnes.
 
 <sql-interactive id="uml-sql">
-  <span slot="options" data-pk="ID" data-fk="ID" data-cols_a="ID INT, CODE TEXT" data-cols_b="ID INT, CODE TEXT">Clef primaire (uni-col)</span>
-  <span slot="options" data-pk="ID, CODE" data-fk="ID, CODE" data-cols_a="CODE TEXT, X INT, ID INT" data-cols_b="ID INT, CODE TEXT">Clef primaire (multi-cols)</span>
-  <!-- TODO: LISS -->
+  <sql-selector>
+    <script type="c-sql">
+      CREATE TABLE A (
+          <h>$COLS_A</h>,
+          PRIMARY KEY(<h>$PK</h>)
+        ) STRICT;
+      CREATE TABLE B (
+          <h>$COLS_B</h>,
+          FOREIGN KEY(<h>$FK</h>)
+          REFERENCES B
+        ) STRICT;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM T;
+    </script>
+    <sql-option desc="Clef primaire (uni-col)">
+      {"pk": "ID", "fk": "ID", "cols_a": "ID INT, CODE TEXT", "cols_b": "ID INT, CODE TEXT"}
+    </sql-option>
+    <sql-option desc="Clef primaire (multi-cols)">
+      {"pk": "ID, CODE", "fk": "ID, CODE", "cols_a": "CODE TEXT, X INT, ID INT", "cols_b": "ID INT, CODE TEXT"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
   <pre id="uml" slot="post" class="hljs">
     <code>
       <div class="output"></div>
     </code>
   </pre>
-
-<script type="c-sql">
-CREATE TABLE A (
-    <h>$COLS_A</h>,
-    PRIMARY KEY(<h>$PK</h>)
-  ) STRICT;
-CREATE TABLE B (
-    <h>$COLS_B</h>,
-    FOREIGN KEY(<h>$FK</h>)
-    REFERENCES B
-  ) STRICT;
-</script>
-
 </sql-interactive>
 
 <!-- test -->
@@ -627,22 +730,36 @@ Comme nous l'avons vu à la section précédente, une clef étrangère référen
 C'est à vous de le définir via les clauses <script type="c-sql">ON DELETE <h>$POLICY</h></script> et <script type="c-sql">ON UPDATE <h>$POLICY</h></script> sur la clef étrangère :
 
 <sql-interactive full-reset="true">
-  <span slot='select'>SELECT * FROM T3;</span>
-  <span slot="options" data-pol="RESTRICT">Empêcher la suppression</span>
-  <span slot="options" data-pol="CASCADE">Supprimer l'entrée</span>
-  <span slot="options" data-pol="SET NULL">Mettre la colonne à NULL</span>
-
-
-<script type="c-sql">
-CREATE TABLE T3 (
-    ID INT, A TEXT,
-    FOREIGN KEY(ID) REFERENCES T1
-    ON DELETE <h>$POL</h>
-  ) STRICT;
-INSERT INTO T3 VALUES (2, 'A');
-DELETE FROM T1 WHERE ID = 2;
-</script>
-
+  <sql-selector>
+    <script type="c-sql">
+      CREATE TABLE T3 (
+          ID INT, A TEXT,
+          FOREIGN KEY(ID) REFERENCES T1
+          ON DELETE <h>$POL</h>
+        ) STRICT;
+      INSERT INTO T3 VALUES (2, 'A');
+      DELETE FROM T1 WHERE ID = 2;
+    </script>
+    <script type="c-sql" class="select">
+      SELECT * FROM T3;
+    </script>
+    <sql-option desc="Empêcher la suppression">
+      {"pol": "RESTRICT"}
+    </sql-option>
+    <sql-option desc="Supprimer l'entrée">
+      {"pol": "CASCADE"}
+    </sql-option>
+    <sql-option desc="Mettre la colonne à NULL">
+      {"pol": "SET NULL"}
+    </sql-option>
+  </sql-selector>
+  <sql-output></sql-output>
+  <div class="spacing"></div>
+  <pre id="uml" slot="post" class="hljs">
+    <code>
+      <div class="output"></div>
+    </code>
+  </pre>
 </sql-interactive>
 
 - <script type="c-sql">RESTRICT</script>: empêche la modification/suppression si les valeurs sont référencées par une clef étrangère.

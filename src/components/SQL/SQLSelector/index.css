@@ -1,0 +1,98 @@
+:host {
+
+    & .option, & .query {
+
+        border-radius: 4px;
+        overflow: hidden;
+
+        background-color: white;
+        color: black;
+
+        & .code {
+            font-family: monospace;
+            font-size: 12px;
+            
+            padding-left: 0.5rem;
+
+            padding-top: 4px;
+            padding-bottom: 4px;
+
+            & h {
+
+                outline: 1px solid black;
+                border-radius: 1px;
+                
+                &:empty::before {
+                    content: "\00a0"
+                }
+            }
+        }
+    }
+
+    & .query {
+        & h {
+            position: relative;
+            margin-right: 13px;
+
+            &::after {
+                right: -16px;
+                position: absolute;
+                content: "🖉";
+            }
+        }
+    }
+
+    & .option {
+
+        --arrow_width: 10px;
+
+        cursor: pointer;
+
+        padding-right: var(--arrow_width);
+        position: relative;
+
+        &:hover {
+            opacity: 0.75;
+        }
+
+        &::after {
+            content: ">";
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            height: 100%;
+            width: var(--arrow_width);
+            background-color: orange;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &.selected {
+            background-color: gold;
+
+            &::after {
+                opacity: 0.5;
+            }
+        }
+
+        & .desc {
+            width: calc(100%);
+
+            font-size: 14px;
+            line-height: 19px;
+
+            border-left: none;
+            border-top: none;
+            padding-left: 5px;
+            font-style: italic;
+
+            box-sizing: border-box;
+
+            background-color: lightgray;
+            opacity: 0.6;
+        }
+    }
+
+}

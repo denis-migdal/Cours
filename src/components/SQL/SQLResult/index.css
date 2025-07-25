@@ -1,3 +1,18 @@
 :host {
     font-family: monospace;
+    font-size: 12px;
+
+    & .highlight {
+        background-color: gold;
+        font-weight: bold;
+        font-style: italic;
+    }
+}
+
+:host(.error) {
+    background-color: #FFA07A !important;
+    font-style: italic;
+
+    display: inline-block;
+    width: 100%;
 }

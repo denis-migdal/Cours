@@ -5,12 +5,14 @@ import { keepSpaces } from "@LISS/components/code/code-script";
 export type SelectResult = Record<string, any>[];
 export type Result = null|string|SelectResult;
 
+export type PrintResult = {result: Result, cmp_to: SelectResult[]};
+
 const css = require("!!raw-loader!./index.css").default;
 
 export default class SQLResult extends LISS({css},
                                             WithBare,
                                             WithContent,
-                                            WithInput<Result>) {
+                                            WithInput<PrintResult>) {
 
     constructor() {
         super();
@@ -18,41 +20,26 @@ export default class SQLResult extends LISS({css},
         this._input.listen( () => {
 
             const value = this._input.value;
+            if( value === null)
+                return;
 
-            this.content.innerHTML = keepSpaces(this.#buildResult(value));
+            const html = this.#buildResult(value.result, value.cmp_to);
+            this.content.innerHTML = keepSpaces(html);
         });
     }
 
 
-    #buildResult(result: Result) {
+    #buildResult(result: Result, cmp_to: SelectResult[]) {
 
-        if( result == null)
+        if( result === null)
             return "";
 
         const sim_to     = undefined;
-        const compare_to = null;
-/*
-    //TODO
-        const query = this.#queriesTemplates[id];
-        
+        /*
         let sim_to = undefined;
         if( similar_to !== undefined)
             sim_to = _results[similar_to] as SelectResult;
-
-        let compare_to = null; // same query
-        if( Array.isArray(result) ) {
-            compare_to = _results.filter( (v, i) => {
-                if( i === id)
-                    return false;
-                return query === this.#queriesTemplates[i];
-            }) as SelectResult[];
-
-            if( compare_to.length === 0)
-                compare_to = null;
         }*/
-
-        if(result === null)
-            return "";
 
         if( ! Array.isArray(result) ) { // no update for now...
             this.host.classList.add('error');
@@ -95,10 +82,10 @@ export default class SQLResult extends LISS({css},
         const output = new OutputBuilder(colsizes, cols_highlight);
 
         output.addHLine()
-              .addLine (headers)
+              .addLine (headers, null, true)
               .addHLine();
 
-        let key = headers[0]; //dirty...
+        const key = headers[0]; //dirty...
 
         for(let j = 0; j < results.length; ++j) {
             let row = results[j];
@@ -108,9 +95,8 @@ export default class SQLResult extends LISS({css},
             /*if( sim_to !== undefined && cols_highlight.length === 0)
                 highlights = sim_to.find( l => l[key] === result[j][key] ) !== undefined;*/
 
-            if( compare_to !== null) {
-/*
-                let lines = compare_to.map( res => res!.find( l => l[key] === result[j][key] ) );
+            if( cmp_to.length !== 0) {
+                let lines = cmp_to.map( res => res!.find( l => l[key] === result[j][key] ) );
 
                 highlights = lines.includes(undefined);
 
@@ -124,7 +110,7 @@ export default class SQLResult extends LISS({css},
 
                     if( ! highlights.length )
                         highlights = false;
-                }*/
+                }
             }
 
             output.addLine(row, highlights);
@@ -154,18 +140,35 @@ class OutputBuilder {
         this.#html += `${vsep}${line.join(vsep)}${vsep}\n`;
     }
 
-    #padLine(line: string[], char: string = " ") {
+    #padLine(line: string[], char: string|null = " ", isHeader = false) {
+
+        if( char === null)
+            char = " ";
 
         let result = new Array(this.#colsizes.length);
-        for(let i = 0; i < result.length; ++i)
-            result[i] = char + (line[i] ?? "").padEnd(this.#colsizes[i] + 1, char);
+        for(let i = 0; i < result.length; ++i) {
+
+            const txt = line[i] ?? "";
+
+            let padMethod = "padEnd";
+            if( ! isHeader && txt[0] !== "'")
+                padMethod = "padStart"
+
+            // @ts-ignore
+            result[i] = char + txt[padMethod](this.#colsizes[i], char) + char;
+        }
 
         return result;
     }
 
-    addLine(line: string[], highlight:boolean|number[] = false) {
+    addLine(line: string[],
+            highlight:boolean|number[]|null = false,
+            isHeader = false) {
 
-        const row = this.#padLine(line); // cell highlight here.
+        if( highlight === null )
+            highlight = false;
+
+        const row = this.#padLine(line, null, isHeader); // cell highlight here.
 
         if( Array.isArray(highlight) )
             for(let idx of highlight)
