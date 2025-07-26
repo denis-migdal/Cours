@@ -63,6 +63,11 @@
             - CM2:CM2
             - CM3:CM3
             - CM4:CM4
+        + TD:TD
+            - TD1:TD1
+            - TD2:TD2
+            - TD3:TD3
+            - TD4:TD4
         + TP:TP
             - TP1:TP1
             - TP2:TP2
