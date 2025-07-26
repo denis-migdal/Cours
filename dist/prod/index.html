@@ -30,7 +30,7 @@
             <td></td>
         </tr>
         <tr>
-            <th>🔒 Sécurité</th>
+            <th><a href="/sec/">🔒 Sécurité</a></th>
             <td>Introduction à la Cybersécurité</td>
             <td><a href="/sec/R2-14/">Administration Système avec Linux</a></td>
             <td>Cryptographie et réseaux</td>
@@ -38,7 +38,7 @@
             <td>Pentest, Hacking, et Renforcement</td>
         </tr>
         <tr>
-            <th>🖳&nbsp;Développement</th>
+            <th><a href="/dev/">🖳&nbsp;Développement</a></th>
             <td></td>
             <td></td>
             <td></td>
@@ -51,7 +51,7 @@
             <th colspan="7"><i>Anciens cours</i></th>
         </tr>
         <tr>
-            <th>⛁ Bases de données</th>
+            <th><a href="/bdd/">⛁ Bases de données</a></th>
             <td>Tableur<hr/><a href="/bdd/R1-02/">Bases de données relationnelles 1</a></td>
             <td></td>
             <td></td>
@@ -59,14 +59,14 @@
             <td></td>
         </tr>
         <tr>
-            <th>🌐 Web</th>
+            <th><a href="/web/">🌐 Web</a></th>
             <td></td>
             <td></td>
-            <td>Technologies Web</td>
-            <td>Programmation Web
+            <td><a href="/web/R3-03">Technologies Web</a></td>
+            <td><a href="/web/R4-09-VCOD">Programmation Web</a>
             <hr/>
-            <i>SAÉ Collecte Automatisée de données Web</i></td>
-            <td>Programmation Web pour la Visualisation</td>
+            <i><a href="">SAÉ Collecte Automatisée de données Web</a></i></td>
+            <td><a href="/web/R5-07-VCOD">Programmation Web pour la Visualisation</a></td>
         </tr>
     </tbody>
 </table>
