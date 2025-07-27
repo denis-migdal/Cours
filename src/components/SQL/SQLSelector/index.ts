@@ -91,7 +91,13 @@ export default class SQLSelector extends LISS({css: [theme, css]},
     }
 
     #splitQueries(query: string) {
-        return query.split(";\n").map( q => q.trim());
+        return query.split(";\n").map( q => {
+            q = q.trim();
+            if( ! q.endsWith(';') )
+                q += ";"
+
+            return q;
+        });
     }
     #splitHTML(query: string) {
         return query.split(";<br>\n").map( q => {
@@ -105,6 +111,9 @@ export default class SQLSelector extends LISS({css: [theme, css]},
     }
 
     #onQueryChange() {
+
+        //TODO: by default if not select
+        const print_schema = this.host.getAttribute('print-schema') !== "false";
 
         // rules :
             // not SELECT or VALUES -> execute select before & after
@@ -136,13 +145,15 @@ export default class SQLSelector extends LISS({css: [theme, css]},
             if( query.startsWith("SELECT ") || query.startsWith("VALUES ") )
                 continue;
 
-            if( query.startsWith("CREATE TABLE ") ) {
+            if( query.startsWith("CREATE TABLE ") && print_schema ) {
                 let q = "CREATE TABLE ";
                 if( query.startsWith("CREATE TABLE IF NOT EXISTS") )
                     q = "CREATE TABLE IF NOT EXISTS ";
 
-                const offset = Math.min( query.indexOf(" " , q.length),
-                                         query.indexOf("\n", q.length) )
+                let offset = q.length;
+                while( query[offset] !== '(' &&  query[offset] !== ' ' && query[offset] !== '\n' )
+                    ++offset;
+
                 const tb_name = query.slice(q.length, offset);
                 const sq = `SELECT name, type, "notnull", dflt_value, pk, hidden\n        FROM pragma_table_xinfo('${tb_name}');`
                 

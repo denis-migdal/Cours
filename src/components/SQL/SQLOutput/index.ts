@@ -55,6 +55,8 @@ export default class SQLOutput extends LISS({ css, html: "<slot/>" },
 
             let cmp_to: SelectResult[] = [];
             const result = value.results[id];
+            if(result === undefined)
+                continue; // prev query likely exited with error.
 
             if( Array.isArray(result) ) // this is a SELECT query
                 cmp_to = value.results.filter( (v, i) => {

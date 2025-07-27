@@ -44,6 +44,11 @@ div.center {
     }
 }
 
+.flex {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
 .flex-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

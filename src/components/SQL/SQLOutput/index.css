@@ -1,4 +1,4 @@
-:host(.flex-2) {
+:host(:is(.flex-2, .flex-3, .flex-4, .flex, .contents)) {
     width: 100%;
     background: none !important;
     padding: 0;

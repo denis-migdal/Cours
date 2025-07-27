@@ -93,7 +93,7 @@ class DB {
     }
 
     #isTableName(c: string) {
-        return c !== " " && c !== ";" && c !== "\n";
+        return c !== " " && c !== ";" && c !== "\n" && c !== "(";
     }
 
     #extractTableNameFromSQL(sql: string) {
