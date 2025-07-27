@@ -63,16 +63,12 @@ export default class SQLOutput extends LISS({ css, html: "<slot/>" },
                             && typeof value.results[i] !== "string"; // error
                 }) as SelectResult[];
 
-            this.#results_input[i].value = { result, cmp_to };
+            const cmp_idx = this.#results[i].getAttribute('cmp_with');
+            let cmp_with: null|SelectResult = null;
+            if( cmp_idx !== null)
+                cmp_with = value.results[+cmp_idx-1] as SelectResult;
 
-            //TODO: highlight cells/lines/? (use meta ?)
-            /*
-            let sim_to = undefined;
-            if( result_out.hasAttribute("similar_to") )
-                sim_to = +result_out.getAttribute("similar_to")! - 1;
-
-            result_out.innerHTML = this.#buildResult(results, id, sim_to);
-            */
+            this.#results_input[i].value = { result, cmp_to, cmp_with };
         }
     }
 
@@ -97,19 +93,6 @@ export default class SQLOutput extends LISS({ css, html: "<slot/>" },
 
         this.#queries_input = this.#queries.map(e => getInput<string     >(e));
         this.#results_input = this.#results.map(e => getInput<PrintResult>(e));
-    }
-
-    setActive(id: number) {
-
-        throw "called";
-
-        for(let elem of this.host.querySelectorAll('.active') )
-            elem.classList.remove('active');
-
-        for(let query  of this.#queries)
-            query.children [id]?.classList.add('active');
-        for(let result of this.#results)
-            result.children[id]?.classList.add('active');
     }
 }
 

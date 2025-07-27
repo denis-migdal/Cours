@@ -5,7 +5,11 @@ import { keepSpaces } from "@LISS/components/code/code-script";
 export type SelectResult = Record<string, any>[];
 export type Result = null|string|SelectResult;
 
-export type PrintResult = {result: Result, cmp_to: SelectResult[]};
+export type PrintResult = {
+                            result: Result,
+                            cmp_to: SelectResult[],
+                            cmp_with: SelectResult|null
+                        };
 
 const css = require("!!raw-loader!./index.css").default;
 
@@ -23,23 +27,20 @@ export default class SQLResult extends LISS({css},
             if( value === null)
                 return;
 
-            const html = this.#buildResult(value.result, value.cmp_to);
+            const html = this.#buildResult(value.result,
+                                           value.cmp_to,
+                                           value.cmp_with);
             this.content.innerHTML = keepSpaces(html);
         });
     }
 
 
-    #buildResult(result: Result, cmp_to: SelectResult[]) {
+    #buildResult(result: Result,
+                 cmp_to: SelectResult[],
+                 cmp_with: SelectResult|null) {
 
         if( result === null)
             return "";
-
-        const sim_to     = undefined;
-        /*
-        let sim_to = undefined;
-        if( similar_to !== undefined)
-            sim_to = _results[similar_to] as SelectResult;
-        }*/
 
         if( ! Array.isArray(result) ) { // no update for now...
             this.host.classList.add('error');
@@ -70,9 +71,12 @@ export default class SQLResult extends LISS({css},
         }
 
         let cols_highlight = [];
-        if( sim_to !== undefined) {
+        if( cmp_with !== null) {
+
+            const cmp_with_headers = Object.keys(cmp_with[0]);
+
             for(let i = 0; i < headers.length; ++i)
-                if( headers[i] in sim_to[0])
+                if( cmp_with_headers.includes(headers[i]) )
                     cols_highlight.push( i );
 
             if( cols_highlight.length === headers.length)
@@ -83,7 +87,7 @@ export default class SQLResult extends LISS({css},
 
         output.addHLine()
               .addLine (headers, null, true)
-              .addHLine();
+              .addHLine(true);
 
         const key = headers[0]; //dirty...
 
@@ -92,8 +96,8 @@ export default class SQLResult extends LISS({css},
 
             let highlights: boolean|Array<number> = false;
 
-            /*if( sim_to !== undefined && cols_highlight.length === 0)
-                highlights = sim_to.find( l => l[key] === result[j][key] ) !== undefined;*/
+            if( cmp_with !== null && cols_highlight.length === 0)
+                highlights = cmp_with.find( l => l[key] === result[j][key] ) !== undefined;
 
             if( cmp_to.length !== 0) {
                 let lines = cmp_to.map( res => res!.find( l => l[key] === result[j][key] ) );
@@ -187,8 +191,15 @@ class OutputBuilder {
         return this;
     }
 
-    addHLine() {
-        this.#addPaddedLine( this.#padLine([], "-"), "+" );
+    addHLine(highlight_cols = false) {
+        
+        const row = this.#padLine([], "-")
+
+        if(highlight_cols)
+            for(let idx of this.#colshight)
+                row[idx] = `<span class="highlight">${row[idx]}</span>`;
+
+        this.#addPaddedLine(row, "+" );
 
         return this;
     }

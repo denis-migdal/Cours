@@ -11,8 +11,14 @@
 
 @media screen and not (display-mode: fullscreen) {
     body:not(.overview) main {
-        top : calc( 50% + 12px ) !important; /* 50% de 24px */
+        top : calc( 50% + 17px ) !important; /* 50% de 24px */
     }
+}
+
+body {
+    margin-top: 0; /* set in TS. */
+
+    counter-reset: h1 h2 h3 page_id; /* stupid CSS */
 }
 
 /* TODO: move out */

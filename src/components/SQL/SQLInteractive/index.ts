@@ -23,13 +23,6 @@ class SQLInteractive extends LISS({
 
         this.#input_signal.listen( () => this.#onInputChange() );
         this.#onInputChange();
-
-        //TODO... -> move to SQLSelector?
-        const opt_attr = this.getAttribute('option');
-        if( opt_attr !== null) {
-            this.setOption(+opt_attr);
-            return;
-        }
     }
 
     #input  = this.host.querySelector<HTMLElement>('sql-selector')!;
@@ -51,30 +44,6 @@ class SQLInteractive extends LISS({
     }
 
     static observedAttributes = ["full-reset", "option"];
-
-    override attributeChangedCallback(name: string,
-                                      oldval: string|null,
-                                      newval: string|null) {
-        if(name !== "option")
-            return;
-
-        this.setOption(+newval!);
-    }
-
-    setOption(idx: number) {
-        throw new Error("called");
-        /*
-        for(let i = 0; i < this.#options.children.length; ++i) {
-            const opt = this.#options.children[i] as HTMLElement;
-            opt.style.setProperty("display", i === idx ? null : "none");
-            if( i === idx)
-                opt.click();
-        }
-        this.#query.style.setProperty("display", "none");
-
-        this.host.style.setProperty("flex-wrap", "wrap");
-        */
-    }
 
     #output = this.host.querySelector<SQLOutput>('sql-output')!;
     #outputSignal = getInput<SQLExecutionResult>(this.#output);

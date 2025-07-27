@@ -70,18 +70,42 @@ export default class SQLSelector extends LISS({css: [theme, css]},
             this.#onQueryChange();
         });
 
+        const opt_attr = this.getAttribute('option');
+        if( opt_attr !== null) {
+            this.#options[+opt_attr].click();
+            return;
+        }
         if( this.#select_queries === null )
-            this.content.querySelector<HTMLElement>(".option")!.click();
+            this.#options[0].click();
+    }
+    
+    static observedAttributes = ["option"];
+    override attributeChangedCallback(name: string,
+                                      oldval: string|null,
+                                      newval: string|null) {
+
+        if(name !== "option" || oldval === newval)
+            return;
+
+        this.#options[+newval!].click();
     }
 
     #splitQueries(query: string) {
         return query.split(";\n").map( q => q.trim());
     }
     #splitHTML(query: string) {
-        return query.split(";<br>\n").map( q => q.trim());
+        return query.split(";<br>\n").map( q => {
+            
+            q = q.trim();
+            if( ! q.endsWith(';') )
+                q += ";"
+
+            return q;
+        });
     }
 
     #onQueryChange() {
+
         // rules :
             // not SELECT or VALUES -> execute select before & after
             // CREATE TABLE : pragma + no show.
@@ -175,13 +199,17 @@ export default class SQLSelector extends LISS({css: [theme, css]},
         this.content.append(this.#query);
     }
 
+    #options!: HTMLElement[];
     #buildOptions(template: HTMLTemplateElement,
                       vars: Record<string, HTMLElement[]>) {
 
-        const options = this.host.querySelectorAll<HTMLElement>("sql-option");
+        const options = [...this.host.querySelectorAll<HTMLElement>("sql-option")];
 
-        for(let option of options) {
+        this.#options = new Array(options.length);
 
+        for(let i = 0; i < options.length; ++i) {
+
+            const option = options[i];
             const values = JSON.parse(option.textContent!.trim());
 
             for(let varname in vars)
@@ -204,8 +232,9 @@ export default class SQLSelector extends LISS({css: [theme, css]},
                 opt.prepend(title);
             }
 
-            this.content.append( opt );
+            this.#options[i] = opt;
         }
+        this.content.append(...this.#options);
     }
 }
 

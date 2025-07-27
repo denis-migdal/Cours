@@ -1,6 +1,9 @@
 :host {
+    display: block;
+
     font-family: monospace;
     font-size: 12px;
+    line-height: 14px;
 
     & .highlight {
         background-color: gold;
