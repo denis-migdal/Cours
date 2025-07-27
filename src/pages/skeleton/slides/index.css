@@ -32,6 +32,18 @@ li[mark="💡"]::marker {
     color: unset;
 }
 
+div.center {
+    width: fit-content;
+}
+
+.linespace {
+    height: 14px;
+
+    &.invisible {
+        display: none;
+    }
+}
+
 .flex-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

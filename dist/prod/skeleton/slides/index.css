@@ -7,10 +7,6 @@
     --webslide_background: none;
 }
 
-frame-section, frame-subsection, frame-subsubsection {
-    display: contents;
-}
-
 .hidden {
     display: none;
 }
@@ -48,15 +44,19 @@ body {
     position: relative;
 }
 
+body.overview .menu_area {
+    display: none;
+
+}
 body.overview main {
     display: grid;
     grid-template-columns: repeat( var(--nb_frame) , calc(100vw/ var(--nb_frame ) ) );
     grid-auto-rows: calc(100vw / var(--nb_frame ) * 9 / 16 );
     gap: 0px;
 
-    top: 24px;
+    top: 0px;
     width: 100vw;
-    height: calc( 100vh - 24px );
+    height: 100vh;
 
     overflow-y: auto;
     overflow-x: hidden;
@@ -64,6 +64,10 @@ body.overview main {
     & .ws-frame {
         transform-origin: top left;
         transform: scale( calc( var(--scale) / var(--nb_frame) ) );
+    }
+
+    & frame-section, frame-subsection, frame-subsubsection {
+        display: contents;
     }
 }
 
@@ -249,6 +253,10 @@ main {
     & > * {
         grid-area: 1 / 1;
     }
+}
+
+.invisible {
+    visibility: hidden;
 }
 
 @media screen {
@@ -442,6 +450,18 @@ li[mark="🕮"]::marker {
 li[mark="💡"]::marker {
     content: "💡 ";
     color: unset;
+}
+
+div.center {
+    width: fit-content;
+}
+
+.linespace {
+    height: 14px;
+
+    &.invisible {
+        display: none;
+    }
 }
 
 .flex-2 {
