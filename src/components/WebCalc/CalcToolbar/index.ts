@@ -1,51 +1,10 @@
-// @ts-nocheck
+import {LISS} from "@LISS/src/extensions"
+import define from "@LISS/src/define";
 
-import LISS from "../../LISS";
-import { Format, Formats } from "./format";
-import { CalcSheet, CellList } from "./sheet";
+import { Format, Formats } from "../Format";
+import { CalcSheet, CellList } from "../CalcSheet";
 
-const content = `
-    <select disabled title="Nom de police"><option>Libération Sans</option></select>
-    <select class="font_size" title="Taille de police"></select>
-    <span class='vbar'></span>
-    <calc-toolbar-item name='bold' title="Gras (Ctrl+B)"></calc-toolbar-item>
-    <calc-toolbar-item name='italic' title="Italique (Ctrl+I)"></calc-toolbar-item>
-    <calc-toolbar-item name='underline' title="Soulignage (Ctrl+U)"></calc-toolbar-item>
-    <span class='vbar'></span>
-    <calc-toolbar-item value='black' name='foreground_color' title="Couleur de police"></calc-toolbar-item>
-    <calc-toolbar-item value='yellow' name='background_color' title="Couleur d'arrière-plan"></calc-toolbar-item>
-    <span class='vbar'></span>
-    <calc-toolbar-item name='align_left' title="Aligner à gauche (Ctrl+L)"></calc-toolbar-item>
-    <calc-toolbar-item name='align_center' title="Center (Ctrl+E)"></calc-toolbar-item>
-    <calc-toolbar-item name='align_right' title="Aligner à droite (Ctrl+R)"></calc-toolbar-item>
-    <span class='vbar'></span>
-    <calc-toolbar-item name='valign_top' title="Aligner en haut"></calc-toolbar-item>
-    <calc-toolbar-item name='valign_middle' title="Centrer verticalement"></calc-toolbar-item>
-    <calc-toolbar-item name='valign_bottom' title="Aligner en bas"></calc-toolbar-item>
-    <span class='vbar'></span>
-    <calc-toolbar-item name='ajuster' title="Ajuster le texte"></calc-toolbar-item>
-    <span class='vbar'></span>
-    <calc-toolbar-item name='merge_center' type='fct' title="Fusionner et centrer ou défusionner les cellules en inversant leur état actuel"></calc-toolbar-item>
-    <calc-toolbar-item name='merge' type='fct' title="Fusionner les cellules"></calc-toolbar-item>
-    <calc-toolbar-item name='unmerge' type='fct' title="Défusionner les cellules"></calc-toolbar-item>
-    <span class='vbar'></span>
-    <calc-toolbar-item name='format_monnaie' type='fct' title="Appliquer le format Monnaie (Maj+Ctrl+4)"></calc-toolbar-item>
-    <calc-toolbar-item name='format_pourcent' type='fct' title="Appliquer le format Pourcentage (Maj+Ctrl+5)"></calc-toolbar-item>
-    <calc-toolbar-item name='format_nb' type='fct'  title="Appliquer le format Nombre (Maj+Ctrl+1)"></calc-toolbar-item>
-    <calc-toolbar-item name='format_date' type='fct'  title="Appliquer le format Date (Maj+Ctrl+3)"></calc-toolbar-item>
-    <span class='vbar'></span>
-    <calc-toolbar-item name='format_zero_p1' type='fct' title="Ajouter une décimale"></calc-toolbar-item>
-    <calc-toolbar-item name='format_zero_m1' type='fct' title="Supprimer une décimale"></calc-toolbar-item>
-    <span class='vbar'></span>
-    <calc-toolbar-item name='retrait_p1' type='fct' title="Augmenter le retrait"></calc-toolbar-item>
-    <calc-toolbar-item name='retrait_m1' type='fct' title="Diminuer le retrait"></calc-toolbar-item>
-    <span class='vbar'></span>
-    <calc-toolbar-item name='border' type='fct' title="Bordures (Maj pour écraser)"></calc-toolbar-item>
-    <calc-toolbar-item name='border_style' type='fct' disabled title="Style de bordure"></calc-toolbar-item>
-    <calc-toolbar-item value='black' name='border_color' title="Couleur de bordure"></calc-toolbar-item>
-    <span class='vbar'></span>
-    <calc-toolbar-item name='format_cond' type='fct' disabled title="Conditionnel"></calc-toolbar-item>
-`;
+const html = require("!!raw-loader!./index.html").default;
 
 function merge(celllist: CellList, is_align = false) {
 
@@ -228,86 +187,8 @@ const fcts: Record<string, { action: (cells: CellList) =>void, enabled?: (cells:
     }
 }
 
-const css = `
-    :host {
-        background-color: #cecece;
-
-        display: flex;
-        height: 1.5em;
-    }
-
-    :host .vbar {
-        display: inline-block;
-        width: 1px;
-        background-color: #ababab;
-        height: 1em;
-    }
-
-    :host select {
-        height: 2rem;
-        box-sizing: border-box;
-        background-color: white;
-    }
-`
-
-const itemcss = `
-
-    :host {
-        position: relative;
-    }
-
-    :host([disabled]) {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-
-    :host([value]) {
-        padding-right: 12px;
-    }
-
-    :host, :host > div {
-        background-color: #cecece;
-        border: 1px solid transparent;
-    }
-
-    :host {
-        padding: 1px;
-    }
-
-    :host > div {
-        width: 10px;
-        height: calc( 1.2em - 1px );
-        position: absolute;
-        top: -1px;
-        right: -1px;
-
-        &::after {
-            position: absolute;
-            top: calc( ( 1.2em - 1px - 2px ) / 2 );
-            right: 1px;
-            content: "";
-            width: 0; 
-            height: 0;
-            --size: 4px;
-            border-left: var(--size) solid transparent;
-            border-right: var(--size) solid transparent;
-            
-            border-top: var(--size) solid black;
-        }
-    }
-
-    :host(:hover:not(.enabled)), :host(:hover:not(.enabled)) > div {
-        background-color: #eaeaea;
-        border: 1px solid #969696;
-        border-radius: 2px;
-    }
-
-    :host(.enabled) {
-        background-color: #b6b6b6;
-        border: 1px solid #9b9b9b;
-        border-radius: 2px;
-    }
-`;
+const css     = require("!!raw-loader!./index.css"     ).default;
+const itemcss = require("!!raw-loader!./index-item.css").default;
 
 export class CalcToolbarItem extends LISS({
     css: itemcss
@@ -360,12 +241,9 @@ export class CalcToolbarItem extends LISS({
     }
 }
 
-LISS.define('calc-toolbar-item', CalcToolbarItem);
+define('calc-toolbar-item', CalcToolbarItem);
 
-export class CalcToolbar extends LISS({
-    content,
-    css
-}) {
+export class CalcToolbar extends LISS({html, css}) {
 
     #btns: Record<string, HTMLElement> = {};
 
@@ -467,4 +345,4 @@ export class CalcToolbar extends LISS({
 
 }
 
-LISS.define('calc-toolbar', CalcToolbar);
+define('calc-toolbar', CalcToolbar);

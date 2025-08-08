@@ -52,6 +52,10 @@
     - R1-01:Tableur et Reporting
         + CM:CM
             - CM1:CM1
+            - CM2:CM2
+        + TP:TP
+            - TP1:TP1
+            - TP2:TP2
     - R1-02:Bases de Données Relationnelles 1
         + CM:CM
             - CM1:CM1

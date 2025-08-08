@@ -1,3 +1,8 @@
+- Formulas/FormulaParser
+- Format/FormatManager
+- CalcSheet : a sheet
+    - PlageSelector/RangeOverlay (helper)
+
 ## API
 
 Sheet

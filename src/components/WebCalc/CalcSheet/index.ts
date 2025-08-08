@@ -101,6 +101,7 @@ function parseInput( str: string ): RawContentType {
     if(parts.length <= 3) {
 
         let test_date = new Date(
+            // @ts-ignore
             +parts[2] ?? new Date().getFullYear(),
             +parts[1]-1,
             +parts[0]

@@ -1,0 +1,19 @@
+:host {
+    background-color: #cecece;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+:host .vbar {
+    display: inline-block;
+    width: 1px;
+    background-color: #ababab;
+    height: 1.5rem;
+}
+
+:host select {
+    height: 1.5rem;
+    box-sizing: border-box;
+    background-color: white;
+}
