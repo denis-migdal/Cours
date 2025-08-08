@@ -1,0 +1,19 @@
+:host {
+    display: block;
+    line-height: 1rem;
+    width: 100%;
+
+    & pre {
+        text-align: left;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 4px;
+        margin: 0;
+        background-color: white;
+        border: 1px solid #c0c0c0;
+        min-height: calc( 1rem + 8px + 2px );
+        color: black;
+        font-size: 10pt;
+        font-family: 'Liberation Sans';
+    }
+}

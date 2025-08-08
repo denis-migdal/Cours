@@ -1,34 +1,12 @@
-// @ts-nocheck
+import {LISS} from "@LISS/src/extensions"
+import define from "@LISS/src/define";
 
-//TODO: webpack config...
-import LISS from "../../LISS";
-import { formatRaw, Formats } from "./format";
-import { CalcSheet, Cell } from "./sheet";
+import { formatRaw } from "../Format";
+import type { CalcSheet, Cell } from "../CalcSheet";
 
-const css = `
-    :host {
-        display: block;
-        line-height: 1rem;
-        width: 100%;
+const css = require('!!raw-loader!./index.css').default;
 
-        & pre {
-            text-align: left;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 4px;
-            margin: 0;
-            background-color: white;
-            border: 1px solid #c0c0c0;
-            min-height: calc( 1rem + 8px + 2px );
-            color: black;
-            font-size: 10pt;
-            font-family: 'Liberation Sans';
-        }
-    }
-`;
-
-
-export class CalcFormula extends LISS({
+export class CalcFormulaEditor extends LISS({
     css
 }) {
 
@@ -112,4 +90,4 @@ export class CalcFormula extends LISS({
 
 }
 
-LISS.define('calc-formula', CalcFormula);
+define('calc-formula-editor', CalcFormulaEditor);

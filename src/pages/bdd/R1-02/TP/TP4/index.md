@@ -21,8 +21,7 @@ Dans le cadre de ce TP, vous utiliserez la base "chimie" disponible via [ce lien
 
 ## Sous-requêtes
 
-1. Déterminez la structure de la base de donnée et de ses tables.<br/>
-   <todo>champ pour déposer image du schéma.</todo>
+1. <q-file type=".png,.svg">Déterminez la structure de la base de donnée et de ses tables.</q-file>
 1. Écrivez les requêtes SQL permettant d'obtenir les chimistes ayant au moins un résultat d'expérience.<br/>
    a. <q-text code-lang="sql">En utilisant une sous-requête non-corrélée.</q-text>
    b. <q-text code-lang="sql">En utilisant une sous-requête corrélée.</q-text>

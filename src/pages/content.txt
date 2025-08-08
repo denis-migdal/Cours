@@ -1,7 +1,7 @@
 + :👋 Accueil
     + R1-13:Prise en main des outils informatiques
 - sec:🔒 Sécurité
-    - R2-14:S2 Administration Système
+    - R2-14:S2 Administration Système Linux
         + CM:CM
             - CM1:CM1 - Commandes Shell
             - CM2:CM2 - Les fichiers
@@ -11,8 +11,6 @@
         + TP:TP
             - TP1:TP1
             - TP2:TP2
-        + Fiches:Fiches
-            - A:Construire ASTerm
         - cheat:Cheat Sheet
         + DS:DS
             - cur:2024-2025
@@ -43,6 +41,8 @@
     + R6-X:S6 Programmation Orientée Données
         - CM:CM
 --
+- tools:🛠 Outils
+    - https://github.com/denis-migdal/Linux-VM-Installer:LVMI
 - bib:📚 Bibliothèques
     - https://liss.migdal.ovh/:LISS
     - https://vshs.migdal.ovh/:VSHS

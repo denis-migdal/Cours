@@ -1,4 +1,5 @@
-import "@Cours/struct/menu";
+// @ts-nocheck
+/*
 import "@Cours/struct/calc/sheet";
 
 // 1
@@ -24,9 +25,6 @@ s_formula.getRange("C2:C4").format(Formats.euros).content = [
     "=A4*B4"
 ];
 
-/**/
-
-
 const s_complex_formula = await LISS.qs('#sheet_complex_formula');
 
 s_complex_formula.getRange("A1:C1").format("bold", "align_center")
@@ -45,8 +43,6 @@ s_complex_formula.getRange("C2").content =
 `= A2*B2
  +A3*B3
  +A4*B4`;
-
-/**/
 
 const s_types = await LISS.qs('#sheet_types');
 
@@ -134,33 +130,4 @@ sheet_recopie_motivation_empty.getRange("A2:A4").format("bold");
 const sheet_recopie_incr = await LISS.qs('#sheet_recopie_incr');
 
 sheet_recopie_incr.getRange('A1:A2').content = [ 1, new Date() ];
-
-
-// test
-const c = `
-<table id="un">
-    <tbody>
-        <tr><td>XXX</td></tr>
-    </tbody>
-</table>`;
-
-const css = `
-    td:not([contenteditable]) {
-        user-select: none;
-    }
-`;
-
-class X extends LISS({
-    content: c, css
-}) {
-    constructor() {
-        super();
-
-        const td = this.content.querySelector<HTMLElement>('#un td')!;
-        td.toggleAttribute('contenteditable');
-        td.focus();
-        td.textContent = "YYY";
-    }
-}
-
-LISS.define('test-test', X);
+*/

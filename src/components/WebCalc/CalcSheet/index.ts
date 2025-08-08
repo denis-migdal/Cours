@@ -1,32 +1,24 @@
-// @ts-nocheck
+import {LISS} from "@LISS/src/extensions"
+import define from "@LISS/src/define";
 
-//TODO: webpack config...
-import LISS from "../../LISS";
-
-//@ts-ignore
-import css from "!!raw-loader!./index.css";
+import { PlageSelector } from "./PlageSelector";
+import { FormulaRef, RangeOverlay, RecopyHandle } from "./RangeOverlay";
+import { Format, FormatManager, Formats } from "../Format";
+import { Formula, parse_formula } from "../FormulaParser";
+import { CalcPlageEditor } from "../CalcPlageEditor/CalcPlage";
+import { CalcFormulaEditor } from "../CalcFormulaEditor";
 
 export type ValueType = string|number|Date|boolean;
 export type RawContentType = ValueType|Formula;
 
 export type Cell = HTMLTableCellElement & {
     rawContent: RawContentType,
-    format: (this: Cell, v?: number|string|Date) => string,
+    format: (this: Cell, v?: RawContentType) => string,
     is_ro: boolean,
     cell ?: Cell
 };
 
-function isActive(target: HTMLElement) {
-
-    return target.matches(':focus');
-/*
-    let active = document.activeElement;
-
-    while( active?.shadowRoot instanceof ShadowRoot )
-        active = active.shadowRoot.activeElement;
-
-    return active === target;*/
-}
+const css = require("!!raw-loader!./index.css").default;
 
 function onInput(ev: Event) {
 
@@ -158,23 +150,20 @@ const States = {
     "recopy"   : State<CellList>
  } as const;
 
-export class CalcSheet extends LISS({
-    css,
-    attributes: ["cols", "rows", "ro"]
-}) {
+export class CalcSheet extends LISS({css}) {
+
+    static observedAttributes = ["cols", "rows", "ro"];
 
     states = Object.fromEntries( Object.entries(States).map( ([n,s]) => [n, new s(this.host, n)] as const ));
 
-
-    //TODO: RO prop ?
     #cursor    = new CellList(this, []);
     #selection: CellList = new CellList(this, []);
-    #plage_selector = new PlageSelector(this);
 
+    #plage_selector = new PlageSelector(this);
     #format_mngr = new FormatManager(this);
 
     static getSheetFromCell(cell: Cell) {
-        return LISS.getLISSSync<CalcSheet>( (cell.getRootNode() as ShadowRoot).host );
+        return (cell.getRootNode() as ShadowRoot).host as CalcSheet;
     }
 
     get cursor() {
@@ -182,10 +171,6 @@ export class CalcSheet extends LISS({
     }
     get selection() {
         return this.#selection;
-    }
-
-    override get content() {
-        return super.content;
     }
 
     setRect(target: HTMLElement, [x,y,w,h]: readonly [number,number,number,number]) {
@@ -415,18 +400,18 @@ export class CalcSheet extends LISS({
 
         ( async () => {
 
-            const plage = await LISS.build("calc-plage");
+            const plage = new CalcPlageEditor();
             plage.syncTo(this);
             formula_bar.append( plage.host );
 
-            const formula = await LISS.build("calc-formula");
+            const formula = new CalcFormulaEditor();
             formula.syncTo(this);
             formula_bar.append( formula.host );
 
         })();
         this.content.append(formula_bar);
 
-        this.#initGrid(+(this.attrs.rows ?? 1), +(this.attrs.cols ?? 1) );
+        this.#initGrid();
 
         this.content.addEventListener("mousedown", (ev) => {
             
@@ -456,7 +441,7 @@ export class CalcSheet extends LISS({
             if( target.tagName !== "TD")
                 return;
 
-            if( this.attrs.ro !== "true" && (target as Cell).is_ro !== true ) {
+            if( ! this.isRO && (target as Cell).is_ro !== true ) {
                 target.toggleAttribute("contenteditable", true);
                 target.focus();
             }
@@ -516,9 +501,8 @@ export class CalcSheet extends LISS({
             }
 
             // no edition allowed...
-            if( this.attrs.ro === "true") {
+            if( this.isRO )
                 return;
-            }
 
             const target = ev.target as HTMLElement;
             if( target === this.#tbody ) {
@@ -788,7 +772,10 @@ export class CalcSheet extends LISS({
         html.style.setProperty('overflow-x', 'hidden');
     }
 
-    #initGrid(nbrows: number, nbcols: number) {
+    #initGrid() {
+
+        const nbrows = +(this.getAttribute("rows") ?? 1);
+        const nbcols = +(this.getAttribute("cols") ?? 1);
 
         const table = document.createElement('table');
         const tbody  = document.createElement('tbody');
@@ -808,7 +795,8 @@ export class CalcSheet extends LISS({
         this.resize(nbrows, nbcols);
     }
 
-    getRange(from: Cell|string|readonly[number,number], to: Cell|string|readonly[number,number] = from): CellList {
+    getRange(from: Cell|string|readonly[number,number],
+               to: Cell|string|readonly[number,number] = from ): CellList {
 
         // process refs...
         if( from instanceof HTMLTableCellElement)
@@ -928,8 +916,16 @@ export class CalcSheet extends LISS({
         })
     }
 
+    override attributeChangedCallback(  name: string,
+                                        oldval: string | null,
+                                        newval: string | null): void {
+        if( name === "ro")
+            this.#isRO = newval === "true";
+    }
+
+    #isRO = false;
     get isRO() {
-        return this.attrs.ro === "true";
+        return this.#isRO
     }
 }
 
@@ -991,26 +987,37 @@ export class CellList extends EventTarget {
         this.format({[name]: f.getProperty(name) !== true});
     }
 
-    format(...f: (( (v: any, prec: number|null) => string )|string|Format|Record<string, any>)[]) {
+    format(...f: string[]                          ): this;
+    format(f: Format|Record<string, any>           ): this;
+    format(f: (v: any, prec: number|null) => string): this;
+    format(...f: (( (v: any, prec: number|null) => string )
+                    |string
+                    |Format
+                    |Record<string, any>)[]
+            ) {
 
-        if( f.length > 1 ) {
-            
-            //TODO....
-            f = Object.fromEntries( f.map( e => [e, true] ) );
+        let format: Format;
 
-        } else
-            f = f[0];
+        const f0 = f[0];
+        if( f0 instanceof Format )
+            format = f0;
+        else {
 
-        if( typeof f === "function" )
-            f = {"format": f};
+            let obj: Record<string, any>;
 
-        if(typeof f === 'string')
-            f = {[f]: true};
+            if( f.length > 1 )
+                obj = Object.fromEntries( f.map(e=>[e,true]) );
+            else if( typeof f0 === "function" )
+                obj = {"format": f0};
+            else if( typeof f0 === 'string' )
+                obj = {[f0]: true};
+            else
+                obj = f0;
 
-        if( ! (f instanceof Format) )
-            f = new Format(f);
-
-        f.applyTo(this);
+            format = new Format(obj);
+        }
+        
+        format.applyTo(this);
 
         return this;
     }
@@ -1201,13 +1208,4 @@ export class CellList extends EventTarget {
     }
 }
 
-//TODO...
-import "./formula_editor";
-import "./plage_editor";
-import { Formula, parse_formula } from "./formula_parser";
-import { PlageSelector } from "./plage_selector";
-import { Format, FormatManager, Formats } from "./format";
-import { FormulaRef, RangeOverlay, RecopyHandle } from "./RangeOverlay";
-import { test } from "test/webodf";
-
-LISS.define('calc-sheet', CalcSheet);
+define('calc-sheet', CalcSheet);

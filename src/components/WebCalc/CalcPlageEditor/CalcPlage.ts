@@ -1,34 +1,14 @@
-// @ts-nocheck
+import {LISS} from "@LISS/src/extensions"
+import define from "@LISS/src/define";
 
-//TODO: webpack config...
-import LISS from "../../LISS";
-import { CalcSheet, CellList, defaultFormat } from "./sheet";
+import type { CalcSheet } from "../CalcSheet";
 
 //TODO: syntax highlight ;)
 
-const css = `
-    :host {
-        display: block;
-        line-height: 1rem;
-        width: 100%;
+const css = require("!!raw-loader!./index.css").default;
 
-        & pre {
-            text-align: left;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 4px;
-            margin: 0;
-            background-color: white;
-            border: 1px solid #c0c0c0;
-            min-height: calc( 1rem + 8px + 2px );
-            color: black;
-            font-size: 10pt;
-            font-family: 'Liberation Sans';
-        }
-    }
-`;
 
-export class PlageFormula extends LISS({
+export class CalcPlageEditor extends LISS({
     css
 }) {
 
@@ -47,7 +27,8 @@ export class PlageFormula extends LISS({
             ev.stopImmediatePropagation();
             ev.preventDefault();
 
-            const selected = this.#sheet.getCells(this.#input.textContent!).cells;
+            const selected = this.#sheet.getRange( this.#input.textContent! )
+                                        .cells;
 
             this.#sheet.selection.clear();
             this.#sheet.selection.add( ...selected );
@@ -79,4 +60,4 @@ export class PlageFormula extends LISS({
     }
 }
 
-LISS.define('calc-plage', PlageFormula);
+define('calc-plage-editor', CalcPlageEditor);

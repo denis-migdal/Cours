@@ -1,7 +1,5 @@
-// @ts-nocheck
-
-import { Formula } from "./formula_parser";
-import { CalcSheet, Cell, CellList, RawContentType } from "./sheet";
+import { Formula } from "../FormulaParser";
+import { CalcSheet, Cell, CellList } from "../CalcSheet";
 
 export class FormatManager {
     constructor(sheet: CalcSheet) {
@@ -146,6 +144,8 @@ export const Formats = {
             return '';
         if(typeof value === "string")
             return value;
+        if(typeof value === "boolean")
+            value = +value;
         if(value instanceof Date)
             value = date2Float(value);
 
@@ -178,7 +178,10 @@ export const Formats = {
         if( value instanceof Date ) {
             let date = value.toLocaleDateString("fr-FR");
             return date.slice(0, 6) + date.slice(8);
-        } if( typeof value === "number") {
+        }
+        if( typeof value === "boolean" )
+            value = +value;
+        if( typeof value === "number") {
             
             const content = float2Date(value);
 

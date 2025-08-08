@@ -1,8 +1,5 @@
-// @ts-nocheck
-
-
-import { date2Float, Formats } from "./format";
-import { CalcSheet, ValueType } from "./sheet";
+import { date2Float, Formats } from "../Format";
+import type { CalcSheet, ValueType } from "../CalcSheet";
 
 export class Formula {
 

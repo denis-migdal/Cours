@@ -1,7 +1,4 @@
-// @ts-nocheck
-
-import { str2html } from "@Cours/struct/utils/str2html";
-import { CalcSheet, CellList } from "./sheet";
+import type { CalcSheet, CellList } from "..";
 
 export class RangeOverlay extends EventTarget {
 
@@ -18,8 +15,8 @@ export class RangeOverlay extends EventTarget {
             this.update();
         });
 
-        this.overlay = str2html(`<div class='overlay'></div>`);
-        this.overlay.classList.add(...classlist);
+        this.overlay = document.createElement('div');
+        this.overlay.classList.add('overlay', ...classlist);
 
         sheet.content.append( this.overlay );
     }

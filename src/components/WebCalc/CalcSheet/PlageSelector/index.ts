@@ -1,7 +1,5 @@
-// @ts-nocheck
-
-import { RangeOverlay } from "./RangeOverlay";
-import { CalcSheet, Cell } from "./sheet";
+import { RangeOverlay } from "../RangeOverlay";
+import type { CalcSheet, Cell } from "..";
 
 export class PlageSelector {
 
@@ -108,8 +106,11 @@ export class PlageSelector {
             if( target.tagName === "TH" && target.textContent === "" ) { // mousemove does nothing.
 
                 this.#sheet.selection.clear();
-                const ref = `A1:${this.#sheet.pos2ref(this.#sheet.nbRows, this.#sheet.nbCols)}`;
-                this.#sheet.selection.add( ...this.#sheet.getCells(ref).cells );
+
+                const end   = [this.#sheet.nbRows, this.#sheet.nbCols] as const;
+                const range = this.#sheet.getRange("A1", end);
+
+                this.#sheet.selection.add(...range.cells);
 
                 return;
             }
