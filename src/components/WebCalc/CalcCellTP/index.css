@@ -1,0 +1,9 @@
+:host{
+    vertical-align:middle;
+}
+
+:host pre {
+    display: inline-block;
+    margin: 0;
+    padding: 2px;
+}

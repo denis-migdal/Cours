@@ -1,7 +1,5 @@
-// @ts-nocheck
-
-import { Format, Formats } from "./format";
-import { CalcSheet } from "./sheet";
+import { Formats } from "../Format";
+import { CalcSheet } from "../CalcSheet";
 
 const JSZip = require("jszip");
 
