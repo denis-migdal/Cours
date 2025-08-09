@@ -1,0 +1,27 @@
+/*!
+
+JSZip v3.10.1 - A JavaScript class for generating and reading zip files
+<http://stuartk.com/jszip>
+
+(c) 2009-2016 Stuart Knightley <stuart [at] stuartk.com>
+Dual licenced under the MIT license or GPLv3. See https://raw.github.com/Stuk/jszip/main/LICENSE.markdown.
+
+JSZip uses the library pako released under the MIT license :
+https://github.com/nodeca/pako/blob/main/LICENSE
+*/
+
+/*!
+  Highlight.js v11.11.1 (git: 08cb242e7d)
+  (c) 2006-2025 Josh Goebel <hello@joshgoebel.com> and other contributors
+  License: BSD-3-Clause
+ */
+
+/*! `bash` grammar compiled for Highlight.js 11.11.1 */
+
+/*! `css` grammar compiled for Highlight.js 11.11.1 */
+
+/*! `plaintext` grammar compiled for Highlight.js 11.11.1 */
+
+/*! `shell` grammar compiled for Highlight.js 11.11.1 */
+
+/*! `typescript` grammar compiled for Highlight.js 11.11.1 */
