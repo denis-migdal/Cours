@@ -6,7 +6,8 @@
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link   href="/skeleton/bdr/index.css"  rel="stylesheet">
-        <script  src="/skeleton/bdr/index.js"  type="module"     blocking="render" async></script>
+        <script  src="/skeleton/bdr/index.js"  type="module"     blocking="render"></script>
+        <script  src="./index.js"  type="module" blocking="render"></script>
     </head>
     <body>
         <main>
@@ -466,7 +467,7 @@ En réalité, il existe 3 types de jointures fréquemment utilisées :
   💡 Il est équivalant à l'union de <script type="c-sql"><h>$T1</h> LEFT JOIN <h>$T2</h></script> et <script type="c-sql"><h>$T2</h> LEFT JOIN <h>$T1</h></script>.
 
 
-<sql-interactive>
+<sql-interactive id="join2_sql">
   <sql-selector>
     <script type="c-sql">
       SELECT * FROM T1
@@ -481,32 +482,6 @@ En réalité, il existe 3 types de jointures fréquemment utilisées :
   <div class="spacing"></div>
   <sql-dymtable id="join2_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1 FULL JOIN T2 USING(ID)" header="T1 JOIN T2"></sql-dymtable>
 </sql-interactive>
-
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const T1_T2W = await LISS.qs("#join2_T1_T2W");
-  const sql    = await LISS.qs("#join2_sql");
-
-  function update(datas) {
-
-    const t2 = datas[0].map( e => e.T2);
-
-    T1_T2W.highlightRow( (row) => {
-      return { lowlight: ! t2.includes(row["T2.T2"]) }
-    });
-  }
-
-  sql.host.addEventListener("change", (ev) => {
-    update(ev.detail.datas);
-  });
-  update(sql.lastDatas);
-
-  T1_T2W.highlightCells( (row, colname) => {
-    const id = row[ colname.split('.')[0] + ".ID"];
-    return `high_${id}`;
-  });
-</script>
 
 ⚠ Il existe 2 autres types de jointures, à éviter :
 

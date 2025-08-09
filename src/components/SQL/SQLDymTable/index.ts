@@ -129,7 +129,7 @@ export class SQLDymTable extends LISS({css}) {
             this.#highlight(this.cols[colname], filter(colname) );
     }
 
-    #highlight(target: HTMLElement, highlight: boolean|string|boolean[]) { // target: HTMLElement, highlight: boolean|string|Record<string, boolean> ) {
+    #highlight(target: HTMLElement, highlight: boolean|string|Record<string, boolean>) {
 
         if( typeof highlight === "boolean")
             return target.classList.toggle('highlight', highlight);
@@ -141,12 +141,12 @@ export class SQLDymTable extends LISS({css}) {
 
     }
 
-    highlightRow( filter: (value: any, rowid: number) => boolean ) {
+    highlightRow( filter: (value: any, rowid: number) => boolean|string|Record<string, boolean>) {
         for(let i = 0; i < this.rows.length; ++i)
             this.#highlight( this.rows[i][1], filter(this.rows[i][0], i) );
     }
 
-    highlightCells( filter: (data: any, name: string) => boolean ) {
+    highlightCells( filter: (data: any, name: string) => boolean|string|Record<string, boolean> ) {
 
         for(let i = 0; i < this.rows.length; ++i) {
 
