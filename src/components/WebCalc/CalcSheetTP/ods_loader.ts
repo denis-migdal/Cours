@@ -3,10 +3,9 @@ import { CalcSheet } from "../CalcSheet";
 
 const JSZip = require("jszip");
 
-export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: string = "Feuille1") {
-
-    if( typeof file === "string")
-        file = await (await fetch(file)).arrayBuffer();
+export async function load(target: CalcSheet,
+                           file  : Uint8Array,
+                           sheet : string = "Feuille1") {
 
     const zip = new JSZip();
     await zip.loadAsync(file);
@@ -17,8 +16,6 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
     const xml = parser.parseFromString(content, "text/xml");
 
     const tables = [...xml.querySelectorAll('table')];
-
-    console.log( tables.map(e => e.getAttribute("table:name") ) );
 
     const table = tables.find( e => e.getAttribute("table:name") === sheet)!;
     let rows = table.querySelectorAll("table-row");
@@ -180,7 +177,6 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
     
     for(let i = 0; i < cols.length; ++i) {
         const style = cols[i].getAttribute("table:style-name")!;
-        console.log(i+1, col_sizes[style] );
         target.setColSize( i+1, col_sizes[style] );
     }
     
@@ -234,11 +230,8 @@ export async function load(target: CalcSheet, file: string|ArrayBuffer, sheet: s
                     if( style_name === "Default" )
                         continue;
 
-                    if( ! (style_name in styles) ) {
-                        console.warn(`Style ${style_name} not found`);
-                        console.log(styles);
+                    if( ! (style_name in styles) )
                         continue;
-                    }
 
                     target.getRange([row_id, offset+1+r]).format( styles[style_name] );
                 }

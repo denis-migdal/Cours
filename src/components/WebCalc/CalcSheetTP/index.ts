@@ -1,28 +1,37 @@
-import {LISS} from "@LISS/src/extensions"
+import {LISS, WithBare, WithContent, WithInput} from "@LISS/src/extensions"
 import define from "@LISS/src/define";
 
 import { CalcSheet } from "../CalcSheet";
-//import { load } from "./ods_loader";
+import { load } from "./ods_loader";
 
 const html = require('!!raw-loader!./index.html').default;
 
-export class TPSheet extends LISS({html}) {
+export class TPSheet extends LISS({html}, WithBare,
+                                          WithContent,
+                                          WithInput<string>) {
 
-    static observedAttributes = ["sheet"]
+    readonly sheetname = this.getAttribute('sheet')!;
 
     #sheet = this.content.querySelector<CalcSheet>("calc-sheet")!;
 
     constructor() {
         super();
 
-        this.getAttribute('sheet');
+        this._input.listen( () => this.#onInputChange());
+        this.#onInputChange();
+    }
 
-        /*RENDU.addEventListener('change', async (ev) => {
+    async #onInputChange() {
 
-            await load(this.#sheet, await RENDU.files["file"].content, this.attrs.sheet! );
-            this.host.dispatchEvent(new CustomEvent('change') );
-            
-        });*/  
+        const value = this._input.value;
+        if( value === null)
+            return; // reset ?
+
+        // @ts-ignore
+        const content = Uint8Array.fromBase64(value);
+
+        await load(this.#sheet, content, this.sheetname );
+        this.host.dispatchEvent(new CustomEvent('change') );
     }
 
     get sheet() {
