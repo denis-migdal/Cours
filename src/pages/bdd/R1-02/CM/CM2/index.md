@@ -504,35 +504,11 @@ Pour cela, on utilise la clause <script type="c-sql">GROUP BY <h>$COLS[,...]</h>
 
 <div style="display:flex;justify-content: space-around;width:100%">
   <sql-dymtable table="Produits"></sql-dymtable>
-  <sql-dymtable id="group-date" table="Produits" header="Group by Date"></sql-dymtable>
-  <sql-dymtable id="group-ref"  table="Produits" header="Group by Ref"></sql-dymtable>
+  <sql-dymtable id="group-date" table="Produits" groupby="Date"
+    header="Group by Date"></sql-dymtable>
+  <sql-dymtable id="group-ref"  table="Produits" groupby="Ref"
+    header="Group by Ref"></sql-dymtable>
 </div>
-
-<script type="module">
-
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const gdate_table = await LISS.qs("#group-date");
-  const  gref_table = await LISS.qs("#group-ref");
-
-  gdate_table.groupBy("Date");
-   gref_table.groupBy("Ref");
-
-
-/*  const rowsql   = await LISS.qs("#row-sql");
-
-  rowsql.host.addEventListener("change", (ev) => {
-    update(ev.detail.datas);
-  });
-  update( rowsql.lastDatas );
-
-  function update(datas) {
-
-    const ids = datas[0].map(r => r.ID);
-
-    rowtable.highlightRow( (ID) => ids.includes(+ID) );
-  }*/
-</script>
 
 Vous remarquerez alors que les lignes contiennent plusieurs valeurs pour une même colonne. Il convient alors d'utiliser une **fonction d'agrégation** qui prendra la liste des valeurs et retournera une valeur unique. Par exemple, <script type="c-sql">GROUP_CONCAT(Q)</script> concatène, pour chaque ligne, la colonne <script type="c-sql">Q</script> de ses entrées :
 

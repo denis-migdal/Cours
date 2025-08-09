@@ -11,7 +11,7 @@ const sql   = document.querySelector<SQLInteractive>("#row-sql")!;
 
 const signal = getOutput<SQLExecutionResult>(sql);
 
-signal.listen( () => update());
+signal.listen( update );
 update();
 
 function update() {

@@ -10,6 +10,8 @@ export class SQLDymTable extends LISS({css}) {
     readonly tablename = this.getAttribute("table")!;
     readonly header    = this.getAttribute("header")!;
 
+    readonly groupby   = this.getAttribute("groupby");
+
     cols!: Record<string, HTMLTableColElement>;
     rows!: any[];
     data!: any;
@@ -17,7 +19,10 @@ export class SQLDymTable extends LISS({css}) {
     constructor() {
         super();
 
-        this.exec(`SELECT ${this.colsnames} FROM ${this.tablename};`)
+        this.exec(`SELECT ${this.colsnames} FROM ${this.tablename};`);
+
+        if( this.groupby !== null)
+            this.groupBy(this.groupby);
     }
 
     get nbRows() {

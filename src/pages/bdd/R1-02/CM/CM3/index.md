@@ -6,7 +6,8 @@
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link   href="/skeleton/bdr/index.css"  rel="stylesheet">
-        <script  src="/skeleton/bdr/index.js"  type="module"     blocking="render" async></script>
+        <script  src="/skeleton/bdr/index.js"  type="module"     blocking="render"></script>
+        <script  src="./index.js"  type="module" blocking="render"></script>
     </head>
     <body>
         <main>
@@ -520,15 +521,10 @@ Une flèche est aussi tirée des clefs étrangères jusqu'aux clefs primaires qu
 <sql-interactive id="uml-sql">
   <sql-selector>
     <script type="c-sql">
-      CREATE TABLE A (
-          <h>$COLS_A</h>,
-          PRIMARY KEY(<h>$PK</h>)
-        ) STRICT;
-      CREATE TABLE B (
-          <h>$COLS_B</h>,
-          FOREIGN KEY(<h>$FK</h>)
-          REFERENCES B
-        ) STRICT;
+      CREATE TABLE A ( <h>$COLS_A</h>,
+                       PRIMARY KEY(<h>$PK</h>) ) STRICT;
+      CREATE TABLE B ( <h>$COLS_B</h>,
+          FOREIGN KEY(<h>$FK</h>) REFERENCES B ) STRICT;
     </script>
     <script type="c-sql" class="select">
       SELECT * FROM T;
@@ -540,186 +536,12 @@ Une flèche est aussi tirée des clefs étrangères jusqu'aux clefs primaires qu
       {"pk": "ID, CODE", "fk": "ID, CODE", "cols_a": "CODE TEXT, X INT, ID INT", "cols_b": "ID INT, CODE TEXT"}
     </sql-option>
   </sql-selector>
-  <sql-output></sql-output>
-  <div class="spacing"></div>
-  <pre id="uml" slot="post" class="hljs">
+  <pre id="uml" class="hljs">
     <code>
       <div class="output"></div>
     </code>
   </pre>
 </sql-interactive>
-
-<!-- test -->
-
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const uml_output = document.querySelector("#uml .output");
-  //await LISS.qs("#col-table");
-  const umlsql   = await LISS.qs("#uml-sql");
-
-  umlsql.host.addEventListener("change", (ev) => {
-    console.warn( umlsql.lastVars );
-    update( umlsql.lastVars );
-  });
-  update( umlsql.lastVars );
-
-  function update({cols_a, cols_b, fk, pk}) {
-
-    fk = fk.split(',').map( k => k.trim() );
-    pk = pk.split(',').map( k => k.trim() );
-
-    function buildTable(cols, hcols, isPK) {
-      let content = [];
-
-      const hmethod = isPK ? "strong" : "em";
-
-      let max_w  = 0;
-      let max_nw = 0;
-      let max_cw = 0;
-
-      const cnstr = `${isPK ? "PK" : "FK"}(${(isPK ? pk : fk).join(', ')})`;
-      max_w = cnstr.length;
-
-      cols = cols.split(',').map( l => {
-          l = l.trim();
-          const pos = l.indexOf(' ');
-          const colname = l.slice(0, pos);
-          const constrainst = l.slice(pos+1);
-
-          const nw = colname.length;
-          const cw = constrainst.length;
-          if( nw > max_nw)
-            max_nw = nw;
-          if( cw > max_cw)
-            max_cw = cw;
-
-          return [colname, constrainst];
-      });
-
-      if( max_w > max_nw + max_cw)
-        max_cw = max_w - max_nw;
-      if( max_w < max_nw + max_cw )
-        max_w = max_nw + max_cw;
-
-
-      let prefix = "";
-      let suffix = "";
-
-      if( isPK )
-        suffix = "   ";
-      else
-        prefix = "   ";
-
-
-      content.push(`${prefix}+-${"".padEnd(max_w+2, "-")}-+${suffix}`);
-      const lpad_len = Math.floor( (max_w+2-1)/2);
-      let lpad = "".padEnd(lpad_len);
-      let rpad = "".padEnd(max_w+2-1 - lpad_len);
-      content.push(`${prefix}| ${lpad}<strong>${(isPK ? "A" : "B")}</strong>${rpad} |${suffix}`);
-      content.push(`${prefix}+-${"".padEnd(max_w+2, "-")}-+${suffix}`);
-
-      for(let col of cols) {
-
-        let w = max_w;
-
-        let lsuffix = suffix;
-        let lprefix = prefix
-
-        let colname = col[0].padEnd(max_nw);
-
-        if( hcols.includes(col[0]) ) {
-          colname = `<${hmethod}>${colname}</${hmethod}>`;
-
-          if( isPK )
-            lsuffix = "<--";
-          else
-            lprefix = "---";
-        }
-        
-        const line = `${colname}: ${col[1].padEnd(max_cw)}`;
-        content.push(`${lprefix}| ${line} |${lsuffix}`);
-      }
-
-      content.push(`${prefix}+-${"".padEnd(max_w+2, "-")}-+${suffix}`);
-      content.push(`${prefix}| ${cnstr.padEnd(max_w+2)} |${suffix}`);
-      content.push(`${prefix}+-${"".padEnd(max_w+2, "-")}-+${suffix}`);
-
-      return content;
-    }
-
-    let tA = buildTable(cols_a, pk, true);
-    let tB = buildTable(cols_b, fk, false);
-
-    if( tB.length > tA.length) {
-      tA.push(... new Array(tB.length - tA.length).fill("".padEnd(tA[0].length)) );
-    }
-    if( tA.length > tB.length) { // just to simplify code.
-      tB.push(... new Array(tA.length - tB.length).fill("".padEnd(tB[0].length)) );
-    }
-
-    let start_idx, end_idx;
-    for(let i = 0; i < tA.length; ++i) {
-      const idx = tA[i].length-1;
-      if(tA[i][idx] === "-" || tB[i][0] === "-") {
-        start_idx = i;
-        break;
-      }
-    }
-    for(let i = tA.length - 1; i >= 0 ; --i) {
-      const idx = tA[i].length-1;
-      if(tA[i][idx] === "-" || tB[i][0] === "-") {
-        end_idx = i;
-        break;
-      }
-    }
-
-    let content = "";
-    for(let i = 0; i < tA.length; ++i) {
-
-      let sep = "   ";
-
-      if( pk.length === 1 && fk.length === 1) { // unique.
-        if(start_idx === end_idx) {
-          if(i === start_idx)
-            sep = "---";
-        } else {
-          if(i === start_idx || i === end_idx) {
-            if(tA[i][ tA[i].length - 1 ] !== " ")
-              sep = "-+ ";
-            else
-              sep = " +-";
-          }
-          if( i > start_idx && i < end_idx)
-            sep = " | ";
-        }
-      }
-
-      if( pk.length > 1 || fk.length > 1) { // 1 vs N and N vs 1 shouldn't occur ?
-        if( i >= start_idx && i <= end_idx) {
-
-          sep = [" ", "|", " "];
-
-          if(tA[i][ tA[i].length - 1 ] !== " ") {
-            sep[0] = "-";
-            sep[1] = "+";
-          }
-          if(tB[i][0] !== " ") {
-            sep[1] = "+";
-            sep[2] = "-";
-          }
-
-          sep = sep.join("");
-        }
-      } 
-
-      content += `${tA[i]}${sep}${i < tB.length ? tB[i] : ""}\n`;
-    }
-
-    uml_output.innerHTML = content;
-  }
-
-</script>
 
 ## Opérations sur table avec contraintes
 

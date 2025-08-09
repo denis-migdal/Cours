@@ -5,7 +5,11 @@ import { keepSpaces, raw2html, unindent } from "@LISS/components/code/code-scrip
 const css    = require("!!raw-loader!./index.css").default;
 const theme  = require("!!raw-loader!@LISS/components/code/Tomorrow.css" ).default;
 
-export type SelectedQueries = {html: string[], queries: string[]};
+export type SelectedQueries = { 
+                                html   : string[],
+                                queries: string[],
+                                vars   : Record<string, string>
+                            };
 
 export default class SQLSelector extends LISS({css: [theme, css]},
                                                 WithBare,
@@ -119,6 +123,10 @@ export default class SQLSelector extends LISS({css: [theme, css]},
             // not SELECT or VALUES -> execute select before & after
             // CREATE TABLE : pragma + no show.
 
+        const vars: Record<string, string> = {};
+        for(let varname in this.#query_vars)
+            vars[varname] = this.#query_vars[varname][0].textContent!;
+
         const selected_html    = this.#splitHTML(this.#query.firstElementChild!.innerHTML);
         const selected_queries = this.#splitQueries(this.#query.textContent!.replaceAll('\u00a0', ' '));
 
@@ -170,7 +178,8 @@ export default class SQLSelector extends LISS({css: [theme, css]},
 
         this._output.value = {
             html,
-            queries 
+            queries,
+            vars
         }
     }
 

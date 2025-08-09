@@ -11,7 +11,7 @@ const sql   = document.querySelector<SQLInteractive>("#pagination-sql")!;
 
 const signal = getOutput<SQLExecutionResult>(sql);
 
-signal.listen( () => update());
+signal.listen( update );
 update();
 
 function update() {
@@ -20,6 +20,6 @@ function update() {
     if( value === null) return;
 
     const ids = (value.results[0]! as SelectResult).map(r => r.ID);
-    
+
     table.highlightRow( ({ID}) => ids.includes(+ID) );
 }

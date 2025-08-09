@@ -7,8 +7,10 @@ import {db2} from "@sqlite/SQLite";
 import "../SQLOutput";
 import "../SQLSelector";
 
-import SQLOutput, { Result, SQLExecutionResult } from "../SQLOutput";
+import SQLOutput, { SQLExecutionResult } from "../SQLOutput";
 import { SelectedQueries } from "../SQLSelector";
+
+export type SQLExecutionOutput = SQLExecutionResult & {vars: Record<string, string>};
 
 const css  = require("!!raw-loader!./index.css" ).default;
 
@@ -16,13 +18,14 @@ export class SQLInteractive extends LISS({
                                             html: "<slot/>",
                                             css,
                                         },
-                                        WithBare, WithContent, WithOutput<SQLExecutionResult>) {
+                                        WithBare, WithContent, WithOutput<SQLExecutionOutput>) {
     
     constructor() {
         super();
 
         const sql_output = this.host.querySelector<SQLOutput>('sql-output')!;
-        getInput<SQLExecutionResult>(sql_output).source = this._output;
+        if( sql_output !== null )
+            getInput<SQLExecutionResult>(sql_output).source = this._output;
 
         this.#input_signal.listen( () => this.#onInputChange() );
         this.#onInputChange();
@@ -38,7 +41,7 @@ export class SQLInteractive extends LISS({
 
         let results = db2.exec_many(value.queries);
 
-        this._output.value = { queries: value.html, results };
+        this._output.value = { queries: value.html, results, vars: value.vars };
         
         if( this.getAttribute("full-reset") === "true")
             db2.fullReset();

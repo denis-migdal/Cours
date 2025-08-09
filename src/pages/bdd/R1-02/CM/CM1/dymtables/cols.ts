@@ -10,7 +10,7 @@ const sql   = document.querySelector<SQLInteractive>("#col-sql")!;
 
 const signal = getOutput<SQLExecutionResult>(sql);
 
-signal.listen( () => update());
+signal.listen( update );
 update();
 
 function update() {
