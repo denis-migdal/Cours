@@ -1,0 +1,50 @@
+:host {
+    display: inline-block;
+}
+
+:host table {
+    border-collapse: collapse;
+
+    & caption {
+        font-weight: bold;
+        font-style: italic;
+    }
+    
+    & .highlight {
+        background-color: #8B8000;
+        print-color-adjust: exact;
+    }
+
+    /* TODO: make style adoptable through LISS... */
+    .high_1 {
+        background-color: red;
+    }
+    .high_2 {
+        background-color: blue;
+    }
+    .high_3 {
+        background-color: green;
+    }
+    .high_null {
+        background-color: orange;
+    }
+    .hide {
+        display: none;
+    }
+    .cur {
+        border : 4px solid yellow;
+        opacity: 0.5;
+    }
+    .lowlight {
+        opacity: 0.25;
+    }
+
+    & td, & th {
+        padding: 5px 10px;
+        text-align: left;
+    }
+    
+    & > tbody > tr + tr > td {
+        border-top: 1px solid;
+    }
+}

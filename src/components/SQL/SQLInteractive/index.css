@@ -6,7 +6,7 @@
     display: flex;
     gap: 5px;
 
-    & .spacing {
+    & ::slotted(.spacing) {
         flex-grow: 1;
     }
 

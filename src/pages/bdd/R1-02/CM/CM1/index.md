@@ -6,7 +6,8 @@
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link   href="/skeleton/bdr/index.css"  rel="stylesheet">
-        <script  src="/skeleton/bdr/index.js"  type="module"     blocking="render" async></script>
+        <script  src="/skeleton/bdr/index.js"  type="module"     blocking="render"></script>
+        <script  src="./index.js"  type="module"     blocking="render"></script>
     </head>
     <body>
         <main>
@@ -324,26 +325,6 @@ SELECT <h>$COLS[,...]</h> FROM <h>$TABLE</h>;
   <sql-dymtable id="col-table" table="Users"></sql-dymtable>
 </sql-interactive>
 
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const coltable = await LISS.qs("#col-table");
-  const colsql   = await LISS.qs("#col-sql");
-
-  colsql.host.addEventListener("change", (ev) => {
-    update(ev.detail.datas);
-  });
-  update( colsql.lastDatas );
-
-  function update(datas) {
-
-    const cols = Object.keys(datas[0][0]);
-
-    coltable.highlightCol( (colname) => cols.includes(colname) ); //TODO...
-  }
-
-</script>
-
 ### Alias de colonnes
 
 💡 Dans le cadre d'une requête SQL, vous pouvez temporairement associer un alias à une colonne grâce au mot clé <script type="c-sql">as</script> :
@@ -404,7 +385,7 @@ Il est ainsi possible de sélectionner des lignes de différentes manières :
 La manière générique de filter les lignes à retourner est d'ajouter une clause <script type="c-sql">WHERE <h>$COND</h></script> à la requête. Seules les lignes pour lesquelles <script type="c-sql"><h>$COND</h></script> est vraie seront retournées.
 
 
-<sql-interactive id="col-sql">
+<sql-interactive id="row-sql">
   <sql-selector>
     <script type="c-sql">
       SELECT * FROM Users
@@ -421,27 +402,6 @@ La manière générique de filter les lignes à retourner est d'ajouter une clau
   <div class="spacing"></div>
   <sql-dymtable id="row-table" table="Users"></sql-dymtable>
 </sql-interactive>
-
-
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const rowtable = await LISS.qs("#row-table");
-  const rowsql   = await LISS.qs("#row-sql");
-
-  rowsql.host.addEventListener("change", (ev) => {
-    update(ev.detail.datas);
-  });
-  update( rowsql.lastDatas );
-
-  function update(datas) {
-
-    const ids = datas[0].map(r => r.ID);
-
-    rowtable.highlightRow( ({ID}) => ids.includes(+ID) );
-  }
-
-</script>
 
 #### Opérateurs de comparaisons
 
@@ -594,7 +554,7 @@ Lorsqu'une requête retourne des milliers de lignes, il peut être coûteux de t
 
 Pour cela, on utilisera la clause <script type="c-sql">LIMIT 50</script> afin de ne récupérer que 50 entrées par requêtes. En conjonction, on utilisera la clause <script type="c-sql">OFFSET <h>$P</h>*50</script> qui permet de ne pas récupérer les <script type="c-sql"><h>$P</h>*50</script> premières entrées retournées. <script type="c-sql"><h>$P</h>+1</script> étant alors le numéro de la page actuelle.
 
-<sql-interactive>
+<sql-interactive id="pagination-sql">
   <sql-selector>
     <script type="c-sql">
       SELECT * FROM Users
@@ -620,25 +580,6 @@ Pour cela, on utilisera la clause <script type="c-sql">LIMIT 50</script> afin de
   <div class="spacing"></div>
   <sql-dymtable id="pagination-table" table="Users"></sql-dymtable>
 </sql-interactive>
-
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const table = await LISS.qs("#pagination-table");
-  const sql   = await LISS.qs("#pagination-sql");
-
-  sql.host.addEventListener("change", (ev) => {
-    update(ev.detail.datas);
-  });
-  update( sql.lastDatas );
-
-  function update(datas) {
-
-    const ids = datas[0].map(r => r.ID);
-    table.highlightRow( ({ID}) => ids.includes(+ID) );
-  }
-
-</script>
 
 ## Astuces pour rédiger efficacement les requêtes SQL
 

@@ -1,110 +1,47 @@
-import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
+import {LISS} from "@LISS/src/extensions"
+import define from "@LISS/src/define";
+import { db2 } from "@sqlite/SQLite";
 
-import {db2} from "../LastTPEngine/TP/old TP Engine/SQLite.ts";
+const css = require("!!raw-loader!./index.css").default;
 
-const CSS =
-`:host {
-    display: inline-block;
-}
+export class SQLDymTable extends LISS({css}) {
 
-:host table {
-    border-collapse: collapse;
+    readonly colsnames = this.getAttribute("cols") ?? "*";
+    readonly tablename = this.getAttribute("table")!;
+    readonly header    = this.getAttribute("header")!;
 
-    & caption {
-        font-weight: bold;
-        font-size: 20px;
-        line-height: 26px;
-        font-style: italic;
-    }
-    
-    & .highlight {
-        background-color: #8B8000;
-        print-color-adjust: exact;
-    }
+    cols!: Record<string, HTMLTableColElement>;
+    rows!: any[];
+    data!: any;
 
-    /* TODO: make style adoptable through LISS... */
-    .high_1 {
-        background-color: red;
-    }
-    .high_2 {
-        background-color: blue;
-    }
-    .high_3 {
-        background-color: green;
-    }
-    .high_null {
-        background-color: orange;
-    }
-    .hide {
-        display: none;
-    }
-    .cur {
-        border : 4px solid yellow;
-        opacity: 0.5;
-    }
-    .lowlight {
-        opacity: 0.25;
-    }
-
-    & td, & th {
-        padding: 5px 10px;
-        text-align: left;
-    }
-
-    & td {
-        font-size: 16px;
-        line-height: 22px;
-    }
-
-    & th {
-        font-size: 20px;
-        line-height: 26px;
-    }
-    
-    & > tbody > tr + tr > td {
-        border-top: 1px solid;
-    }
-}`;
-
-class SQLDymTable extends LISS({
-    attributes: ["table", "header", "cols"],
-    css: CSS
-}) {
     constructor() {
         super();
 
-        let cols = this.attrs.cols ?? "*";
-
-        this.exec(`SELECT ${cols} FROM ${this.attrs.table};`)
+        this.exec(`SELECT ${this.colsnames} FROM ${this.tablename};`)
     }
 
     get nbRows() {
         return this.rows.length;
     }
-    getRow(rowid) {
+    getRow(rowid: number) {
         return this.rows[rowid];
     }
 
-    exec(query) {
+    exec(query: string) {
 
+        this.cols = {};
+        this.rows = [];
         this.data = db2.exec_one(query);
 
         const table = document.createElement('table');
 
         const caption = document.createElement('caption');
-
-        if( this.attrs.header === null)
-            caption.textContent = `Table ${this.attrs.table} :`;
-        else
-            caption.textContent = this.attrs.header;
+        caption.textContent = this.header ?? `Table ${this.tablename} :`;
 
         //TODO: colgroup (for highlight).
-
         const colgroup = document.createElement('colgroup');
-        const thead = document.createElement('thead');
-        const trhead = document.createElement('tr');
-
-        this.cols = {};
+        const thead    = document.createElement('thead');
+        const trhead   = document.createElement('tr');
 
         const colnames =  Object.keys(this.data[0]);
         for(let colname of colnames) {
@@ -119,8 +56,6 @@ class SQLDymTable extends LISS({
             trhead.append(th);
         }
         thead.append(trhead);
-
-        this.rows = [];
 
         const tbody = document.createElement('tbody');
         for(let line of this.data) {
@@ -140,11 +75,11 @@ class SQLDymTable extends LISS({
         this.content.replaceChildren(table);
     }
 
-    groupBy( group_colname ) {
+    groupBy( group_colname: string ) {
 
-        const tbody = this.content.querySelector("tbody");
+        const tbody = this.content.querySelector("tbody")!;
 
-        let groups = {};
+        let groups: Record<any, any[]> = {};
 
         for(let line of this.data) {
             const group = line[group_colname];
@@ -170,7 +105,7 @@ class SQLDymTable extends LISS({
                         if(i !== 0)
                             continue;
 
-                        cell.setAttribute("rowspan", group.length);
+                        cell.setAttribute("rowspan", `${group.length}`);
                     }
 
                     tr.append(cell);
@@ -184,12 +119,12 @@ class SQLDymTable extends LISS({
         tbody.replaceChildren(...rows);
     }
 
-    highlightCol( filter ) {
+    highlightCol( filter: (name: string) => boolean ) {
         for(let colname in this.cols)
             this.#highlight(this.cols[colname], filter(colname) );
     }
 
-    #highlight(target, highlight) { // target: HTMLElement, highlight: boolean|string|Record<string, boolean> ) {
+    #highlight(target: HTMLElement, highlight: boolean|string|boolean[]) { // target: HTMLElement, highlight: boolean|string|Record<string, boolean> ) {
 
         if( typeof highlight === "boolean")
             return target.classList.toggle('highlight', highlight);
@@ -201,12 +136,12 @@ class SQLDymTable extends LISS({
 
     }
 
-    highlightRow( filter ) {
+    highlightRow( filter: (value: any, rowid: number) => boolean ) {
         for(let i = 0; i < this.rows.length; ++i)
             this.#highlight( this.rows[i][1], filter(this.rows[i][0], i) );
     }
 
-    highlightCells( filter ) {
+    highlightCells( filter: (data: any, name: string) => boolean ) {
 
         for(let i = 0; i < this.rows.length; ++i) {
 
@@ -219,5 +154,4 @@ class SQLDymTable extends LISS({
     }
 };
 
-
-LISS.define("sql-dymtable", SQLDymTable)
+define("sql-dymtable", SQLDymTable)

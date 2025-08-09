@@ -1,4 +1,6 @@
+import "./dymtables/cols";
+import "./dymtables/rows";
+import "./dymtables/pagination";
 
 /*
-import "../../../SQL/sql-dym-table.js";
 import "../../../anim-player.js";*/
