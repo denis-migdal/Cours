@@ -149,110 +149,34 @@ Pour exécuter cette requête, le SGDB va construire une table intermédiaire co
     background-color: orange;
   }
 
+  .highlight > strong {
+    outline: gold solid 2px;
+    background-color: #FFFF0050;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
   .table_flex {
     display: flex;
     align-items: top;
     gap: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
   }
 </style>
 
 <div style="text-align: center">
-  <anim-player id="cart_anim"></anim-player>
+  <player-toolbar id="cart_anim"></player-toolbar>
 </div>
 <div class='table_flex'>
   <sql-dymtable id="cart_T1" table="T1" header="T1"></sql-dymtable>
-    <span><strong>x</strong></span>
+    <span class="x"><strong>x</strong></span>
   <sql-dymtable id="cart_T2" table="T2" header="T2"></sql-dymtable>
     <span><strong>=</strong></span>
   <sql-dymtable id="cart_T1_T2" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1, T2" header="T1xT2"></sql-dymtable>
-    <span><strong>-- WHERE T1.ID == T2.ID --></strong></span>
+    <span class="where"><strong>-- WHERE --><br/>T1.ID == T2.ID</strong></span>
   <sql-dymtable id="cart_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1, T2" header="T1xT2 WHERE T1.ID == T2.ID"></sql-dymtable>
 </div>
-
-
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const T1 = await LISS.qs("#cart_T1");
-  const T2 = await LISS.qs("#cart_T2");
-
-  const T1_T2  = await LISS.qs("#cart_T1_T2");
-  const T1_T2W = await LISS.qs("#cart_T1_T2W");
-
-  const anim   = await LISS.qs("#cart_anim");
-
-  T1.highlightRow( ({ID}) => `high_${ID}` );
-  T2.highlightRow( ({ID}) => `high_${ID}` );
-
-  T1_T2.highlightCells( (row, colname) => {
-    const id = row[ colname.split('.')[0] + ".ID"];
-    return `high_${id}`;
-  });
-  T1_T2W.highlightCells( (row, colname) => {
-    const id = row[ colname.split('.')[0] + ".ID"];
-    return `high_${id}`;
-  });
-  
-  function doStep(step) {
-
-    let genT1_T2_max_step = T1.nbRows * (T2.nbRows + 2) + 2;
-
-    if( step - genT1_T2_max_step > T1_T2.nbRows )
-      return anim.reset();
-
-    let T1_rownum;
-    let T2_rownum;
-    let T1_T2_rownum;
-    let T1_T2_generated = step === 0 ? undefined : -1;
-
-    if( step > 1 && step < genT1_T2_max_step ) { // build T1xT2
-      T1_rownum = Math.trunc( (step - 2) / (T2.nbRows + 2) );
-      T2_rownum =             (step - 2) % (T2.nbRows + 2) - 1;
-
-      T1_T2_generated = T1_rownum * T2.nbRows + T2_rownum;
-
-      if( T2_rownum === -1 )
-        T2_rownum = undefined;
-      if( T2_rownum === T2.nbRows ) {
-        T2_rownum = undefined;
-        --T1_T2_generated;
-      }
-
-      T1_T2_rownum = T1_rownum * T2.nbRows + T2_rownum;
-    }
-
-    let T1_T2W_rownum = step === 0 ? T1_T2.nbRows : -1;
-
-    if( step >= genT1_T2_max_step ) { // filter T1xT2
-      T1_T2_generated = T1_T2.nbRows;
-      T1_T2W_rownum = T1_T2_rownum = step - genT1_T2_max_step;
-    }
-
-
-    T1.highlightRow( (_, row_num) => {
-      return {cur: row_num === T1_rownum}
-    });
-    T2.highlightRow( (_, row_num) => {
-      return {cur: row_num === T2_rownum}
-    });
-
-    T1_T2.highlightRow( (_, row_num) => {
-      return {
-        cur : row_num === T1_T2_rownum,
-        hide: row_num >   T1_T2_generated
-      }
-    });
-    T1_T2W.highlightRow( (row, row_num) => {
-      return {
-        cur : row_num === T1_T2W_rownum,
-        hide: row_num >   T1_T2W_rownum || row["T1.ID"] !== row["T2.ID"]
-      }
-    });
-  }
-
-  anim.host.addEventListener("step", (ev) => doStep(ev.detail) );
-  doStep(0);
-</script>
 
 Ainsi, le produit cartésien de deux tables de 3 entrées produira une table intermédiaire de 9 lignes, dont la majorité des lignes seront ensuite rejetées par la clause <script type="c-sql">WHERE</script>. Même sur de petites tables, la construction de la table intermédiaire explose très vite les capacités du SGDB :
 
@@ -358,7 +282,7 @@ Pour chaque entrée de <script type="c-sql"><h>$T1</h></script>, le SGBD va rech
 
 
 <div style="text-align: center">
-  <anim-player id="join_anim"></anim-player>
+  <player-toolbar id="join_anim"></player-toolbar>
 </div>
 
 <div class='table_flex'>
@@ -368,61 +292,6 @@ Pour chaque entrée de <script type="c-sql"><h>$T1</h></script>, le SGBD va rech
     <span><strong>=</strong></span>
   <sql-dymtable id="join_T1_T2W" cols="T1.ID as 'T1.ID', T1.T1 as 'T1.T1', T2.ID as 'T2.ID', T2.T2 as 'T2.T2'" table="T1 RIGHT JOIN T2 USING(ID)" header="T1 JOIN T2"></sql-dymtable>
 </div>
-
-
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const T1 = await LISS.qs("#join_T1");
-  const T2 = await LISS.qs("#join_T2");
-
-  const T1_T2W = await LISS.qs("#join_T1_T2W");
-
-  const anim   = await LISS.qs("#join_anim");
-
-  T1.highlightRow( ({ID}) => `high_${ID}` );
-  T2.highlightRow( ({ID}) => `high_${ID}` );
-
-  T1_T2W.highlightCells( (row, colname) => {
-    const id = row[ colname.split('.')[0] + ".ID"];
-    return `high_${id}`;
-  });
-  
-  function doStep(step) {
-
-    let T2_rownum;
-    let substep;
-
-    if( step > 1 ) { // build T1 JOIN T2
-      T2_rownum = Math.trunc( (step - 2) / 3);
-      substep = (step - 2) % 3;
-    }
-
-    if( T2_rownum !== undefined && T2_rownum >= T2.nbRows){
-      anim.reset();
-      return 
-    }
-
-    T1.highlightRow( ({ID}) => {
-
-      return {cur: T2_rownum !== undefined && ID === T2.getRow(T2_rownum)[0].ID && substep > 0 }
-    });
-    T2.highlightRow( (_, row_num) => {
-      return {cur: row_num === T2_rownum}
-    });
-
-    T1_T2W.highlightRow( (row, row_num) => {
-      return {
-        cur : step !== 0 && row_num === T2_rownum && substep === 2,
-        hide: step !== 0 && (step === 1 || row_num > T2_rownum || row_num === T2_rownum && substep !== 2)
-      }
-    });
-  }
-
-  anim.host.addEventListener("reset", (ev) => doStep(0) );
-  anim.host.addEventListener("step", (ev) => doStep(ev.detail) );
-  doStep(0);
-</script>
 
 💡 Si les colonnes en communs constituent un index (<script type="c-sql">UNIQUE</script> ou clef primaire), la recherche des entrées de <script type="c-sql"><h>$T2</h></script> est quasi instantanée.
 

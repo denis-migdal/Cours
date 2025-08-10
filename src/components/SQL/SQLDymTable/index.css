@@ -32,7 +32,7 @@
         display: none;
     }
     .cur {
-        border : 4px solid yellow;
+        outline : 4px solid yellow;
         opacity: 0.5;
     }
     .lowlight {

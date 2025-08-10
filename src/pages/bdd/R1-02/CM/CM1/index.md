@@ -615,109 +615,40 @@ Le différentes **clauses** des requêtes SQL sont généralement écrites dans 
 
 Par exemple lors d'une requête <script type="c-sql">SELECT</script>:
 
+<div style="text-align: center">
+  <player-toolbar speed="1500" id="order-player"></player-toolbar>
+</div>
 <div style="display:flex">
   <ol id="order-list">
-    <li step="1">On récupère la table (clause <script type="c-sql">FROM</script>).</li>
-    <li step="2" class="warning"><em>Alias de colonnes définies ici.</em></li>
+    <li step="1">Récupère la table (clause <script type="c-sql">FROM</script>).</li>
+    <li step="2" class="warning"><em>Défini les alias de colonnes.</em></li>
     <li step="3">On filtre les entrées (clause  <script type="c-sql">WHERE</script>).</li>
-    <li class="later">On groupe les entrées en lignes (clause  <script type="c-sql">GROUP BY</script>).</li>
-    <li class="later warning"><em>Alias de colonnes d'agrégats définies ici.</em></li>
-    <li class="later">On filtre les lignes agrégées (clause  <script type="c-sql">HAVING</script>).</li>
-    <li class="warning" step="4">On supprime les doublons (clause  <script type="c-sql">SELECT DISTINCT</script>).</li>
-    <li step="5">On trie les lignes (clause  <script type="c-sql">ORDER BY</script>).</li>
-    <li step="6">On limite le nombre de lignes retournées (clauses  <script type="c-sql">LIMIT</script>/<script type="c-sql">OFFSET</script>).</li>
+    <li class="later">Groupe les entrées en lignes<br/> (clause  <script type="c-sql">GROUP BY</script>).</li>
+    <li class="later warning"><em>Défini les alias de colonnes d'agrégats.</em></li>
+    <li class="later">Filtre les lignes agrégées<br/> (clause <script type="c-sql">HAVING</script>).</li>
+    <li class="warning" step="4">Supprime les doublons<br/> (clause <script type="c-sql">SELECT DISTINCT</script>).</li>
+    <li step="5">Trie les lignes (clause  <script type="c-sql">ORDER BY</script>).</li>
+    <li step="6">Limite le nombre de lignes retournées<br/> (clauses  <script type="c-sql">LIMIT</script>/<script type="c-sql">OFFSET</script>).</li>
   </ol>
-  <div>
-    <div style="text-align: center">
-      <anim-player speed="1500" id="order-player"></anim-player>
-    </div>
-    <div style="display:flex;height: fit-content;">
-      <style>
-        .notyet {
-          color: gray;
-        }
-        .cur {
-          color: yellow;
-        }
-        .warning.cur {
-          color: orange;
-        }
-      </style>
-      <pre style="margin:0"><code id="order_sql">SELECT <span class="notyet">DISTINCT</span> Date, Ref, Q as Nb
-    FROM Produits
-    WHERE Ref = "Gomme"
-    ORDER BY Q
-    LIMIT 2;</code></pre>
-      <sql-dymtable header="" table="Produits" id="order-table"><sql-dym-table>>
-    </div>
-  </div>
+  <style>
+    .notyet {
+      color: gray;
+    }
+    .cur {
+      color: yellow;
+    }
+    .warning.cur {
+      color: orange;
+    }
+  </style>
+  <pre style="margin:0"><code id="order_sql">SELECT <span class="notyet">DISTINCT</span> Date, Ref, Q as Nb
+FROM Produits
+WHERE Ref = "Gomme"
+ORDER BY Q
+LIMIT 2;</code></pre>
+  <div style="flex-grow: 1"></div>
+  <sql-dymtable header="" table="Produits" id="order-table"><sql-dym-table>
 </div>
-
-<script type="module">
-
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const player = await LISS.qs("#order-player");
-  const table  = await LISS.qs("#order-table");
-  const order_sql = document.querySelector("#order_sql");
-
-  const list = document.querySelectorAll("#order-list > li");
-
-  const query = [
-`SELECT `, [4, `DISTINCT `], `Date, Ref, Q `, [2, "as Nb"],
-    [ 1, `\n    FROM Produits`],
-    [ 3, `\n    WHERE Ref = 'Gomme'`],
-    [ 5, `\n    ORDER BY Q`],
-    [ 6, `\n    LIMIT 2`], ';' ];
-
-  function buildQuery(step) {
-    let output = "";
-    for(let elem of query) {
-      if( Array.isArray(elem) ) {
-        if( elem[0] > step && step !== 0 )
-          continue;
-        elem = elem[1];
-      }
-      output += elem;
-    }
-
-    return output;
-  }
-  function buildOutput(step) {
-    let output = [];
-    for(let elem of query) {
-      if( Array.isArray(elem) ) {
-        const html = document.createElement('span');
-        html.textContent = elem[1];
-        html.classList.toggle("cur", elem[0] === step);
-        
-        if( elem[0] > step && step !== 0 )
-          html.classList.add("notyet");
-        elem = html;
-      }
-      output.push(elem);
-    }
-
-    return output;
-  }
-
-  function doStep(i) {
-
-    if( i > 6)
-      return player.reset();
-
-    order_sql.replaceChildren( ...buildOutput(i) ); //TODO highlight
-    for(let li of list)
-      li.classList.toggle("cur", li.getAttribute("step") === `${i}`);
-
-    table.exec( buildQuery(i) );
-  }
-
-  player.host.addEventListener("reset", ()   => { doStep(0)          });
-  player.host.addEventListener("step" , (ev) => { doStep( ev.detail) });
-
-  doStep(0);
-</script>
 
 💡 Les étapes en gris seront étudiées au CM suivant.
 
