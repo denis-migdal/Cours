@@ -462,35 +462,11 @@ SELECT Filename, Filesize FROM Files WHERE Filehash == SHA256(<h>$FILECONTENT</h
 <p>Pour cela, on utilise la clause <script type="c-sql">GROUP BY <h>$COLS[,...]</h></script> qui permet de fusionner, au sein d&#39;une même ligne, les entrées dont les valeurs de <script type="c-sql"><h>$COLS[,...]</h></script> sont égales. Vous trouverez ci-dessous une représentation visuelle d&#39;une agrégation :</p>
 <div style="display:flex;justify-content: space-around;width:100%">
   <sql-dymtable table="Produits"></sql-dymtable>
-  <sql-dymtable id="group-date" table="Produits" header="Group by Date"></sql-dymtable>
-  <sql-dymtable id="group-ref"  table="Produits" header="Group by Ref"></sql-dymtable>
+  <sql-dymtable id="group-date" table="Produits" groupby="Date"
+    header="Group by Date"></sql-dymtable>
+  <sql-dymtable id="group-ref"  table="Produits" groupby="Ref"
+    header="Group by Ref"></sql-dymtable>
 </div>
-
-<script type="module">
-
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const gdate_table = await LISS.qs("#group-date");
-  const  gref_table = await LISS.qs("#group-ref");
-
-  gdate_table.groupBy("Date");
-   gref_table.groupBy("Ref");
-
-
-/*  const rowsql   = await LISS.qs("#row-sql");
-
-  rowsql.host.addEventListener("change", (ev) => {
-    update(ev.detail.datas);
-  });
-  update( rowsql.lastDatas );
-
-  function update(datas) {
-
-    const ids = datas[0].map(r => r.ID);
-
-    rowtable.highlightRow( (ID) => ids.includes(+ID) );
-  }*/
-</script>
 
 <p>Vous remarquerez alors que les lignes contiennent plusieurs valeurs pour une même colonne. Il convient alors d&#39;utiliser une <strong>fonction d&#39;agrégation</strong> qui prendra la liste des valeurs et retournera une valeur unique. Par exemple, <script type="c-sql">GROUP_CONCAT(Q)</script> concatène, pour chaque ligne, la colonne <script type="c-sql">Q</script> de ses entrées :</p>
 <sql-interactive>

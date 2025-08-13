@@ -6,7 +6,8 @@
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link   href="/skeleton/bdr/index.css"  rel="stylesheet">
-        <script  src="/skeleton/bdr/index.js"  type="module"     blocking="render" async></script>
+        <script  src="/skeleton/bdr/index.js"  type="module"     blocking="render"></script>
+        <script  src="./index.js"  type="module"     blocking="render"></script>
     </head>
     <body>
         <main>
@@ -305,26 +306,6 @@ SELECT <h>$COLS[,...]</h> FROM <h>$TABLE</h>;
   <sql-dymtable id="col-table" table="Users"></sql-dymtable>
 </sql-interactive>
 
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const coltable = await LISS.qs("#col-table");
-  const colsql   = await LISS.qs("#col-sql");
-
-  colsql.host.addEventListener("change", (ev) => {
-    update(ev.detail.datas);
-  });
-  update( colsql.lastDatas );
-
-  function update(datas) {
-
-    const cols = Object.keys(datas[0][0]);
-
-    coltable.highlightCol( (colname) => cols.includes(colname) ); //TODO...
-  }
-
-</script>
-
 <h3 id="alias-de-colonnes">Alias de colonnes</h3>
 <p>💡 Dans le cadre d&#39;une requête SQL, vous pouvez temporairement associer un alias à une colonne grâce au mot clé <script type="c-sql">as</script> :</p>
 <sql-interactive id="col-sql">
@@ -376,7 +357,7 @@ SELECT <h>$COLS[,...]</h> FROM <h>$TABLE</h>;
 </ul>
 <h3 id="clause-where">Clause WHERE</h3>
 <p>La manière générique de filter les lignes à retourner est d&#39;ajouter une clause <script type="c-sql">WHERE <h>$COND</h></script> à la requête. Seules les lignes pour lesquelles <script type="c-sql"><h>$COND</h></script> est vraie seront retournées.</p>
-<sql-interactive id="col-sql">
+<sql-interactive id="row-sql">
   <sql-selector>
     <script type="c-sql">
       SELECT * FROM Users
@@ -393,27 +374,6 @@ SELECT <h>$COLS[,...]</h> FROM <h>$TABLE</h>;
   <div class="spacing"></div>
   <sql-dymtable id="row-table" table="Users"></sql-dymtable>
 </sql-interactive>
-
-
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const rowtable = await LISS.qs("#row-table");
-  const rowsql   = await LISS.qs("#row-sql");
-
-  rowsql.host.addEventListener("change", (ev) => {
-    update(ev.detail.datas);
-  });
-  update( rowsql.lastDatas );
-
-  function update(datas) {
-
-    const ids = datas[0].map(r => r.ID);
-
-    rowtable.highlightRow( ({ID}) => ids.includes(+ID) );
-  }
-
-</script>
 
 <h4 id="opérateurs-de-comparaisons">Opérateurs de comparaisons</h4>
 <p>💡 La structure d&#39;une condition est très simple, utilisant les opérateurs de comparaison que vous connaissez déjà : <script type="c-sql">></script>, <script type="c-sql"><</script>, <script type="c-sql">>=</script>, <script type="c-sql"><=</script>, <script type="c-sql">!=</script>.</p>
@@ -552,7 +512,7 @@ Vous ne devez ainsi pas écrire, e.g. <script type="c-sql">0 < Age < 18</script>
 <h4 id="pagination">Pagination</h4>
 <p>Lorsqu&#39;une requête retourne des milliers de lignes, il peut être coûteux de toutes les récupérer et les afficher en même temps. On peut alors découper la liste en plusieurs pages, en affichant que e.g. 50 lignes par pages. Ainsi la première page récupère et affiche les 50 premières lignes, la seconde les 50 suivantes, et ainsi de suite.</p>
 <p>Pour cela, on utilisera la clause <script type="c-sql">LIMIT 50</script> afin de ne récupérer que 50 entrées par requêtes. En conjonction, on utilisera la clause <script type="c-sql">OFFSET <h>$P</h>*50</script> qui permet de ne pas récupérer les <script type="c-sql"><h>$P</h>*50</script> premières entrées retournées. <script type="c-sql"><h>$P</h>+1</script> étant alors le numéro de la page actuelle.</p>
-<sql-interactive>
+<sql-interactive id="pagination-sql">
   <sql-selector>
     <script type="c-sql">
       SELECT * FROM Users
@@ -578,25 +538,6 @@ Vous ne devez ainsi pas écrire, e.g. <script type="c-sql">0 < Age < 18</script>
   <div class="spacing"></div>
   <sql-dymtable id="pagination-table" table="Users"></sql-dymtable>
 </sql-interactive>
-
-<script type="module">
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const table = await LISS.qs("#pagination-table");
-  const sql   = await LISS.qs("#pagination-sql");
-
-  sql.host.addEventListener("change", (ev) => {
-    update(ev.detail.datas);
-  });
-  update( sql.lastDatas );
-
-  function update(datas) {
-
-    const ids = datas[0].map(r => r.ID);
-    table.highlightRow( ({ID}) => ids.includes(+ID) );
-  }
-
-</script>
 
 <h2 id="astuces-pour-rédiger-efficacement-les-requêtes-sql">Astuces pour rédiger efficacement les requêtes SQL</h2>
 <ol>
@@ -632,109 +573,40 @@ Vous ne devez ainsi pas écrire, e.g. <script type="c-sql">0 < Age < 18</script>
 </style>
 
 <p>Par exemple lors d&#39;une requête <script type="c-sql">SELECT</script>:</p>
+<div style="text-align: center">
+  <player-toolbar speed="1500" id="order-player"></player-toolbar>
+</div>
 <div style="display:flex">
   <ol id="order-list">
-    <li step="1">On récupère la table (clause <script type="c-sql">FROM</script>).</li>
-    <li step="2" class="warning"><em>Alias de colonnes définies ici.</em></li>
+    <li step="1">Récupère la table (clause <script type="c-sql">FROM</script>).</li>
+    <li step="2" class="warning"><em>Défini les alias de colonnes.</em></li>
     <li step="3">On filtre les entrées (clause  <script type="c-sql">WHERE</script>).</li>
-    <li class="later">On groupe les entrées en lignes (clause  <script type="c-sql">GROUP BY</script>).</li>
-    <li class="later warning"><em>Alias de colonnes d'agrégats définies ici.</em></li>
-    <li class="later">On filtre les lignes agrégées (clause  <script type="c-sql">HAVING</script>).</li>
-    <li class="warning" step="4">On supprime les doublons (clause  <script type="c-sql">SELECT DISTINCT</script>).</li>
-    <li step="5">On trie les lignes (clause  <script type="c-sql">ORDER BY</script>).</li>
-    <li step="6">On limite le nombre de lignes retournées (clauses  <script type="c-sql">LIMIT</script>/<script type="c-sql">OFFSET</script>).</li>
+    <li class="later">Groupe les entrées en lignes<br/> (clause  <script type="c-sql">GROUP BY</script>).</li>
+    <li class="later warning"><em>Défini les alias de colonnes d'agrégats.</em></li>
+    <li class="later">Filtre les lignes agrégées<br/> (clause <script type="c-sql">HAVING</script>).</li>
+    <li class="warning" step="4">Supprime les doublons<br/> (clause <script type="c-sql">SELECT DISTINCT</script>).</li>
+    <li step="5">Trie les lignes (clause  <script type="c-sql">ORDER BY</script>).</li>
+    <li step="6">Limite le nombre de lignes retournées<br/> (clauses  <script type="c-sql">LIMIT</script>/<script type="c-sql">OFFSET</script>).</li>
   </ol>
-  <div>
-    <div style="text-align: center">
-      <anim-player speed="1500" id="order-player"></anim-player>
-    </div>
-    <div style="display:flex;height: fit-content;">
-      <style>
-        .notyet {
-          color: gray;
-        }
-        .cur {
-          color: yellow;
-        }
-        .warning.cur {
-          color: orange;
-        }
-      </style>
-      <pre style="margin:0"><code id="order_sql">SELECT <span class="notyet">DISTINCT</span> Date, Ref, Q as Nb
-    FROM Produits
-    WHERE Ref = "Gomme"
-    ORDER BY Q
-    LIMIT 2;</code></pre>
-      <sql-dymtable header="" table="Produits" id="order-table"><sql-dym-table>>
-    </div>
-  </div>
+  <style>
+    .notyet {
+      color: gray;
+    }
+    .cur {
+      color: yellow;
+    }
+    .warning.cur {
+      color: orange;
+    }
+  </style>
+  <pre style="margin:0"><code id="order_sql">SELECT <span class="notyet">DISTINCT</span> Date, Ref, Q as Nb
+FROM Produits
+WHERE Ref = "Gomme"
+ORDER BY Q
+LIMIT 2;</code></pre>
+  <div style="flex-grow: 1"></div>
+  <sql-dymtable header="" table="Produits" id="order-table"><sql-dym-table>
 </div>
-
-<script type="module">
-
-  import LISS from "https://raw.githack.com/denis-migdal/LISS/main/index.js"
-
-  const player = await LISS.qs("#order-player");
-  const table  = await LISS.qs("#order-table");
-  const order_sql = document.querySelector("#order_sql");
-
-  const list = document.querySelectorAll("#order-list > li");
-
-  const query = [
-`SELECT `, [4, `DISTINCT `], `Date, Ref, Q `, [2, "as Nb"],
-    [ 1, `\n    FROM Produits`],
-    [ 3, `\n    WHERE Ref = 'Gomme'`],
-    [ 5, `\n    ORDER BY Q`],
-    [ 6, `\n    LIMIT 2`], ';' ];
-
-  function buildQuery(step) {
-    let output = "";
-    for(let elem of query) {
-      if( Array.isArray(elem) ) {
-        if( elem[0] > step && step !== 0 )
-          continue;
-        elem = elem[1];
-      }
-      output += elem;
-    }
-
-    return output;
-  }
-  function buildOutput(step) {
-    let output = [];
-    for(let elem of query) {
-      if( Array.isArray(elem) ) {
-        const html = document.createElement('span');
-        html.textContent = elem[1];
-        html.classList.toggle("cur", elem[0] === step);
-        
-        if( elem[0] > step && step !== 0 )
-          html.classList.add("notyet");
-        elem = html;
-      }
-      output.push(elem);
-    }
-
-    return output;
-  }
-
-  function doStep(i) {
-
-    if( i > 6)
-      return player.reset();
-
-    order_sql.replaceChildren( ...buildOutput(i) ); //TODO highlight
-    for(let li of list)
-      li.classList.toggle("cur", li.getAttribute("step") === `${i}`);
-
-    table.exec( buildQuery(i) );
-  }
-
-  player.host.addEventListener("reset", ()   => { doStep(0)          });
-  player.host.addEventListener("step" , (ev) => { doStep( ev.detail) });
-
-  doStep(0);
-</script>
 
 <p>💡 Les étapes en gris seront étudiées au CM suivant.</p>
 <p>⚠ En rouge sont indiqués des cas d&#39;exceptions dont l&#39;ordre d&#39;écriture ne correspond pas à leur ordre d&#39;exécution. Une autre exception existe dans les requêtes <script type="c-sql">UPDATE</script> où la clause <script type="c-sql">SET</script> s&#39;écrit <strong>avant</strong> la clause <script type="c-sql">WHERE</script>.</p>
