@@ -6,7 +6,8 @@
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link   href="/skeleton/slides/bdr/index.css"  rel="stylesheet">
-        <script  src="/skeleton/slides/bdr/index.js"  type="module"     blocking="render" async></script>
+        <script  src="/skeleton/slides/bdr/index.js"  type="module"     blocking="render"></script>
+        <script  src="./index.js"  type="module"     blocking="render"></script>
     </head>
     <body>
         <main>
@@ -139,7 +140,7 @@
     <frame-uca>
       <div><b>Schéma</b> de table : décrit la <b>structure</b> de la table, e.g. le type des colonnes :
         <ul>
-          <li><script type="c-sql">TEXT</script> : une chaîne de caractère (e.g. <script type="c-sql">'Hello'</script> / <script type="c-sql">'J''ai mangé'</script>).</li>
+          <li><script type="c-sql">TEXT</script> : une chaîne de caractère (e.g. <script type="c-sql">'Hello'</script> / <script type="c-sql">'J''ai mangé'</script>).</li>
           <li><script type="c-sql">INT</script>/<script type="c-sql">INTEGER</script> : un nombre entier.</li>
           <li><script type="c-sql">REAL</script> : un nombre décimal.</li>
           <li><script type="c-sql">BLOB</script> : des données binaires.</li>
@@ -303,7 +304,7 @@
 </frame-section>
 <frame-section name="Selection des lignes">
   <frame-uca>
-    <div><b><i>Problème :</b></i> retourne <i>toutes</i> les entrées.
+    <div><b><i>Problème :</i></b> retourne <i>toutes</i> les entrées.
       <ul>
         <li>des milliers/millions d'entrées (pas forcément toutes pertinentes).</li>
         <li>consommation excessive de ressources Internet, processeur, RAM, disque, etc.</li>
@@ -587,7 +588,7 @@
     </div>
   </frame-uca>
 <frame-subsection name="Ordre d'exécution et d'écriture (de gauche à droite)">
-    <frame-uca>
+    <frame-uca id="slide-order">
       <style>
         .later {
           color: gray;
@@ -636,83 +637,10 @@
           WHERE Ref = "Gomme"
           ORDER BY Q
           LIMIT 2;</code></pre>
-            <sql-dymtable header="" table="Produits" id="order-table"><sql-dymtable>
+            <sql-dymtable header="" table="Produits" id="order-table"></sql-dymtable>
           </div>
         </div>
       </div>
-      <script>
-          async function fct(parent) {
-
-            return;
-
-              //const player = await LISS.qs("#order-player", parent);
-              const table  = await LISS.qs("#order-table", parent);
-              const order_sql = parent.querySelector("#order_sql");
-
-              const list = parent.querySelectorAll("#order-list > li");
-
-              const query = [
-              `SELECT `, [4, `DISTINCT `], `Date, Ref, Q `, [2, "as N"],
-                  [ 1, `\n    FROM Produits`],
-                  [ 3, `\n    WHERE Ref = 'Gomme'`],
-                  [ 5, `\n    ORDER BY Q`],
-                  [ 6, `\n    LIMIT 2`], ';' ];
-
-              function buildQuery(step) {
-                  let output = "";
-                  for(let elem of query) {
-                  if( Array.isArray(elem) ) {
-                      if( elem[0] > step && step !== 0 )
-                      continue;
-                      elem = elem[1];
-                  }
-                  output += elem;
-                  }
-
-                  return output;
-              }
-              function buildOutput(step) {
-                  let output = [];
-                  for(let elem of query) {
-                  if( Array.isArray(elem) ) {
-                      const html = document.createElement('span');
-                      html.textContent = elem[1];
-                      html.classList.toggle("cur", elem[0] === step);
-                      
-                      if( elem[0] > step && step !== 0 )
-                      html.classList.add("notyet");
-                      elem = html;
-                  }
-                  output.push(elem);
-                  }
-
-                  return output;
-              }
-
-              function doStep(i) {
-
-                  if( i > 6)
-                      return; //return player.reset();
-
-                  order_sql.replaceChildren( ...buildOutput(i) ); //TODO highlight
-                  for(let li of list)
-                      li.classList.toggle("cur", li.getAttribute("step") === `${i}`);
-
-                  table.exec( buildQuery(i) );
-              }
-
-              //player.host.addEventListener("reset", ()   => { doStep(0)          });
-              //player.host.addEventListener("step" , (ev) => { console.warn(ev.detail); doStep( ev.detail) });
-
-              //doStep(0);
-              doStep(+parent.getAttribute("slide") );
-          }
-
-          {
-              const parent = document.currentScript.closest("frame-uca");
-              (parent.scripts ??= []).push( fct );
-          }
-      </script>
       <!-- ⚠ En rouge, les cas d'exceptions (+ dans `UPDATE`, `SET` écrit <i></i>avant<i></i> `WHERE`). -->
     </frame-uca>
   </frame-subsection>
