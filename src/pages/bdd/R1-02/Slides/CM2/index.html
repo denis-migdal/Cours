@@ -510,30 +510,10 @@
 
       <!-- <sql-dymtable table="Produits"></sql-dymtable> -->
       <div class="overlay">
-        <sql-dymtable onslide="0" id="group-date" table="Produits" header=""></sql-dymtable>
-        <sql-dymtable onslide="1" id="group-ref"  table="Produits" header=""></sql-dymtable>
+        <sql-dymtable onslide="0" id="group-date" table="Produits" groupby="Date" header=""></sql-dymtable>
+        <sql-dymtable onslide="1" id="group-ref"  table="Produits" groupby="Ref" header=""></sql-dymtable>
       </div>
     </div>
-
-    <script>
-
-      async function fct (parent) {
-        //TODO
-        /*
-        const gdate_table = await LISS.qs("#group-date", parent);
-        const  gref_table = await LISS.qs("#group-ref" , parent);
-
-        gdate_table.groupBy("Date");
-        gref_table.groupBy("Ref");
-        */
-      }
-
-      {
-        const parent = document.currentScript.closest("frame-uca");
-        (parent.scripts ??= []).push( fct );
-      }
-
-    </script>
   </frame-uca>
     <frame-uca>
       <ul>
