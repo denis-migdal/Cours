@@ -94,13 +94,13 @@
             - TP3-4:TP3-4
         - cheat-html5:Cheat sheet HTML5
         - cheat-css3:Cheat sheet CSS3
-    + R4-09-VCOD:S4 Programmation Web
+    - R4-09-VCOD:S4 Programmation Web
         + CM:CM
             - CM1:CM1
         + DS:DS
             - cur:cur
     + SAE4-02-VCOD:S4 [SAÉ] Collecte Automatisée de données Web
-    + R5-07-VCOD:S5-VCOD Programmation Web pour la Visualisation
+    - R5-07-VCOD:S5-VCOD Programmation Web pour la Visualisation
         + CM:CM
             - CM1:CM1
         + DS:DS
