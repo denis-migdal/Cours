@@ -1,10 +1,22 @@
-+ :👋 Accueil
-    + R1-13:Prise en main des outils informatiques
++ acc:👋 Accueil
+    - R1-13:Prise en main des outils informatiques
+        + CM:CM
+            - CM1:CM1 - Méthodes d'Apprentissage Universitaire
+            - CM2:CM2 - Commandes Shell
+        + TD:TD
+            - TD1:TD1 - ?
+            - TD2:TD2 - ?
+            - TD3:TD3 - ?
+            - TD4:TD4 - ?
+            - TD5:TD5 - ?
+        - cheat:Cheat sheet
 - sec:🔒 Sécurité
     - R2-14:S2 Administration Système Linux
         + CM:CM
-            - CM1:CM1 - Commandes Shell
-            - CM2:CM2 - Les fichiers
+            - CM1:CM1 - Administrer un ordinateur Linux
+            - CM2:CM2 - Processus et accès à distance
+            - CM3:CM3 - Volumes de données et systèmes de fichiers
+            - CM4:CM4 - ?
         + Slides:Slides
             - CM1:CM1 - Commandes Shell
             - CM2:CM2 - Les fichiers
