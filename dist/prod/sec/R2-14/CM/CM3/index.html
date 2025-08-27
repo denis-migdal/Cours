@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>CM2 (AdminSys)</title>
+        <title>CM3 (AdminSys)</title>
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link   href="/skeleton/index.css"  rel="stylesheet">
@@ -132,7 +132,9 @@
 
 <div>💡 Il est aussi possible d'installer ses applications locales dans <script type="c-text">/opt/<h>$NAME</h>/</script>, évitant ainsi d'avoir à en disperser le contenu, entre ses executables, bibliothèques, et configurations.</div>
 
-<div>⚠ Les fichiers temporaires sont usuellement enregistrés dans <script type="c-text">/tmp/</script>. Cependant, il convient d'en générer aléatoirement les noms afin d'éviter des conflits. Pour de <b>gros</b> fichiers temporaire, on utilisera généralement <script type="c-text">/var/tmp/</script> au lieu de <script type="c-text">/tmp/</script>.</div>
+<div>⚠ Les fichiers temporaires sont usuellement enregistrés dans <script type="c-text">/tmp/</script> (<script type="c-text">/var/tmp/</script> pour de gros fichiers), avec un nom aléatoire afin d'éviter des conflits : <script type="c-bash">mktemp <h>[-d]</h> <h>$PATH</h></script> (<i><u>m</u>a<u>k</u>e <u>temp</u>orary</i> [<u>d</u>irectory]). Les <script type="c-text">XXXXX</script> dans <script type="c-bash"><h>$PATH</h></script>, sont remplacés par des caractères aléatoires, e.g. <script type="c-bash">mktemp /tmp/foo-XXXXX.txt</script> peut créer un fichier <script type="c-bash">/tmp/foo-TTl96.txt</script>.
+
+</div>
 
 <div>💡 Pour exécuter une commande, le shell va rechercher (puis exécuter) le fichier de même nom présent dans les dossiers <script type="c-text">/usr/<h>[local/]</h>bin/</script>. Ainsi, pour créer une commande, il faut placer le fichier exécutable dans un de ces dossiers.</div>
 
@@ -243,6 +245,42 @@ Par exemple, <font color="#44AA44">r</font><font color="#8A8A8A">-</font><font c
 </div>
 
 <div>⚠ Pour pouvoir exécuter un script (ou une commande), il est nécessaire de posséder les droits d'exécution (et de lecture) sur le fichier. Bien qu'il soit possible d'utiliser ces droits pour contrôler les droits d'exécution de commandes d'administration, il est souvent préférable d'utiliser sudo/sudoers pour un meilleur contrôle.</div>
+
+<div>💡 Lors de sa création, un fichier possède des droits par défaut définis via la commande <script type="c-bash">umask</script> (<i><u>u</u>ser <u>mask</u></i>) :
+    <ul class="flex-2">
+        <li><script type="c-bash">umask -S</script> : affiche le masque.</li>
+        <li><script type="c-bash">umask <h>$MODE</h></script> : change le masque.</li>
+    </ul>
+</div>
+
+<h4>Autres droits</h4>
+
+<div>En réalité, il existe 3 autres droits, peu utilisés :
+<ul>
+    <li>Le <i>sticky bit</i> (t/T): seul le propriétaire du fichier (ou du contenu pour un dossier) peut le supprimer (utilisé par <script type="c-bash">/tmp</script>).</li>
+    <li>Le <i>SUID/SGID</i> (s/S) : le fichier binaire est exécuté avec les droits de l'utilisateur/groupe propriétaire (utilisé par <script type="c-bash">sudo</script>).</li>
+</ul></div>
+
+<div>⚠ Les droits SUID/SGID sont très dangereux, toujours utiliser sudoers à la place.</div>
+
+<h4>Droits d'accès avancés</h4>
+
+<div>La méthode usuelle d'attribution des droits permet d'indiquer des permissions uniquement pour le propriétaire, groupe propriétaire, et les autres. Pour une gestion plus fine des droits, on utilise les <b>ACL</b> (<i><u>A</u>ccess <u>C</u>ontrol <u>L</u>ist</i>) :
+    <ul>
+        <li><script type="c-bash">getfacl <h>$FILE</h> <h>[-R --skip-base]</h></script> (<i><u>get</u> <u>f</u>ile <u>acl</u></i>) : visualiser les droits ACL (si <script type="c-bash">-R</script>, <u>r</u>écursivement).</li>
+        <li><script type="c-bash">setfacl <h>$FILE</h> <h>-m|-x</h> <h>u|g:$WHO:$PERM[,..]</h></script> (<i><u>set</u> <u>f</u>ile <u>acl</u></i>) : <u>m</u>odifier ou supprimer les droits d'un <u>u</u>ser/<u>g</u>roup.</li>
+    </ul>
+</div>
+
+<div>💡 En pratique les ACL sont peu utilisés au quotidien.</div>
+
+<div>💡 Lorsqu'un fichier possède des droits ACL, <script type="c-bash">ls -lh</script> affiche un <script type="c-bash">+</script> à la fin des permissions :
+    <div class="terminal">
+        <pre>$ ls -lh /tmp/foo
+<u style="text-decoration-style:solid">Permissions</u> <u style="text-decoration-style:solid">User</u> <u style="text-decoration-style:solid">Group</u> <u style="text-decoration-style:solid">Size</u> <u style="text-decoration-style:solid">     Date Modified      </u> <u style="text-decoration-style:solid">   Name    </u>
+<font color="#44AA44"><b>.</b></font><font color="#44AA44">r</font><font color="#AA5500">w</font><font color="#8A8A8A">-</font><font color="#44AA44">r</font><font color="#AA5500">w</font><font color="#AA0000">x</font><font color="#44AA44">r</font><font color="#8A8A8A">--</font><font color="#1A92AA">+</font> <font color="#FFFFD7">root</font> <font color="#D7D7AF">root</font>  <font color="#FFFFAF">0</font> <font color="#FFFFAF">B</font>  <font color="#00D700">Wed Aug 27 10:44:06 2025</font> <font color="#44AA44"><b>  /tmp/foo</b></font></pre>
+    </div>
+</div>
 
 <h3>Les sauvegardes de fichiers</h3>
 
@@ -453,6 +491,19 @@ LABEL=DATA      /               ext4    errors=remount-ro 0       1
 </div>
 
 <div>💡 De manière analogue, cryptsetup a un fichier  <script type="c-text">/etc/crypttab</script> pour les volumes à déverrouiller au démarrage.</div>
+
+<h4>udisksctl</h4>
+
+<div>Pour des raisons de sécurité, seul l'administrateur peut monter certains systèmes de fichiers avec mount. Les utilisateurs doivent généralitement utiliser <script type="c-bash">udisksctl</script> à la place (<i><u>u</u>ser <u>disks</u> <u>c</u>on<u>t</u>ro<u>l</u></i>) :
+    <ul>
+        <li><script type="c-bash">udisksctl <h>[un]</h>mount -b <h>$DEV</h></script> : (dé)monter (dans <script type="c-bash">dans /media/<h>$USER</h>/<h>$NAME</h></script>).</li>
+        <li><script type="c-bash">udisksctl <h>[un]</h>lock -b <h>$DEV</h></script> : pour ouvrir un volume chiffré (dans <script type="c-bash">dans /media/<h>$USER</h>/<h>$NAME</h></script>).</li>
+        <li><script type="c-bash">udisksctl loop-setup -f <h>$FILE</h></script> : transformer un fichier en <script type="c-bash"><h>$DEV</h></script>.</li>
+        <li><script type="c-bash">udisksctl loop-delete -b <h>$DEV</h></script> : opération inverse.</li>
+    </ul>
+</div>
+
+<div>⚠ Un utilisateur ne dispose pas des droits nécessaires pour formatter un volume déverrouillé avec <script type="c-bash">udisksctl unlock</script>.</div>
 
 <h2>Les partitions</h2>
 

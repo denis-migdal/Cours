@@ -121,10 +121,133 @@ Droits définis dans <script type="c-bash">/etc/sudoers{,/*}</script> : <script 
     </script>
 </div>
 
-<h4 style="page-break-before: always">CM2 :</h4>
+<h5>Mise en forme : <script type="c-text">\e[<h>$CODE</h>m</script> (utiliser <script type="c-text">\033[<h>$CODE</h>m</script> en Python), cf <a href="https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797">liste des codes</a></h5>
 
+<style>
+  .table_format {
 
-<h4>CM3 : Volumes de données et systèmes de fichiers</h4>
+    & td, & th {
+      border: 1px solid light-dark(black, white);
+    }
+
+    & blink {
+      animation: blinker 1s linear infinite;
+    }
+
+  }
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+</style>
+
+<table class="table_format">
+  <tbody>
+    <tr>
+      <td><script type="c-text">\e[0m</script> (reset)</td>
+      <td><script type="c-text">\e[1m</script> <b>bold</b></td>
+      <td><script type="c-text">\e[2m</script> <span style="opacity:0.5">dim</span></td>
+      <td><script type="c-text">\e[3m</script> <em>italic</em></td>
+      <td><script type="c-text">\e[4m</script> <u>underline</u></td>
+      <td><script type="c-text">\e[5m</script> <blink>blink</blink></td>
+      <td><script type="c-text">\e[8m</script> (hidden)</td>
+      <td><script type="c-text">\e[9m</script> <s>barred</s></td>
+    </tr>
+    <!--
+    <tr>
+      <td>30: <span style="color:black;background-color:white">black</span></td>
+      <td>31: <span style="color:red">red</span></td>
+      <td>32: <span style="color:green">green</span></td>
+      <td>33: <span style="color:yellow">yellow</span></td>
+      <td>34: <span style="color:blue">blue</span></td>
+      <td>35: <span style="color:magenta">magenta</span></td>
+      <td>36: <span style="color:cyan">cyan</span></td>
+      <td>37: <span style="color:lightgray">lightgray</span></td>
+    </tr>
+    <tr>
+      <td>90: <span style="color:darkgray">darkgray</span></td>
+      <td>91: <span style="color:#FF8787">light red</span></td>
+      <td>92: <span style="color:lightgreen">light green</span></td>
+      <td>93: <span style="color:#DED82C">light yellow</span></td>
+      <td>94: <span style="color:lightblue">light blue</span></td>
+      <td>95: <span style="color:#CC58CC">light magenta</span></td>
+      <td>96: <span style="color:#4CCCE6">light cyan</span></td>
+      <td>97: <span style="color:white;background-color:black">white</span></td>
+    </tr> -->
+  </tbody>
+</table>
+
+<ul class="flex-2">
+    <li><script type="c-text">\e[38;2;<h>$R</h>;<h>$G</h>;<h>$B</h>m</script> : couleur du texte (RGB).</li>
+    <li><script type="c-text">\e[48;2;<h>$R</h>;<h>$G</h>;<h>$B</h>m</script> : couleur de fond (RGB)</li>
+    <li><script type="c-text">\ec</script> : effacer l'écran.</li>
+    <li><script type="c-text">\e[<h>$LINE</h>;<h>$COL</h>H</script> : déplacer le cursor.</li>
+    <li><script type="c-text">\e[?1049<h>h|l</h></script> : utiliser le buffer alternatif.</li>
+    <!-- <li><script type="c-bash">IFS='[;' read -sd R -p $'\e[6n' _ R C</script></li> -->
+</ul>
+
+<h4 style="page-break-before: always">CM2 : Processus et accès à distance</h4>
+
+<h5>Informations système</h5>
+
+<ul class="flex-3">
+    <li><script type="c-bash">cpufetch</script></li>
+    <li><script type="c-bash">neofetch</script></li>
+    <li><script type="c-bash">btop</script></li>
+</ul>
+
+<h5>Gestion des processus</h5>
+
+<ul class="flex-2">
+    <li><script type="c-bash">ps</script> (<script type="c-bash">-g</script> de la session, <script type="c-bash">-r</script> en cours d'exécution)</li>
+    <li><script type="c-bash"><h>-u $USER</h></script></li>
+    <li><script type="c-bash">htop</script></li>
+    <li><script type="c-bash"><h>--pid $PID,...</h></script></li>
+</ul>
+
+<ul class="flex-2">
+    <li><script type="c-bash">kill <h>$PID</h></script></li>
+    <li><script type="c-bash">disown <h>$PID</h></script></li>
+    <li><script type="c-bash">pkill -x <h>$CMD</h></script></li>
+    <li><script type="c-bash">reptyr  <h>$PID</h></script></li>
+</ul>
+
+<h5>Jobs et services</h5>
+
+<ul class="flex-3">
+    <li><script type="c-bash">jobs</script> : lister.</li>
+    <li><script type="c-bash">fg</script> : relancer en <u>f</u>ore<u>g</u>round</li>
+    <li><script type="c-bash">bg</script> : relancer en <u>b</u>ack<u>g</u>round</li>
+</ul>
+
+<ul>
+    <li><script type="c-bash">service <h>$NAME</h> <h>restart|stop|status</h></script></li>
+</ul>
+
+<h5>Monitorer process</h5>
+
+<ul class="flex-2">
+    <li><script type="c-bash"><h>$CMD</h> | ts '[%F %T]'</script> : timestamp l'affichage.</li>
+    <li><script type="c-bash">runner <h>$CMD</h></script> : time+ts (script prof).</li>
+    <li><script type="c-bash">time <h>$CMD</h></script> : stats après exécution.</li>
+    <li><script type="c-bash">strace -wc <h>$CMD</h></script> : <u>trace</u> des appels <u>s</u>ystèmes.</li>
+</ul>
+
+<h5>Accès à distance</h5>
+
+<ul class="flex-2">
+    <li><script type="c-bash">ssh <h>[-p $PORT]</h> <h>$USER@$SERVER</h> <h>[$CMD]</h></script></li>
+    <li><script type="c-bash">screen -ARR</script></li>
+</ul>
+
+<ul class="flex-2">
+    <li><script type="c-bash">who</script> : qui est connecté ?</li>
+    <li><script type="c-bash">last --present <h>today</h></script> : dernières connexions.</li>
+</ul>
+
+<h4 style="page-break-before: always">CM3 : Volumes de données et systèmes de fichiers</h4>
 
 <h5>Informations</h5>
 
@@ -148,6 +271,13 @@ Droits définis dans <script type="c-bash">/etc/sudoers{,/*}</script> : <script 
     </ul>
 </div>
 
+<ul class="flex-2">
+    <li><script type="c-bash">umask -S</script> : affiche les droits par défauts.</li>
+    <li><script type="c-bash">umask <h>$MODE</h></script> : change les droits par défauts.</li>
+    <li><script type="c-bash">getfacl <h>$FILE</h> <h>[-R --skip-base]</h></script> (<i><u>get</u> <u>f</u>ile <u>acl</u></i>).</li>
+    <li><script type="c-bash">setfacl <h>$FILE</h> <h>-m|-x</h> <h>u|g:$WHO:$DROITS[,..]</h></script></li>
+</ul>
+
 <h5>Sauvegarde de fichiers</h5>
 
 <div>
@@ -169,7 +299,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers{,/*}</script> : <script 
     <li><script type="c-bash">ln <h>[-s]</h> <h>$SRC</h> <h>$DST</h></script> : <u>l</u>i<u>n</u>k (hard or <script type="c-bash">-s</script> <u>s</u>ymbolic)</li>
 </ul>
 
-<h5>Monter un volume</h5>
+<h5>Monter et formatter un volume</h5>
 
 <ul class="flex-2">
     <li><script type="c-bash">mount <h>[-t $FS]</h> <h>[-o $OPTS]</h> <h>[$VOL]</h> <h>$MP</h></script>.</li>
@@ -184,8 +314,15 @@ Droits définis dans <script type="c-bash">/etc/sudoers{,/*}</script> : <script 
     <li><script type="c-bash">cryptsetup open <h>[$V]</h> <h>$NAME</h></script></li>
     <li><script type="c-bash">cryptsetup close <h>$NAME</h></script></li>
     <li><script type="c-bash">truncate -s <h>$SIZE</h> <h>$FILE</h></script></li>
-    <li><script type="c-bash">mkfs.<h>$FS</h> <h>$VOL</h></script></li>
+    <li><script type="c-bash">mkfs.<h>$FS</h> <h>$VOL</h></script> : formatter</li>
     <li><script type="c-bash">e2label <h>$VOL</h> <h>$LABEL</h></script></li>
+</ul>
+
+<ul class="flex-2">
+    <li><script type="c-bash">udisksctl <h>[un]</h>mount -b <h>$DEV</h></script> : (dé)monter.</li>
+    <li><script type="c-bash">udisksctl loop-setup -f <h>$FILE</h></script> : obtenir un <script type="c-bash"><h>$DEV</h></script>.</li>
+    <li><script type="c-bash">udisksctl <h>[un]</h>lock -b <h>$DEV</h></script> : si volume chiffré.</li>
+    <li><script type="c-bash">udisksctl loop-delete -b <h>$DEV</h></script></li>
 </ul>
 
 <h5>Partionner</h5>
@@ -193,8 +330,11 @@ Droits définis dans <script type="c-bash">/etc/sudoers{,/*}</script> : <script 
 <ul>
     <li><script type="c-bash">cfdisk <h>$DISK</h></script></li>
 </ul>
-
-    <todo>LVM</todo>
+<todo>1. LVM</todo>
+<todo>2. LVM</todo>
+<todo>3. LVM</todo>
+<todo>4. LVM</todo>
+<todo>5. LVM</todo>
 
 <h5>Les fichiers des applications</h5>
 
@@ -241,7 +381,11 @@ Droits définis dans <script type="c-bash">/etc/sudoers{,/*}</script> : <script 
     </tbody>
 </table>
 
-<h4>CM4 :</h4>
+<ul>
+    <li><script type="c-bash">mktemp <h>[-d]</h> <h>$PATH</h></script> (<i><u>m</u>a<u>k</u>e <u>temp</u>orary [<u>d</u>irectory]</i>).</li>
+</ul>
+
+<h4 style="page-break-before: always">CM4 :</h4>
 
         </main>
     </body>

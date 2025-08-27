@@ -32,6 +32,10 @@ main > div {
 div > ul, div > ol {
     margin-top: 0;
 }
+
+img {
+    break-inside: avoid;
+}
 table { 
     margin-left: auto;
     margin-right: auto;
