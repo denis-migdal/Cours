@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>TP1 (AdminSys)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/tp/index.css"  rel="stylesheet">
+        <script  src="/skeleton/tp/index.js"  type="module"     blocking="render"></script>
+    </head>
+    <body>
+        <main>
+          <h1>TP1 (2h)</h1> 
+
+<h2>Fichiers de configuration (alias)</h2>
+
+<h3><script type="c-text">.bashrc</script></h3>
+
+<div>Le <script type="c-text">.bashrc</script> est un script Shell exécuté au démarrage d'un nouveau Shell. Il permet notamment d'ajouter des alias de manière permanente.</div>
+
+<ol>
+  <li>Ajoutez une ligne de commande <b>à la fin</b> du fichier <script type="c-text">.bashrc</script> afin d'ajouter l'alias <script type="c-bash">hello</script>.</li>
+  <li><q-text>Expliquez en quoi le fait qu'un tiers puisse modifier notre <script type="c-text">.bashrc</script> constitue une faille de sécurité.</q-text></li>
+</ol>
+
+<h3>Créer une commande</h3>
+
+<div>La commande <script type="c-bash">type <h>$CMD</h></script> permet d'afficher la nature et l'emplacement d'une commande.</div>
+
+<ol>
+  <li><q-text>Où est enregistrée la commande <script type="c-bash">mkcmd</script> ?</q-text></li>
+  <li><q-text>Que faisait exactement la commande <script type="c-bash">mkcmd</script> ?</q-text></li>
+  <li><q-text>Quel est l'intérêt de faire un lien physique dans <script type="c-bash">mkcmd</script> ?</q-text></li>
+  <li><q-text>Pourquoi ne pas utiliser ici un lien symbolique ?</q-text></li>
+  <li><q-text>Pourquoi <script type="c-bash">mkcmd</script> utilise-t-il <script type="c-bash">relpath</script> ?</q-text></li>
+  <li><q-text>Où faudrait-il enregistrer les commandes pour les rendre accessibles à tous ?</q-text></li>
+  <li><q-text>Quels droits faudrait-il alors donner à ces commandes ?</q-text></li>
+  <li>Expliquez pourquoi les faits suivants constitueraient une faille de sécurité :
+    <ul>
+      <li><q-text>un tiers a le droit d'écriture sur mon script.</q-text></li>
+      <li><q-text>un tiers a le droit d'écriture sur le dossier contenant mon script.</q-text></li>
+    </ul>
+  </li>
+</ol>
+
+<h2>Créer une commande</h2>
+
+<ol>
+  <li><q-text>Avec <script type="c-bash">nano</script>, ouvrez le fichier <script type="c-text">skeleton</script>.</q-text></li>
+  <li><q-text>Modifiez ce fichier pour qu'il affiche la somme de deux arguments passés en paramètres (sans utiliser argparse).</q-text></li>
+  <li>Enregistrez ce fichier sous le nom <script type="c-text">add</script> (<script type="c-text">^+X</script>).</li>
+  <li><q-text>Utilisez la commande <script type="c-text">mkcmd <h>$FILE</h></script> afin de transformer ce fichier en commande.</q-text></li>
+  <li><q-text>Testez votre nouvelle commande afin d'afficher la somme de 1 et de 2.</q-text></li>
+</ol>
+
+<h2>Argparse</h2>
+
+<div>Nous allons utiliser la bibliothèque Python argparse afin d'ajouter des options à notre commande <script type="c-bash">add</script>. Pour cela, vous vous référerez au contenu des supports de cours. Aussi, vous prendrez soin de bien tester votre commande après chaque modification.</div>
+
+<ol>
+  <li>Transformez la commande <script type="c-bash">add</script> en déclarant, via argparse, ses 2 arguments positionnels : a et b.</li>
+  <li>Ajoutez un drapeau <script type="c-bash">-s</script>/<script type="c-bash">--string</script> qui effectuera la concaténation au lieu de la somme.</li>
+  <li>Ajoutez un drapeau <script type="c-bash">-c</script>/<script type="c-bash">--color</script> qui affichera le résultat en couleur (implémenté plus tard).</li>
+  <li>Ajoutez un paramètre nommé <script type="c-bash">--prefix</script> qui indiquera le texte à afficher avant le résultat (par défaut <script type="c-text">Sum: </script>).</li>
+  <li><q-text>Copiez le contenu de votre script ci-dessous :</q-text></li>
+  <li><q-text>Effectuez l'addition de 2 et 3, avec un préfixe valant <script type="c-text">a + b = </script> :</q-text></li>
+</ol>
+
+<h2>Mise en forme de l'affichage</h2>
+
+<div>Le Shell est quelque peu terne, ajoutons-lui un peu de couleurs.</div>
+
+<div>Pour cela nous pouvons écrire <script type="c-shell">\e[<h>$CODE[;...]</h>m</script> qui, au lieu d'être affiché, sera interprété par le terminal. Ainsi le texte qui suivra sera mis en forme, en fonction des options que nous aurons spécifiés :</div>
+
+<div>⚠ Pensez à bien réinitialiser la mise en forme (<script type="c-bash">\e[0m</script>) à la fin de votre texte.</div>
+
+<ol>
+  <li>1. Testez la mise en forme avec <script type="c-bash">echo $'\e[1;34mblue\e[0m'</script>.</li>
+  <li><q-text>Pourquoi utiliser <script type="c-bash">$''</script> et non <script type="c-bash">''</script> ?</q-text></li>
+  <li><q-text>Affichez "Hello" en italique et magenta :</q-text></li>
+  <li><q-text>Modifiez la commande <script type="c-bash">add</script> afin que le résultat s'affiche en vert et en gras (si <script type="c-shell">-c</script> activé).<br/>⚠ Pour python, il faut utiliser <script type="c-text">\033</script> à la place de <script type="c-text">\e</script>.</q-text></li>
+  <li><q-text>Modifiez la commande <script type="c-bash">add</script> afin que les résultats négatifs s'affichent en rouge clignotant  (si <script type="c-shell">-c</script> activé) :</q-text></li>
+</ol>
+
+<h2>Users</h2>
+
+<ol>
+  <li>/etc/skel/bashrc</li>
+  <li>Créez un user user (mdp 1234).</li>
+  <li>connectez vous via SSH</li>
+  <li>Defaults insults a sudo.</li>
+  <li><todo>gp ssh, etc.</todo></li>
+</ol>
+
+<h2>apt</h2>
+
+<ol>
+  <li>Utilisez apt update + apt upgrade</li>
+  <li>Installez asciinema</li>
+  <li>Utilisation (+agg)</li>
+
+  <li>Installez cmatrix + asciiquarium + cowsay + sl + fortune-mod + taskwarrior et amusez vous à exécuter ces commandes</li>
+  <li>consultez leur doc pour ensuite en voir et tester les opts</li>
+</ol>
+
+</main>
+    </body>
+</html>
