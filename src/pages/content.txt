@@ -31,7 +31,7 @@
         - cheat:Cheat Sheet
         + DS:DS
             - cur:2024-2025
-    - R3-12-VCOD:S3 Cryptographie et Réseaux
+    - R3-12-VCOD:S3-VCOD Cryptographie et Réseaux
     + R3-13:S3 Identité Numérique (old)
         + CM:CM
             - CM1:CM1
@@ -44,7 +44,7 @@
             - cur:cur
     + SAE6-05:S6 [SAÉ] Pentest, Hacking, et Renforcement (old)
 - dev:🖳 Développement
-    + R4-01-VCOD:S4 Automatisation et Tests en Programmation
+    - R4-01-VCOD:S4-VCOD Automatisation et Tests en Programmation
         + CM:CM
             - CM1:CM1
         + DS:DS
@@ -56,7 +56,7 @@
             - CM3:CM3 - Implémentation
         + DS:DS
             - cur:2024-2024
-    + R6-X:S6 Programmation Orientée Données
+    + R6-X:S6 Programmation Orientée Données (old)
         - CM:CM
 --
 - tools:🛠 Outils
