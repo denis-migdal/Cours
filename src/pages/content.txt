@@ -11,6 +11,7 @@
             - TD4-5:TD4-5 - Commandes Shell
         - cheat:Cheat sheet
 - sec:🔒 Sécurité
+    - R1-11:S1 Introduction à la Cybersécurité
     - R2-14:S2 Administration Système Linux
         + CM:CM
             - CM1:CM1 - Administrer un ordinateur Linux
