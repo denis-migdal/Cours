@@ -32,19 +32,16 @@
         + DS:DS
             - cur:2024-2025
     - R3-12-VCOD:S3-VCOD Cryptographie et Réseaux
-    + R3-13:S3 Identité Numérique (old)
+        + DS:DS
+            - cur:cur
+    + R4-10-VCOD:S4-VCOD Identité Numérique
         + CM:CM
             - CM1:CM1
         + DS:DS
             - cur:2024-2024
-    + R4-10:S4 Réseaux et Sécurité Web (old)
-        + CM:CM
-            - CM1:CM1
-        + DS:DS
-            - cur:cur
     + SAE6-05:S6 [SAÉ] Pentest, Hacking, et Renforcement (old)
 - dev:🖳 Développement
-    - R4-01-VCOD:S4-VCOD Automatisation et Tests en Programmation
+    - R4-01-VCOD:S4-VCOD Automatisation et Test en Programmation
         + CM:CM
             - CM1:CM1
         + DS:DS
