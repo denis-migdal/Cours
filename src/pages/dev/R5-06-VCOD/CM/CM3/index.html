@@ -6,48 +6,71 @@
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link   href="/skeleton/index.css"  rel="stylesheet">
-        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+        <script  src="/skeleton/index.js"  type="module"     blocking="render"></script>
     </head>
     <body>
         <main>
             <h1>Implémentation</h1>
 
-            <h2>Classes</h2>
+<h2>Les classes</h2>
 
-            - diagramme de classes + objet
-            - POO
+<div>Chaque composant sera usuellement implémenté par un ensemble de classes. Ce découpage des composants en classes reste une étape de conception, cependant elle commence à faire intervenir des notions d'implémentation.</div>
 
-            - ce qu'on veut :
-                - générique/modifiable.
-                - indépendant.
-                - facile à maintenir.
+<div>Les classes doivent respecter les principes <b>SOLID</b> :
+    <ul>
+        <li><b><u>S</u>ingle Responsability</b> (<i>SRP</i>) : chaque classe fait une et une seule chose (voir aussi <i>Separation of Concerns - SoC</i>).</li>
+        <li><b><u>O</u>pen-Closed</b> : une classe doit être ouverte aux extensions, mais fermée aux modifications.</li>
+        <li><b><u>L</u>iskov substitution</b> : on doit pouvoir remplacer une classe par une de ses classes filles.</li>
+        <li><b><u>I</u>nterface segregation</b> (<i>ISP</i>): une interface utilisée par un code ne doit pas avoir de méthodes inutilisées par celui-ci.</li>
+        <li><b><u>D</u>ependancy inversion</b> (<i>DIP</i>): il faut dépendre d'interfaces, et non de classes concrètes.</li>
+    </ul>
+</div>
 
-            - DRY
-            - KISS : aidé par TDD (auto&test)
-            - SOLID
-            - Single Resp.
-            - constant/éviter effets de bords (copie)
+<div>Single resp (+ facile à tester) : faire des sous-classes/classes helpers (e.g. OutputGenerator, + lisible, simple à gérer/modifier/ajouter, évite répétiton de code ou code dispersé dans la classe), éviter les listes de if (aide aussi pour les autres principes)</div>
 
-            - éviter héritage
-                - composition/stratégie.
+<div>Le principe <i>Open-Close</i> : (stabilité) on peut hériter de la classe (pour l'étendre), mais il ne faut pas avoir besoin de modifier la classe. + Cf composition.
+- éviter héritage
+    - composition/stratégie.
+- permettre extensions sans anticiper.
+- besoin futur n'existera p-e pas (YAGNI)
+- refactor (porte ouverte)
+</div>
 
-            - qqs DP
-                - e.g. abstractions
-                - impl
+<div>- Liskov : (éviter bugs) contrat avant/après, design by contract.
+Certains héritages pour spécialiser : une sorte d'héritage privé car respecte pas Liskov.</div>
 
-            - DOP
-                - séparer data du traitement.
-                - type métier vs type concret (e.g. alias de types BioData = Float3D).
+<div>- interface segregation - duck typing - minimal interface / juste ce qu'il faut...</div>
 
-            <h2>Qualité du code + optis</h2>
+<div>- dependance inversion (extension): interface, on peut changer l'implémentation. Et dans certains langages évite les dépendances circulaires.
 
-            - indenter
-            - variables explicites
-            - éviter variables globales / singleton logs
-            - code doc vs code comment.
+impl vs API.
+Autre : valeur -> structure de signaux : notifier quand valeur disponible.
+</div>
 
-            - perf cf auto & test ?
-            - DOP (introduire rapidement)
+<div>+ classes réel vs informatique.</div>
+
+- diagramme de classes + objet
+- diagramme de classe à la fois conception et durant implémentation.
+- POO
+
+<h2>Autres DP</h2>
+
+<h2>Qualité du code</h2>
+
+<div>En général, la lisibilité et maintenabilité du code importante bien plus que tout autre chose. En effet, il vaut souvent bien mieux un code lent, facilement modifiable, qu'un code inutilement rapide et complexe.</div>
+
+<div>Pour cela il est bien évidemment nécessaire de bien indenter son code, d'avoir des noms explicites, une arborescence de fichiers explicite, etc. Un code bien écrit doit pouvoir se comprendre aisément en le survolant. On doit, par exemple, pouvoir comprendre l'usage et l'utilité d'une fonction à sa signature. Aussi, les fonctions doivent rester courtes (moins d'un écran), une fonction longue étant généralement le signe d'une responsabilité multiple ou d'un manque d'abstraction.</div>
+
+<div>Il existe de multiples techniques et d'idiomes pour rendre un code plus explicite. Par exemple, gérer les cas d'erreurs en premier, utiliser des tableaux associatifs (de valeurs ou de fonctions), utiliser certains patrons de conceptions, pas de <script type="c-ts">else</script> après un <script type="c-ts">return</script>, <script type="c-ts">break</script>, ou <script type="c-ts">throw</script>/<script type="c-py">raise</script> etc.</div>
+
+<div>Les commentaires ne doivent pas être redondant avec le code, i.e. ne doit pas décrire le code. Ce type de commentaires n'apportent pas d'informations utiles et peuvent très vite se retrouver obsolètes lorsque le code est modifié sans que les commentaires ne soient mis à jour, induisant alors les lecteurs en erreur. Les commentaires doivent rester rares et expliquer les nuances non-triviales du code, par exemple la correction d'un bug avec le lien de son ticket (e.g. github issue). De manière générale, si un code a besoin de commentaires pour être compris, il est généralement préférable de le réécrire pour le rendre plus explicite.</div>
+<!-- https://www.youtube.com/watch?v=Bf7vDBBOBUA -->
+
+<div>⚠ Il ne faut pas confondre les commentaires avec la documentation du code, qui sert à indiquer aux autres développeurs l'usage et les fonctionnalités d'une interface. Il est recommandé d'utiliser pour cela des outils qui généreront automatiquement la documentation à partir du code, et d'éventuels exemples d'usages (qui peuvent aussi servir de tests).</div>
+
+<div>De manière générale, il ne faut pas se répéter (<b>DRY</b> - <i>Do Not Repeat Yourself</i>). En effet, il est alors très aisé de se retrouver avec des versions dupliquées différentes au fur et à mesure des modifications successives du code. Cela est aussi généralement peu confortable de fréquemment rechercher un bout de code pour le copier/coller à différents endroits. Lorsqu'un même bout de code est répété 3 fois, cela est généralement signe qu'il faut refactorer et factoriser le code.</div>
+
+<h2>Git</h2>
 
         </main>
     </body>

@@ -3,15 +3,6 @@
 
 # Motivation au développement logiciel
 
-## Trouver son chemin
-
--> Problème -> Solution : si seulement c'était aussi simple...
-
-- plusieurs solutions possibles
-- et plusieurs chemins pour arriver à un même résultat.
-
--> comment choisir la "bonne" solution et le "bon" chemin approprié aux besoins actuels et futurs ?
-
 ### Que faire
 
 -> quels sont déjà nos réels besoins actuels et futurs ?
@@ -242,21 +233,7 @@ Concevoir et Documenter.
 - nom explicites + architecture de fichiers explicite
 	+ pas tout mettre dans le même fichier, savoir les features à l'arborescence (évite des conflits de version en travail collabo).
 
-
-### Anti-DP
-
-Dev : on a de l'expérience, des choses qui ne marchent pas.
-
-[Extraire une sous-liste]
-
 #### Les autres mauvaises pratiques
-
-https://fr.wikipedia.org/wiki/Antipattern
-https://fr.wikipedia.org/wiki/Code_smell
-
-### DP
-
-[Motivations]
 
 #### Composition
 

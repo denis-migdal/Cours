@@ -86,17 +86,6 @@
 		=> peut être un component ?
 		=> éviter de complexifier le code.
 
-- affichage / application / données
-	- 3 couches https://fr.wikipedia.org/wiki/Architecture_en_couches / https://fr.wikipedia.org/wiki/Architecture_trois_tiers
-- MVC et toussa (lequel présenter + en détails ?)
-	- MVA/MVP/MVVM
-	- PAC https://fr.wikipedia.org/wiki/Pr%C3%A9sentation,_abstraction,_contr%C3%B4le
-	- https://fr.wikipedia.org/wiki/Mod%C3%A8le_de_Seeheim
-	- ADR (Action Domain Responder)
-
--> avantage : executer le code sans l'affichage (rendre les 2 indépendant).
-	-> peut modifier l'affichage, tout en pouvant continuer d'exécuter (e.g. des calculs).
-
 ## Features
 
 - POC plutôt ici ?

@@ -6,32 +6,124 @@
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link   href="/skeleton/index.css"  rel="stylesheet">
-        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+        <script  src="/skeleton/index.js"  type="module"     blocking="render"></script>
     </head>
     <body>
         <main>
             <h1>Conception : composants et communication</h1>
 
-            <h2>Motivation et principes</h2>
+<h2>Motivation et principes</h2>
 
-            - architecture.
-                - coder rapidement, sans bugs
-                - facilité débug
-                - refactor
-                - dette technique
+<h3>Qu'est-ce que la conception ?</h3>
 
-            - KISS
-            - Abstraction
-                - level of details
-                - Implémentation vs thingy
+<div>Une fois qu'on a défini ce qu'on <b>veut faire</b> (Analyse), il reste encore à déterminer <b>comment faire</b> (Conception). Il existe en effet une infinité de manière d'implémenter les fonctionnalités définies dans l'analyse. Il faudra donc choisir la plus pertinente au regard des besoins et moyens actuels et futurs.</div>
 
-            <h2>Composants</h2>
+<div>Une première des choses est de définir la structure de notre projet, i.e. son <b>architecture</b>. Cette étape, très importante, ne doit pas être négligée car impacte fortement la facilité avec laquelle on pourra ensuite écrire le code, le comprendre, le déboguer, l'étendre, le refactorer, le maintenir, etc. Un développeur gagne ainsi en rapidité et confort, rentabilisant rapidement le temps passé sur la conception.</div>
 
-            - DP façade
+<div>Une mauvaise conception impacte le projet sur le long terme et constitue une <b>dette technique</b> qui sera d'autant plus coûteuse que le projet est avancé. Par exemple, des composants trop interdépendants fera que la modification de l'un impactera les autres, ce qui complexifie toutes modifications. Ainsi, un simple changement peut casser l'intégralité du projet, et nécessiter une réécriture quasi intégrale du code.</div>
 
-            <h2>Communication</h2>
+<div>Bien qu'il y ai quelques règles à suivre pour faire une bonne conception, il est souvent nécessaire d'avoir une certaine expérience. Certaines erreurs se constatent à l'usage. Comme en mathématiques, il faut parfois changer l'approche, l'angle par lequel on représente le problème. Parfois ajouter ou relâcher des contraintes facilite la conception. Certaines idées toutes bêtes peuvent aussi prendre des jours, voire des années à survenir.</div>
 
-            - diagramme de séquence !            
+<h3>Bons et mauvais principes</h3>
+
+- D'autres se sont planté avant nous
+- Expérience : code smell, DP, anti-DP, bons principes.
+
+- https://fr.wikipedia.org/wiki/Antipattern
+- https://fr.wikipedia.org/wiki/Code_smell
+
+Qqs principes :
+- KISS
+- Abstraction
+    - level of details
+    - Implémentation vs thingy
+
+<h2>Composants</h2>
+
+<div>Il est recommandé de découper son projet en plusieurs <b>composants</b>, ce qui permet de transformer un problème complexe en plusieurs sous problèmes plus simples à résoudre. On appelle cela la <b>Programmation Orientée Composant</b> (<i>POC</i>), à ne pas confondre avec les <i>preuves de concepts</i> (<i>PoC</i>).</div>
+
+<div>Ces composants doivent être les plus <b>indépendants</b> possibles afin de pouvoir les développer, tester, et déboguer, sans avoir à se soucier des autres composants et de leur fonctionnement. Cela permet aussi de substituer un composant par un autre, e.g. pour tester une implémentation différente/nouvelle version. Il est ainsi possible, lorsqu'on développe la version N+1 d'un composant, de conserver la version N afin de pouvoir comparer les implémentations, ou de revenir en arrière en cas de problèmes. Cela, tout en ayant un impact très limité sur les autres composants, i.e. si on "casse" un composant, on ne casse pas les autres, limitant ainsi l'étendue des dégâts. Les modifications au sein d'un composant sont limités au composant lui-même.</div>
+
+<h3>Découpages horizontaux</h3>
+
+<div>Il est possible de découper son projet "horizontalement", i.e. avec des composants au "même niveau"/côte à côte. Par exemple, un composant pour gérer les données, et un second pour gérer leur affichage.</div>
+
+<div>En effet, l'affichage doit se faire indépendamment de la manière dont sont stockées les données, et le stockage doit se faire indépendamment de la manière dont les données sont affichées. Idéalement, ces deux composants peuvent s'exécuter de manière indépendante. Ainsi, il doit être possible de requêter les données, même si l'affichage est indisponible, e.g. en cours de refonte. De même, pouvoir tester l'affichage sans avoir besoin des données réelles, e.g. en utilisant une source de données différente ou simulée. De plus, si e.g. une requête SQL change, je ne devrais pas avoir à modifier les bouts de code permettant l'affichage de ces données.</div>
+
+<div>Typiquement on sépare l'affichage, les données, et les comportements/règles. Il existe une pléthore de façon d'effectuer un tel découpage, souvent très similaires avec quelques nuances : MVC, MVA, MVP, MVVM, PAC, ADR, modèle de Seeheim, architecture 3-tiers, etc. L'affichage peut lui-même être redécoupé en plusieurs sous composants, e.g. structure, mise en forme, interactions.</div>
+
+<div>Il est aussi possible de découper son projet en fonction de ses différentes fonctionnalités, e.g. gestion des utilisateurs, gestion des produits, executions de tâches planifées, etc. Cela permet ainsi de pouvoir aisément ajouter ou retirer des fonctionnalités sans impacter l'ensemble du projet.</div>
+
+<div>💡 Ces différents découpages ne sont pas exclusifs.</div>
+
+<h3>Découpages verticaux</h3>
+
+<div>Une autre manière d'effectuer un découpage de son projet est de le découper "verticalement", i.e. un composant utilisant et dépendant d'un autre, e.g. l'affichage dépendant d'un composant graphique. Il est toujours possible de changer le composant graphique sans impacter l'affichage, mais ce dernier ne peut s'exécuter sans.</div>
+
+<div>Il ne doit pas être nécessaire de savoir le fonctionnement interne d'un composant afin de pouvoir l'utiliser, i.e. le composant est vu comme une <b>boîte noire</b>, c'est le <b>principe d'encapsulation</b>.</div>
+
+<div>💡 Ce principe n'est pas entièrement vrai. Sans avoir besoin de comprendre les détails techniques, il est tout de même nécessaire de comprendre, dans les grandes lignes, le comportement interne de e.g. SQL ou Git, afin de pouvoir correctement les utiliser.</div>
+
+<div>L'encapsulation permet l'<b>abstraction</b>, c'est à dire de pouvoir effectuer des actions en cachant les détails techniques. Par exemple, lorsque vous lisez un fichier avec une fonction <script type="c-ts">readTextFile(<h>$FILE</h>)</script>, vous n'avez pas à vous soucier de toutes les vérifications et opérations effectuées par le système de fichiers et l'OS. Les bibliothèques graphiques sont un autre exemple d'abstractions.</div>
+
+<div>💡 Les <b>DOA</b> (<i>Data Access Object</i>) sont une abstraction encapsulant l'accès à des données persistantes. On manipule alors les données via des classes (e.g. <script type="c-ts">Users.createUser(<h>$name</h>)</script>, <script type="c-ts">user.changePwd(<h>$PWD</h>)</script>, etc.) qui se chargent d'effectuer les opérations demandées via, e.g., des requêtes SQL, des lectures/écritures dans des fichiers, des commandes Shell, etc.</div>
+
+<div>Un projet peut ainsi avoir plusieurs <b>couches d'abstraction</b>. Les couches les plus basses encapsulent les détails techniques, quand les couches les plus hautes peuvent être une traduction du cahier des charges, en réutilisant la logique et langage métier, permettant potentiellement au client de comprendre le code et modifier certains éléments.</div>
+
+<div>Une manière de faire est d'utiliser l'<b>ECB</b> (<i>Entity-Boundary-Control</i>) pour traduire le cahier des charges. Chaque cas d'utilisation est représenté par une classe implémentant le diagramme d'activité (<i>controller</i>). Les interactions sont représentées par une autre classe pour chaque acteur externe (<i>boundary</i>). Les données sont quant à elles représentées par des classes nommée <i>entity</i>. Le code est ensuite factorisé et restructuré, puis regroupé en un "<i>package de service</i>".</div>
+
+<h3>UML</h3>
+
+<h2>Communication</h2>
+
+<div>Les différents composants vont devoir communiquer entre eux</div>
+
+- envoyer/recevoir des messages
+- synchrone (attend la réponse)/asynchrone (n'attend pas).
+
+Astuces :
+- éviter les boucles.
+- action (j'enclanche) vs onAction (je réagit).
+
+Ces messages constituent l'<b>interface</b> du composant. Le reste étant une boîte noire (encapsulation). DP façade. Public / Privé. Contrat.
+
+<h3>Les messages</h3>
+
+Monolith
+
+Un message peut prendre plusieurs formes :
+- appel de fonction. Async : langage ou callback.
+
+- pipeline / DP commande.
+
+micro-services
+
+- Plusieurs exécutables (micro-services vs monolith - avantages + inconvénients) / SOA (service oriented)
+            - scalable
+            - coût de la communication et opti.
+- communications interprocessus (IPC) / JSON/binaire/autre
+- Data Transfert Object.
+- requête/réponse REST.
+-> handler + dispatcher (message queuing ? broker)
+
+Both (micro-services - monolith)
+
+Plus avancé, [?] vs Orienté Event.
+- subscription
+    - signaux et slots
+    - observer
+    - reactor
+    - publish-subscribe.
+    - implicit invokation
+
+<h3>DP Entre...</h3>
+
+Cf liste
+
+<h3>X</h3>
+
+- diagramme de séquence !
+- programmation réactive ?
         </main>
     </body>
 </html>

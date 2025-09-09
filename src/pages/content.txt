@@ -6,8 +6,8 @@
         + Slides:Slides
             - CM2:CM2 - Commandes Shell
         + TD:TD
-            - TD1:TD1 - Méthodes d'Apprentissage Universitaire
-            - TD2-3:TD2-3 - Postes de travail et Outils UCA
+            - TD1-2:TD1-2 - Postes de travail et Outils UCA
+            - TD3:TD3 - Méthodes d'Apprentissage Universitaire
             - TD4-5:TD4-5 - Commandes Shell
         - cheat:Cheat sheet
 - sec:🔒 Sécurité
