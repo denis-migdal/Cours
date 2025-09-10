@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>DevLog (CM1)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/slides/index.css"  rel="stylesheet">
+        <script  src="/skeleton/slides/index.js"  type="module"     blocking="render"></script>
+    </head>
+    <body>
+        <main>
+<frame-uca-title
+    caption   = "R5-06-VCOD Développement Logiciel"
+    subcaption= "CM1 : Analyse"
+    author    = "Denis MIGDAL"
+    mail      = "denis.migdal@uca.fr">
+</frame-uca-title>
+<frame-section name="Qu'est-ce que l'Analyse ?">
+  <frame-subsection name="Les différentes phases du développement">
+    <frame-uca>
+       <div>Différentes étapes d'un projet :
+          <ol>
+              <li><b><i>Analyse</i></b> : ce qu'on <b>veut faire</b>.</li>
+              <li><b><i>Conception</i></b> : <b>comment faire</b>.</li>
+              <li><b><i>Implémentation</i></b> : <b>faire</b>.</li>
+              <li><b><i>Intégration et Déploiement</i></b> : 
+                <ul class="flex-2">
+                  <li>intégrer le nouveau code au projet.</li>
+                  <li>pousser en <b>production</b>.</li>
+                </ul>
+              </li>
+              <li><b><i>Maintenance</i></b> : après la mise en production.
+                <ul class="flex-2">
+                  <li>correction de bugs.</li>
+                  <li>ajout de fonctionalités.</li>
+                </ul>
+              </li>
+          </ol>
+        </div>
+        <div>Autres étapes :
+          <ul>
+            <li><b><i>planification</i></b> (cf cycles de développement logiciel).</li>
+            <li><b>tests</b> (cf <i>R4-01 Automatisations et Tests en Programmation</i>).</li>
+          </ul>
+        </div>
+    </frame-uca>
+  </frame-subsection>
+
+  <frame-subsection name="Objectifs de l'Analyse">
+    <frame-uca>
+      <div>Analyse :
+        <ul>
+          <li><b>cadrer</b> le projet : éviter de partir dans tous les sens, ou dans la mauvaise direction.</li>
+          <li><b>échanger</b> avec le client, ses besoins, contraintes (⚠ envies ≠ besoins).</li>
+          <li><b>contractualiser</b> via un cahier des charges.</li>
+        </ul>
+      </div>
+      <ul>
+        <li><b>YAGNI</b> (<i>You ain't gonna need it</i>) : ne pas anticiper d'hypothétiques besoins futurs.
+          <ul>
+            <li>coût (temps, ressources), complexifie le code et la conception.</li>
+            <li>attendre que le besoin se matérialise.</li>
+          </ul>
+        </li>
+      </ul>
+    </frame-uca>
+    <frame-uca>
+      <ul>
+        <li><b>MVP</b> (<i>Minimum Viable Product</i>) : ensemble minimal des fonctionnalités nécessaires.
+          <ul>
+            <li><b>prioriser les besoins.</b></li>
+            <li>Avoir un produit testable et exploitable le plus rapidement possible.</li>
+            <li>Loi de <b>Pareto</b> : ~20% des fonctionnalités répondent à ~80% des usages.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <div><b>Maquettes</b>, <b>prototypes</b>, ou <b>preuves de concepts</b> (<b>PoC</b> - <i>Proof of Concept</i>) :
+        <ul>
+          <li><b>Simuler</b> <i>grossièrement</i> le comportement ou l'interface graphique (e.g. slides).</li>
+          <li>pour démontrer la faisabilité, et échanger avec le client avec des éléments plus tangibles.</li>
+        </ul>
+      </div>
+    </frame-uca>
+  </frame-subsection>
+</frame-section>
+<frame-section name="UML">
+  <frame-uca>
+    <div>UML est un langage de <b>modélisation graphique</b>. 
+      <ul>
+        <li>14 types de diagrammes.</li>
+        <li>pour réfléchir, communiquer, documenter, etc.</li>
+        <li><i>death by UML fever</i> : ne pas en abuser, tous les graphes ne sont pas toujours nécessaires.</li>
+      </ul>
+    </div>
+
+    <div>⚠ À utiliser en fonction des ressources et contraintes :
+      <ul class="flex-2">
+        <li>exercice de TP produit en 2 minutes.</li>
+        <li>code critique d'une centrale nucléaire.</li>
+      </ul>
+    </div>
+  </frame-uca>
+  <frame-subsection name="Les cas d'utilisations">
+    <frame-uca>
+      <div>Le cahier des charges décrit les différentes fonctionnalités du projet, par le biais de <i>cas d'utilisations</i>.</div>
+
+      <div><i>"<u>Passer commande :</u> l'utilisateur rempli son panier, puis le valide avant de procéder au payement. Si l'utilisateur n'est pas connecté, une authentification lui sera demandée lors de la validation du panier."</i>
+      </div>
+
+      <div><b>Cas d'utilisations</b> (<i>use case</i>) décrit, en langage non technique, un ensemble d'actions <b>pour une finalité</b>.
+        <ul>
+          <li>e.g. interactions du système avec différents <b>acteurs</b> (≈ rôle assumé par une entité externe).</li>
+        </ul>
+
+      </div>
+
+      <div>⚠ Une action utilisateur, e.g. ajouter un produit au panier n'est pas une finalité en soit.</div>
+    </frame-uca>
+    <frame-uca>
+      <div><i>Diagramme de cas d'utilisation</i> : représente graphiquement et synthétiquement la liste des cas d'utilisations.
+        <ul>
+          <li>Réfléchir différents usages et acteurs du système.</li>
+        </ul>
+      </div>
+
+      <img class="center" style="width: 40%;" src="../../CM/CM1/assets/usecase.svg"/>
+
+      <div>⚠ Peu utile si vous n'avez que peu de cas d'utilisations et d'acteurs.</div>
+    </frame-uca>
+    <frame-uca>
+            <p><b>Astuce 1 :</b> utiliser des codes couleur, e.g. pour indiquer le niveau de priorisation (e.g. pour le MVP).</p>
+
+            <p><b>Astuce 2 :</b> indexer les cas d'utilisation e.g. <i>"1.2 Visualiser un produit"</i> pour le retrouver dans le CdC.</p>
+
+            <p><b>Astuce 3 :</b> découper en sous diagrammes (par acteurs, ou groupes de fonctionnalités) pour conserver des diagrammes lisibles et visuels, e.g. :</p>
+
+            <img class="center" style="width: 80%;" src="../../CM/CM1/assets/usecase2.svg"/>
+    </frame-uca>
+  </frame-subsection>
+  <frame-subsection name="Activités">
+    <frame-uca>
+      <div><b>Diagramme d'activité</b> : décrit visuellement un cas d'utilisation, chaque noeud correspond à une <b>action</b> :</div>
+
+      <img class="center" style="width:40%" src="./../../CM/CM1/assets/activité.svg"/>
+    </frame-uca>
+  </frame-subsection>
+</frame-section>
+    </main>
+  </body>
+</html>

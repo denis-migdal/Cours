@@ -54,29 +54,33 @@
 
             <h3>Les cas d'utilisations</h3>
 
-            <p>Le cahier des charges décrit, entres autres, les différents <b>cas d'utilisations</b> (<i>use case</i>) du système, i.e. l'ensemble des actions possibles d'un <i>acteur</i> (≈ rôle assumé par une entité externe au système) sur le système (≈ fonctionnalités). Un cas d'utilisation décrit alors, en langage non-technique, l’interaction d'un acteur sur le système en vu d'un objectif donné. Par example : <i>"<u>Passer commande :</u> l'utilisateur connecté valide son panier puis procède au payement."</i>
-            </p>
+            <p>Le cahier des charges décrit, entres autres, les différentes fonctionnalités de système par le biais de cas d'utilisations. Un <b>cas d'utilisations</b> (<i>use case</i>) décrit, en langage non technique, un ensemble d'actions du système <b>en vue d'une finalité</b>. Il décrit notamment ses interactions avec les différents acteurs (≈ rôle assumé par une entité externe au système), e.g. :</p>
+            <div><i>"<u>Passer commande :</u> l'utilisateur rempli son panier, puis le valide avant de procéder au payement. Si l'utilisateur n'est pas connecté, une authentification lui sera demandée lors de la validation du panier."</i>
+            </div>
 
-            <p>Dans ce cadre, UML fournit le <i>diagramme de cas d'utilisation</i>, afin de réfléchir aux différents usages et acteurs du système. Il permet une représentation graphique et synthétique des cas d'utilisations décrits dans le cahier des charges :</p>
+            <div>⚠ Une action utilisateur, e.g. ajouter un produit au panier n'est pas une finalité en soit.</div>
 
-            <img style="width: 40%;" src="/assets/devlog/usecase.svg"/>
+            <p>Dans ce cadre, UML fournit le <i>diagramme de cas d'utilisation</i>, afin de réfléchir aux différents usages et acteurs du système. Il permet une représentation graphique et synthétique de la liste des cas d'utilisations décrits dans le cahier des charges :</p>
+
+            <img style="width: 40%;" src="./assets/usecase.svg"/>
 
             <todo>- expliquer formalisme de base</todo>
 
-            <p><b>Astuce 1 :</b> Vous pouvez utiliser un code couleur afin d'indiquer le niveau d'importance de chaque cas d'utilisations (e.g. pour le MVP). Par exemple, <i>"Retirer du panier"</i>, bien qu'importante, n'est pas la fonctionnalité la plus prioritaire.</p>
+            <p><b>Astuce 1 :</b> Vous pouvez utiliser des codes couleur, e.g. afin d'indiquer le niveau d'importance de chaque cas d'utilisation (e.g. pour le MVP).</p>
 
-            <p><b>Astuce 2 :</b> il est conseillé de préfixer les cas d'utilisations par une référence permettant de retrouver plus aisément sa description dans le cahier des charges. e.g. <i>"1.2 Retirer du panier"</i>.</p>
+            <p><b>Astuce 2 :</b> Il est conseillé de préfixer les cas d'utilisations par une référence permettant d'en retrouver plus aisément la description dans le cahier des charges. e.g. <i>"1.2 Visualiser un produit"</i>.</p>
 
             <p><b>Astuce 3 :</b> Ce diagramme doit rester visuel et lisible. Il ne faut ainsi pas hésiter à découper ce diagramme en plusieurs diagrammes, en regroupant les cas d'utilisations par acteurs, ou par groupes de fonctionnalités :</p>
 
-            <img style="width: 80%;" src="/assets/devlog/usecase2.svg"/>
+            <img style="width: 80%;" src="./assets/usecase2.svg"/>
 
+            <div>⚠ Bien évidemment, ce diagramme est peu utile si vous n'avez que peu de cas d'utilisations et/ou d'acteurs.</div>
 
             <h3>Activités</h3>
 
             <p>Pour décrire visuellement un cas d'utilisation, il est possible d'utiliser un <b>diagramme d'activité</b> où chaque noeud correspond à une action :</p>
 
-            <img style="width:40%" src="/assets/devlog/activité.svg"/>
+            <img style="width:40%" src="./assets/activité.svg"/>
 
             <todo>- expliquer formalisme de base</todo>
             <todo>Plus de détails https://laurent-audibert.developpez.com/Cours-UML/?page=diagramme-activites</todo>
