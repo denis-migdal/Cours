@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>TD1 (DevLog)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/tp/index.css"  rel="stylesheet">
+        <script  src="/skeleton/tp/index.js"  type="module"     blocking="render"></script>
+    </head>
+    <body>
+        <main>
+            <h1>TD1 : Analyse (2h)</h1>
+
+
+<h2>Cas d'utilisation</h2>
+
+<div>Créez les diagrammes de cas d'utilisations pour les 2 contextes suivants.</div>
+
+
+<h3>Gestion des absences</h3>
+
+<div>Le client souhaite un système permettant de déclarer les absences des étudiants, qui pourront ensuite être justifiées par l'étudiant concerné.</div>
+
+<details>
+    <summary>Cliquez pour afficher le corrigé</summary>
+    <img class="light" style="width:unset" src="./assets/absences.svg"/>
+    <div><i><u>Note :</u></i> Le client n'exprime pas forcément l'ensemble de ses besoins du premier coup. Il est ainsi nécessaire d'échanger avec le client afin qu'il puisse progressivement les exprimer. De même, il est très facile de se disperser en ajoutant des fonctionnalités qui relèvent plus du détail que des fonctionnalités essentielles du système.</div>
+    
+    <div><i><u>Astuce :</u></i> Vous pouvez représenter un utilisateur non-authentifié par le rôle "Visiteur" :
+    <img class="light" style="width:unset" src="./assets/auth-usecase.svg"/>
+    </div>
+</details>
+
+<h3>Gestion des notes</h3>
+
+<div>Le client souhaite une plateforme en ligne permettant la gestion des notes des étudiants. Les notes seront saisies par les enseignants, et pourront être consultées par les étudiants. Ces notes sont ensuite utilisées lors du jury de fin d'année.</div>
+
+<details>
+    <summary>Cliquez pour afficher le corrigé</summary>
+    <img class="light" style="width:unset" src="./assets/notes.svg"/>
+    <div><i><u>Note:</u></i> Il est important d'adoper le langage du client, d'où l'importance d'échanger avec lui afin d'en comprendre le contexte.</div>
+</details>
+
+<h2>Activité</h2>
+
+<div>Créez les diagrammes d'activité pour les 2 contextes suivants.</div>
+
+
+<h2>Traverser la rue</h2>
+
+<div>Vous êtes un piéton, décrivez le processus vous permettant de traverser la rue.</div>
+
+<details>
+    <summary>Cliquez pour afficher le corrigé</summary>
+    <img class="light" style="width:unset" src="./assets/traverser.svg"/>
+    <i><u>Note:</u></i> Il y a toujours des choses auxquelles on ne pense pas, d'où l'importance d'échanger avec le client.
+</details>
+
+<h2>Jury de fin d'année</h2>
+
+<div>Décrivez le processus de validation d'année d'un étudiant. Pour rappel, une UE est validée (AKI) si elle a une moyenne supérieure ou égale à 10. Si la moyenne est entre 8 et 10, l'UE est ajournée (AJAC). Si la moyenne est inférieure à 8, l'étudiant ne valide pas l'UE (NAKI). Le jury peut donner des points jury aux UE. Si l'étudiant a validité toutes ses UE, ou n'a qu'une UE ajournée, il passe de droit à l'année suivante, sauf si l'UE ajournée n'avait pas été validée l'année précédente. La dernière année, l'étudiant doit avoir eu toutes ses UE pour valider son année. En 2ème et 3ème année, un étudiant ne peut valider son année s'il n'a pas effectué de stage. Si l'étudiant ne valide pas son année, il peut redoubler ou être exclus par le jury. Un étudiant ne peut redoubler qu'une fois par année. Si un étudiant est défaillant, ses notes ne sont pas calculées et est exclus de la formation.</div>
+
+<details>
+    <summary>Cliquez pour afficher le corrigé</summary>
+    <img class="light" style="width:unset" src="./assets/jury.svg"/>
+    <i><u>Note:</u></i> Le fonctionnement du système n'est pas toujours bien connu ou compris, d'où l'importance d'échanger avec le client.
+</details>
+
+
+        </main>
+    </body>
+</html>

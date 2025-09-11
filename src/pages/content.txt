@@ -55,6 +55,8 @@
             - CM1:CM1 - Analyse
             - CM2:CM2 - Conception
             - CM3:CM3 - Implémentation
+        + TD:TD
+            - TD1:TD1 - Analyse
         + DS:DS
             - cur:2024-2024
     + R6-X:S6 Programmation Orientée Données (old)

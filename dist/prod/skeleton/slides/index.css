@@ -488,7 +488,7 @@ div.center {
 img {
     width: 100%;
 
-    &.svg {
+    &[src$=".svg"] {
         width:60%;
         background-color:white;
         border-radius:5px;
