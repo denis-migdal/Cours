@@ -1,0 +1,95 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.1.2 Chrome/138.0.7204.243 Electron/37.4.0 Safari/537.36" version="28.1.2">
+  <diagram name="Page-1" id="imzL4cRK1USyiW8v6qvX">
+    <mxGraphModel dx="872" dy="543" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="PPX6SCkhOKU9VicBCroj-1" value="GUI" style="fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="120" y="120" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-2" value="" style="endArrow=open;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="220" y="140" as="sourcePoint" />
+            <mxPoint x="250" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-3" value="1. HTTP Query" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="PPX6SCkhOKU9VicBCroj-2">
+          <mxGeometry x="-0.3625" y="-2" relative="1" as="geometry">
+            <mxPoint x="1" y="-18" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-6" value="REST" style="fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="280" y="120" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-7" value="DB" style="fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="280" y="240" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-8" value="Cache" style="fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="120" y="240" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-9" value="" style="endArrow=none;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="PPX6SCkhOKU9VicBCroj-1" target="PPX6SCkhOKU9VicBCroj-6">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="410" y="200" as="sourcePoint" />
+            <mxPoint x="570" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-10" value="" style="endArrow=open;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="320" y="200" as="sourcePoint" />
+            <mxPoint x="320" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-11" value="2. SQLQuery" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="PPX6SCkhOKU9VicBCroj-10">
+          <mxGeometry x="-0.3625" y="-2" relative="1" as="geometry">
+            <mxPoint x="38" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-12" value="" style="endArrow=none;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="PPX6SCkhOKU9VicBCroj-6" target="PPX6SCkhOKU9VicBCroj-7">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="330" y="280" as="sourcePoint" />
+            <mxPoint x="490" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-13" value="" style="endArrow=open;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="300" y="230" as="sourcePoint" />
+            <mxPoint x="300" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-14" value="3. SQL Answer" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="PPX6SCkhOKU9VicBCroj-13">
+          <mxGeometry x="-0.3625" y="-2" relative="1" as="geometry">
+            <mxPoint x="-52" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-15" value="" style="endArrow=open;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="250" y="160" as="sourcePoint" />
+            <mxPoint x="210" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-16" value="4. HTTP Answer" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="PPX6SCkhOKU9VicBCroj-15">
+          <mxGeometry x="-0.3625" y="-2" relative="1" as="geometry">
+            <mxPoint x="-8" y="22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-17" value="" style="endArrow=none;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PPX6SCkhOKU9VicBCroj-1" target="PPX6SCkhOKU9VicBCroj-8">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="330" y="280" as="sourcePoint" />
+            <mxPoint x="490" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-23" value="" style="endArrow=open;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="137" y="194" as="sourcePoint" />
+            <mxPoint x="137" y="224" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PPX6SCkhOKU9VicBCroj-24" value="5. Store" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="PPX6SCkhOKU9VicBCroj-23">
+          <mxGeometry x="-0.3625" y="-2" relative="1" as="geometry">
+            <mxPoint x="-28" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

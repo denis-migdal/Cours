@@ -26,17 +26,19 @@
 
 <h3>Bons et mauvais principes</h3>
 
-- D'autres se sont planté avant nous
-- Expérience : code smell, DP, anti-DP, bons principes.
+<div>Heureusement d'autres personnes se sont plantées bien avant nous, et ont appris de leurs erreurs. Nous n'avons ainsi pas besoin de les répéter, et pouvons bénéficier de leur expérience.</div>
 
-- https://fr.wikipedia.org/wiki/Antipattern
-- https://fr.wikipedia.org/wiki/Code_smell
+<div>Cette expérience a permit l'établissement de listes de :
+    <ul class="flex-2">
+        <li>Bons principes : <a href="https://fr.wikipedia.org/wiki/Qualit%C3%A9_logicielle">principes de programmation</a>.
+        </li>
+        <li>Mauvais principes : <a href="https://fr.wikipedia.org/wiki/Code_smell">code smell</a>.</li>
+        <li>Bons patrons de conceptions : <a href="https://fr.wikipedia.org/wiki/Patron_de_conception">design pattern</a>.</li>
+        <li>Mauvais patrons de conceptions : <a href="https://fr.wikipedia.org/wiki/Antipattern">anti-pattern</a>.</li>
+    </ul>
+</div>
 
-Qqs principes :
-- KISS
-- Abstraction
-    - level of details
-    - Implémentation vs thingy
+<div>Nous verrons certains de ces principes par la suite. Cependant, il est important de ne pas trop se perdre et de garder les choses le plus simple possible (<i>Keep it Simple, Stupide</i> - <b>KISS</b>). Il faut donc avoir une application raisonnée de ces différents principes.</div>
 
 <h2>Composants</h2>
 
@@ -50,11 +52,14 @@ Qqs principes :
 
 <div>En effet, l'affichage doit se faire indépendamment de la manière dont sont stockées les données, et le stockage doit se faire indépendamment de la manière dont les données sont affichées. Idéalement, ces deux composants peuvent s'exécuter de manière indépendante. Ainsi, il doit être possible de requêter les données, même si l'affichage est indisponible, e.g. en cours de refonte. De même, pouvoir tester l'affichage sans avoir besoin des données réelles, e.g. en utilisant une source de données différente ou simulée. De plus, si e.g. une requête SQL change, je ne devrais pas avoir à modifier les bouts de code permettant l'affichage de ces données.</div>
 
-<div>Typiquement on sépare l'affichage, les données, et les comportements/règles. Il existe une pléthore de façon d'effectuer un tel découpage, souvent très similaires avec quelques nuances : MVC, MVA, MVP, MVVM, PAC, ADR, modèle de Seeheim, architecture 3-tiers, etc. L'affichage peut lui-même être redécoupé en plusieurs sous composants, e.g. structure, mise en forme, interactions.</div>
+<div>Typiquement on sépare l'affichage, les données, et les comportements/règles. Il existe une pléthore de façon d'effectuer un tel découpage, souvent très similaires avec quelques nuances : MVC, MVA, MVP, MVVM, PAC, ADR, modèle de Seeheim, architecture 3-tiers, etc.</div>
 
 <div>Il est aussi possible de découper son projet en fonction de ses différentes fonctionnalités, e.g. gestion des utilisateurs, gestion des produits, executions de tâches planifées, etc. Cela permet ainsi de pouvoir aisément ajouter ou retirer des fonctionnalités sans impacter l'ensemble du projet.</div>
 
+
 <div>💡 Ces différents découpages ne sont pas exclusifs.</div>
+
+<div>💡 Un composant peut lui-même être redécoupé en sous composants, e.g. l'affichage peut lui-même être redécoupé en structure, mise en forme, interactions.</div>
 
 <h3>Découpages verticaux</h3>
 
@@ -66,64 +71,145 @@ Qqs principes :
 
 <div>L'encapsulation permet l'<b>abstraction</b>, c'est à dire de pouvoir effectuer des actions en cachant les détails techniques. Par exemple, lorsque vous lisez un fichier avec une fonction <script type="c-ts">readTextFile(<h>$FILE</h>)</script>, vous n'avez pas à vous soucier de toutes les vérifications et opérations effectuées par le système de fichiers et l'OS. Les bibliothèques graphiques sont un autre exemple d'abstractions.</div>
 
-<div>💡 Les <b>DOA</b> (<i>Data Access Object</i>) sont une abstraction encapsulant l'accès à des données persistantes. On manipule alors les données via des classes (e.g. <script type="c-ts">Users.createUser(<h>$name</h>)</script>, <script type="c-ts">user.changePwd(<h>$PWD</h>)</script>, etc.) qui se chargent d'effectuer les opérations demandées via, e.g., des requêtes SQL, des lectures/écritures dans des fichiers, des commandes Shell, etc.</div>
-
 <div>Un projet peut ainsi avoir plusieurs <b>couches d'abstraction</b>. Les couches les plus basses encapsulent les détails techniques, quand les couches les plus hautes peuvent être une traduction du cahier des charges, en réutilisant la logique et langage métier, permettant potentiellement au client de comprendre le code et modifier certains éléments.</div>
 
 <div>Une manière de faire est d'utiliser l'<b>ECB</b> (<i>Entity-Boundary-Control</i>) pour traduire le cahier des charges. Chaque cas d'utilisation est représenté par une classe implémentant le diagramme d'activité (<i>controller</i>). Les interactions sont représentées par une autre classe pour chaque acteur externe (<i>boundary</i>). Les données sont quant à elles représentées par des classes nommée <i>entity</i>. Le code est ensuite factorisé et restructuré, puis regroupé en un "<i>package de service</i>".</div>
 
+<h4>Exemples d'abstractions</h4>
+
+
+<div>💡 Le Design Pattern <b>Façade</b> cache un ensemble de classes et d'opérations complexes derrière une interface unique.</div>
+
+<div>💡 Le Design Pattern <b>Iterator</b> encapsule le parcours d'une structure, permettant de les parcourir indépendamment de leur implémentation (e.g. tableau, liste, ensemble, arbre, etc.) :
+    <script type="c-ts">
+        const it = getIterator(container);
+        while( ! it.isDone )
+            const elem = it.next();
+    </script>
+    Les itérateurs permettent alors d'écrire des algorithmes génériques (e.g. filtres) fonctionnant avec tous types de structures.<br/>
+    Il est aussi possible d'écrire différents types de parcours, e.g. en sens inverse (<i>reverse iterator</i>), excluant certains éléments.<br/>
+    Les itérateurs sont notamment utilisé en interne par :
+    <ul class="flex-2">
+        <li><script type="c-ts">for(const e of container) {...}</script></li>
+        <li><script type="c-ts">forEach(container, (e) => ...);</script></li>
+    </ul>
+</div>
+
+<div>💡 Les <b>DAO</b> (<i>Data Access Object</i>) sont une abstraction encapsulant l'accès à des données persistantes. On manipule alors les données via des classes (e.g. <script type="c-ts">Users.createUser(<h>$name</h>)</script>, <script type="c-ts">user.changePwd(<h>$PWD</h>)</script>, etc.) qui se chargent d'effectuer les opérations demandées via, e.g., des requêtes SQL, des lectures/écritures dans des fichiers, des commandes Shell, etc.</div>
+
 <h3>UML</h3>
+
+<div>Il est possible de représenter les différents composants via un diagramme de <b>déploiement</b>, décrivant aussi les matériels sur lesquels les composants seront déployés.</div>
+
+<img src="./assets/Deployment.svg" />
+
+<div>💡 Il est possible de préciser les caractéristiques (mémoire, processeur, etc.) des matériels.</div>
+
+<div>💡 Il est aussi possible d'utiliser des diagrammes de <b>composants</b> ou des diagrammes de <b>package</b>. En pratique, le diagramme de déploiement suffit.</div>
 
 <h2>Communication</h2>
 
-<div>Les différents composants vont devoir communiquer entre eux</div>
+<div>Les différents composants vont communiquer entre eux, et ainsi s'envoyer des messages qui peuvent prendre différentes formes (e.g. appels de fonctions, requête REST, etc.). Pour que cela fonctionne, il faut que le composant qui reçoit le message puisse le comprendre. Il est ainsi nécessaire de spécifier un protocole de communication que le composant s'engage à implémenter et à respecter, un peu comme un <i>contrat</i>. Cela peut prendre la forme d'une API REST, d'une classe exposant des méthodes, etc.</div>
 
-- envoyer/recevoir des messages
-- synchrone (attend la réponse)/asynchrone (n'attend pas).
-
-Astuces :
-- éviter les boucles.
-- action (j'enclanche) vs onAction (je réagit).
-
-Ces messages constituent l'<b>interface</b> du composant. Le reste étant une boîte noire (encapsulation). DP façade. Public / Privé. Contrat.
+<div>Le composant doit être une boîte noire pour l'extérieur qui ne doit pas accéder à ses éléments internes (cf principe d'encapsulation). Ainsi, les interactions avec le composant ne doit se faire qu'au travers d'une interface publique, e.g. par le biais d'un <b>DP façade</b>.</div>
 
 <h3>Les messages</h3>
 
-Monolith
+<h4>Architecture monolithique</h4>
 
-Un message peut prendre plusieurs formes :
-- appel de fonction. Async : langage ou callback.
+<div>Dans une architecture <b>monolithique</b> les composants s'exécutent au sein du même exécutable. Les messages sont usuellement implémentés sous la forme d'appels de fonctions. Pour éviter certains problèmes (e.g. boucles infinies), on va souvent distinguer l'enclenchement de l'action et son traitement :
+    <div class="flex-2">
+        <script type="c-ts">
+            class Foo {
+              public      action() {this.onAction();}
+              protected onAction() { ... }
+            }
+        </script>
+        <ul>
+            <li><script type="c-ts">foo.action();</script> : j'enclenche l'action.</li>
+            <li><script type="c-ts">onAction() { ... }</script> : je traites/réagis à l'action.</li>
+        </ul>
+    </div>
+</div>
 
-- pipeline / DP commande.
+<todo>examples (appel extérieur boucle infinie e.g. remove + inherit do not forget some operations - DP Template)</todo>
 
-micro-services
+<div>Les appels de fonctions peuvent être <b>synchrone</b> (<i>j'attends la réponse</i>) ou <b>asynchrone</b> (<i>je continue l'exécution sans attendre la réponse</i>). Les appels asynchrones peuvent être implémentés par :
+    <ul>
+        <li>un <b>callback</b> : fonction passée en paramètre et appelée lorsque l'action est finie (e.g. <script type="c-ts">action( () => {....} )</script>).</li>
+        <li>une <b>fonction asynchrone</b> : dépend du langage de programmation utilisé (e.g. <script type="c-ts">await action();</script>)..</li>
+    </ul>
+</div>
 
-- Plusieurs exécutables (micro-services vs monolith - avantages + inconvénients) / SOA (service oriented)
-            - scalable
-            - coût de la communication et opti.
-- communications interprocessus (IPC) / JSON/binaire/autre
-- Data Transfert Object.
-- requête/réponse REST.
--> handler + dispatcher (message queuing ? broker)
+<h4>Service Oriented Architecture (SOA)</h4>
 
-Both (micro-services - monolith)
+<div>Dans une architecture SOA,les composants s'exécutent dans plusieurs exécutables fournissant des services différents. Il n'est ainsi pas possible d'utiliser les appels de fonctions pour transmettre des messages. On utilise alors des techniques de <b>communications inter-processus</b> (IPC) :
+    <ul class="flex-2">
+        <li><b>Fichiers FIFO</b> : <i>pipes</i>, <i>sockets</i>.</li>
+        <li><b>Événements</b> : <i>message queue</i>, <i>signaux unix</i>.</li>
+        <li><b>Données</b> : <i>sémaphores</i>, <i>mémoire partagée</i>.</li>
+    </ul>
+</div>
 
-Plus avancé, [?] vs Orienté Event.
-- subscription
-    - signaux et slots
-    - observer
-    - reactor
-    - publish-subscribe.
-    - implicit invokation
+<div>Le message doit alors être converti en données binaires afin de pouvoir être transmis (e.g. JSON). Pour transmettre un objet, il faudra alors le <b>sérialiser</b> (i.e. le transformer en données binaires), puis le <b>désérialiser</b> à la réception (i.e. le récréer à partir des données binaires).</div>
 
-<h3>DP Entre...</h3>
+<div>Dans une architecture de <b>micro-services</b>, les composants se trouvent sur des serveurs différents. Les <b>sockets</b> sont alors utilisées avec un protocole réseau adapté aux besoins du composant. Par défaut, on utilisera généralement une API REST.</div>
 
-Cf liste
+<div>⚠ Le coût des communications dans une architecture de micro-service est très important. En effet, envoyer une requête réseau est bien plus coûteux qu'un simple appel de fonction.</div>
 
-<h3>X</h3>
+<h4>Event-Driven Architecture (EDA)</h4>
 
-- diagramme de séquence !
-- programmation réactive ?
+<div>Ces différentes méthodes de communications peuvent être abstraites par un système d'événements. Le principe est assez simple : une source d'événement diffuse (<i>broadcast</i>) des événements, et les fonctions abonnées (<i>subscribed</i>) à cet événement sont appelées. Il est possible d'implémenter ce système de deux manières différentes :
+    <ul>
+        <li><i>DP Observer</i> : la source stocke et appelle elle-même les fonctions abonnées.</li>
+        <li><i>DP Reactor</i> : une boucle d'événements appelle les fonctions abonnées (e.g. JS, systèmes de serveurs, etc.).</li>
+    </ul>
+</div>
+
+<div>💡 En fonction du contexte, la fonction abonnée peut être appelée <i>listener</i> ou <i>handler</i>.</div>
+
+<todo>Cf aussi : programmation réactive.</todo>
+
+<h3>Gestion des messages</h3>
+
+<todo>X</todo>
+
+<ul>
+    <li>DP Commande : e.g. associer GUI btn à une action controler.</li>
+    <li>Data Transfert Object : regrouper plusieurs requêtes avant d'envoyer</li>
+    <li>Chaîne de responsabilité : pour les handler, un seul s'en occupe.</li>
+    <li>Message queuing</li>
+    <li>Broker</li>
+    <li>Proxy : log, cache, etc.</li>
+    <li>Adapter</li>
+    <li>Broker : load balancing, redirect, etc.</li>
+    <li>Interceptor DP</li>
+    <li>Mediator DP</li>
+    <li></li>
+</ul>
+
+<h3>UML</h3>
+
+<h4>Diagramme de séquence</h4>
+
+
+<div>Le diagramme de séquence permet de montrer, dans un ordre chronologique, les interactions entre divers entités dans le cadre d'un scénario donné. Ils sont notamment très utilisés pour décrire des protocoles réseaux.</div>
+
+<img src="./assets/Sequence.svg"/>
+
+<todo>Ref + Alt + opt (p 635 ) + loop + par (parallel).</todo>
+
+<h4>Diagramme de Communication</h4>
+
+<div>Lorsqu'il y a trop d'entités, et peut de messages entre deux entités, il est possible d'utiliser un diagramme de communication pour plus de lisibilité :</div>
+
+<img src="./assets/Communication.svg"/>
+
+<h4>Autres diagrammes</h4>
+
+- Global d'interaction (er gros un diagramme d'activité dont les noeuds sont d'autres diagrammes).
+- Temps.
+
         </main>
     </body>
 </html>

@@ -94,3 +94,18 @@ ul.flex-2 {
         margin: 0;
     }
 }
+
+
+
+todo {
+    display: block;
+
+    background-color: yellow;
+    color: black;
+    padding: 2px;
+    border-radius: 4px;
+
+    &::before {
+        content: "[TODO] "
+    }
+}

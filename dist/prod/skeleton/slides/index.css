@@ -515,4 +515,19 @@ ul.flex-2 {
     }
 }
 
+
+
+todo {
+    display: block;
+
+    background-color: yellow;
+    color: black;
+    padding: 2px;
+    border-radius: 4px;
+
+    &::before {
+        content: "[TODO] "
+    }
+}
+
 /*# sourceMappingURL=index.css.map*/
