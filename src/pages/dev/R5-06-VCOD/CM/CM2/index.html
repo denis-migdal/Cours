@@ -32,7 +32,7 @@
     <ul class="flex-2">
         <li>Bons principes : <a href="https://fr.wikipedia.org/wiki/Qualit%C3%A9_logicielle">principes de programmation</a>.
         </li>
-        <li>Mauvais principes : <a href="https://fr.wikipedia.org/wiki/Code_smell">code smell</a>.</li>
+        <li>Mauvais principes : <a href="https://fr.wikipedia.org/wiki/Code_smell">code smell</a>/<a href="https://en.wikipedia.org/wiki/Design_smell">design smell</a>.</li>
         <li>Bons patrons de conceptions : <a href="https://fr.wikipedia.org/wiki/Patron_de_conception">design pattern</a>.</li>
         <li>Mauvais patrons de conceptions : <a href="https://fr.wikipedia.org/wiki/Antipattern">anti-pattern</a>.</li>
     </ul>
@@ -96,6 +96,12 @@
 </div>
 
 <div>💡 Les <b>DAO</b> (<i>Data Access Object</i>) sont une abstraction encapsulant l'accès à des données persistantes. On manipule alors les données via des classes (e.g. <script type="c-ts">Users.createUser(<h>$name</h>)</script>, <script type="c-ts">user.changePwd(<h>$PWD</h>)</script>, etc.) qui se chargent d'effectuer les opérations demandées via, e.g., des requêtes SQL, des lectures/écritures dans des fichiers, des commandes Shell, etc.</div>
+
+<h3>Découpage "éclaté"</h3>
+
+<div>Une troisième manière de découper son projet, est de le découper en fonctionnalités qui seront éclatées dans différents "services".</div>
+
+<div>L'architecture générale est alors découpée en composants qu'on peut (plus ou moins abusivement) appeler <i>services</i> (e.g. GUI, API REST, Database, etc.). Chaque fonctionnalité est un "lot" (<i>package</i>) de composants (e.g. sous la forme d'un dossier) qui seront déployés dans les différents services, e.g. une fonctionnalité de gestion d'utilisateurs constituée de composants qui étendent la GUI, l'API REST, la base de donnée, etc.</div>
 
 <h3>UML</h3>
 
@@ -175,17 +181,18 @@
 <todo>X</todo>
 
 <ul>
+    <li>Interceptor DP</li>
+    <li>Adapter</li>
+    <li>Proxy : log, cache, etc.</li>
+
+    <li>Mediator DP</li>
+    <li>Broker : load balancing, redirect, etc.</li>
+
     <li>DP Commande : e.g. associer GUI btn à une action controler.</li>
     <li>Data Transfert Object : regrouper plusieurs requêtes avant d'envoyer</li>
-    <li>Chaîne de responsabilité : pour les handler, un seul s'en occupe.</li>
     <li>Message queuing</li>
-    <li>Broker</li>
-    <li>Proxy : log, cache, etc.</li>
-    <li>Adapter</li>
-    <li>Broker : load balancing, redirect, etc.</li>
-    <li>Interceptor DP</li>
-    <li>Mediator DP</li>
-    <li></li>
+
+    <li>Chaîne de responsabilité : pour les handler, un seul s'en occupe.</li>
 </ul>
 
 <h3>UML</h3>
@@ -197,7 +204,8 @@
 
 <img src="./assets/Sequence.svg"/>
 
-<todo>Ref + Alt + opt (p 635 ) + loop + par (parallel).</todo>
+<todo>msg : fct / REST query / etc.</todo>
+<todo>Ref + Alt + par (parallel) opt (p 635 ) + crit + break + loop.</todo>
 
 <h4>Diagramme de Communication</h4>
 

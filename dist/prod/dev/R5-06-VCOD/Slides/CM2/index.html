@@ -47,7 +47,7 @@
         <ul class="flex-2">
             <li>Bons principes : <a href="https://fr.wikipedia.org/wiki/Qualit%C3%A9_logicielle">principes de programmation</a>.
             </li>
-            <li>Mauvais principes : <a href="https://fr.wikipedia.org/wiki/Code_smell">code smell</a>.</li>
+            <li>Mauvais principes : <a href="https://fr.wikipedia.org/wiki/Code_smell">code smell</a>/<a href="https://en.wikipedia.org/wiki/Design_smell">design smell</a>.</li>
             <li>Bons patrons de conceptions : <a href="https://fr.wikipedia.org/wiki/Patron_de_conception">design pattern</a>.</li>
             <li>Mauvais patrons de conceptions : <a href="https://fr.wikipedia.org/wiki/Antipattern">anti-pattern</a>.</li>
         </ul>
@@ -130,39 +130,51 @@
         </ul>
       </div>
     </frame-uca>
-  </frame-subsection>
-  <frame-subsection name="Exemples d'abstractions">
-    <frame-uca>
-      <ul>
-        <li><b>DP Façade</b> : cache un ensemble de classes et d'opérations complexes derrière une interface unique.</li>
-      </ul>
-      <ul>
-        <li><b>DP Iterator</b> : permet le parcours d'une structure indépendamment de son implémentation :
-          <div class="flex-2">
-            <script type="c-ts">
-              const it = getIterator(container);
-              while( ! it.isDone )
-                const elem = it.next();
-            </script>
+    <frame-subsubsection name="Exemples d'abstractions">
+      <frame-uca>
+        <ul>
+          <li><b>DP Façade</b> : cache un ensemble de classes et d'opérations complexes derrière une interface unique.</li>
+        </ul>
+        <ul>
+          <li><b>DP Iterator</b> : permet le parcours d'une structure indépendamment de son implémentation :
+            <div class="flex-2">
+              <script type="c-ts">
+                const it = getIterator(container);
+                while( ! it.isDone )
+                  const elem = it.next();
+              </script>
+              <ul>
+                <li>écrire des algorithmes génériques.</li>
+                <li>différents types de parcours possibles.</li>
+              </ul>
+            </div>
             <ul>
-              <li>écrire des algorithmes génériques.</li>
-              <li>différents types de parcours possibles.</li>
+                <li>Utilisé en interne par <script type="c-ts">for(const e of container) {...}</script> et <script type="c-ts">forEach(container, (e) => ...);</script>.
+                </li>
             </ul>
-          </div>
-          <ul>
-              <li>Utilisé en interne par <script type="c-ts">for(const e of container) {...}</script> et <script type="c-ts">forEach(container, (e) => ...);</script>.
-              </li>
-          </ul>
-        </li>
-      </ul>
+          </li>
+        </ul>
+
+        <ul>
+          <li><b>DAO</b> (<i>Data Access Object</i>) : encapsule l'accès à des données persistantes.
+            <ul>
+              <li>e.g. <script type="c-ts">Users.createUser(<h>$name</h>)</script>, <script type="c-ts">user.changePwd(<h>$PWD</h>)</script></li>
+              <li>les méthodes effectuent les opérations via, e.g. des requêtes SQL, des commandes Shell, etc.</li>
+            </ul>
+          </li>
+        </ul>
+      </frame-uca>
+    </frame-subsubsection>
+  </frame-subsection>
+  <frame-subsection name="Découpage éclaté">
+    <frame-uca>
+
+      <div>Découpage "éclaté" : découper le projet en fonctionnalités, chacune "éclatée" dans divers services.</div>
 
       <ul>
-        <li><b>DAO</b> (<i>Data Access Object</i>) : encapsule l'accès à des données persistantes.
-          <ul>
-            <li>e.g. <script type="c-ts">Users.createUser(<h>$name</h>)</script>, <script type="c-ts">user.changePwd(<h>$PWD</h>)</script></li>
-            <li>les méthodes effectuent les opérations via, e.g. des requêtes SQL, des commandes Shell, etc.</li>
-          </ul>
-        </li>
+        <li>≈ <i>services</i> : composants de l'architecture générale (e.g. GUI, API REST, Database, etc.).</li>
+        <li><i>package</i> : lot de composants correspondant à une fonctionnalité.</li>
+        <li>le contenu de chaque package est déployé dans les différents services afin de les étendre.</li>
       </ul>
     </frame-uca>
   </frame-subsection>
@@ -285,17 +297,18 @@
       <todo>X</todo>
 
       <ul>
+          <li>Interceptor DP</li>
+          <li>Adapter</li>
+          <li>Proxy : log, cache, etc.</li>
+
+          <li>Mediator DP</li>
+          <li>Broker : load balancing, redirect, etc.</li>
+
           <li>DP Commande : e.g. associer GUI btn à une action controler.</li>
           <li>Data Transfert Object : regrouper plusieurs requêtes avant d'envoyer</li>
-          <li>Chaîne de responsabilité : pour les handler, un seul s'en occupe.</li>
           <li>Message queuing</li>
-          <li>Broker</li>
-          <li>Proxy : log, cache, etc.</li>
-          <li>Adapter</li>
-          <li>Broker : load balancing, redirect, etc.</li>
-          <li>Interceptor DP</li>
-          <li>Mediator DP</li>
-          <li></li>
+
+          <li>Chaîne de responsabilité : pour les handler, un seul s'en occupe.</li>
       </ul>
     </frame-uca>
   </frame-subsection>
