@@ -57,8 +57,13 @@
             - CM3:CM3 - Implémentation
         + TD:TD
             - TD1:TD1 - Analyse
+            - TD2:TD2 - Conception
         + TP:TP
             - TP1:TP1 - Analyse
+        + cheat:Cheat sheet
+            - defs:Définitions
+            - UML:UML
+            - DP:Design Patterns
         + DS:DS
             - cur:2024-2024
     + R6-X:S6 Programmation Orientée Données (old)
