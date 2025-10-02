@@ -60,6 +60,8 @@
             - TD2:TD2 - Conception
         + TP:TP
             - TP1:TP1 - Analyse
+            - TP2:TP2 - Conception
+            - TP3:TP3 - Implémentation
         + cheat:Cheat sheet
             - defs:Définitions
             - UML:UML
