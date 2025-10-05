@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>CM1 (C&R)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <link   href="./index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render"></script>
+        <script  src="./index.js"  type="module" blocking="render"></script>
+    </head>
+    <body>
+        <main>
+            <h1>Couches 1 & 2 : Échanger des données avec un tiers.</h1>
+
+<h2>Code de Hamming étendu</h2>
+
+<div class="center">
+  <player-toolbar speed="1500" id="hamming-player"></player-toolbar>
+</div>
+<table id="hamming">
+    <colgroup>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+    </colgroup>
+    <thead>
+        <tr>
+            <td style="border: none;"></td>
+            <td style="background-color: green">0</td>
+            <td style="background-color: green">1</td>
+            <td style="background-color: green">0</td>
+            <td class="surcode">1</td>
+            <td style="background-color: green">1</td>
+            <td class="surcode">0</td>
+            <td class="surcode">1</td>
+            <td class="parity">0</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="border: none;"></td>
+            <th>7</th>
+            <th>6</th>
+            <th>5</th>
+            <th>4</th>
+            <th>3</th>
+            <th>2</th>
+            <th>1</th>
+            <th>0</th>
+            <th>S</th>
+        </tr>
+        <tr>
+            <th>2<sup>2</sup></th>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>→</td>
+            <td class="err">0</td>
+        </tr>
+        <tr>
+            <th>2<sup>1</sup></th>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>→</td>
+            <td class="err">0</td>
+        </tr>
+        <tr>
+            <th>2<sup>0</sup></th>
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+            <td>→</td>
+            <td class="err">0</td>
+        </tr>
+    </tbody>
+</table>
+
+On vient de calculer le <b>syndrome</b>.
+
+Codage:
+<math display="block">
+    <mrow>
+        <mo>[</mo>
+        <mtable>
+            <mtr>
+                <mtd>ID</mtd>
+            </mtr>
+            <mtr>
+                <mtd>Q</mtd>
+            </mtr>
+        </mtable>
+        <mo>]</mo>
+    </mrow>
+    *
+    <mrow>
+        <mo>[</mo>
+        <mtable>
+            <mtr>
+                <mtd>I</mtd>
+            </mtr>
+        </mtable>
+        <mo>]</mo>
+        =
+        <mo>[</mo>
+        <mtable>
+            <mtr>
+                <mtd>C</mtd>
+            </mtr>
+        </mtable>
+        <mo>]</mo>
+    </mrow>
+</math>
+
+Décodage:
+<math display="block">
+    <mrow>
+        <mo>[</mo>
+        <mtable>
+            <mtr>
+                <mtd>Q</mtd>
+                <mtd>ID</mtd>
+            </mtr>
+        </mtable>
+        <mo>]</mo>
+        *
+        <mo>[</mo>
+        <mtable>
+            <mtr>
+                <mtd>C'</mtd>
+            </mtr>
+        </mtable>
+        <mo>]</mo>
+        =
+        <mo>[</mo>
+        <mtable>
+            <mtr>
+                <mtd>I'</mtd>
+            </mtr>
+            <mtr>
+                <mtd>S</mtd>
+            </mtr>
+        </mtable>
+        <mo>]</mo>
+    </mrow>
+</math>
+
+S est le <b>syndrome</b>.
+Si S = 0, pas d'erreurs (I=I'). Sinon, S indique la correction à appliquer à I' pour obtenir I.
+
+De manière générale, on pré-calcul un tableau donnant pour chaque syndrome possible, le correctif à appliquer. Dans notre cas, 
+<table>
+    <thead>
+        <tr>
+            <th>Syndrome</th>
+            <th>Position</th>
+            <th>Masque</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>111</td>
+            <td>7</td>
+            <td>1 << 7</td>
+            <td>I = 10000000 ⨁ I'</td>
+        </tr>
+        <tr>
+            <td>110</td>
+            <td>6</td>
+            <td>1 << 6</td>
+            <td>I = 01000000 ⨁ I'</td>
+        </tr>
+        <tr>
+            <td>101</td>
+            <td>5</td>
+            <td>1 << 5</td>
+            <td>I = 00100000 ⨁ I'</td>
+        </tr>
+        <tr>
+            <td>100</td>
+            <td>4</td>
+            <td>1 << 4</td>
+            <td>I = 00010000 ⨁ I'</td>
+        </tr>
+        <tr>
+            <td>011</td>
+            <td>3</td>
+            <td>1 << 3</td>
+            <td>I = 00001000 ⨁ I'</td>
+        </tr>
+        <tr>
+            <td>010</td>
+            <td>2</td>
+            <td>1 << 2</td>
+            <td>I = 10000100 ⨁ I'</td>
+        </tr>
+        <tr>
+            <td>001</td>
+            <td>1</td>
+            <td>1 << 1</td>
+            <td>I = 00000010 ⨁ I'</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Reed-Solomon</h2>
+
+- besoin de savoir si le message est valide ou non...
+-> e.g. bit de parité.
+-> % p fait que les redondances auront +1 bit par rapport aux messages...
+donc e.g. message 7 bits (+ parité) - redondance : 8 bits + bits de parités regroupés ensembles dans un octet supplémentaire.
+
+<h2>Notes</h2>
+
+0. On va transmettre des données binaires (des suites de 0 et de 1)
+    (c'est ce qu'un ordinateur manipule).
+
+1. médium de communication, support physique:
+- électrique : câble RJ45, câble USB, etc.
+- ondes
+- lumière : fibre.
+
+Couche 1 Physique : comment représenter un bit sur le médium ?
+~> transmettre le plus rapidement possible.
+E.g. périodes de XHz : -1V = 0, 1V = 1 ou (plusieurs bits) : -2 -1 1 -2.
+-> en réalité + compliqué, fréquences, des sinoïsidales, etc.
+
+
+Sauf que juste envoyer pas suffisant :
+- début/fin de la communication ?
+- destinataire ?
+- ne pas parler en même temps (sur le même canal : e.g. plusieurs fils dans le câble).
+- signaux physiques : des interférences = erreurs dans la transmission.
+
+E.g.Ethernet pour les câbles RJ45, USB, etc.
+WiFi, Bluetooth, 5G, etc.
+
+-> adresse MAC - carte réseau (physique ou virtuelle).
+-> transmission de trames.
+    -> préambule : je commence une trame - sync d'horloges, toussa.
+    -> MAC src/dst (src pour y répondre) -> qui doit lire le paquet.
+    -> Taille de la trame (~1,5kB max)
+    -> Data + padding (taille minimal)
+    -> Détection d'erreur...
+    -> silence avant le prochain paquet.
+
+! Tout le monde (sur le medium) peut lire le paquet à ce niveau !!!
+
+WiFi : chiffré.
+    - peut lire mais peut pas récupérer les données.
+    + version
+    + 2 addrs :
+        + AP : access point : la borne WiFi (discussions p2p)
+        + 
+
+-> collision avoidance vs collision detection
+-> 0V/1V => 2V = collision -> parfois corrigible (selon comment c'est fait).
+-> éviter : qui a le droit de parler sur quel cannal/quand.
+            -> e.g. WiFi en 5GHz évite interférence avec le bluetooth en 2.4GHz (et est + rapide) / choisir son cannal en fonction de ses voisins.
+
+IV,5 CSMA/CD (détection)
+    - si ça parle j'attends avant de parler.
+    - on continue d'écouter après l'émission pour détecter collision : car tps de propagagation.
+            ->la pause : pour donc écouter + permettre à qq d'autre de parler.
+
+
+
+Erreurs : ça peut arriver : interférences.
+-> détection vs correction.
+
+Code correcteur :
+- information + bits de redondance ajouté = code à transmettre.
+-> un découpe cela en bloc appelé "mot" : mot d'information / mot de code.
+
+Naïvement :
+- répétition 1x : détecte une erreur.
+- répétition 2x : corrige une erreur (vote majoritaire).
+- d : détecte d erreurs, corrige d/2 erreurs.
+
+Redondance : x
+Rendement : m/n
+Cc,i,d (en réalité d est la distance de Hamming minimale entre 2 mc)
+
+Comment faire donc ?
+- bit de parité (= xor de tous les bits = additions dans F2) 
+- détecte une erreur.
+(r = i/(i+1)).
+            - plus i grand meilleur rendement.
+            - mais aussi plus de chances d'erreurs.
+
+Hamming (année ?):
+- corriger 1 erreur, en détecter au plus 2.
+- jouer à qui-est-ce : exemple 8 bits (cf TB).
+- repr matrice.
+
+Reed-Solomon (année ?):
+- corriger + d'erreurs :
+- blocs + gros, e.g. 7 bits + 1 bit de parité.
+- en gros points.
+- calculer polynome % p.
+- calculer pour des points en plus (seront des redondance).
+-> si on a "perdu" des messages : erreur détecté dans le mot incorrigible (ici bit de parité nok).
+-> calculer le polynome.
+-> calculer les points manquants.
+
+-> interlacer (si erreurs côté à côté pour les 2).
+
+On a de nombreux codes correcteur d'erreur, plus avancés/performants que ceux vus précédemment. Beaucoup sont en fait des généralisations des code de Hamming et/ou de Reed-Solomon.
+
+- Turbo : l'un des meilleurs (?).
+
+
+À la fin OSI + encapsulation.
+- pas tout à fait vrai, liaison très lié (contraintes du) physique .
+https://fr.wikipedia.org/wiki/Mod%C3%A8le_OSI#Architecture_en_couches
+(PDU)
+
+- changer des couches de manière indépendante : comme ça je n'ai pas à me soucier des couches précédentes, je peux être en WiFi puis en Ethernet, etc.
+- physique : je peux utiliser d'autres liaisons en fonction de l'évolution des normes, avancées maths, etc.
+- répétitions de couches : e.g. Ethernet over USB.
+
+-> next week
+    -> découpage des paquets (si trop gros).
+    -> ack -> j'ai reçu tes messages jusqu'au X. (évite d'envoyer un ack à chaque msg).
+        -> géré + haut (next week).
+    -> IP addr sur un réseau.
+        </main>
+    </body>
+</html>
