@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>TP1 (CR)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/tp/index.css"  rel="stylesheet">
+        <script  src="/skeleton/tp/index.js"  type="module"     blocking="render"></script>
+    </head>
+    <body>
+        <main>
+            <h1>TP1</h1>
+
+<div>Vous implémenterez les fonctions suivantes en Python en vous servant du code fourni.</div>
+
+<h2>Hamming (implémentation naïve)</h2>
+
+<h3>Création de la classe</h3>
+
+<ol>
+    <li>Créez une classe <script type="c-py">NaiveHammingECC</script></li>
+    <li>Cette classe prend en paramètre le nombre de bits de redondance (sans compter le bit de parité final).</li>
+    <li>Cette classe doit hériter de la classe <script type="c-py">ECC</script></li>
+    <li>Définissez les méthodes <script type="c-py">encode</script>/<script type="c-py">decode</script> de sorte à ce qu'elles retournent leur entrée.</li>
+    <li><todo>Unit test</todo></li>
+</ol>
+
+<h3>Placer les bits d'informations</h3>
+
+<ol>
+    <li>Redéfinissez la méthode qui donne la taille du mot d'information par défaut.</li>
+    <li>Redéfinissez la méthode qui donne la taille du mot de code en fonction de la taille du mot d'information.</li>
+    <li>Modifiez les méthodes <script type="c-py">encode</script>/<script type="c-py">decode</script> de sorte à avoir un mot de code de la bonne taille.</li>
+    <li><todo>Unit test</todo></li>
+    <li>Modifiez les méthodes précédentes de sorte à placer les bits d'informations au bon endroit.</li>
+    <li><todo>Unit test</todo></li>
+</ol>
+
+<h3>Placer les bits de redondances</h3>
+
+<ol>
+    <li>Créez une méthode protégée qui calcule le bit de redondance 2<sup>i</sup> à partir de i (indice : <script type="c-py">& (1 << i)</script>).</li>
+    <li>Modifier la méthode <script type="c-py">encode</script> pour ajouter tous les bits de redondance.</li>
+    <li><todo>Unit test</todo></li>
+</ol>
+
+<h3>Vérifier les bits de redondances</h3>
+
+<ol>
+    <li>Copiez le calcul du masque dans une autre méthode</li>
+    <li>Modifiez la méthode privée pour qu'elle prenne en paramètre le masque et retourne la parité.</li>
+    <li><todo>Unit test</todo></li>
+    <li>Créez une méthode privée calculant le syndrome (un nombre).</li>
+    <li>Modifiez la méthode <script type="c-py">decode</script> pour détecter les erreurs</li>
+    <li><todo>Unit test</todo></li>
+    <li>Inversez le bit correspondant au syndrôme.</li>
+    <li><todo>Unit test</todo></li>
+</ol>
+
+<h2>Hamming (avec des matrices)</h2>
+
+<ol>
+    <li>Créez une classe <script type="c-py">HammingECC</script> héritant de <script type="c-py">ECC</script></li>
+    <li><todo>unit test</todo></li>
+    <li>Créez une fonction permettant d'obtenir une matrice identité de taille n.</li>
+    <li>Créez une fonction permettant d'obtenir la matrice C :
+        <ol>
+            <li>parcourir les nombre de 1 à 2^n, et ignorer les puissances de 2.</li>
+            <li>les colonnes de C sont alors les représentations binaires de ces nombres.</li>
+        </ol>
+        <li>Créez une fonction permettant d'effectuer la multiplication modulo 2 de deux matrices.</li>
+        <li>Calculez les matrices (ID C) (en ligne) et (ID C) (en colonnes) dans le constructeur de <script type="c-py">HammingECC</script>.</li>
+        <li>Modifier les méthodes <script type="c-py">encode</script>/<script type="c-py">decode</script> pour avoir un code de Hamming.</li>
+        <li><todo>Unit test</todo></li>
+    </li>
+</ol>
+
+<h2>Reed-Solomon (simplifié)</h2>
+
+<ol>
+    <li>Créez une classe <script type="c-py">ReedSolomonECC</script> héritant de <script type="c-py">ECC</script></li>
+    <li>Cette classe prend en paramètre le nombre de redondances.</li>
+    <li>Par simplicité, les mots d'informations auront une taille de 8 bits (p=257).</li>
+    <li>Modifier les fonctions <script type="c-py">encode</script>/<script type="c-py">decode</script> afin d'avoir des mots de codes de la bonne taille.</li>
+    <li><todo>unit test</todo></li>
+    <li>Calculez le mot de code comme étant M(x) pour x allant de 1 à n. <todo>Expliquer</todo></li>
+    <li>Calculer le polynôme pour retrouver les mots d'informations.</li>
+    <li><todo>unit test</todo></li>
+    <li>Créez une fonction qui vérifie le mot de code à partir d'un polynôme</li>
+    <li>Vérifiez la validité du polinome.</li>
+    <li><todo>unit test</todo></li>
+    <li>Une fonction qui extrait 4 valeurs.</li>
+    <li>Une fonction qui génère les combinaisons de 4, ignore si 2 valeurs égales.</li>
+    <li>Boucle : tester les combinaison de 4 jusqu'à en trouver une qui marche.</li>
+</ol>
+
+<h2>Entrelaçasse</h2>
+
+<todo>replace ECCWithWords with WordSplitter + another name.</todo>
+<todo>Ne pas faire : pas fini.</todo>
+
+<ol>
+    <li>Utilisez ECCWithWords</li>
+    <li><todo>TEST + perfs</todo></li>
+    <li>Modifiez pour avoir le bit i%n dans le mot i.</li>
+    <li><todo>TEST + perfs</todo></li>
+</ol>
+        </main>
+    </body>
+</html>

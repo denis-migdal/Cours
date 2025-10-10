@@ -14,7 +14,129 @@
         <main>
             <h1>Couches 1 & 2 : Échanger des données avec un tiers.</h1>
 
-<h2>Code de Hamming étendu</h2>
+<h2>Transmettre des bits (couche 1 : physique)</h2>
+
+<div>On transmet des données binaires (suites de 0 et de 1) par l'intermédiaire d'un médium, d'un support physique, e.g. :
+    <ul>
+        <li>signal électrique sur un câble (RJ45, USB, etc).</li>
+        <li>ondes radio-électrique.</li>
+        <li>un signal lumineux (fibre)</li>
+    </ul>
+</div>
+
+<div>Comment représenter un bit sur le médium ?</div>
+
+<div>Par exemple découper le temps en périodes et associer un voltage durant cette période à un bit : 1V = 1, -1V = 0.</div>
+
+<div>Problématique : comment transmettre le plus de bits possible ?</div>
+
+<div>Par exemple, -2V = 0, -1V = 1, 1V = 2, 2V = 3, diminuer la durée des périodes (augmenter la fréquence), plus de canaux de communications (= plusieurs fils), etc.</div>
+
+<div>En réalité, systèmes + compliqués, avec des sinoïsidales, des phases, etc. pour transmettre plus d'informations en étant résistant aux interférences physiques.</div>
+
+<h2>Transmettre des trames (couche 2 : liaison)</h2>
+
+<div>Juste envoyer des bits n'est pas suffisant :
+    <ul>
+        <li>quel est le début/fin du message ?</li>
+        <li>qui est le destinataire (et l'expéditeur ?)</li>
+        <li>comment gérer les interférences (phénomènes physiques, plusieurs personnes qui parlent en même temps, etc.) ?</li>
+    </ul>
+</div>
+
+<div>Pour cela on utilise des protocoles :
+    <ul>
+        <li>Ethernet 802.3 ? pour les câbles RJ45.</li>
+        <li>WiFi 802.11 ?</li>
+        <li>Bluetooth</li>
+        <li>5G</li>
+        <li>etc.</li>
+    </ul>
+</div>
+
+<div>Par exemple une trame Ethernet est constituée de :
+    <ul>
+        <li>un préambule : indique le début d'une trame, permet de sync les horloges.</li>
+        <li>l'adresse de la source et du destinataire.</li>
+        <li>la taille de la trame (~1,5kB max)</li>
+        <li>les données + du padding (pour atteindre une taille minimale)</li>
+        <li>checksum : des bits pour détecter des erreurs de transmissions.</li>
+        <li>du silence avant la prochaine trame.</li>
+    </ul>
+</div>
+
+<div>Beaucoup de protocoles intègrent aussi un numéro de version/protocole afin de s'assurer que tout le monde parle le même langage.</div>
+
+<div>! Tout le monde (sur le medium) peut lire le paquet à ce niveau !!!</div>
+
+<div>Lorsque le médium est une onde, tout le monde à proximité peut voir les bits passer. Les protocoles de liaisons vont donc généralement aussi chiffrer les données.</div>
+
+<h3>Adresses</h3>
+
+<div>Le destinataire indique qui doit lire le message (donc les autres ordi l'ignorent), l'expéditeur, à qui répondre. Attention, rien ne garanti que l'expéditeur est bien celui qui a envoyé le message.</div>
+
+<div>Pour le WiFi, on a 2 autres adresses, une pour l'antenne émettrice et une réceptrice. Pour rappel, en WiFi on a des points d'accès / bornes, reliées entre elles.</div>
+
+<div>L'adresse utilisée est une adresse MAC unique à chaque carte réseau (physique ou virtuelle), qui est une série de 6 octets représentés en hexadécimal, chaque octets séparés par un ":" : 34:ff:01:34:ad:98</div>
+
+<h3>Collisions</h3>
+
+<div>Les collisions arrivent lorsque plusieurs personnes parlent en même temps. On a alors deux stratégies :
+    <ul>
+        <li>CD : collision detection - détecter les collisions</li>
+        <li>CA : collision avoidance - éviter les collisions</li>
+    </ul>
+</div>
+
+<div>Les collisions peuvent s'observer au niveau liaison, par exemple, si on code des bits entre -1V et 1V, si deux émetteurs émettent 1V, on reçoit 2V. On détecte alors la collision. Ces erreurs peuvent parfois être corrigées en fonction de la manière dont les bits sont transmis.</div>
+
+<div>Pour Ethernet, le protocole suivant est utilise :
+    <ul>
+        <li>si ça parle, j'arrête d'émettre et attends avant de re-émettre</li>
+        <li>après la transmission, j'attends pour voir si je reçois des données (i.e. quelqu'un était en train d'émettre lui aussi, mais je reçois plus tard à cause du temps de transmission) <todo>img</todo></li>
+    </ul>
+</div>
+
+<div>Pour le CA : on détermine via un algorithme qui a le droit de parler quand et sur quel canal. E.g. en WiFi la borne attribue cela aux devices connectés au réseau.</div>
+
+<div>Note: en WiFi il vaut mieux choisir les réseaux 5GHz afin d'éviter les interférences avec le bluetooth en 2.4GHz (en plus c'est + rapide). Possibilité aussi de choisir la plage de fréquence en fonction de ceux utilisés par les voisins.</div>
+
+<div>Vous notez un premier problème de sécurité sur les ondes : il est facile d'écouter ce qui se passe, mais aussi de provoquer un DOS en émettant des ondes plus fortes que celles du réseau.</div>
+
+<h2>Codes correcteurs</h2>
+
+<div>Au delà des collisions, des interférences physiques peuvent survenir. Que ce soit lié à un rayon cosmique, au micro-onde en marche, à l'éternuement d'un papillon, ou autre.</div>
+
+<div>Il faut avoir pouvoir détecter l'erreur, et si possible la corriger pour s'éviter à avoir à devoir re-transmettre la trame.</div>
+
+<div>Pour cela, en plus des informations (I), on va ajouter des bits supplémentaires (bits de redondances) qui constitueront un code (C) qu'on transmettra. On découpe les messages en blocs appelés "mots", on parlera alors de "mot d'information" et "mot de code".</div>
+
+<div>De manière naïve, les bits de redondances peuvent tout simplement être la répétition des bits d'informations :
+    <ul>
+        <li>Si je répète une fois, et que je constate une différence à la réception, je sais qu'il y a eu au moins une erreur.</li>
+        <li>Si je répète deux fois, je suis capable de détecter au moins 2 erreurs, et de corriger au moins une erreur, par un simple vote majoritaire.</li>
+    </ul>
+</div>
+
+<div>De manière générale, si je suis capable de détecter au moins d erreurs, je suis capable de corriger au moins d/2 erreurs.</div>
+
+<div>On note alors les codes Cc,i,d avec c la taille du mot de code, i la taille du mot d'information, et d le nombre minimal d'erreurs détectées.</div>
+
+<div>Notre objectif est alors de corriger le plus d'erreurs possibles, en minimisant le plus possible les bits de redondances. Le calcul des bits de redondances et la vérification/correction doit aussi être le plus rapide possible (sans prendre trop de ressources aussi). L'objectif étant de transmettre des informations le plus rapidement possible.</div>
+
+<div>On évalue donc le rendement du code par i/c i.e. le taux d'informations transmises dans le mot de code (plus c'est grand mieux c'est).</div>
+
+<div>Si on a une redondance de 1, le rendement sera de 50% pour détecter au moins 1 une erreur.</div>
+
+<div>Plus intelligemment, on peut utiliser un bit de parité (xor de tous les bits = une addition dans F2) pour détecter au moins une erreur, pour un rendement qui sera de i/(i+1), i.e. de plus en plus grand au fur et à mesure que i grandi. Par exemple sur un octet, le rendement sera de 7/8 ~= 90%.</div>
+
+<div>Attention, plus i est grand, plus la probabilité d'erreurs (et donc leur nombre) est importante.</div>
+
+<h3>Code de Hamming</h3>
+
+<div>Les codes de Hamming permettent de détecter au plus 2 erreurs et d'en corriger au plus 1. Le principe de ces codes est très simple, c'est une forme de "qui-est-ce" informatique.</div>
+
+<todo>Decr prodécure</todo>
 
 <div class="center">
   <player-toolbar speed="1500" id="hamming-player"></player-toolbar>
@@ -95,6 +217,9 @@
         </tr>
     </tbody>
 </table>
+
+
+- repr matrice.
 
 On vient de calculer le <b>syndrome</b>.
 
@@ -233,118 +358,45 @@ donc e.g. message 7 bits (+ parité) - redondance : 8 bits + bits de parités re
 
 <h2>Notes</h2>
 
-0. On va transmettre des données binaires (des suites de 0 et de 1)
-    (c'est ce qu'un ordinateur manipule).
-
-1. médium de communication, support physique:
-- électrique : câble RJ45, câble USB, etc.
-- ondes
-- lumière : fibre.
-
-Couche 1 Physique : comment représenter un bit sur le médium ?
-~> transmettre le plus rapidement possible.
-E.g. périodes de XHz : -1V = 0, 1V = 1 ou (plusieurs bits) : -2 -1 1 -2.
--> en réalité + compliqué, fréquences, des sinoïsidales, etc.
-
-
-Sauf que juste envoyer pas suffisant :
-- début/fin de la communication ?
-- destinataire ?
-- ne pas parler en même temps (sur le même canal : e.g. plusieurs fils dans le câble).
-- signaux physiques : des interférences = erreurs dans la transmission.
-
-E.g.Ethernet pour les câbles RJ45, USB, etc.
-WiFi, Bluetooth, 5G, etc.
-
--> adresse MAC - carte réseau (physique ou virtuelle).
--> transmission de trames.
-    -> préambule : je commence une trame - sync d'horloges, toussa.
-    -> MAC src/dst (src pour y répondre) -> qui doit lire le paquet.
-    -> Taille de la trame (~1,5kB max)
-    -> Data + padding (taille minimal)
-    -> Détection d'erreur...
-    -> silence avant le prochain paquet.
-
-! Tout le monde (sur le medium) peut lire le paquet à ce niveau !!!
-
-WiFi : chiffré.
-    - peut lire mais peut pas récupérer les données.
-    + version
-    + 2 addrs :
-        + AP : access point : la borne WiFi (discussions p2p)
-        + 
-
--> collision avoidance vs collision detection
--> 0V/1V => 2V = collision -> parfois corrigible (selon comment c'est fait).
--> éviter : qui a le droit de parler sur quel cannal/quand.
-            -> e.g. WiFi en 5GHz évite interférence avec le bluetooth en 2.4GHz (et est + rapide) / choisir son cannal en fonction de ses voisins.
-
-IV,5 CSMA/CD (détection)
-    - si ça parle j'attends avant de parler.
-    - on continue d'écouter après l'émission pour détecter collision : car tps de propagagation.
-            ->la pause : pour donc écouter + permettre à qq d'autre de parler.
-
-
-
-Erreurs : ça peut arriver : interférences.
--> détection vs correction.
-
-Code correcteur :
-- information + bits de redondance ajouté = code à transmettre.
--> un découpe cela en bloc appelé "mot" : mot d'information / mot de code.
-
-Naïvement :
-- répétition 1x : détecte une erreur.
-- répétition 2x : corrige une erreur (vote majoritaire).
-- d : détecte d erreurs, corrige d/2 erreurs.
-
-Redondance : x
-Rendement : m/n
-Cc,i,d (en réalité d est la distance de Hamming minimale entre 2 mc)
-
-Comment faire donc ?
-- bit de parité (= xor de tous les bits = additions dans F2) 
-- détecte une erreur.
-(r = i/(i+1)).
-            - plus i grand meilleur rendement.
-            - mais aussi plus de chances d'erreurs.
-
-Hamming (année ?):
-- corriger 1 erreur, en détecter au plus 2.
-- jouer à qui-est-ce : exemple 8 bits (cf TB).
-- repr matrice.
-
 Reed-Solomon (année ?):
-- corriger + d'erreurs :
-- blocs + gros, e.g. 7 bits + 1 bit de parité.
-- en gros points.
-- calculer polynome % p.
-- calculer pour des points en plus (seront des redondance).
--> si on a "perdu" des messages : erreur détecté dans le mot incorrigible (ici bit de parité nok).
--> calculer le polynome.
--> calculer les points manquants.
+<ul>
+    <li>corriger + d'erreurs :</li>
+    <li>blocs + gros, e.g. 7 bits + 1 bit de parité.</li>
+    <li>en gros points.</li>
+    <li>calculer polynome % p.</li>
+    <li>calculer pour des points en plus (seront des redondance).</li>
+    <li>-> si on a "perdu" des messages : erreur détecté dans le mot incorrigible (ici bit de parité nok).</li>
+    <li>-> calculer le polynome.</li>
+    <li>-> calculer les points manquants.</li>
+</ul>
 
 -> interlacer (si erreurs côté à côté pour les 2).
 
-On a de nombreux codes correcteur d'erreur, plus avancés/performants que ceux vus précédemment. Beaucoup sont en fait des généralisations des code de Hamming et/ou de Reed-Solomon.
+<div>On a de nombreux codes correcteur d'erreur, plus avancés/performants que ceux vus précédemment. Beaucoup sont en fait des généralisations des code de Hamming et/ou de Reed-Solomon.
 
-- Turbo : l'un des meilleurs (?).
+- Turbo : l'un des meilleurs (?).</div>
 
+<h2>Couches OSI</h2>
 
 À la fin OSI + encapsulation.
 - pas tout à fait vrai, liaison très lié (contraintes du) physique .
 https://fr.wikipedia.org/wiki/Mod%C3%A8le_OSI#Architecture_en_couches
 (PDU)
 
-- changer des couches de manière indépendante : comme ça je n'ai pas à me soucier des couches précédentes, je peux être en WiFi puis en Ethernet, etc.
-- physique : je peux utiliser d'autres liaisons en fonction de l'évolution des normes, avancées maths, etc.
-- répétitions de couches : e.g. Ethernet over USB.
+<ul>
+    <li>changer des couches de manière indépendante : comme ça je n'ai pas à me soucier des couches précédentes, je peux être en WiFi puis en Ethernet, etc.</li>
+    <li>physique : je peux utiliser d'autres liaisons en fonction de l'évolution des normes, avancées maths, etc.</li>
+    <li>répétitions de couches : e.g. Ethernet over USB.</li>
+</ul>
 
--> next week
-    -> découpage des paquets (si trop gros).
-    -> ack -> j'ai reçu tes messages jusqu'au X. (évite d'envoyer un ack à chaque msg).
-        -> géré + haut (next week).
-    -> IP addr sur un réseau.
+<h2>Next week</h2>
+
+<ul>
+    <li>découpage des paquets (si trop gros).</li>
+    <li> ack -> j'ai reçu tes messages jusqu'au X. (évite d'envoyer un ack à chaque msg).</li>
+    <li>transmettre sur un réseau : IP addr sur un réseau.</li>
+</ul>
+
         </main>
     </body>
 </html>
