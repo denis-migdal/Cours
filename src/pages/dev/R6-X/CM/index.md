@@ -10,6 +10,7 @@
     </head>
     <body>
         <main>
+            <div>⚠ Ces supports correspondent à un module qui n'a pas encore débuté. Ils sont donc encore à un état de brouillon.</div>
 
 Parfois on a des calculs assez importants à faire et on ne veut pas que ça prend des années.
 Donc chercher à les exécuter le plus rapidement possible, i.e. optimiser.
