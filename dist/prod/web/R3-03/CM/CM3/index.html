@@ -42,33 +42,33 @@
 <p>Les erreurs survenant durant l&#39;exécution du code sont affichées dans la <em>console</em> de la page Web. [TODO: ouvrir la console de la page Web]</p>
 <p>La console gère plusieurs niveau d&#39;affichages dont vous pouvez filtrer l&#39;affichage :</p>
 <ul>
-<li><script type="c-js">console.debug("...")</script></li>
-<li><script type="c-js">console.info("...")</script></li>
-<li><script type="c-js">console.log("...")</script> : par défaut.</li>
-<li><script type="c-js">console.warn("...")</script></li>
-<li><script type="c-js">console.error("...")</script> : affiche aussi la pile d'appel.</li>
+<li><script type="c-ts">console.debug("...")</script></li>
+<li><script type="c-ts">console.info("...")</script></li>
+<li><script type="c-ts">console.log("...")</script> : par défaut.</li>
+<li><script type="c-ts">console.warn("...")</script></li>
+<li><script type="c-ts">console.error("...")</script> : affiche aussi la pile d'appel.</li>
 </ul>
 <p>💡 Vous pouvez formatter l&#39;affichage dans la console en préfixant le texte par <code>%c</code>, e.g.
 <js-code class="block">console.log(&quot;%cOK&quot;, &quot;color: red&quot;)</script> </p>
 <p>💡 Vous pouvez manipuler la console via :</p>
 <ul>
-<li><script type="c-js">.clear()</script> : effacer la console.</li>
-<li><script type="c-js">.group[Collapsed](<h>$NAME</h>)</script>/<script type="c-js">.groupEnd()</script> : ouvre/ferme un groupe indenté qui peut être replié (*collapsed*) ou déplié.</li>
+<li><script type="c-ts">.clear()</script> : effacer la console.</li>
+<li><script type="c-ts">.group[Collapsed](<h>$NAME</h>)</script>/<script type="c-ts">.groupEnd()</script> : ouvre/ferme un groupe indenté qui peut être replié (*collapsed*) ou déplié.</li>
 </ul>
 <p>💡 <code>console</code> offre d&#39;autres fonctions d&#39;affichages :</p>
 <ul>
-<li><script type="c-js">.assert(<h>$COND</h>, "...")</script> : affiche une erreur si <script type="c-js">$COND</script> est faux.</li>
-<li><script type="c-js">.dir()/.dirxml()</script> : afficher les propriétés d'un objet.</li>
-<li><script type="c-js">.table(...)</script> : afficher le(s) object(s) sous la forme d'un tableau.</li>
-<li><script type="c-js">.trace()</script> : afficher la pile d'appel.</li>
+<li><script type="c-ts">.assert(<h>$COND</h>, "...")</script> : affiche une erreur si <script type="c-ts">$COND</script> est faux.</li>
+<li><script type="c-ts">.dir()/.dirxml()</script> : afficher les propriétés d'un objet.</li>
+<li><script type="c-ts">.table(...)</script> : afficher le(s) object(s) sous la forme d'un tableau.</li>
+<li><script type="c-ts">.trace()</script> : afficher la pile d'appel.</li>
 </ul>
 <p>💡 Cette console permet aussi d&#39;entrer du code JavaScript à exécuter grâce à une interface <em>REPL</em> (<em>Read–eval–print loop</em>).</p>
 <h3 id="spécificités-de-brython">Spécificités de Brython</h3>
 <p>L&#39;API du navigateur est accessible à partir du module <py-code>browser.window</py-code> :
 <py-code>from browser import window</py-code></p>
-<p>En JavaScript, <script type="c-js">window</script> représente la &quot;fenêtre&quot; de la page Web actuelle. Il contient l&#39;ensemble des variables/classes/fonctions globales de la page Web. En particulier, <script type="c-js">window.document</script> représente l&#39;arbre DOM de la page Web.</p>
-<p>💡 En JavaScript, <script type="c-js">window</script> est implicite, i.e. on peut écrire <script type="c-js">document</script> au lieu de <script type="c-js">window.document</script>. En Brython, il faudra obligatoirement expliciter <script type="c-js">window</script>.</p>
-<p>⚠ Afin que les objets Python s&#39;affichent correctement, il est important d&#39;utiliser la version Brython de <script type="c-js">console</script> en l&#39;important via :
+<p>En JavaScript, <script type="c-ts">window</script> représente la &quot;fenêtre&quot; de la page Web actuelle. Il contient l&#39;ensemble des variables/classes/fonctions globales de la page Web. En particulier, <script type="c-ts">window.document</script> représente l&#39;arbre DOM de la page Web.</p>
+<p>💡 En JavaScript, <script type="c-ts">window</script> est implicite, i.e. on peut écrire <script type="c-ts">document</script> au lieu de <script type="c-ts">window.document</script>. En Brython, il faudra obligatoirement expliciter <script type="c-ts">window</script>.</p>
+<p>⚠ Afin que les objets Python s&#39;affichent correctement, il est important d&#39;utiliser la version Brython de <script type="c-ts">console</script> en l&#39;important via :
 <py-code class="block">from browser import console</py-code></p>
 <p>⚠ Brython a aussi du mal à distinguer les classes des fonctions JavaScripts. Pour instancier une nouvelle classe il faudra ainsi écrire <py-code>window.URL.new()</py-code> au lieu de <py-code>URL()</py-code>. [TODO: corrigé par SBrython]</p>
 <h2 id="manipulation-du-dom">Manipulation du DOM</h2>
@@ -92,8 +92,8 @@
 <h3 id="créer-un-élément-html">Créer un élément HTML</h3>
 <p>Vous pouvez aussi créer un élément HTML via :</p>
 <ul>
-<li><script type="c-js"><h>$E</h>.clone(true)</script> : duplique l'élément <script type="c-js"><h>$E</h></script>.</li>
-<li><script type="c-js">document.createElement(<h>$N</h><h>[, {is: $IS}]</h>)</script> : créé un élément de nom <script type="c-js"><h>$N</h></script>.</li>
+<li><script type="c-ts"><h>$E</h>.clone(true)</script> : duplique l'élément <script type="c-ts"><h>$E</h></script>.</li>
+<li><script type="c-ts">document.createElement(<h>$N</h><h>[, {is: $IS}]</h>)</script> : créé un élément de nom <script type="c-ts"><h>$N</h></script>.</li>
 </ul>
 <h3 id="manipuler-les-attributs-et-classes">Manipuler les attributs et classes</h3>
 <p>En premier lieu il est possible de modifier les attributs et les classes d&#39;un élément.</p>
@@ -114,47 +114,47 @@
     <tbody>
         <tr>
             <td><i>Lister</i></td>
-            <td><script type="c-js"></script></td>
-            <td><script type="c-js">.getAttributeNames()</script></td>
+            <td><script type="c-ts"></script></td>
+            <td><script type="c-ts">.getAttributeNames()</script></td>
         </tr>
         <tr>
             <td><i>Obtenir</i></td>
-            <td><script type="c-js"></script></td>
-            <td><script type="c-js">.getAttribute(<h>$N</h>)</script></td>
+            <td><script type="c-ts"></script></td>
+            <td><script type="c-ts">.getAttribute(<h>$N</h>)</script></td>
         </tr>
         <tr>
             <td><i>Ajouter</i></td>
-            <td><script type="c-js">.classList.add(<h>$C[,...]</h>)</script></td>
-            <td><script type="c-js">.setAttribute(<h>$N</h>, <h>$V</h>)</script></td>
+            <td><script type="c-ts">.classList.add(<h>$C[,...]</h>)</script></td>
+            <td><script type="c-ts">.setAttribute(<h>$N</h>, <h>$V</h>)</script></td>
         </tr>
         <tr>
             <td><i>Supprimer</i></td>
-            <td><script type="c-js">.classList.remove(<h>$C[,...]</h>)</script></td>
-            <td><script type="c-js">.removeAttribute(<h>$N</h>)</script></td>
+            <td><script type="c-ts">.classList.remove(<h>$C[,...]</h>)</script></td>
+            <td><script type="c-ts">.removeAttribute(<h>$N</h>)</script></td>
         </tr>
         <tr>
             <td><i>Basculer</i></td>
-            <td><script type="c-js">.classList.toggle(<h>$C</h><h>[, $F]</h>)</script></td>
-            <td><script type="c-js">.toggleAttribute(<h>$N</h><h>[, $F]</h>)</script></td>
+            <td><script type="c-ts">.classList.toggle(<h>$C</h><h>[, $F]</h>)</script></td>
+            <td><script type="c-ts">.toggleAttribute(<h>$N</h><h>[, $F]</h>)</script></td>
         </tr>
         <tr>
             <td><i>Contient ?</i></td>
-            <td><script type="c-js">.classList.has(<h>$C</h>)</script></td>
-            <td><script type="c-js">.hasAttribute(<h>$N</h>)</script></td>
+            <td><script type="c-ts">.classList.has(<h>$C</h>)</script></td>
+            <td><script type="c-ts">.hasAttribute(<h>$N</h>)</script></td>
         </tr>
     </tbody>
 </table>
 
-<p>💡 <script type="c-js">.tagName</script> permet d&#39;obtenir le nom de la balise HTML.</p>
+<p>💡 <script type="c-ts">.tagName</script> permet d&#39;obtenir le nom de la balise HTML.</p>
 <h3 id="manipuler-les-attributs-data-">Manipuler les attributs data-*</h3>
-<p>Les attributs <script type="c-html">data-*</script> sont un peu particuliers. En effet, ils peuvent être manipulés via <script type="c-js">.(get|set|remove|toggle|has)Attribute()</script>, mais aussi via <script type="c-js">.dataset</script> qui se manipule comme un dictionnaire associatif. Chaque clé <script type="c-js"><h>$KEY</h></script> de <script type="c-js">.dataset</script> correspondant à un attribut <script type="c-html">data-<h>$KEY</h></script> de l&#39;élément HTML.</p>
+<p>Les attributs <script type="c-html">data-*</script> sont un peu particuliers. En effet, ils peuvent être manipulés via <script type="c-ts">.(get|set|remove|toggle|has)Attribute()</script>, mais aussi via <script type="c-ts">.dataset</script> qui se manipule comme un dictionnaire associatif. Chaque clé <script type="c-ts"><h>$KEY</h></script> de <script type="c-ts">.dataset</script> correspondant à un attribut <script type="c-html">data-<h>$KEY</h></script> de l&#39;élément HTML.</p>
 <p>Ils sont utilisés afin que les développeurs puissent définir des attributs personnalisés, sans entrer en conflit avec les attributs définis par HTML, e.g. <script type="c-html">data-title</script>.</p>
 <h3 id="manipuler-le-style">Manipuler le style</h3>
 <p>La modification de l&#39;affichage d&#39;un élément se fait usuellement via la modification de ses classes. Il est cependant tout à fait possible de manipuler directement ses propriétés CSS. Dans ce cas de figure, on préfère généralement se limiter à la manipulation des propriétés personnalisées.</p>
 <p>Les styles peuvent être accédés de deux manières distinctes :</p>
 <ul>
-<li><script type="c-js"><h>$E</h>.style</script> : les styles **déclarés** sur <script type="c-js"><h>$E</h></script> ;</li>
-<li><script type="c-js">getComputedStyle(<h>$E</h>)</script> : les styles **calculés** appliqués sur <script type="c-js"><h>$E</h></script> (en lecture seule).</li>
+<li><script type="c-ts"><h>$E</h>.style</script> : les styles **déclarés** sur <script type="c-ts"><h>$E</h></script> ;</li>
+<li><script type="c-ts">getComputedStyle(<h>$E</h>)</script> : les styles **calculés** appliqués sur <script type="c-ts"><h>$E</h></script> (en lecture seule).</li>
 </ul>
 <p>Il est alors possible d&#39;accéder ou de modifier les propriétés CSS via :</p>
 <table>
@@ -170,34 +170,34 @@
     <tbody>
         <tr>
             <td><i>Obtenir</i></td>
-            <td><script type="c-js">.getPropertyValue(<h>$N</h>)</script></td>
+            <td><script type="c-ts">.getPropertyValue(<h>$N</h>)</script></td>
         </tr>
         <tr>
             <td><i>Définir</i></td>
-            <td><script type="c-js">.setProperty(<h>$N</h>, <h>$V</h>)</script></td>
+            <td><script type="c-ts">.setProperty(<h>$N</h>, <h>$V</h>)</script></td>
         </tr>
         <tr>
             <td><i>Supprimer</i></td>
-            <td><script type="c-js">.removeProperty(<h>$N</h>)</script></td>
+            <td><script type="c-ts">.removeProperty(<h>$N</h>)</script></td>
         </tr>
     </tbody>
 </table>
 
-<p>⚠ Pour obtenir des positions d&#39;éléments aisément comparables, utilisez <script type="c-js">.getBoundingClientRect()</script> qui retourne la position relativement à la zone d&#39;affichage (i.e. la fenêtre).</p>
+<p>⚠ Pour obtenir des positions d&#39;éléments aisément comparables, utilisez <script type="c-ts">.getBoundingClientRect()</script> qui retourne la position relativement à la zone d&#39;affichage (i.e. la fenêtre).</p>
 <h3 id="manipuler-le-contenu">Manipuler le contenu</h3>
 <p>Il existe beaucoup de manière d&#39;obtenir un (ou des) élément(s) à partir d&#39;un autre. Nous verrons les plus génériques :</p>
 <ul>
-<li><script type="c-js">.parentElement</script> : le père d'un élément.</li>
-<li><script type="c-js">.children</script> : la liste des éléments fils de l'élément.</li>
-<li><script type="c-js">.childNodes</script> : idem, mais inclus aussi les contenus autres, e.g. textes.</li>
+<li><script type="c-ts">.parentElement</script> : le père d'un élément.</li>
+<li><script type="c-ts">.children</script> : la liste des éléments fils de l'élément.</li>
+<li><script type="c-ts">.childNodes</script> : idem, mais inclus aussi les contenus autres, e.g. textes.</li>
 </ul>
 <p>Il existe beaucoup de manière de modifier le contenu d&#39;un élément. Nous verrons les plus génériques :</p>
 <ul>
-<li><script type="c-js">.textContent</script> permet d'accéder et de définir le contenu **textuel** d'un élément.</li>
-<li><script type="c-js">.append(<h>$N[,...]</h>)</script> : ajouter les noeud <script type="c-js"><h>$N</h></script> (éléments ou textes).</li>
-<li><script type="c-js">.remove()</script> : retirer l'élément de son père.</li>
-<li><script type="c-js">.replaceWith(<h>$N</h>)</script> : remplace l'élément par <script type="c-js"><h>$N</h></script> dans son père.</li>
-<li><script type="c-js">.replaceContent(<h>$N[,...]</h>)</script> : remplace le contenu de l'élément par <script type="c-js"><h>$N</h></script>.</li>
+<li><script type="c-ts">.textContent</script> permet d'accéder et de définir le contenu **textuel** d'un élément.</li>
+<li><script type="c-ts">.append(<h>$N[,...]</h>)</script> : ajouter les noeud <script type="c-ts"><h>$N</h></script> (éléments ou textes).</li>
+<li><script type="c-ts">.remove()</script> : retirer l'élément de son père.</li>
+<li><script type="c-ts">.replaceWith(<h>$N</h>)</script> : remplace l'élément par <script type="c-ts"><h>$N</h></script> dans son père.</li>
+<li><script type="c-ts">.replaceContent(<h>$N[,...]</h>)</script> : remplace le contenu de l'élément par <script type="c-ts"><h>$N</h></script>.</li>
 </ul>
 <p>⚠ Un élément ne peut être qu&#39;à un seul endroit à la fois. L&#39;insérer dans un élément le retirera donc de son précédent père.</p>
 <h2 id="événements">Événements</h2>

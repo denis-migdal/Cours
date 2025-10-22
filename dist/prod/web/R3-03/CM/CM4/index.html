@@ -70,12 +70,12 @@
 </ul>
 <p>Il est ainsi d&#39;usage d&#39;utiliser les requêtes suivantes afin d&#39;indiquer le type d&#39;opération effectué sur la ressource :</p>
 <ul>
-<li><script type="c-js">GET    /<h>$COLLECTION</h>/</script> : obtenir la liste des ressources de la collection.</li>
-<li><script type="c-js">POST   /<h>$COLLECTION</h>/</script> : créer une nouvelle ressource dans la collection.</li>
-<li><script type="c-js">GET    /<h>$COLLECTION</h>/<h>$ID</h></script> : obtenir la ressource d'identifiant <script type="c-js"><h>$ID</h></script>.</li>
-<li><script type="c-js">PUT    /<h>$COLLECTION</h>/<h>$ID</h></script> : créer ou remplacer la ressource d'identifiant <script type="c-js"><h>$ID</h></script>.</li>
-<li><script type="c-js">PATCH  /<h>$COLLECTION</h>/<h>$ID</h></script> : modifier la ressource d'identifiant <script type="c-js"><h>$ID</h></script>.</li>
-<li><script type="c-js">DELETE /<h>$COLLECTION</h>/<h>$ID</h></script> : supprimer la ressource d'identifiant <script type="c-js"><h>$ID</h></script>.</li>
+<li><script type="c-ts">GET    /<h>$COLLECTION</h>/</script> : obtenir la liste des ressources de la collection.</li>
+<li><script type="c-ts">POST   /<h>$COLLECTION</h>/</script> : créer une nouvelle ressource dans la collection.</li>
+<li><script type="c-ts">GET    /<h>$COLLECTION</h>/<h>$ID</h></script> : obtenir la ressource d'identifiant <script type="c-ts"><h>$ID</h></script>.</li>
+<li><script type="c-ts">PUT    /<h>$COLLECTION</h>/<h>$ID</h></script> : créer ou remplacer la ressource d'identifiant <script type="c-ts"><h>$ID</h></script>.</li>
+<li><script type="c-ts">PATCH  /<h>$COLLECTION</h>/<h>$ID</h></script> : modifier la ressource d'identifiant <script type="c-ts"><h>$ID</h></script>.</li>
+<li><script type="c-ts">DELETE /<h>$COLLECTION</h>/<h>$ID</h></script> : supprimer la ressource d'identifiant <script type="c-ts"><h>$ID</h></script>.</li>
 </ul>
 <p>⚠ Les requêtes <code>GET</code> et <code>DELETE</code> ne peuvent contenir de corps (<em>body</em>).</p>
 <h4 id="query-strings">Query strings</h4>
@@ -103,37 +103,37 @@
     <tbody>
         <tr>
             <td><i>Créer</i></td>
-            <td><script type="c-js">new URLSearchParams(<h>$URL</h>.search)</script></td>
+            <td><script type="c-ts">new URLSearchParams(<h>$URL</h>.search)</script></td>
         </tr>
         <tr>
             <td><i>Générer</i></td>
-            <td><script type="c-js">.toString()</script></td>
+            <td><script type="c-ts">.toString()</script></td>
         </tr>
         <tr>
             <td><i>Lister</i></td>
-            <td><script type="c-js">.entries()/.keys()/.values()</script></td>
+            <td><script type="c-ts">.entries()/.keys()/.values()</script></td>
         </tr>
         <tr>
             <td><i>Obtenir</i></td>
-            <td><script type="c-js">.get[All](<h>$N</h>)</script></td>
+            <td><script type="c-ts">.get[All](<h>$N</h>)</script></td>
         </tr>
         <tr>
             <td><i>Ajouter</i></td>
-            <td><script type="c-js">.set(<h>$N</h>, <h>$V</h>)/.append(<h>$N</h>, <h>$V</h>)</script></td>
+            <td><script type="c-ts">.set(<h>$N</h>, <h>$V</h>)/.append(<h>$N</h>, <h>$V</h>)</script></td>
         </tr>
         <tr>
             <td><i>Supprimer</i></td>
-            <td><script type="c-js">.delete(<h>$N</h>)</script></td>
+            <td><script type="c-ts">.delete(<h>$N</h>)</script></td>
         </tr>
         <tr>
             <td><i>Contient ?</i></td>
-            <td><script type="c-js">.has(<h>$N</h>)</script></td>
+            <td><script type="c-ts">.has(<h>$N</h>)</script></td>
         </tr>
     </tbody>
 </table>
 </center>
 
-<p>💡 L&#39;URL de la page est stockée dans <script type="c-js">document.location</script>.</p>
+<p>💡 L&#39;URL de la page est stockée dans <script type="c-ts">document.location</script>.</p>
 <h4 id="données-structurées">Données structurées</h4>
 <p>Le corps des requêtes/réponses REST sont usuellement au format JSON, mais peuvent utiliser n&#39;importe quel format, e.g. :</p>
 <ul>
@@ -164,7 +164,7 @@
 <h2 id="api-js">API JS</h2>
 <h3 id="fetch">Fetch</h3>
 <p>Une requête HTTP peut être effectuée au sein de la page Web via <code>fetch()</code>:</p>
-<script type="c-js">
+<script type="c-ts">
 const response = await fetch(<h>$URL</h>, {
     method: <h>$HTTP_METHOD</h>,
     body  : <h>$BODY</h>
@@ -173,14 +173,14 @@ const response = await fetch(<h>$URL</h>, {
 
 <p>Le corps peut être de différent type :</p>
 <ul>
-<li><script type="c-js">string</script></li>
-<li><script type="c-js">Blob</script>/<script type="c-js">File</script></li>
-<li><script type="c-js">Uint8Array</script>/<script type="c-js">ReadableStream</script></li>
-<li><script type="c-js">URLSearchParams</script>/<script type="c-js">FormData</script></li>
+<li><script type="c-ts">string</script></li>
+<li><script type="c-ts">Blob</script>/<script type="c-ts">File</script></li>
+<li><script type="c-ts">Uint8Array</script>/<script type="c-ts">ReadableStream</script></li>
+<li><script type="c-ts">URLSearchParams</script>/<script type="c-ts">FormData</script></li>
 <li>etc.</li>
 </ul>
-<p>💡 Pour envoyer des données au format, JSON, il convient de les convertir en <script type="c-js">string</script> :</p>
-<script type="c-js">
+<p>💡 Pour envoyer des données au format, JSON, il convient de les convertir en <script type="c-ts">string</script> :</p>
+<script type="c-ts">
 const response = await fetch(<h>$URL</h>, {
     body: JSON.stringify(<h>$DATA</h>)
     headers: {
@@ -189,24 +189,24 @@ const response = await fetch(<h>$URL</h>, {
 });
 </script>
 
-<p>💡 <script type="c-js">"Content-Type"</script> indique le type des données contenu dans le corps de la requête :</p>
+<p>💡 <script type="c-ts">"Content-Type"</script> indique le type des données contenu dans le corps de la requête :</p>
 <ul>
-<li><script type="c-js">"text/plain"</script> : texte ;</li>
-<li><script type="c-js">"application/json"</script> : JSON ;</li>
-<li><script type="c-js">"application/octet-stream"</script> : données binaires.</li>
-<li><script type="c-js">"application/x-www-form-urlencoded"</script> : <script type="c-js">URLSearchParams</script>/<script type="c-js">FormData</script> ;</li>
+<li><script type="c-ts">"text/plain"</script> : texte ;</li>
+<li><script type="c-ts">"application/json"</script> : JSON ;</li>
+<li><script type="c-ts">"application/octet-stream"</script> : données binaires.</li>
+<li><script type="c-ts">"application/x-www-form-urlencoded"</script> : <script type="c-ts">URLSearchParams</script>/<script type="c-ts">FormData</script> ;</li>
 </ul>
 <code>fetch()</code> retourne un <code>Response</code>, dont le contenu peut être lu via :
 <ul>
-<li><script type="c-js">await response.text()</script></li>
-<li><script type="c-js">await response.json()</script></li>
-<li><script type="c-js">await response.bytes()</script> : Uint8Array</li>
-<li><script type="c-js">await response.formData()</script> : FormData</li>
+<li><script type="c-ts">await response.text()</script></li>
+<li><script type="c-ts">await response.json()</script></li>
+<li><script type="c-ts">await response.bytes()</script> : Uint8Array</li>
+<li><script type="c-ts">await response.formData()</script> : FormData</li>
 </ul>
 <p>⚠ Le corps d&#39;une réponse ne peut être lue qu&#39;une seule fois.</p>
 <ul>
-<li><script type="c-js">.bodyUsed</script> : indique si le corps a été lu.</li>
-<li><script type="c-js">.clone()</script> : clone la réponse (permet ainsi plusieurs lectures).</li>
+<li><script type="c-ts">.bodyUsed</script> : indique si le corps a été lu.</li>
+<li><script type="c-ts">.clone()</script> : clone la réponse (permet ainsi plusieurs lectures).</li>
 </ul>
 <h4 id="status">Status</h4>
 <code>Response</code> indique aussi si la requête s&#39;est bien effectuée :
@@ -243,7 +243,7 @@ data: $DATA
 </script>
 
 <p>Côté client, l&#39;utilisation est très simple, il suffit d&#39;écouter des événements d&#39;un <code>EventSource</code>.</p>
-<script type="c-js">
+<script type="c-ts">
 // [JS] JavaScript
 
 // Client
