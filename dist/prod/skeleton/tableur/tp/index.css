@@ -436,6 +436,13 @@ img {
     }
 }
 
+a[disabled] {
+    color: gray;
+    opacity: 0.5;
+    font-style: italic;
+    pointer-events: none;
+}
+
 .sheet_answer {
     display:flex;
 

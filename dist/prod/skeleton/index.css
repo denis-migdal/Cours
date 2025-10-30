@@ -436,4 +436,11 @@ img {
     }
 }
 
+a[disabled] {
+    color: gray;
+    opacity: 0.5;
+    font-style: italic;
+    pointer-events: none;
+}
+
 /*# sourceMappingURL=index.css.map*/

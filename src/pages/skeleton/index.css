@@ -44,3 +44,10 @@ img {
         margin: 0;
     }
 }
+
+a[disabled] {
+    color: gray;
+    opacity: 0.5;
+    font-style: italic;
+    pointer-events: none;
+}
