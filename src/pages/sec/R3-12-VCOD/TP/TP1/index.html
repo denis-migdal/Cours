@@ -12,70 +12,139 @@
         <main>
             <h1>TP1</h1>
 
-<div>Vous implémenterez les fonctions suivantes en Python en vous servant du code fourni.</div>
+<div>Dans ce TP nous allons implémenter, pas à pas, les différents ECC vus en cours.</div>
+
+<div>Pour cela vous exécuterez régulièrement des suites de tests afin de vérifier la validité de votre implémentation. VSCode offre une interface permettant d'exécuter les tests du projet ainsi que d'en visualiser les résultats :
+    <center><img src="./assets/vscode-tests.png"/></center>
+</div>
+
+<div>💡 L'OO était encore une notion récente pour vous, nous éviterons d'utiliser des classes dans le cadre de ce TP.</div>
+
+<todo>Décrire ECC+BitField structures (attendre d'avoir fini...)+DummyECC</todo>
+
+<todo>Décrire tests</todo>
 
 <h2>Hamming (implémentation naïve)</h2>
 
-<h3>Création de la classe</h3>
+<h3>Création de l'ECC</h3>
 
 <ol>
-    <li>Créez une classe <script type="c-py">NaiveHammingECC</script></li>
-    <li>Cette classe prend en paramètre le nombre de bits de redondance (sans compter le bit de parité final).</li>
-    <li>Cette classe doit hériter de la classe <script type="c-py">ECC</script></li>
-    <li>Définissez les méthodes <script type="c-py">encode</script>/<script type="c-py">decode</script> de sorte à ce qu'elles retournent leur entrée.</li>
-    <li><todo>Unit test</todo></li>
+    <li><q-text>Exécutez les tests, puis décrivez l'ECC présent dans le fichier <script type="c-text">/DummyECC.py</script> :</q-text></li>
+    <li>Créez une copie du fichier <script type="c-text">/DummyECC.py</script> que vous nommerez <script type="c-text">/HammingECC.py</script>.</li>
+    <li>Créez une copie du fichier <script type="c-text">/tests/DummyECC_test.py</script> que vous nommerez <script type="c-text">/tests/HammingECC_test.py</script>.</li>
+    <li>Dans ces fichiers, remplacez les occurrences de <script type="c-text">Dummy</script> par <script type="c-text">Hamming</script>.</li>
+    <li>Exécutez les tests.</li>
 </ol>
 
 <h3>Placer les bits d'informations</h3>
 
 <ol>
-    <li>Redéfinissez la méthode qui donne la taille du mot d'information par défaut.</li>
-    <li>Redéfinissez la méthode qui donne la taille du mot de code en fonction de la taille du mot d'information.</li>
-    <li>Modifiez les méthodes <script type="c-py">encode</script>/<script type="c-py">decode</script> de sorte à avoir un mot de code de la bonne taille.</li>
-    <li><todo>Unit test</todo></li>
-    <li>Modifiez les méthodes précédentes de sorte à placer les bits d'informations au bon endroit.</li>
-    <li><todo>Unit test</todo></li>
+    <li><script type="c-text">createHammingECC(n)</script> prendra en paramètre le nombre de bits de redondances (à l'exception du dernier).</li>
+    <li>Ajoutez le test suivant à <script type="c-text">/tests/HammingECC_test.py</script>
+        <script type="c-py">
+            hs_test_suite = ( (2, 2, 4), (3, 4, 8), (4, 11, 16), (5, 26, 32) )
+            
+            @pytest.mark.parametrize("n,infolen,codelen", hs_test_suite)
+            def test_hamming_sizes(n: int, infolen: int, codelen: int):
+                ecc = createHammingECC(n)
+                assert ecc.info_size == infolen and ecc.code_size == codelen
+        </script>
+    </li>
+    <li><q-text>Combien faut-il de bits de redondances (à l'exception du dernier) pour avoir un mot de code de 8 bits ?</q-text></li>
+    <li>Modifiez le paramètre donné à <script type="c-py">createHammingECC(n)</script> afin d'avoir des mots de codes de 8 bits.</li>
+    <li>Utilisez les méthodes <script type="c-py">.insert()</script> et <script type="c-py">.pop()</script> afin de placer les bits de redondances (sans les calculer).</li>
+    <li>Exécutez à nouveau les tests.</li>
 </ol>
 
-<h3>Placer les bits de redondances</h3>
+<h3>Calculer et vérifier les bits de redondances</h3>
 
 <ol>
-    <li>Créez une méthode protégée qui calcule le bit de redondance 2<sup>i</sup> à partir de i (indice : <script type="c-py">& (1 << i)</script>).</li>
-    <li>Modifier la méthode <script type="c-py">encode</script> pour ajouter tous les bits de redondance.</li>
-    <li><todo>Unit test</todo></li>
-</ol>
-
-<h3>Vérifier les bits de redondances</h3>
-
-<ol>
-    <li>Copiez le calcul du masque dans une autre méthode</li>
-    <li>Modifiez la méthode privée pour qu'elle prenne en paramètre le masque et retourne la parité.</li>
-    <li><todo>Unit test</todo></li>
-    <li>Créez une méthode privée calculant le syndrome (un nombre).</li>
-    <li>Modifiez la méthode <script type="c-py">decode</script> pour détecter les erreurs</li>
-    <li><todo>Unit test</todo></li>
-    <li>Inversez le bit correspondant au syndrôme.</li>
-    <li><todo>Unit test</todo></li>
+    <li>Créez <script type="c-py">parity(bf,i+1)</script> calculant la parité correspondant au bit de redondance 2<sup>i</sup> (indice : <script type="c-py">& (1 << i)</script>).</li>
+    <li>Modifiez cette fonction de sorte à ce que <script type="c-py">parity(bf, 0)</script> corresponde au bit de parité global.</li>
+    <li>Ajoutez le test suivant à <script type="c-text">/tests/HammingECC_test.py</script>
+        <script type="c-py">
+            parity_test_suite = (
+                ( (0,0,0,0,0,0,0,0), 1, 0 ),
+                ( (0,1,0,0,0,0,0,0), 1, 1 )
+            )
+            
+            @pytest.mark.parametrize("bf,n,expected", parity_test_suite)
+            def test_parity(bf: BitField, n: int, expected: int):
+                assert parity(bf,n) == expected
+        </script>
+    </li>
+    <li>N'hésitez pas à rajouter vos propres valeurs à la suite de tests.</li>
+    <li>Modifiez la fonction d'encodage afin de mettre à jour les bits de redondance (après qu'ils aient tous été insérés).</li>
+    <li>Lancez une nouvelle fois les tests.</li>
+    <li>Modifiez la fonction de décodage afin de calculer le syndrome (un nombre), et d'inverser le bit correspondant.</li>
+    <li>Exécutez les fonctions de tests</li>
 </ol>
 
 <h2>Hamming (avec des matrices)</h2>
 
+<div>La méthode que nous venons d'implémenter correspond à ce qu'un humain ferait s'il devait effectuer les encodage/décodage à la main. Ces opérations sont en réalité équivalentes à des produits matriciels que les ordinateurs sont capables de faire très rapidement grâce à des instructions spéciales. Par exemple il est possible de traiter 256 à 512 bits en ~1 cycle CPU. En comparaison, les conditions/boucles sont beaucoup plus coûteuses pour un ordinateur (~10-20 cycles CPU).</div>
+
+<div>Nous allons donc créer un version plus rapide de Hamming grâce à des produits matriciels avec la bibliothèque numpy.</div>
+
+<div>⚠ Toutes les matrices/vecteurs devront avoir un <script type="c-py">dtype=np.uint8</script>.
+</div>
+
 <ol>
-    <li>Créez une classe <script type="c-py">HammingECC</script> héritant de <script type="c-py">ECC</script></li>
-    <li><todo>unit test</todo></li>
-    <li>Créez une fonction permettant d'obtenir une matrice identité de taille n.</li>
-    <li>Créez une fonction permettant d'obtenir la matrice C :
+    <li>Créez un nouvel ECC nommé <script type="c-text">FastHammingECC</script>, créez aussi ses tests.</li>
+    <li>Réécrivez l'encodage et le décodage de sorte à ce que les bits de redondance soient à la fin (sans les calculer).</li>
+    <li>Exécutez les tests</li>
+    <li>Créez une fonction <script type="c-py">createC(n)</script> créant la matrice C à partir du paramètre n :<br/>
         <ol>
-            <li>parcourir les nombre de 1 à 2^n, et ignorer les puissances de 2.</li>
-            <li>les colonnes de C sont alors les représentations binaires de ces nombres.</li>
+            <li>Générez une liste de nombre allant de 0 à 2<sup>n</sup>-1 inclus.</li>
+            <li>Retirez 0 et toutes les puissances de 2 de cette liste.</li>
+            <li>Chaque ligne de C correspondra alors à l'encodage binaire de chaque élément de cette liste.</li>
         </ol>
-        <li>Créez une fonction permettant d'effectuer la multiplication modulo 2 de deux matrices.</li>
-        <li>Calculez les matrices (ID C) (en ligne) et (ID C) (en colonnes) dans le constructeur de <script type="c-py">HammingECC</script>.</li>
-        <li>Modifier les méthodes <script type="c-py">encode</script>/<script type="c-py">decode</script> pour avoir un code de Hamming.</li>
-        <li><todo>Unit test</todo></li>
     </li>
+    <li>Créez une fonction <script type="c-py">createG(C)</script> créant la matrice G à partir de C :<br/>
+        <ol>
+            <li>Générez la colonne R correspondant au dernier bit de parité :<br/>
+                <script type="c-py">R = 1 - np.bitwise_xor.reduce(C, axis=1).reshape(-1,1)</script>
+            </li>
+            <li>G est alors la concaténation horizontale de R avec C.</li>
+        </ol>
+    </li>
+    <li>Dans la fonction d'encodage, rajoutez les bits de redondances (produit matriciel du mot d'information avec G, % 2).</li>
+    <li>Exécutez les tests.</li>
+    <li>Créez une fonction <script type="c-py">createH(C)</script> créant la matrice G à partir de C :<br/>
+        <ol>
+            <li>H est une concaténation verticale de C, d'une ligne de 0, et d'une matrice identité.</li>
+        </ol>
+    </li>
+    <li>Dans la fonction de décodage, calculez le syndrome (produit matriciel du mode de code avec H, %2).</li>
+    <li>Convertissez le syndrome en nombre, 0 indique une absence d'erreur.</li>
+    <li>Créez un tableau de conversion grâce à la fonction suivante :
+        <script type="c-py">
+            def createIndexes(n: int):
+                idx = list( range(2**n) )
+                r   = idx[2**n - n - 1:]
+                idx = idx[:2**n - n - 1]
+
+                idx.insert(0, r[0])
+                for k in range(n):
+                    idx.insert(2**k, r[k+1])
+
+                return idx
+        </script>
+    </li>
+    <li>Convertissez le nombre à partir de ce tableau de conversion puis inversez le bit correspondant.</li>
+    <li>Lancez les tests.</li>
+    <li>Ajoutez cet ECC à <script type="c-py">benchmarks.py</script> puis lancez le benchmark.</li>
 </ol>
 
+<div>💡 La méthode avec matrice est plus lente pour des petits <script type="c-text">n</script>. Ceci s'explique par le fait que :
+    <ul>
+        <li>numpy engendre un surcoût significatif sur les petites matrices.</li>
+        <li>on pourrait optimiser d'avantage si les opérations étaient directement faites dans F2.</li>
+    </ul>
+
+</div>
+
+<!--
 <h2>Reed-Solomon (simplifié)</h2>
 
 <ol>
@@ -93,19 +162,32 @@
     <li>Une fonction qui extrait 4 valeurs.</li>
     <li>Une fonction qui génère les combinaisons de 4, ignore si 2 valeurs égales.</li>
     <li>Boucle : tester les combinaison de 4 jusqu'à en trouver une qui marche.</li>
-</ol>
+</ol>-->
 
-<h2>Entrelaçasse</h2>
+<h2>Pour aller plus loin...</h2>
 
-<todo>replace ECCWithWords with WordSplitter + another name.</todo>
-<todo>Ne pas faire : pas fini.</todo>
+<div>Dans cette partie, nous allons utiliser le scripts <script type="c-py">/benchmarks.py</script> qui compare les vitesses d'encodage et de décodage d'ECC en kB/s. Pour cela, il calcule la duré d'encodage (ou de décodage) ainsi que le nombre de bits d'informations ainsi encodé (ou décodé). En cas d'échec du décodage, les bits d'informations sont considérés perdus (et devront donc être re-transmis). Le taux de mots correctement transmis est aussi affiché.</div>
 
 <ol>
-    <li>Utilisez ECCWithWords</li>
-    <li><todo>TEST + perfs</todo></li>
-    <li>Modifiez pour avoir le bit i%n dans le mot i.</li>
-    <li><todo>TEST + perfs</todo></li>
+    <li>Dans le fichier <script type="c-py">/benchmarks.py</script>, modifiez la probabilité d'erreur sur un bit (<script type="c-py">R</script>) pour qu'elle vale 0.1.</li>
+    <li><q-text>Que remarquez-vous alors ? Comment expliquez-vous cela ?</q-text></li>
+    <li>Pour éviter cela, nous allons créer un nouvel ECC <script type="c-py">MultiECC</script>.</li>
+    <li><script type="c-py">createMultiECC(ecc, n)</script> prend en paramètre un ECC, ainsi que la taille en bit d'un mot de code.</li>
+    <li>Calculez le nombre <script type="c-text">m</script> de mot de code <script type="c-py">ecc</script> nécessaires pour atteindre n.</li>
+    <li>L'encodage consistera alors en :
+        <ol>
+            <li>séparation du mot d'information en <script type="c-text">m</script> parties égales</li>
+            <li>de l'encodage des différentes parties via <script type="c-py">ecc</script>.</li>
+            <li>de la concaténation des résultats.</li>
+        </ol>
+    </li>
+    <li>Implémentez cet ECC, puis lancez les tests.</li>
+    <li>Ajoutez l'ECC <script type="c-py">createMultiECC(createFastHamming(3), 2**i)</script> au benchmark, puis exécutez-le.</li>
+    <li><q-text>Que remarquez-vous alors ? Comment expliquez-vous cela ?</q-text></li>
 </ol>
+
+<div>💡 Nous estimons ici que les erreurs surviennent de manières indépendantes, or ce n'est pas toujours le cas. Pour se prémunir des erreurs consécutives, on peut tout simplement répartir les bits consécutifs dans des mots différents.<br/>
+Par exemple le bit <script type="c-text">i</script> ira dans le mot <script type="c-text">i%m</script>.</div>
         </main>
     </body>
 </html>
