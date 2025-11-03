@@ -1,0 +1,40 @@
+#hamming {
+    & col.high {
+        border: 2px solid red;
+    }
+
+    & col.high + col.high {
+        border-left: none;
+    }
+    & col.high:has(+ col.high) {
+        border-right: none;
+    }
+
+    & tr.high {
+        outline: 2px solid red;
+    }
+
+    & td.high {
+        background-color: yellowgreen;
+    }
+
+    & td.parity {
+        background-color: red;
+        &:not(.show) {
+            color: transparent;
+        }
+    }
+    & td.surcode {
+        background-color: orange;
+        &:not(.show) {
+            color: transparent;
+        }
+    }
+    & td.err {
+        &:not(.show) {
+            color: transparent;
+        }
+    }
+}
+
+/*# sourceMappingURL=index.css.map*/

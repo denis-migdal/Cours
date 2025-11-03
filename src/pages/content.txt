@@ -34,8 +34,14 @@
     - R3-12-VCOD:S3-VCOD Cryptographie et Réseaux
         + CM:CM
             - CM1:CM1
+            - CM2:CM2
+            - CM3:CM3
+            - CM4:CM4
         + TP:TP
             - TP1:TP1
+            - TP2:TP2
+            - TP3:TP3
+            - TP4:TP4
         + DS:DS
             - cur:cur
     - R4-10-VCOD:S4-VCOD Identité Numérique
