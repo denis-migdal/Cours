@@ -42,7 +42,7 @@
     <li><script type="c-text">createHammingECC(n)</script> prendra en paramètre le nombre de bits de redondances (à l'exception du dernier).</li>
     <li>Ajoutez le test suivant à <script type="c-text">/tests/HammingECC_test.py</script>
         <script type="c-py">
-            hs_test_suite = ( (2, 2, 4), (3, 4, 8), (4, 11, 16), (5, 26, 32) )
+            hs_test_suite = ( (2, 1, 4), (3, 4, 8), (4, 11, 16), (5, 26, 32) )
             
             @pytest.mark.parametrize("n,infolen,codelen", hs_test_suite)
             def test_hamming_sizes(n: int, infolen: int, codelen: int):
