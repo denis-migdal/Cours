@@ -134,9 +134,13 @@
 
 <p>⚠ <b>Mythe du mois-homme</b> : multiplier par n les ressources ne divise pas la durée de la tâche par n. 9 femmes enceintes ne produisent pas un bébé en 1 mois.</p>
 
-<h2>Gantt (TODO)</h2>
+<h2>Diagramme de Gantt</h2>
 
-/!\ Gantt !
+<p>Le diagramme de Gantt permet de visualiser la planification (ou la réalisation) des tâches au cours du temps :
+    <center>
+        <img src="./assets/gantt.png"/>
+    </center>
+</p>
 
 <h2>EVM</h2>
 
@@ -171,17 +175,41 @@
     <li>CBTP - CRTE : écart de consommation, si négatif, le projet a consommé plus que prévu à ce jour.</li>
 </ul>
 
-<h2>TODO</h2>
+<h2>Démarche qualité</h2>
 
-Gestion/suivi de projet + démarche qualité ?
+<p>La démarche qualité (ISO 9000) vise à garantir la qualité, coût, et délais d'un service (projet, produit, etc), par la mise en place de processus de référence, et par le respect des procédures établies.</p>
 
-#49-68 : cycles de dev.
+<p>Pour un projet informatique, on peut e.g. décrire le processus de développement de l'ouverture d'un ticket à sa résolution :
+    <ul class="flex-2">
+        <li>Quelle est la forme d'un ticket ?</li>
+        <li>Qui peut trier, répondre, suivre, et attribuer un ticket ?</li>
+        <li>Comment la solution sera-t-elle choisie ?</li>
+        <li>Comment la solution sera-t-elle développée/testée ?</li>
+        <li>Comment la solution sera-t-elle intégrée et déployée ?</li>
+        <li>Comment la résolution du ticket sera-t-elle vérifiée ?</li>
+    </ul>
+</p>
 
-#86 : ISO 9000 démarche qualité.
-+ #170
-+ gestion des risques projets
+<p>Au delà de la description des processus, on va suivre et maîtriser les risques du projet. Pour cela on va dans un premier temps <b>identifier</b> et <b>analyser</b> les risques. Notamment déterminer leur criticité en fonction de leur <b>impact</b> et <b>probabilité</b>. On peut alors :
+    <ul class="flex-2">
+        <li><b>Accepter</b> le risque.</li>
+        <li><b>Éviter</b> le risque ou en réduire la probabilité.</li>
+        <li><b>Mitiger</b> le risque.</li>
+        <li><b>Tansférer</b> le risque (assurance).</li>
+    </ul>
+Bien évidement, le risque (et les incidents s'il se manifeste) feront l'objet d'un suivi.
+</p>
 
-- démarche d'amélioration continue
+<p>Il y a bien évidemment une prévision, et un suivi des coûts et des délais. Bien que cela soit plus difficile pour un projet itératif. Cela nécessite donc des métriques et tableaux de bords afin de suivre cela, et de lever des alertes lorsque nécessaire.</p>
+
+<p>En sus de tout cela, on adopte une démarche d'<b>amélioration continue</b> (Kaizen), c'est à dire d'avoir un retour réflexif sur les différentes actions pour en améliorer les process. C'est le principe du cycle PDCA :
+    <ul class="flex-2">
+        <li><b>Plan</b> : planifier une tâche</li>
+        <li><b>Do</b> : faire la tâche</li>
+        <li><b>Check</b> : vérifier la tâche</li>
+        <li><b>Act</b> : agir en conséquence</li>
+    </ul>
+</p>
         </main>
     </body>
 </html>
