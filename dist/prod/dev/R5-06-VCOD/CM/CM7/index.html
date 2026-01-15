@@ -128,11 +128,11 @@
     </ul>
 </p>
 
-<p>On tentera alors de réduire la durée des tâches critiques jusqu'à ce que le coût de réduction d'un jour devienne supérieur au coût d'un jour de pénalité.<br/>
-⚠ <b>Mythe du mois-homme</b> : multiplier par n les ressources ne divise pas la durée de la tâche par n. 9 femmes enceintes ne produisent pas un bébé en 1 mois.
-</p>
+<p>On tentera alors de réduire la durée des tâches critiques jusqu'à ce que le coût de réduction d'un jour devienne supérieur au coût d'un jour de pénalité.</p>
 
 <p>Estimer la durée d'une tâche, surtout en informatique, est très difficile. Il est ainsi important de prévoir une marge dans ses estimations, et de suivre les dates réelles de début/fin de tâches afin de pouvoir anticiper et ré-estimer les retards.</p>
+
+<p>⚠ <b>Mythe du mois-homme</b> : multiplier par n les ressources ne divise pas la durée de la tâche par n. 9 femmes enceintes ne produisent pas un bébé en 1 mois.</p>
 
 <h2>Gantt (TODO)</h2>
 
@@ -140,15 +140,36 @@
 
 <h2>EVM</h2>
 
-méthode de la Valeur Acquise (EVM)
+<p>Il existe plusieurs moyen de suivre et de quantifié la progression d'un projet. L'une d'entre elles est la Méthode de la Valeur Acquise (EMV), utilisant 3 métriques :
+    <div class="flex-3">
+        <table>
+            <thead>
+                <tr><th></th><th>TP</th><th>TE</th></tr>
+            </thead>
+            <tbody>
+                <tr><th>CB</th><td>CBTP</td><td>CBTE</td></tr>
+                <tr><th>CR</th><td>Ø</td><td>CRTE</td></tr>
+            </tbody>
+        </table>
+        <ul>
+            <li>TP: Travail Prévu</li>
+            <li>TE: Travail Effectué</li>
+            <li>CB: Coût Budgété</li>
+            <li>CR: Coût Réel</li>
+        </ul>
+        <ul>
+            <li>CBTE - CBTP : écart de planning.</li>
+            <li>CBTE - CRTE : écart de coûts.</li>
+            <li>CBTP - CRTE : écart de conso.</li>
+        </ul>
+    </div>
+</p>
 
-CBTP : Coût Budgété du Travail Prévu
-CBTE : Coût Budgété du Travail effectué
-CRTE : Coût Réel du travail effecuté
-
-CBTP - CBTE : écart de planning
-CRTE - CBTE : écarts de coûts
-CRTE - CBTP : écarts de consommation de ressources prévues (conso vs prévu).
+<ul>
+    <li>CBTE - CBTP : écart de planning, si négatif, le projet est en retard vis à vis des tâches réalisées.</li>
+    <li>CBTE - CRTE : écart de coût, si négatif, les tâches réalisées ont coûté plus que prévu.</li>
+    <li>CBTP - CRTE : écart de consommation, si négatif, le projet a consommé plus que prévu à ce jour.</li>
+</ul>
 
 <h2>TODO</h2>
 
@@ -161,9 +182,6 @@ Gestion/suivi de projet + démarche qualité ?
 + gestion des risques projets
 
 - démarche d'amélioration continue
-
-- suivi des délais et des coûts.
-- méthode CPM
         </main>
     </body>
 </html>
