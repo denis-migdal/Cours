@@ -39,6 +39,8 @@
             - CM2:CM2
             - CM3:CM3
             - CM4:CM4
+        + TD:TD
+            - TD2:TD2
         + TP:TP
             - TP1:TP1
             - TP2:TP2
