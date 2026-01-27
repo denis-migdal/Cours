@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>CM1 (ATP)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+    </head>
+    <body>
+        <main>
+            <h1>Gestionnaire de versions (Git)</h1>
+
+⚠ [Draft] Document en cours de rédaction.
+
+<h2>Introduction</h2>
+
+<h3>Motivation</h3>
+
+<div>Lorsque vous travaillez sur un projet, vous vous retrouvez facilement à avoir différentes "versions" du projet et de ses fichiers. Vous pouvez avoir des fichiers envoyés par mail ou par Discord, différentes archives de votre projet à gauche et à droite, des versions locales différentes entre les différents membres de votre groupe, etc. Très rapidement, le projet devient chaotique, il est alors difficile d'en retrouver (ou d'en reconstituer) la dernière version.</div>
+
+<div>Les <b>gestionnaires de versions</b> permettent de gérer les versions d'un projet tout en apportant diverses fonctionnalités :
+    <ul>
+        <li>visualisation, parcours, et manipulation de l'historique du projet/des fichiers ;</li>
+        <li>travailler simultanément sur différentes versions ;</li>
+        <li>travail collaboratif (e.g. intégrer le travail des autres) ;</li>
+        <li>diverses automatisations (vérifications, tests, déploiements, etc.) ;</li>
+        <li>interactions avec d'autres outils et environments (e.g. issues, reviews).</li>
+    </ul>
+</div>
+
+<div>💡 Dans le cadre de ce module, nous utiliserons le gestionnaire de version <b>Git</b> (<a href="https://www.wordreference.com/enfr/git"><b>connard</b> en argot britanique</a>).</div>
+
+<h3>Concepts de base</h3>
+
+<div>Un <b>dépôt git</b> (<i>git repository</i>) est un simple dossier contenant les fichiers actuels du projet (appelé <b>arborescence de travail</b> ou <i>worktree</i>), ainsi qu'un sous-dossier <script type="c-text">.git/</script> contenant les méta-données du dépôt (e.g. configuration, historique, etc) :</div>
+<script type="c-text">
+    📂 repo
+    ├── 📂 .git
+    ├── 📂 foo
+    │   └── 📄 fii
+    └── 📄 fuu
+</script>
+
+<div>💡 Les fichiers du projet sont manipulés directement dans le worktree, de la même manière que n'importe quel autre fichier.</div>
+
+<div>Le dossier <script type="c-text">.git/</script> contient notamment les <b>commits</b> du projet, représentant chacun un <b>instantané</b> du projet (i.e. son état à un instant t). Chaque commit référençant le commit précédent (i.e. l'état précédent), on obtient alors une liste chaînée représentant l'historique du projet (i.e. ses états successifs) :
+    <script type="c-text">
+        (v1)←(v2)←(v3)←(v4)←(v5)
+    </script>
+</div>
+
+<div>💡 Le worktree correspond ainsi au dernier commit du projet, complété par les modifications encore non "enregistrées".</div>
+
+<h3>Manipuler un dépôt git</h3>
+
+<div>Bien que des interfaces graphiques existent, les dépôts git sont usuellement manipulés via des lignes de commande. Ces dernières sont de la forme <script type="c-shell">git <h>$CMD</h> <h>$ARGS...</h></script>, e.g. :
+    <script type="c-bash">
+        git init <h>[--bare]</h> <h>$DIR</h> # créer un dépôt git (--bare : sans worktree).
+    </script>
+</div>
+
+<div>La documentation de chaque commande git est accessible via <script type="c-shell">git <h>$CMD</h> <h>-h|--help</h></script> (<script type="c-shell">-h</script> pour la version courte) :
+    <script type="c-shell">
+        $ git init -h
+        usage : git init [--bare] [<directory>]
+            --[no-]bare           créer un dépôt nu
+    </script>
+
+</div>
+
+<h2>Création d'une version</h2>
+
+<div>Avec git, la création d'un instantané (commit) s'effectue en 2 temps :
+    <ol>
+        <li>sa <i>préparation</i> : en regroupant l'ensemble des modifications à intégrer au prochain commit.</li>
+        <li>son <i>enregistrement</i> : ajoute un nouveau commit à l'historique du projet.</li>
+    </ol>
+</div>
+
+<h3>Préparation du commit</h3>
+
+<div>L'<b>index</b> (ou <i>staging</i>) contient l'ensemble des modifications à intégrer au prochain commit. Il peut être vu comme un commit en préparation. La commande suivante permet d'ajouter la version <b>actuelle</b> des fichiers à l'index :
+    <script type="c-bash">
+        git add <h>-A|$FILES...</h> # -A ajouter toutes les modifications.
+    </script>
+</div>
+
+<div>💡 <script type="c-bash">git status <h>[-v|-vv]</h></script> liste le contenu de l'index, les modifications non-ajoutées à l'index, et les nouveaux fichiers :
+    <script type="c-shell">
+        $ git status
+        Modifications qui seront validées :
+            nouveau fichier : tutu
+
+        Modifications qui ne seront pas validées :
+            supprimé :        titi
+
+        Fichiers non suivis:
+            toto
+    </script>
+</div>
+
+<div>💡 Le fichier <script type="c-text">.gitignore</script> permet d'indiquer la liste des fichiers à ignorer, e.g. :
+    <script type="c-text">
+        /build/
+        /dist/
+        *.back
+    </script>
+⚠ Toute modification de ce fichier n'est pris en compte qu'après son rajout à l'index.</div>
+
+<h3>Création du commit</h3>
+
+<div>Une fois préparé, la création du commit s'effectue simplement via la commande <script type="c-bash">git commit -m <h>$MSG</h></script> :
+    <script type="c-bash">
+        $ git commit -m "v5"
+        [master b21bf65] v5
+        2 files changed, 0 insertions(+), 0 deletions(-)
+        rename titi => toto (100%)
+        create mode 100644 tutu
+    </script>
+    💡 <script type="c-bash"><h>$MSG</h></script> est la description associée au commit, dont la première ligne sert de titre au commit.<br/>
+    💡 <script type="c-text">b21bf65</script> est l'identifiant du commit (le hash du commit).
+</div>
+
+<div>Le commit ainsi créé comporte alors :
+    <ul class="flex-2">
+        <li>un identifiant (hash)</li>
+        <li>l'identifiant du commit précédent</li>
+        <li>un auteur et une date de création</li>
+        <li>un message</li>
+        <li style="grid-column: span 2">un instantané du projet (mais stocké de manière optimisé).</li>
+    </ul>
+</div>
+
+<div>Le commit est alors ajouté à l'historique du projet qu'on peut visualiser via <script type="c-bash">git log</script> :
+<script type="c-shell">
+    $ git log
+    *  b21bf65  v5  denmigda  il y a 5 minutes
+    *  62a079a  v4  denmigda  il y a 17 minutes
+    *  5e6b8fa  v3  denmigda  il y a 22 minutes
+    *  3979e9d  v2  denmigda  il y a 28 minutes
+    *  cb6fc36  v1  denmigda  il y a 48 minutes
+</script></div>
+
+<h3>Les bons principes</h3>
+
+<div>Un commit doit contenir un ensemble <b>atomique et cohérent</b> de modifications, e.g. :
+    <ul class="flex-2">
+        <li>l'ajout d'une nouvelle (sous-)fonctionnalité ;</li>
+        <li>la correction d'un bug ;</li>
+        <li>une modification de la documentation/tests ;</li>
+        <li>etc.</li>
+    </ul>
+</div>
+
+<div>⚠ Il est important que le commit ai un nom court mais explicite afin de faciliter la lecture de l'historique. Dans certains projets Open Source, les noms de commits suivent un formatage très précis, permettant d'automatiser certaines opérations.</div>
+
+<div>Il est par exemple recommandé de préfixer ses noms de commit par :
+    <ul class="flex-2">
+        <li><script type="c-text">feat:</script> ajoute une fonctionnalité.</li>
+        <li><script type="c-text">fix:</script> corrige un bug.</li>
+        <li><script type="c-text">test:</script> modifie les tests.</li>
+        <li><script type="c-text">refactor:</script> refactor du code.</li>
+        <li><script type="c-text">docs:</script> met à jour la documentation.</li>
+        <li><script type="c-text">build:</script> modifie le processus de construction du projet.</li>
+    </ul>
+</div>
+
+<div>💡 De la même manière qu'il faut sauvegarder et tester votre code très régulièrement, en procédant par itérations successives, il est important de créer des commits le plus régulièrement possible afin d'exploiter toute la puissance de Git.</div>
+
+<h2>Organisation des versions</h2>
+
+<div>Git distingue 2 types de versions :
+    <ul>
+        <li>les <b>tags</b> : <i>version figée</i>, correspond à un état précis du projet (e.g. <script type="c-text">v2.1.0</script>).</li>
+        <li>les <b>branches</b> : <i>version "évolutive"</i>, correspond à une chaîne de commits (e.g. <script type="c-text">dev</script>).</li>
+    </ul>
+</div>
+
+<div>Ces deux types de versions sont concrètement un nom qu'on associe à un commit donné. Il est alors possible de faire référence à un commit par un nom au lieu de son identifiant (hash), ce qui est plus simple à retenir et à utiliser. Cela permet aussi de pouvoir lister les différentes versions du projet : 
+    <div class="flex-2">
+        <script type="c-bash">
+            git tag -l <h>[$PATTERN]</h>
+        </script>
+        <script type="c-bash">
+            git branch -l <h>[$PATTERN]</h>
+        </script>
+    </div>
+</div>
+
+<h3>Les tags</h3>
+
+<div>Les tags suivant usuellement le format suivant <script type="c-text">v<h>$MAJOR</h>.<h>$MINOR</h>.<h>$CORRECTIF</h></script> (e.g. <script type="c-text">v1.2.12</script>), avec des nombres qui s'incrémentent à chaque nouvelle version :
+    <ul>
+        <li><script type="c-text"><h>$CORRECTIF</h></script> : pour des corrections mineures (e.g. correction de bug).</li>
+        <li><script type="c-text"><h>$MINOR</h></script> : pour des ajouts de fonctionnalités.</li>
+        <li><script type="c-text"><h>$MAJOR</h></script> : pour des changements importants qui cassent la rétro-compatibilités.</li>
+    </ul>
+</div>
+
+<div>💡 Il est aussi possible de trouver des tags au format <script type="c-text">v<h>$YY</h>.<h>$MM</h></script>, indiquant la date de la distribution, e.g. <script type="c-text">26.01</script> pour janvier 2026. Cela permet alors aux utilisateurs d'aisément constater l'obsolescence de leur version.</div>
+
+<div>Les tags permettent ainsi d'aisément communiquer sur la version du projet déployée à un endroit donné. Par exemple, si un utilisateur a un bug sur la version <script type="c-text">v1.2.12</script>, les développeurs savent directement de quelle version il est question, et peuvent facilement la retrouver.</div>
+
+<div>Dans les systèmes de déploiement continue, on va reconstruire le projet régulièrement (e.g. chaque nuit) afin de vérifier que le projet est toujours fonctionnel. Les versions sont alors usuellement de la forme <script type="c-text">nightly-YYYYMMDD</script>, et les tags supprimés au bout d'un certain temps.</div>
+
+<div>Dans les systèmes d'intégration continue, on va régulièrement fusionner les modifications apportées par les différents contributeurs du projet. On peut alors désigner les versions par <script type="c-text">v<h>$VERSION</h>-r<h>$COMMIT</h></script>, par exemple <script type="c-text">v1.2.12-rb21bf65</script>. Cela permet alors de désigner un commit précis, tout en informant sur la version actuelle. Ces versions font rarement l'objet de tags git.</div>
+
+<h3>Les branches</h3>
+
+<div>Les branches représentent une chaîne de commit. Usuellement, la branche principale créée à la création du dépôt git est nommée <script type="c-text">master</script> ou <script type="c-text">main</script>. Elle correspond à la version du projet actuellement distribuée (i.e. la dernière version stable). Ainsi, lorsque vous créez ensuite un commit, ce dernier est rajouté à la branche principale.
+</div>
+
+<div>Avoir plusieurs branches permet de travailler sur de futures versions, fonctionnalités, ou correctifs, sans impacter la branche principale, ce afin d'en garantir la stabilité. En effet, un travail en cours peut temporairement introduire bugs et régressions. Il y a donc nécessité de pouvoir travailler sur de nouvelles choses de manière "isolée", tout en étant capable d'apporter des correctifs à la branche principale.</div>
+
+
+
+- milestone.
+- principe général // branches
+
+
+- worktree
+
+- merge/rebase -> règles fusions.
+- bisect.
+
++ intérêts avec -l
+    git tag -l "v1.*"
+    git branch -l "features/*"
+
+<h2>Travail collaboratif</h2>
+
+<h3>Création d'un dépôt git</h3>
+
+<div>Il est aussi possible de cloner un dépôt git existant :
+    <script type="c-bash">
+        git clone <h>[--bare]</h> <h>$URL</h> # --bare : créer sans worktree (pour les serveurs git).
+    </script>
+</div>
+
+<h2>Trucs avancés</h2>
+
+- alias
+- submodules
+
+- annuler (?)
+- debug (?) - bisect/blame/grep (?) ~> collaboratif/branches (?)
+
+<h3>Config</h3>
+
+note: git config --global advice.statusHints false
+git config --global alias.ac '!git add -A && git commit -m'
+    + commit + submodules
+</main>
+    </body>
+</html>

@@ -29,10 +29,6 @@ Pour cela, vous pouvez copier le dossier de votre projet pour en conserver une v
 
 Pire encore pour des projets collaboratifs, où les échanges de codes se font par partages de fichiers via mails, Discord, Dropbox, etc. Il est alors nécessaire de récupérer les fichiers à la main, de les copier au bon endroit, etc. en espérant que la nouvelle version du fichier soit compatible avec le reste du projet que vous avez en local, et n'annule pas des modifications précédentes effectuées sur ce fichier.
 
-Lorsqu'on travail sur un projet, il est ainsi important d'utiliser les bons outils, dont un **gestionnaire de versions**. Ils offrent de très nombreuses fonctionnalités, permettant la gestion et manipulation des versions de votre projet, ainsi que le travail collaboratif.
-
-💡 Git ([*connard* en argot britanique](https://www.wordreference.com/enfr/git)) est, de nos jours, le gestionnaire de version le plus populaire.
-
 ## Manipuler l'historique du projet
 
 [TODO] fonctionnement général
@@ -49,15 +45,6 @@ Git représente chaque version de votre projet par un **commit**. Chaque commit 
     (v1)←(v2)←(v3)←(v4)←(v5)
 </script>
 
-La commande <script type="c-shell">git log</script> permet alors de visualiser l'historique du projet par le biais de ses différents commits :
-
-<script type="c-text">
-*  b21bf65  v5  denmigda  il y a 5 minutes
-*  62a079a  v4  denmigda  il y a 17 minutes
-*  5e6b8fa  v3  denmigda  il y a 22 minutes
-*  3979e9d  v2  denmigda  il y a 28 minutes
-*  cb6fc36  v1  denmigda  il y a 48 minutes
-</script>
 
 Ici, chaque ligne décrit un commit, du plus récent au plus ancien, avec son hash et sa description.
 
@@ -91,26 +78,6 @@ Cependant, il faut au préalable indiquer à Git le contenu à inclure au commit
 - <script type="c-bash">-vv</script> : affiche aussi les modifications des contenus non-ajoutés à l'index.
 - <script type="c-bash">-bs</script> : pour un affichage concis.
 
-#### Bons principes
-
-Un commit doit contenir un ensemble cohérent de modifications, e.g. :
-- l'ajout d'une nouvelle (sous-)fonctionnalité ;
-- la correction d'un bug ;
-- une modification de la documentation/tests ;
-- etc.
-
-⚠ Il est important que le commit ai un nom court mais explicite afin de faciliter la lecture de l'historique. Dans certains projets Open Source, les noms de commits suivent un formatage très précis, permettant d'automatiser certaines opérations.
-
-Il est par exemple recommandé de préfixer ses noms de commit par :
-- <script type="c-text">feat:</script> ajoute une fonctionnalité.
-- <script type="c-text">fix:</script> corrige un bug.
-- <script type="c-text">test:</script> modifie les tests.
-- <script type="c-text">refactor:</script> refactor du code.
-- <script type="c-text">docs:</script> met à jour la documentation.
-- <script type="c-text">build:</script> modifie le processus de construction du projet.
-
-
-💡 De la même manière qu'il faut sauvegarder et tester votre code très régulièrement, en procédant par itérations successives, il est important de créer des commits le plus régulièrement possible afin d'exploiter toute la puissance de Git.
 
 ⚠ Il est préférable d'éviter de faire un commit sur une version non-fonctionnelle du projet (ou "moins" fonctionnel que le commit précédent).
 

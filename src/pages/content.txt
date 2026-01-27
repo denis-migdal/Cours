@@ -55,7 +55,7 @@
             - cur:2024-2024
     - S5-07:S5 [SAÉ] Pentest, Hacking, et Renforcement
 - dev:🖳 Développement
-    - R4-01-VCOD:S4-VCOD Automatisation et Test en Programmation
+    - R4-01:S4 Automatisation et Test en Programmation
         + CM:CM
             - CM1:CM1
         + DS:DS
