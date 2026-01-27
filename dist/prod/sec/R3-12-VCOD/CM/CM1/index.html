@@ -136,7 +136,9 @@
 
 <div>Les codes de Hamming permettent de détecter au plus 2 erreurs et d'en corriger au plus 1. Le principe de ces codes est très simple, c'est une forme de "qui-est-ce" informatique.</div>
 
-<todo>Decr prodécure</todo>
+<div>Chaque bit est associé à un index, qui peut se représenter sous la forme Π<sub>i=0</sub> k<sub>i</sub>*2<sup>i</sup>. Le i-ième bit de redondance est calculé comme le bit de parité des bits où k<sub>i</sub> = 1. Lors de la réception, il suffit alors de vérifier les bits de parités. Si le bit de parité i est incorrect, alors l'erreur s'est produite sur un bit où k<sub>i</sub> = 1. En vérifiant tous les bits de parité, on peut alors calculer l'index du bit ayant eu l'erreur.</div>
+
+<div>⚠ Pour que cela fonctionne, il faut que le bit de redondance i soit à l'indexe 2<sup>i</sup>. Le bit 0 sera un bit de parité global.</div>
 
 <div class="center">
   <player-toolbar speed="1500" id="hamming-player"></player-toolbar>
@@ -218,145 +220,143 @@
     </tbody>
 </table>
 
+<div>Lors du décodage, les différents k<sub>i</sub> calculés constituent le <b>syndrome</b> (S), permettant d'identifier la position de l'erreur. Dans le cas ci-dessus, S = 0 indique une absence d'erreurs. Dans les cas plus généraux, on pré-calcule un tableau associant à chaque syndrome possible, le correctif à appliquer. Dans notre cas :
+    <table>
+        <thead>
+            <tr>
+                <th>Syndrome</th>
+                <th>Position</th>
+                <th>Masque</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>111</td>
+                <td>7</td>
+                <td>1 << 7</td>
+                <td>I = 10000000 ⨁ I'</td>
+            </tr>
+            <tr>
+                <td>110</td>
+                <td>6</td>
+                <td>1 << 6</td>
+                <td>I = 01000000 ⨁ I'</td>
+            </tr>
+            <tr>
+                <td>101</td>
+                <td>5</td>
+                <td>1 << 5</td>
+                <td>I = 00100000 ⨁ I'</td>
+            </tr>
+            <tr>
+                <td>100</td>
+                <td>4</td>
+                <td>1 << 4</td>
+                <td>I = 00010000 ⨁ I'</td>
+            </tr>
+            <tr>
+                <td>011</td>
+                <td>3</td>
+                <td>1 << 3</td>
+                <td>I = 00001000 ⨁ I'</td>
+            </tr>
+            <tr>
+                <td>010</td>
+                <td>2</td>
+                <td>1 << 2</td>
+                <td>I = 10000100 ⨁ I'</td>
+            </tr>
+            <tr>
+                <td>001</td>
+                <td>1</td>
+                <td>1 << 1</td>
+                <td>I = 00000010 ⨁ I'</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-- repr matrice.
+<div>💡 Il est possible d'effectuer les opérations de codage et de décodage sous la forme de produits matriciels (cf TP) :
+    <div class="flex-2">
+        <div>
+            <center><b>Codage:</b></center>
+            <math display="block">
+                <mrow>
+                    <mo>[</mo>
+                    <mtable>
+                        <mtr>
+                            <mtd>ID</mtd>
+                        </mtr>
+                        <mtr>
+                            <mtd>Q</mtd>
+                        </mtr>
+                    </mtable>
+                    <mo>]</mo>
+                    *
+                    <mo>[</mo>
+                    <mtable>
+                        <mtr>
+                            <mtd>I</mtd>
+                        </mtr>
+                    </mtable>
+                    <mo>]</mo>
+                    =
+                    <mo>[</mo>
+                    <mtable>
+                        <mtr>
+                            <mtd>C</mtd>
+                        </mtr>
+                    </mtable>
+                    <mo>]</mo>
+                </mrow>
+            </math>
+        </div>
+        <div>
+            <center><b>Décodage:</b></center>
+            <math display="block">
+                <mrow>
+                    <mo>[</mo>
+                    <mtable>
+                        <mtr>
+                            <mtd>Q</mtd>
+                            <mtd>ID</mtd>
+                        </mtr>
+                    </mtable>
+                    <mo>]</mo>
+                    *
+                    <mo>[</mo>
+                    <mtable>
+                        <mtr>
+                            <mtd>C'</mtd>
+                        </mtr>
+                    </mtable>
+                    <mo>]</mo>
+                    =
+                    <mo>[</mo>
+                    <mtable>
+                        <mtr>
+                            <mtd>I'</mtd>
+                        </mtr>
+                        <mtr>
+                            <mtd>S</mtd>
+                        </mtr>
+                    </mtable>
+                    <mo>]</mo>
+                </mrow>
+            </math>
+        </div>
+    </div>
+</div>
 
-On vient de calculer le <b>syndrome</b>.
+<h3>Reed-Solomon</h3>
 
-Codage:
-<math display="block">
-    <mrow>
-        <mo>[</mo>
-        <mtable>
-            <mtr>
-                <mtd>ID</mtd>
-            </mtr>
-            <mtr>
-                <mtd>Q</mtd>
-            </mtr>
-        </mtable>
-        <mo>]</mo>
-    </mrow>
-    *
-    <mrow>
-        <mo>[</mo>
-        <mtable>
-            <mtr>
-                <mtd>I</mtd>
-            </mtr>
-        </mtable>
-        <mo>]</mo>
-        =
-        <mo>[</mo>
-        <mtable>
-            <mtr>
-                <mtd>C</mtd>
-            </mtr>
-        </mtable>
-        <mo>]</mo>
-    </mrow>
-</math>
-
-Décodage:
-<math display="block">
-    <mrow>
-        <mo>[</mo>
-        <mtable>
-            <mtr>
-                <mtd>Q</mtd>
-                <mtd>ID</mtd>
-            </mtr>
-        </mtable>
-        <mo>]</mo>
-        *
-        <mo>[</mo>
-        <mtable>
-            <mtr>
-                <mtd>C'</mtd>
-            </mtr>
-        </mtable>
-        <mo>]</mo>
-        =
-        <mo>[</mo>
-        <mtable>
-            <mtr>
-                <mtd>I'</mtd>
-            </mtr>
-            <mtr>
-                <mtd>S</mtd>
-            </mtr>
-        </mtable>
-        <mo>]</mo>
-    </mrow>
-</math>
-
-S est le <b>syndrome</b>.
-Si S = 0, pas d'erreurs (I=I'). Sinon, S indique la correction à appliquer à I' pour obtenir I.
-
-De manière générale, on pré-calcul un tableau donnant pour chaque syndrome possible, le correctif à appliquer. Dans notre cas, 
-<table>
-    <thead>
-        <tr>
-            <th>Syndrome</th>
-            <th>Position</th>
-            <th>Masque</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>111</td>
-            <td>7</td>
-            <td>1 << 7</td>
-            <td>I = 10000000 ⨁ I'</td>
-        </tr>
-        <tr>
-            <td>110</td>
-            <td>6</td>
-            <td>1 << 6</td>
-            <td>I = 01000000 ⨁ I'</td>
-        </tr>
-        <tr>
-            <td>101</td>
-            <td>5</td>
-            <td>1 << 5</td>
-            <td>I = 00100000 ⨁ I'</td>
-        </tr>
-        <tr>
-            <td>100</td>
-            <td>4</td>
-            <td>1 << 4</td>
-            <td>I = 00010000 ⨁ I'</td>
-        </tr>
-        <tr>
-            <td>011</td>
-            <td>3</td>
-            <td>1 << 3</td>
-            <td>I = 00001000 ⨁ I'</td>
-        </tr>
-        <tr>
-            <td>010</td>
-            <td>2</td>
-            <td>1 << 2</td>
-            <td>I = 10000100 ⨁ I'</td>
-        </tr>
-        <tr>
-            <td>001</td>
-            <td>1</td>
-            <td>1 << 1</td>
-            <td>I = 00000010 ⨁ I'</td>
-        </tr>
-    </tbody>
-</table>
-
-<h2>Reed-Solomon</h2>
+<todo>Rédiger</todo>
 
 - besoin de savoir si le message est valide ou non...
 -> e.g. bit de parité.
 -> % p fait que les redondances auront +1 bit par rapport aux messages...
 donc e.g. message 7 bits (+ parité) - redondance : 8 bits + bits de parités regroupés ensembles dans un octet supplémentaire.
-
-<h2>Notes</h2>
 
 Reed-Solomon (année ?):
 <ul>
@@ -378,6 +378,8 @@ Reed-Solomon (année ?):
 
 <h2>Couches OSI</h2>
 
+<todo></todo>
+
 À la fin OSI + encapsulation.
 - pas tout à fait vrai, liaison très lié (contraintes du) physique .
 https://fr.wikipedia.org/wiki/Mod%C3%A8le_OSI#Architecture_en_couches
@@ -389,7 +391,11 @@ https://fr.wikipedia.org/wiki/Mod%C3%A8le_OSI#Architecture_en_couches
     <li>répétitions de couches : e.g. Ethernet over USB.</li>
 </ul>
 
+<todo>lo + ip -br -c <h>link</h></todo>
+
 <h2>Next week</h2>
+
+<todo></todo>
 
 <ul>
     <li>découpage des paquets (si trop gros).</li>
