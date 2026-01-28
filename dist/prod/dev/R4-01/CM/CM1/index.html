@@ -6,7 +6,7 @@
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link   href="/skeleton/index.css"  rel="stylesheet">
-        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+        <script  src="/skeleton/index.js"  type="module"     blocking="render"></script>
     </head>
     <body>
         <main>
@@ -101,7 +101,15 @@
     </script>
 </div>
 
-<div>💡 Le fichier <script type="c-text">.gitignore</script> permet d'indiquer la liste des fichiers à ignorer, e.g. :
+<h3>Exclusion de fichiers</h3>
+
+<todo>X</todo>
+
+-> empêcher d'ajouter à l'index
+-> structure du projet
+-> motivation
+
+<div>Le fichier <script type="c-text">.gitignore</script> permet d'indiquer la liste des fichiers à ignorer, e.g. :
     <script type="c-text">
         /build/
         /dist/
@@ -209,12 +217,12 @@
 
 <h3>Les branches</h3>
 
-<div>Les branches représentent une chaîne de commit. Usuellement, la branche principale créée à la création du dépôt git est nommée <script type="c-text">master</script> ou <script type="c-text">main</script>. Elle correspond à la version du projet actuellement distribuée (i.e. la dernière version stable). Ainsi, lorsque vous créez ensuite un commit, ce dernier est rajouté à la branche principale.
+<div>Les branches représentent une chaîne de commit. Usuellement, la branche principale créée à la création du dépôt git est nommée <script type="c-text">master</script> ou <script type="c-text">main</script>. Elle correspond à la version du projet actuellement distribuée (i.e. la dernière version stable). Ainsi, lorsque vous créez ensuite un commit, ce dernier est rajouté à la branche actuelle.
 </div>
 
 <div>Avoir plusieurs branches permet de travailler sur de futures versions, fonctionnalités, ou correctifs, sans impacter la branche principale, ce afin d'en garantir la stabilité. En effet, un travail en cours peut temporairement introduire bugs et régressions. Il y a donc nécessité de pouvoir travailler sur de nouvelles choses de manière "isolée", tout en étant capable d'apporter des correctifs à la branche principale.</div>
 
-<div>On peut alors développer chaque fonctionnalité (<i>feature</i>), correctif (<i>hotfix</i>), ou expérimentation (<i>experiment</i>) dans sa propre branche dédiée. Une fois le travail terminé, on peut ensuite fusionner les modifications d'une branche sur la branche principale.</div>
+<div>On peut alors développer chaque fonctionnalité (<i>feature</i>), correctif (<i>bugfix</i>), ou expérimentation (<i>experiment</i>) dans sa propre branche dédiée. Une fois le travail terminé, on peut ensuite fusionner les modifications d'une branche sur la branche principale.</div>
 
 <div>Chaque version (<i>release</i>), ou future version (<i>release candidate</i>) du projet peut aussi avoir sa propre branche (e.g. <script type="c-text">v1.0</script>, <script type="c-text">v1.1</script>). Cela permet de préparer une future version par l'assemblage de nouvelles fonctionnalités, d'effectuer divers tests et vérifications, avant qu'elle ne devienne la nouvelle version stable. Cela permet aussi d'être capable d'apporter des correctifs à d'anciennes versions encore supportées (e.g. <script type="c-text">v1</script>, <script type="c-text">v2</script>, <script type="c-text">v3</script>).</div>
 
@@ -223,6 +231,15 @@
         <li><i>testing</i> : tests sur l'environnement de développement.</li>
         <li><i>staging</i> : tests sur l'environnement de production.</li>
         <li><i>unstable</i> : tests utilisateurs (≈ bêta).</li>
+    </ul>
+</div>
+
+<div>💡 Il est important de bien nommer ses branches afin de pouvoir plus facilement les lister par la suite :
+    <ul class="flex-2">
+        <li><script type="c-text">feature/*</script> : nouvelle fonctionnalité.</li>
+        <li><script type="c-text">bugfix/*</script> : correctif.</li>
+        <li><script type="c-text">wip/*</script> : branche temporaire.</li>
+        <li><script type="c-text">me/<h>$USER</h>/*</script> : branche personnelle.</li>
     </ul>
 </div>
 
@@ -327,10 +344,10 @@
 
 <div>Lorsque que la branche locale et la branche distante contiennent chacune de nouvelles modifications, il arrive que les opérations de synchronisations (pull/push) échoues. On va donc essayer, autant que possible, d'éviter ce genre de conflits. Par exemple, en récupérant systématiquement, et avant toutes opérations, les modifications distantes, ce afin de s'assurer de travailler sur la dernière version de la branche.</div>
 
-<div>Il est aussi recommandé d'effectuer son travail sur une branche personnelle (potentiellement locale et temporaire), puis de ne la fusionner sur une branche partagée qu'une fois le travail terminé :
+<div>Il est aussi recommandé d'effectuer son travail sur une branche personnelle (potentiellement locale et temporaire),<br/> e.g. <script type="c-text">me/<h>$USER</h>/bugfix/foo</script>, puis de ne la fusionner sur une branche partagée qu'une fois le travail terminé :
     <script type="c-bash">
         git pull # récupérer les dernières modifications.
-        git merge --squash <h>$TMP_BRANCH</h> # fusionner.
+        git merge --squash <h>$SRC_BRANCH</h> # fusionner.
         git commit
         git push # envoyer les modifications.
     </script>
@@ -375,7 +392,7 @@
     </ul>
 </div>
 
-<div>💡 Vous pouvez éditer le dernier d'une branche avec <script type="c-bash">commit -amend</script>, permettant ainsi de lui ajouter/retirer un fichier.</div>
+<div>💡 Vous pouvez éditer le dernier d'une branche avec <script type="c-bash">commit --amend</script>, permettant ainsi de lui ajouter/retirer un fichier.</div>
 
 <div>⚠ Si les commits ont déjà été poussé sur la branche distante, il ne faut <b>surtout pas</b> les <script type="c-bash">git reset</script> ! En effet, cela posera des problèmes de synchronisations avec la branche distante et les autres dépôts locaux. Dans ce cas, il vaut mieux utiliser <script type="c-bash">git revert</script> afin d'expliciter l'annulation des commits.</div>
 
@@ -397,22 +414,88 @@
 
 <h3>Déboguer</h3>
 
-- debug (?) - bisect/blame/grep (?) ~> collaboratif/branches (?)
+1. blame (fichier)
+1. show (commit)
+1. git diff (fichiers)
+1. range-diff ~> différence entre 2 branches (commits) (--stat?)
+1. bisect : rechercher le commit qui a causé l'erreur (recherche binaire + validation)
+1. grep ~> mettre dans annuler ?
 
 <h3>Config</h3>
 
-- alias/config
+<div>La configuration de git s'effectue par le biais de la commande suivante :
+    <script type="c-bash">git config <h>[--global]</h> <h>$NAME</h> <h>$VALUE</h></script>.<br/>
+    Par défaut, la configuration ne sera effective que pour le dépôt local actuel. <script type="c-bash"><h>--global</h></script> permettra d'appliquer la configuration à l'ensemble des dépôts locaux de l'utilisateur.
+</div>
 
-git config --global push.autoSetupRemote true
+<div>Ci-dessous quelques exemples de configurations utiles :
+    <table>
+        <thead>
+            <tr>
+                <th>Propriété</th>
+                <th>Valeur</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><script type="c-text">user.name</script></td>
+                <td></td>
+                <td>Le nom d'auteur à ajouter aux commits.</td>
+            </tr>
+            <tr>
+                <td><script type="c-text">user.email</script></td>
+                <td></td>
+                <td>L'email d'auteur à ajouter aux commits.</td>
+            </tr>
+            <tr><td colspan="3"></td></tr>
+            <tr>
+                <td><script type="c-text">alias.<h>$NAME</h></script></td>
+                <td><script type="c-text">'!<h>$CMD</h>'</script></td>
+                <td>Créer un alias git.</td>
+            </tr>
+            <tr>
+                <td><script type="c-text">advice.statusHints</script></td>
+                <td><script type="c-text">false</script></td>
+                <td>Ne pas polluer la sortie des commandes avec des conseils.</td>
+            </tr>
+            <tr><td colspan="3"></td></tr>
+            <tr>
+                <td><script type="c-text">push.autoSetupRemote</script></td>
+                <td><script type="c-text">true</script></td>
+                <td>Créer la branche distante si elle n'existe pas lors d'un push.</td>
+            </tr>
+            <tr>
+                <td><script type="c-text">pull.rebase</script></td>
+                <td><script type="c-text">true</script></td>
+                <td>Par défaut utiliser rebase lors d'un pull (au lieu de merge).</td>
+            </tr>
+            <tr><td colspan="3"></td></tr>
+            <tr>
+                <td><script type="c-text">merge.tool</script><br/><script type="c-text">mergetool.vscode.cmd</script></td>
+                <td><script type="c-text">vscode</script><br/><script type="c-text">'code --wait "$MERGED"'</script></td>
+                <td>Utiliser mergetool avec VSCode.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-git config --global pull.rebase true
+<h4>Alias Git</h4>
 
-note: git config --global advice.statusHints false
-git config --global alias.ac '!git add -A && git commit -m'
-    + commit + submodules
+<div>Les alias Git sont analogues à des alias Shell, et s'utilisent ainsi : <script type="c-bash">git <h>$NAME</h></script>. Par exemple :
+    <script type="c-shell">
+        $ git config alias.<h>acp</h> '!f() { git add -A && git commit -m "$1" && git push } ; f'
+        $ git <h>acp</h> "New commit"
+    </script>
+</div>
 
-git config --global merge.tool vscode
-git config --global mergetool.vscode.cmd 'code --wait "$MERGED"'
+<div>Il est ainsi encouragé de créer des alias lorsqu'on effectue régulièrement les mêmes commandes git. Par exemple, au sein de ce support, la commande ci-dessous a été utilisée pour présenter les logs :
+    <script type="c-bash">
+        git log --color --date=relative --graph
+                --format=format:'§%C(auto)%d%C(reset)§%C(03)%h%C(reset)§%C(bold 0)%s%C(reset)§%C(green)%an%C(reset)§%C(04)%ad%C(reset)' | column -t -s '§'
+    </script>
+    Vous vous doutez ainsi bien qu'on ne va pas s'amuser à réécrire une telle commande à la main à chaque fois qu'on souhaite afficher l'historique.
+</div>
 
 <h2>Outils connexes (?)</h2>
 
@@ -425,7 +508,14 @@ git config --global mergetool.vscode.cmd 'code --wait "$MERGED"'
 <todo>X</todo>
 
 
-- submodules
+- submodules /!\ no circularities !!!
+
+
+<script type="c-text">
+    (A)←(B)←(C)
+       ↖   ↙
+        (B)
+</script>
 
 </main>
     </body>
