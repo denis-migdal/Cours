@@ -169,13 +169,6 @@ HEAD : @~1
 
 Config (latter)
 
-L'affichage précédent est obtenu via la commande suivante :
-<script type="c-bash">
-    git log --color --date=relative --graph --format=format:'§%C(auto)%d%C(reset)§%C(03)%h%C(reset)§%C(bold 0)%s%C(reset)§%C(green)%an%C(reset)§%C(04)%ad%C(reset)' | column -t -s '§'
-</script>
-=> usage énorme -> on fait des alias une fois en fonction de ce qu'on veut puis on utilise les alias.
-    => git config (global)/(local)
-
 git log [branch|commit|autre]
 --graph (for branches ?) [+tard]
 
@@ -183,24 +176,6 @@ git log [branch|commit|autre]
 
 => $PS1 : git repo/branch
 => git maintenance start (big repo, speed up things)
-
-### Submodules
-
--> no circularity
-
-### CI/CD
-
-(yaml/.yml)
-=> artefacts/build
-=> git pages
-
-## Symbols
-
-<script type="c-text">
-    (A)←(B)←(C)
-       ↖   ↙
-        (B)
-</script>
 
 </main>
     </body>
