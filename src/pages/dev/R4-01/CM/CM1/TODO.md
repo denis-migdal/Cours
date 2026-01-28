@@ -1,3 +1,4 @@
+.gitignore
 
 Images pour expliquer les merges/branches.
 
