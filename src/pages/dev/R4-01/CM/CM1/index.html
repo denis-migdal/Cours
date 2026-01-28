@@ -51,7 +51,7 @@
     </script>
 </div>
 
-<div>💡 Le worktree correspond ainsi au dernier commit du projet, complété par les modifications encore non "enregistrées".</div>
+<div>💡 Le worktree correspond ainsi au commit actuel du projet, complété par les modifications encore non "enregistrées".</div>
 
 <h3>Manipuler un dépôt git</h3>
 
@@ -214,44 +214,219 @@
 
 <div>Avoir plusieurs branches permet de travailler sur de futures versions, fonctionnalités, ou correctifs, sans impacter la branche principale, ce afin d'en garantir la stabilité. En effet, un travail en cours peut temporairement introduire bugs et régressions. Il y a donc nécessité de pouvoir travailler sur de nouvelles choses de manière "isolée", tout en étant capable d'apporter des correctifs à la branche principale.</div>
 
+<div>On peut alors développer chaque fonctionnalité (<i>feature</i>), correctif (<i>hotfix</i>), ou expérimentation (<i>experiment</i>) dans sa propre branche dédiée. Une fois le travail terminé, on peut ensuite fusionner les modifications d'une branche sur la branche principale.</div>
 
+<div>Chaque version (<i>release</i>), ou future version (<i>release candidate</i>) du projet peut aussi avoir sa propre branche (e.g. <script type="c-text">v1.0</script>, <script type="c-text">v1.1</script>). Cela permet de préparer une future version par l'assemblage de nouvelles fonctionnalités, d'effectuer divers tests et vérifications, avant qu'elle ne devienne la nouvelle version stable. Cela permet aussi d'être capable d'apporter des correctifs à d'anciennes versions encore supportées (e.g. <script type="c-text">v1</script>, <script type="c-text">v2</script>, <script type="c-text">v3</script>).</div>
 
-- milestone.
-- principe général // branches
+<div>À ces différentes étapes de tests et de validations peuvent aussi correspondre à un environnement et une branche dédiée. Ainsi à chaque modification de la branche le projet peut être automatiquement déployé sur l'environnement correspondant, e.g. serveurs :
+    <ul>
+        <li><i>testing</i> : tests sur l'environnement de développement.</li>
+        <li><i>staging</i> : tests sur l'environnement de production.</li>
+        <li><i>unstable</i> : tests utilisateurs (≈ bêta).</li>
+    </ul>
+</div>
 
+<h3>Changer de branche</h3>
 
-- worktree
+<div>Comme nous l'avons vu précédemment, le worktree correspond au "commit actuel du projet". Pour être plus précis, il correspond à <script type="c-text">HEAD</script> qui pointe soit sur une branche, soit sur un commit. Si <script type="c-text">HEAD</script> pointe sur une branche, les commits effectués par la suite sont ajoutés à la branche.</div>
 
-- merge/rebase -> règles fusions.
-- bisect.
+<div>⚠ Si <script type="c-text">HEAD</script> pointe sur un commit, <script type="c-text">HEAD</script> est alors dit "détaché". Les commits effectués par la suite sont dits "orphelins". Ces commits pourraient être supprimés au bout de 30 jours s'ils ne sont pas rajouté à une branche.</div>
 
-+ intérêts avec -l
-    git tag -l "v1.*"
-    git branch -l "features/*"
+<div>La commande <script type="c-bash">git switch <h>[-c]</h> <h>$REF</h></script> permet de faire pointer <script type="c-text">HEAD</script> sur <script type="c-bash"><h>$REF</h></script>, qui peut être : 
+    <ul class="flex-2">
+        <li>un nom de branche.</li>
+        <li>un identifiant de commit ou un tag (détaché).</li>
+        <li style="grid-column: span 2;"><script type="c-bash"><h>$REF</h>~<h>$N</h></script> : le <script type="c-bash"><h>$N</h></script>-ième commit précédent <script type="c-bash"><h>$REF</h></script>, e.g. <script type="c-bash">HEAD~2</script> (détaché).</li>
+        <li style="grid-column: span 2;"><script type="c-bash"><h>$REF</h>^<h>$N</h></script> : le <script type="c-bash"><h>$N</h></script>-ième parent de <script type="c-bash"><h>$REF</h></script>, si le commit a plusieurs parents (détaché).</li>
+    </ul>
+</div>
 
-<h2>Travail collaboratif</h2>
+<div>💡 <script type="c-bash">git switch -c <h>$NAME</h></script> permet de créer la branche <script type="c-bash"><h>$NAME</h></script> à partir du commit actuel (<script type="c-text">HEAD</script>).<br/>
+    💡 Formatter le nom des branches permet de les lister plus facilement par la suite (e.g. <script type="c-text">features/*</script>).
+</div>
 
-<h3>Création d'un dépôt git</h3>
+<h3>Les arborescences de travail</h3>
 
-<div>Il est aussi possible de cloner un dépôt git existant :
+<div>Il arrive qu'on travaille sur plusieurs branches en même temps. Que soit parce qu'on travaille sur une tâche donnée (e.g. une nouvelle fonctionnalité) quand une tâche plus importante/urgente survient (e.g. correction d'un bug). Ou tout simplement parce qu'on souhaite comparer la version sur laquelle on travaille avec une version antérieure, e.g. pour en comparer le code, le comportement, ou les résultats.</div>
+
+<div>Passer alternativement d'une branche à l'autre avec <script type="c-bash">git switch</script> est peu pratique, sachant que les dernières modifications doivent être "enregistrées" pour que git autorise le basculement. Or, les commits doivent être un ensemble atomique et cohérents de modifications. On ne souhaite pas créer un commit juste pour pouvoir changer de branche.</div>
+
+<div>Heureusement, il est possible plusieurs worktree, qui auront leur propre <script type="c-text">HEAD</script> et index :
     <script type="c-bash">
-        git clone <h>[--bare]</h> <h>$URL</h> # --bare : créer sans worktree (pour les serveurs git).
+        git worktree add <h>[-b $NAME]</h> <h>$DIR</h> <h>[$REF]</h> # -b pour créer une nouvelle branche.
     </script>
 </div>
 
-<h2>Trucs avancés</h2>
+<div>💡 Il est possible de regrouper le dépôt et les worktree au sein d'un même dossier en créant un dépôt nu (<i>bare repository</i>) <script type="c-bash">/.git/</script>, puis d'ajouter des worktree dans le dossier parent. Prenez cependant garde à bien utiliser des noms de dossiers explicites pour les worktree (e.g. le nom de la branche).</div>
 
-- alias
-- submodules
+<div>💡 <script type="c-bash">git worktree list</script> permet d'afficher la liste des worktree du dépôt.</div>
 
-- annuler (?)
+
+<h3>Fusion de branches</h3>
+
+<div>Nous travaillons donc sur une fonctionnalité <i>foo</i>, dans une branche <i>feature/foo</i>. Une fois le travail terminé, testé, validé, nous souhaitons l'inclure dans la branche principale <i>master</i>. C'est à dire appliquer les modifications de <i>feature/foo</i> à <i>master</i>.</div>
+
+<div>Pour cela on utilise la commande <script type="c-bash">git merge <h>$BRANCH</h></script> afin d'ajouter les modifications de <script type="c-bash"><h>$BRANCH</h></script> à la branche courante. Un commit pointant sur le dernier commits des 2 branches, et sera ajouté à la branche courante. Ce commit aura donc 2 parents.</div>
+
+<div>Il arrive que git échoue à fusionner les modifications des 2 branches, notamment lorsqu'un même fichier a été modifié sur les 2 branches. Git modifiera alors les parties des fichiers ayant un conflit de sorte à afficher les deux versions :
+    <script type="c-text">
+        <<<<<<< HEAD
+        <h>Contenu d'origine de la branche actuelle.</h>
+        =======
+        <h>Contenu de la branche dont on souhaite intégrer les modifications.</h>
+        >>>>>>> feature
+    </script>
+</div>
+
+<div>💡 Durant le merge, vous pouvez consulter la version originale de la branche courante en utilisant <script type="c-text">HEAD</script>.</div>
+
+<div>Vous devrez ensuite modifier chaque fichier afin de choisir la version que vous souhaitez garder. Pour cela vous pouvez soit le faire à la main, soit utiliser <script type="c-text">git mergetool</script>, e.g. en l'utilisant avec VSCode :<br/>
+    <img src="./assets/merge1.png" />
+</div>
+
+<div>💡 VSCode, vous permettra de comparer les deux versions, et de naviguer parmi les différents conflits :<br/>
+    <center><img src="./assets/merge2.png"/></center>
+</div>
+
+<div>Une fois les conflits résolus, il ne vous restera plus qu'à ajouter les fichiers à l'index, puis à créer un nouveau commit.</div>
+
+<div>💡 Une fois les modifications de la branche de travail ajoutées à la branche principale, vous pouvez "archiver" la branche de travail. Cela permet d'éviter de polluer votre liste de branches avec des branches "non-actives". Pour cela il suffit d'ajouter un tag (e.g. <script type="c-bash">archived/feature/foo</script>) au dernier commit de la branche, puis de supprimer cette dernière.</div>
+
+<h2>Travail collaboratif</h2>
+
+<div>Usuellement, chaque développeur a, sur son poste de travail, son propre dépôt git local qu'il synchronise avec un dépôt distant (<i>remote</i>) central (e.g. sur Github, Gitlab, etc). Ainsi chaque développeur peut envoyer ses modifications au dépôt distant, que les autres développeurs pourront ensuite récupérer sur leur propre dépôt local.</div>
+
+<div>Chaque développeur va ainsi cloner localement le dépôt distant :
+    <script type="c-bash">
+        git clone <h>[--bare]</h> <h>$URL</h>
+    </script>
+    Pour ensuite pouvoir récupérer (<i>pull</i>) ou envoyer (<i>push</i>) les modifications de la branche courante :
+    <div class="flex-2">
+        <script type="c-bash">
+            git pull
+        </script>
+        <script type="c-bash">
+            git push
+        </script>
+    </div>
+</div>
+
+<div>💡 Si le dépôt a été créé localement (avec <script type="c-bash">git init</script>), il faudra lui indiquer le dépôt distant (<i>remote</i>) :
+    <script type="c-bash">
+        git remote add <h>$RNAME</h> <h>$URL</h> # généralement $RNAME = origin
+    </script>
+</div>
+
+<div>💡 Si la branche a été créée localement, il pourra être nécessaire d'indiquer la branche distante :
+    <script type="c-bash">
+        git branch -u <h>$RNAME</h>/<h>$BRANCH</h>
+    </script>
+</div>
+
+<h3>Éviter les conflits</h3>
+
+<div>Lorsque que la branche locale et la branche distante contiennent chacune de nouvelles modifications, il arrive que les opérations de synchronisations (pull/push) échoues. On va donc essayer, autant que possible, d'éviter ce genre de conflits. Par exemple, en récupérant systématiquement, et avant toutes opérations, les modifications distantes, ce afin de s'assurer de travailler sur la dernière version de la branche.</div>
+
+<div>Il est aussi recommandé d'effectuer son travail sur une branche personnelle (potentiellement locale et temporaire), puis de ne la fusionner sur une branche partagée qu'une fois le travail terminé :
+    <script type="c-bash">
+        git pull # récupérer les dernières modifications.
+        git merge --squash <h>$TMP_BRANCH</h> # fusionner.
+        git commit
+        git push # envoyer les modifications.
+    </script>
+</div>
+
+<div>💡 Avec <script type="c-bash">git merge --squash</script> le commit alors créé ne référencera pas la branche personnelle, ce afin d'éviter de polluer de branches temporaires, l'historique ainsi que le dépôt distant.</div>
+
+<div>Si la synchronisation échoue du fait de nouveaux commits sur la branche locale et distante ; et que vous souhaitiez conserver un historique linéaire, i.e. sans commit de merge, vous pouvez utiliser la commande <script type="c-bash">git pull --rebase</script>. Une fois les conflits résolus, vous pourrez utiliser <script type="c-bash">git rebase --continue</script> pour poursuivre.</div>
+
+<div>💡 En cas de conflits, vous pourrez retrouver les versions originelles de la branche locale et de la branche distante dans <script type="c-text">HEAD</script> et <script type="c-text"><h>$RNAME</h>/<h>$BRANCH</h></script>.</div>
+
+<h2>Usages avancés</h2>
+
+<h3>Revenir en arrière</h3>
+
+<div>Il arrive qu'il soit nécessaire de "revenir en arrière" pour différentes raisons :
+    <ul class="flex-2">
+        <li>une erreur de manipulation.</li>
+        <li>une impasse lors d'une expérimentation.</li>
+        <li>le projet est cassé, impossible à réparer.</li>
+        <li>une regression a été introduite.</li>
+    </ul>
+
+</div>
+
+<div>De manière triviale, vous pouvez revenir à un état antérieur de votre projet avec un simple <script type="c-bash">git switch</script> puis créer une nouvelle branche. Voire tout simplement abandonner la branche sur laquelle vous travailliez.</div>
+
+<div>Pour des actions plus complexes les commandes suivantes sont utilisées :
+    <ul>
+        <li><script type="c-bash">git restore <h>[-s $REF]</h> <h>[--worktree]</h> <h>[--staged]</h> <h>[$FILES...]</h></script> : <b>restaure les fichiers</b>
+            <ul>
+                <li>du worktree (<script type="c-bash"><h>--worktree</h></script>, <i>par défaut</i>) <b>et/ou</b> de l'index (<script type="c-bash"><h>--staged</h></script>).</li>
+                <li>à partir du commit (<script type="c-bash"><h>$REF</h></script>, <script type="c-bash"><h>HEAD</h></script> <i>par défaut</i>).</li>
+            </ul>
+        </li>
+        <li><script type="c-bash">git reset <h>[--hard]</h> <h>$REF</h></script> : <b>déplace</b> <script type="c-bash"><h>HEAD</h></script> (ainsi que la branche courante) sur <script type="c-bash"><h>$REF</h></script>, vide l'index.
+            <ul>
+                <li><script type="c-bash">--hard</script> : mettre aussi à jour le worktree.</li>
+            </ul>
+        </li>
+        <li><script type="c-bash">git revert <h>$REF...</h></script> : crée un commit <b>annulant les commits</b> spécifiés.</li>
+    </ul>
+</div>
+
+<div>💡 Vous pouvez éditer le dernier d'une branche avec <script type="c-bash">commit -amend</script>, permettant ainsi de lui ajouter/retirer un fichier.</div>
+
+<div>⚠ Si les commits ont déjà été poussé sur la branche distante, il ne faut <b>surtout pas</b> les <script type="c-bash">git reset</script> ! En effet, cela posera des problèmes de synchronisations avec la branche distante et les autres dépôts locaux. Dans ce cas, il vaut mieux utiliser <script type="c-bash">git revert</script> afin d'expliciter l'annulation des commits.</div>
+
+<h4>Le problème des secrets</h4>
+
+<div>Votre dépôt peut contenir des secrets (e.g. mots de passe, tokens, etc), qu'on ne souhaite évidemment pas divulguer sur le dépôt distant. Pour éviter cela on va ainsi regrouper ces secrets dans des fichiers dédiés, qu'on ajoutera au <script type="c-text">.gitignore</script> afin de s'assurer qu'ils ne soient pas inclus dans un commit.</div>
+
+<div>Ainsi, ces secrets devront être renseignés localement par chaque contributeur. Il est alors recommandé de fournir un squelette, afin de faciliter le remplissage de ces fichiers, e.g. :
+    <script type="c-text">
+    {
+        "user"    : "${USER}",
+        "password": "${PASSWORD}"
+    }
+    </script>
+</div>
+
+<div>⚠ Si vous poussez des secrets sur le dépôt distant, il convient de partir du principe qu'ils ne le sont plus, et de les changer (e.g. changer son mot de passe). Si vous souhaitez les faire disparaître du dépôt distant vous pouvez utiliser l'outil <script type="c-bash">git filter-repo</script>. Attention, cela ne supprimera pas les secrets sur les dépôts locaux, qui devront forcer la synchronisation pour se mettre à jour.
+</div>
+
+<h3>Déboguer</h3>
+
 - debug (?) - bisect/blame/grep (?) ~> collaboratif/branches (?)
 
 <h3>Config</h3>
 
+- alias/config
+
+git config --global push.autoSetupRemote true
+
+git config --global pull.rebase true
+
 note: git config --global advice.statusHints false
 git config --global alias.ac '!git add -A && git commit -m'
     + commit + submodules
+
+git config --global merge.tool vscode
+git config --global mergetool.vscode.cmd 'code --wait "$MERGED"'
+
+<h2>Outils connexes (?)</h2>
+
+<h3>Github</h3>
+
+- PR
+- Fork
+- Issues
+
+<todo>X</todo>
+
+
+- submodules
+
 </main>
     </body>
 </html>
