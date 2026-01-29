@@ -12,8 +12,6 @@
         <main>
             <h1>Gestionnaire de versions (Git)</h1>
 
-⚠ [Draft] Document en cours de rédaction.
-
 <h2>Introduction</h2>
 
 <h3>Motivation</h3>
@@ -103,19 +101,33 @@
 
 <h3>Exclusion de fichiers</h3>
 
-<todo>X</todo>
+<div>Certains fichiers ne doivent pas être ajoutés au dépôt, que ce soit des fichiers générés pour ne pas polluer le dépôt, ou des secrets pour des raisons de sécurité. Or <script type="c-bash">git add -A</script> ajoutera l'ensemble des fichiers du projet à l'index, et donc au futur commit.</div>
 
--> empêcher d'ajouter à l'index
--> structure du projet
--> motivation
-
-<div>Le fichier <script type="c-text">.gitignore</script> permet d'indiquer la liste des fichiers à ignorer, e.g. :
+<div>Pour éviter cela, on défini une liste de fichiers à ignorer grâce au fichier <script type="c-text">/.gitignore</script>, e.g. :
     <script type="c-text">
         /build/
         /dist/
         *.back
     </script>
-⚠ Toute modification de ce fichier n'est pris en compte qu'après son rajout à l'index.</div>
+⚠ Toute modification de ce fichier n'est pris en compte qu'après son rajout à l'index.
+</div>
+
+<div>Il est ainsi important de structurer correctement son projet, pas seulement pour mieux s'y retrouver, mais aussi pour clairement définir les fichiers et dossiers qui seront inclus aux commits. Par exemple :
+    <script type="c-bash">
+        📂 repo
+        ├── 📂 .git
+        ├── 📂 bench # [suivi] fichiers de benchmarks.
+        ├── 📂 build # [non-suivi] fichiers intermédiaires générés.
+        ├── 📂 dist  # [non-suivi] fichiers générés.
+        ├── 📂 docs  # [suivi] documentation.
+        ├── 📂 libs  # [non-suivi] dépendances.
+        ├── 📂 src   # [suivi] fichiers sources.
+        ├── 📂 tests # [suivi] fichiers de tests.
+        ├── 📂 tools # [suivi] scripts pour manipuler le projet.
+        └── 📄 .gitignore
+    </script>
+</div>
+
 
 <h3>Création du commit</h3>
 
