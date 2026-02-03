@@ -443,5 +443,9 @@ a[disabled] {
     pointer-events: none;
 }
 
+[unredacted] {
+    color: red;
+}
+
 
 /*# sourceMappingURL=index.css.map*/

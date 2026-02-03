@@ -442,6 +442,10 @@ a[disabled] {
     font-style: italic;
     pointer-events: none;
 }
+
+[unredacted] {
+    color: red;
+}
 @page {
     size: landscape;
 }

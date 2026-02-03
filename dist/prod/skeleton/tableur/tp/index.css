@@ -443,6 +443,10 @@ a[disabled] {
     pointer-events: none;
 }
 
+[unredacted] {
+    color: red;
+}
+
 .sheet_answer {
     display:flex;
 
