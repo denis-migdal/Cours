@@ -51,6 +51,8 @@
     - R4-10-VCOD:S4-VCOD Identité Numérique
         + CM:CM
             - CM1:CM1
+        + TP:TP
+            - TP1:TP1
         + DS:DS
             - cur:2024-2024
     - S5-07:S5 [SAÉ] Pentest, Hacking, et Renforcement
@@ -58,6 +60,7 @@
     - R4-01:S4 Automatisation et Test en Programmation
         + CM:CM
             - CM1:CM1
+            - CM2:CM2
         + DS:DS
             - cur:cur
     - R5-06-VCOD:S5-VCOD Developpement Logiciel

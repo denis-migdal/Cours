@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>CM2 (ATP)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render"></script>
+    </head>
+    <body>
+        <main>
+            <h1>Environnement de développement</h1>
+
+<div>Un <b>environnement de développement</b> est un ensemble d'outils, de processus, et de règles appliqués à un projet. Ils définissent la manière dont un projet est, e.g. :
+    <ul class="flex-3">
+        <li>structuré</li>
+        <li>construit, et exécuté</li>
+        <li>testé, et validé</li>
+        <li>intégré, et déployé</li>
+        <li>documenté</li>
+        <li>etc.</li>
+    </ul>
+</div>
+
+<div>Ainsi, avant toute étape de développement, il y a une étape pour convenir de l'environnement de développement du projet, puis le mettre en place. Cette étape correspond à l'<b>initialisation du projet</b>.</div>
+
+<div>C'est à cette étape qu'une version minimale du projet est créée, de sorte à valider le bon fonctionnement de l'environnement de développement. Le dépôt Git est ainsi créé avec divers scripts et outils permettant d'exécuter, tester, déployer, documenter, etc. le projet. À ce moment, le code du projet ne fait rien de plus que d'écrire "Hello World" dans la console, une page Web, ou une fenêtre graphique, dans le seul but de vérifier que l'environnement de développement est bien opérationnel.</div>
+
+<div>Ce n'est qu'une fois l'environnement de développement mis en place et validé, que la phase de développement pourra alors débuter.</div>
+
+<h2>La gestion des tâches</h2>
+
+<div>La gestion des tâches est un exemple de processus à définir dans l'environnement de développement. Il va de l'expression du besoin ou de la demande, à sa résolution finale.</div>
+
+<h3>Expression d'une demande</h3>
+
+<div>L'expression d'une demande peut se faire de manière plus ou moins formelle. Usuellement, elle va s'effectuer sous la forme d'un ticket (<i>issue</i>), afin d'en permettre le suivi. Il convient alors de définir les différents types de demandes ainsi que leur format, i.e. les informations nécessaires à leur résolution, e.g. :
+    <ul class="flex-3">
+        <li>déclaration d'incidents/bugs.</li>
+        <li>demande de support.</li>
+        <li>demande de fonctionnalité.</li>
+    </ul>
+</div>
+
+<div>Les informations demandées peuvent être, e.g. dans le cas d'une déclaration de bug, la version concernée du projet, les étapes pour reproduire le bug, le résultat obtenu, le résultat attendu, etc. Tout ce qui facilitera la compréhension ainsi que la résolution de la demande.</div>
+
+<div>Une fois la demande créée, elle est usuellement "triée" (<i>triage</i>) en l'associant à diverses catégories, e.g :
+    <ul>
+        <li>le <b>type</b> de la demande : e.g. <i>Bug</i>, <i>Regression</i>, <i>Suggestion</i>, <i>Feature Request</i>, etc. ;</li>
+        <li>le <b>domaine</b> de la demande : eg. <i>Domain: X</i></li>
+        <li>le <b>rejet</b> de la demande : e.g. <i>Won't Fix</i>, <i>Working as Intended</i>, <i>Not a Defect</i>, <i>Out of Scope</i>, <i>Duplicate</i> ;</li>
+        <li>l'<b>acceptation</b> de la demande : e.g. <i>Help Wanted</i>, <i>Planning</i>, <i>Milestone: X</i> ;</li>
+        <li>L'<b>impact</b>, la <b>priorité</b>, l'<b>effort</b> : e.g. <i>Impact: X</i>, <i>Priority: X</i>, <i>Effort: X</i>.</li>
+    </ul>
+</div>
+
+<h3>Planification de la demande</h3>
+
+<div>Une fois la demande acceptée, il convient d'en planifier la résolution. C'est à dire le moment où cette demande sera traitée, en fonction de la disponibilité des différentes ressources, des autres demandes en cours, et de leurs priorités/importances/impacts/efforts relatifs.</div>
+
+<div>La <b>feuille de route</b> (<i>roadmap</i>), défini les futures (sous-)étapes du projet appelées jalons (<i>milestone</i>). Ils peuvent être des :
+    <ul>
+        <li><b>jalons de version</b> : une future release du projet, ou une contrainte temporelle.</li>
+        <li><b>jalons d'évolution</b> : un ensemble cohérent de modifications du projet (e.g. bugfix, ajout de fonctionnalités, etc.).</li>
+    </ul>
+</div>
+
+<div>Les différentes demandes sont ainsi affectées à différentes personnes et jalons, ce qui définira qui les traitera et quand. La progression du projet peut ainsi être visualisée par le taux des demandes traitées au sein des différents jalons. Il est aussi possible de pondérer les demandes par une difficulté, temps estimé de traitement, etc. afin d'obtenir des taux de progression plus pertinents.</div>
+
+<h3>Traitement de la demande</h3>
+
+<div>Le processus de traitement d'une demande correspond usuellement à une succession d'étapes allant de la conception de la solution à sa validation finale, passant par son implémentation, vérification, intégration, déploiement, documentation, etc. Ces différentes étapes doivent être explicitées à la fois pour avoir un processus clair que les différents développeurs puissent suivre, mais aussi afin de pouvoir suivre l'évolution de chaque demande.</div>
+
+<div>À cette fin, on utilise généralement le <b>Kanban</b>, un tableau composé de plusieurs colonnes correspondant aux différentes étapes de résolutions d'une demande, sur lesquelles ont déplace des posts-its correspondant chacun à une demande différente. Cela permet ainsi d'obtenir visuellement la progression des différentes demandes au sein du projet.</div>
+
+<h2>Documenter</h2>
+
+<div>La mémoire humaine est peu fiable (e.g. altérations, oublis), et difficile à transmettre proprement (e.g. déformations, incomplétudes). Le départ d'un collaborateur peut alors provoquer des pertes d'informations, et l'arrivée d'un nouveau nécessite la mobilisation de ressources afin de le former.</div>
+
+<div>Documenter fixe les informations par écrit, permettant de les formaliser, conserver, et les transmettre. La transmission en est aussi bien moins coûteuse, nécessitant simplement de l'écrire, au lieu d'avoir à la répéter à toute personne qui en aurait l'utilité.</div>
+
+<div>On peut distinguer 4 types de documentations dans le cadre d'un projet :
+    <ul>
+        <li>la documentation du <b>dépôt</b> : les informations essentielles, sous forme de fichiers Markdown, e.g. README.md, INSTALL.md, CONTRIBUTING.md, LICENCE.md, ROADMAP.md, CHANGELOGS.md.</li>
+        <li>la documentation <b>API</b> : décrit les API, générés automatiquement e.g. avec Sphinx, Doxygen, etc.</li>
+        <li>la documentation <b>développeur</b> : indique comment bien utiliser les API.</li>
+        <li>la documentation <b>utilisateur</b> : renseigne sur la manière d'utiliser le projet.</li>
+    </ul>
+</div>
+
+<div>💡 Les tickets/issues ainsi que les commits sont aussi une forme d'informations. Afin de faciliter le suivi, il est d'usage de référencer, dans un commit, les issues qu'il adresse.</div>
+
+<h3>Markdown</h3>
+
+<todo>Expliquer format.</todo>
+
+<div>⚠ Bien qu'il soit possible d'ajouter des balises HTML dans un fichier Markdown, cela s'accompagne de différentes limitations. Il est ainsi bien souvent préférable d'écrire la documentation directement directement en HTML.</div>
+
+<h3>Documentation du code</h3>
+
+<div>La documentation API liste et décrit les possibilités de l'API (classes, méthodes, etc). La documentation développeur donne des recommendations, et indique la <i>bonne</i> manière de faire pour un objectif précis. Par exemple, une documentation développeur indiquera, sous la forme de pseudo-tutoriels, comment créer, configurer, et ajouter un élément. Une documentation API listera les méthodes des différentes interfaces (e.g. <script type="c-text">Node</script>, <script type="c-text">Element</script>, <script type="c-text">HTMLElement</script>). La documentation API se focalise donc sur le <i>contenu</i> des API, quand la documentation développeur s'intéresse à leur <i>bonne utilisation</i>.</div>
+
+<div>⚠ Les commentaires au sein du code ne doivent pas être une répétition du code, ils doivent être utilisés soit pour indiquer une nuance importante, pour référencer un issue, ou pour générer la documentation API.</div>
+
+<h2>Automatisation</h2>
+
+<div>Les différentes opérations (e.g. déployer, exécuter) doivent être partageables et reproductibles. Les différents processus doivent respecter et forcer les conventions définies au sein de l'équipe.</div>
+
+<div>Automatiser les différentes opérations et processus permet de résoudre ces problèmes. Par exemple un simple script peut permettre d'effectuer simplement une opération complexe, s'assurant aussi de l'homogénéité de l'opération au sein de l'équipe. Cette automatisation peut être de 4 natures :
+    <ul>
+        <li><b>manuelle</b> : s'exécute manuellement.</li>
+        <li><b>réactive</b> : s'exécute automatiquement suite à un événement.</li>
+        <li><b>périodique</b> : s'exécute à interval régulier.</li>
+        <li><b>procédurale</b> : l'outil nous guide à travers une liste d'étapes.</li>
+    </ul>
+</div>
+
+<h3>Scripts</h3>
+
+<div>Les scripts permettent de définir une successions d'opérations dans un fichier. Ils peuvent être exécutés manuellement ou par un service donné.</div>
+
+<div>Par exemple, un script peut lancer un programme Python en définissant <script type="c-shell">PYTHONPYCACHEPREFIX</script> afin de s'assurer que les dossiers <script type="c-text">__pycache__</script> ne polluent pas le dossier <script type="c-text">src/</script> du dépôt.</div>
+
+<h3>Réactivité</h3>
+
+<div>La réactivité consiste à réagir à un événement en exécutant un script donné. Ces événements peuvent être de différentes natures et origines. Par exemple, des événements de modifications sur le système de fichier, des événements liés au dépôt Git/Github, etc.</div>
+
+<div>Par exemple live server sur VSCode, ou <script type="c-text">localserve <h>$DIR</h></script> permettent de lancer un site Web qui servira les fichiers du dossiers indiqué, et se mettra à jour à chaque modification de ces fichiers.</div>
+
+<div>Beaucoup de commandes de développement intègre un <b>watch mode</b>, qui permet d'effectuer l'action donnée à chaque modifications, e.g. reconstruire le projet. Le <i>hot reload</i> consiste à mettre à jour un processus en cours d'exécution, sans l'arrêter.</div>
+
+<todo>Présenter ionotify/iowait ?</todo>
+
+<div>Pour Git, il est par exemple possible d'exécuter des scripts au début ou à la fin de certaines opérations (<i>hooks</i>), par exemple pour formatter les fichiers de code, s'assurer que les tests passent avant d'accepter le commit, etc.</div>
+
+<todo>Présenter git hooks</todo>
+git config core.hooksPath tools/git/hooks -> pour les versionner.
+Script du nom de l'évent (si plusieurs script principal aura pour rôle de les lancer).
+
+<div>💡 Github a son propre système, cf CI/CD, e.g. déployer sur un environnement de test ou de production dès que la branche associée reçoit des nouveaux commits.</div>
+
+<todo>Présenter CI/CD + docker ?</todo>
++ github pages + notion d'artefacts.
+
+<h3>Cron</h3>
+
+<todo>X</todo>
+
+E.g. nightly build / reports.
+
+<h3>Procédures</h3>
+
+<div>Issues: Templates / labels définis.</div>
+
+<div>Souvent des logiciels/interfaces ad hoc.</div>
+
+<h2>X</h2>
+
+<div>Fork + PR</div>
+
+<div>Somewhere droits d'accès ? e.g. commits signés ?</div>
+
+<div>
+    Règles
+
+conventions de code
+
+règles de nommage
+
+standards de documentation
+
+exigences de tests
+
+✅ Processus
+
+workflow Git (issues, branches, PR)
+
+revue de code
+
+cycle de validation (CI, tests)
+
+publication / release
+
+✅ Outils (mais comme moyens, pas comme finalité)
+
+IDE, extensions
+
+linters, formatters
+
+CI/CD
+
+scripts d’automatisation
+</div>
+
+        </main>
+    </body>
+</html>
