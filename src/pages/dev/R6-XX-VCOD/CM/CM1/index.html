@@ -57,14 +57,22 @@
 
 <todo>XX</todo>
 
-- exécution : heat/stack tools (JS)
-- benchs
-    - plusieurs fois (mean / max 0.95)
-    - petites mesures -> grosse variance possible.
-    - attention outside peut influencer perfs code benchmarqué
-- biais machine (RAM/CPU) + charge actuelle + batterie laptop
-
-- petits N => forme évolution => estimer grand N.
+<ul>
+    <li>Identifier fonction critiques : heat/stack tools (JS)</li>
+    <li>Jeu de donné petit + estimer la croissance (pas sur total données).</li>
+    <li>Micro-bench :
+        <ul>
+            <li>- petites mesures -> GROSSE variance possible.</li>
+            <li>- plusieurs fois (mean / max 0.95)</li>
+        </ul>
+    </li>
+    <li>Pas réplicable :
+        <ul>
+            <li>- attention outside peut influencer perfs code benchmarqué</li>
+            <li>- biais machine (RAM/CPU) + charge CPU/RAM actuelle + batterie laptop</li>
+        </ul>
+    </li>
+</ul>
 
 <h2>Complexité algorithmique</h2>
 
@@ -324,6 +332,20 @@
 
 <h2>Parallélisme</h2>
 
+<todo></todo>
+
+<ul>
+    <li>CPU (pseudo //)</li>
+    <li>async / pull</li>
+    <li>thread/process / partages [mem + atomics] et locks (synchr => peut être très coûteux, plus que monothread)</li>
+    <li>GPU</li>
+    <li>Cluster (coût com => filtrer/réduire avant de transmettre => MapReduce)</li>
+</ul>
+
+<div>- Pipeline vs // sur data diff.</div>
+
+<div>- Idéalement, faire en sorte qu'il n'y ai qu'un seul writer/producteur pour éviter de bloquer. Read/consommer : cache / invalidée quand écriture finie (très rapide).</div>
+
 <h2>Programmation Orientée Données (DOP)</h2>
 
 <div>Jusqu'à présent nous avons surtout évoqué les algorithmes et opérations qui sont exécutées. Cependant, les calculs, ce sont aussi et surtout des données qu'il faut amener au processeur.</div>
@@ -505,7 +527,155 @@
 
 <div>💡 Cela est notamment utilisé dans les API Web, pour ne transmettre que les informations demandées. Certaines bases de données SQL permettent aussi un stockage en colonnes (<i>column-oriented</i>). On peut aussi l'utiliser pour stocker des données dans des fichiers, tout en permettant d'aisément ajouter et retirer des attributs, sans impacter l'ensemble du système.</div>
 
+<h4>Traiter par lots</h4>
+
+<div>Optimiser le cache ne consiste pas uniquement à faire tenir les données dans le cache, mais aussi d'éviter d'avoir constamment besoin de données différentes. Ce qui reviendrait à modifier constamment le cache. Donc d'exécuter ensemble les traitements qui se font sur les mêmes données.</div>
+
+<div>En programmation parallèle, cela revient à découper les traitements et les données en ensembles indépendants qui seront chacun traités par une unité d'exécution. Cela permet ainsi de diminuer les dépendances et partages, réduisant les blocages et synchronisations.</div>
+
+<div>Le code assembleur étant lui-même des données, on va donc souvent préférer les traitements par lots, i.e. exécuter le traitement sur un ensemble de données. Cela permet aussi d'avoir des étapes claires pendant l'exécution :
+    <div class="flex-2">
+        <script type="c-ts">
+            onUserChange( () => {
+                move  (users[i].pos)
+                update(users[i].state)
+                print (users[i].pos, users[i].state)
+            });
+        </script>
+        <script type="c-ts">
+            beforeFrameUpdate( () => {
+                moveAll  (users.pos);
+                updateAll(users.states);
+                printAll (users.pos, users.states);
+            });
+        </script>
+    </div>
+</div>
+
+<div>Dans l'OO, les méthodes sont usuellement stockées avec les attributs. Le DOP va alors préférer séparer les deux. C'est à dire d'avoir des structures de données brutes d'un côté, et des fonctions helpers de l'autre, qui permettront la manipulation des données. Évitant ainsi de charger en cache des méthodes qui ne sont pas utilisées par le traitement. Attention cependant, si les données sont mutables, et sans les méthodes pour en contrôler l'accès, leur cohérence n'est alors plus garantie.</div>
+
 <h3>Éviter les allocations et copies</h3>
+
+<div>Certaines opérations sont coûteuses comme les allocations et les copies. On va donc vouloir minimiser ces opérations.</div>
+
+<div>Sur des systèmes réactifs, on va potentiellement attendre que le système se stabilise (e.g. debounce), avant d'exécuter les opérations coûteuses (e.g. calculs). On peut aussi effectuer des calculs "à la demande", c'est à dire ne calculer la valeur que si elle est utilisée (puis sera mise en cache).</div>
+
+
+
+<h4>Les copies</h4>
+
+<div>Pour les copies, elle peut se faire dans les caches CPU au double du coût d'accès. Pour des volumes plus importants, le DMA (<i>Direct Memory Access</i>) est souvent utilisé. Il permet au CPU d'envoyer une source, destination, et taille, aux supports de stockage qui se chargeront de la copie (e.g. RAM vers RAM, Disque vers Disque, RAM vers Disque, Disque vers RAM, etc.).</div>
+
+<div>En soit, envoyer cette instruction ne prend que très peu de cycles CPU, qui peut alors effectuer d'autres traitements en parallèle. Cependant, son traitement prendra bien plus de temps, et dépendra des vitesses de lecture/écriture des supports (et de la bande passante du bus). D'où l'intérêt d'utiliser des opérations d'I/O asynchrones, afin de pouvoir continuer ses traitements sans attendre que l'opération (lecture, écriture, ou copie) ne se termine.</div>
+
+<h4>Les allocations</h4>
+
+<div>Pour les allocations mémoire, on distingue les allocations :
+    <ul>
+        <li><b>statiques</b>, sur la pile : pour les variables temporaires/locales, très rapide (~1 cycle)</li>
+        <li><b>dynamiques</b>, sur le tas : pour les variables "persistantes", dont le coût varie grandement :
+            <ul>
+                <li>~100 cycles si bloc libre trouvé dans le fastbin (~cache de blocs).</li>
+                <li>~1 000 cycles s'il doit rechercher un bloc libre.</li>
+                <li>~10 000 cycles si doit demander plus de mémoire à l'OS.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div>La désallocation est gratuite pour les allocations statiques. En revanche, pour les allocations dynamiques, elle coûte presque autant que l'allocation. À noter que les allocations statiques sont contigus en mémoire, alors que les allocations dynamiques peuvent allouer des blocs n'importe où dans la RAM. Bref, on souhaite éviter autant que possible des allocations dynamiques.</div>
+
+<div>⚠ On évite ainsi autant que possible les allocations dans les boucles, par comme les iterators JavaScript qui créent un nouvel objet inutile à chaque itérations, plombant les performances (~ 6,5x plus lent).</div>
+
+<div>💡 À son chargement, un programme va usuellement demander à l'OS une certaine quantité de mémoire. Il est alors possible, en connaissant la consommation mémoire du programme, de le configurer pour qu'il demande une quantité suffisante pour ne pas avoir à en redemander à l'OS par la suite.</div>
+
+<div>💡 Lors d'un traitement, il est possible d'effectuer l'ensemble des allocations (et désallocations) de ressources en une fois. Pour les ressources mémoire, on utilise alors des <i>arena allocators</i> qui allouera l'ensemble de l'espace mémoire nécessaire au début du traitement, puis le libérera à la fins. Cela facilite alors grandement la gestion de la mémoire, et évite les fuites mémoires.</div>
+
+<h4>Les clones</h4>
+
+<div>Cloner un objet coûte usuellement une allocation et une copie. On veut donc les éviter.</div>
+
+<div>On distingue deux types d'objets :
+    <ul>
+        <li>à <b>sémantique de valeurs</b>: e.g. un nombre, qui est égal à tous les autres objets ayant la même valeur.</li>
+        <li>à <b>sémantique d'entité</b>: e.g. un utilisateur, qui n'est égal qu'à lui-même.</li>
+    </ul>
+</div>
+
+<div>Les objets à <i>sémantique de valeurs</i> doivent être constantes, car toutes modifications changent sa valeur. Si on veut créer une valeur dérivée, il faudra alors créer une nouvelle instance. Ces objets sont transmis par pointeur/référence (ou par copie si plus petit qu'un pointeur - 8 octets), ce qui permet, autant que possible, de réutiliser la même instance pour une même valeur. Cloner l'objet n'a ici aucune utilité.</div>
+
+<div>Les objets à <i>sémantique d'entités</i> peuvent être mutables, toutes modifications changent uniquement ses propriétés, pas son identité. Par exemple, je peux changer mon numéro de téléphone, cela ne change pas qui je suis. En revanche, chaque objet est unique, identité par son adresse mémoire, et ne peut (<i>en théorie</i>) pas avoir de "copie" : un nouvel objet étant une nouvelle entité. Ces objets sont transmis par pointeur/référence, car on doit partager la même instance pour une même entité.</div>
+
+<div>Il est cependant toujours possible de cloner une entité, créant alors une autre entité. Ou de la copier pour produire un objet à sémantique de valeur. Par exemple copier la liste des notes des 3A (entité) pour obtenir une liste de notes (valeur), e.g. pour éviter que la liste (niveau entité) ne soit modifiée au cours de son traitement (niveau valeur).</div>
+
+<div>Le <i>copy-on-write</i>, permet alors d'éviter les copies inutiles tant que les données ne sont pas modifiées. Le principe est alors très simple : on sépare l'entité de ses données. Lors d'un clone, les données sont alors partagées (sans copies donc) entre plusieurs entités. Lorsqu'une entité veut modifier ses valeurs, les données sont clonées (si partagées avec d'autres entités) avant d'être modifiées.</div>
+
+<todo>IMG</todo>
+
+<h3>Structures de données</h3>
+
+<h4>Les tableaux</h4>
+
+<div>Il existe quelques astuces pour éviter les allocations et copies inutiles dans les tableaux.</div>
+
+<div>Pour <b>filtrer</b> (ou copier): allouer un tableau de la même taille que celui d'origine, ajouter les éléments, puis réduire :
+    <script type="c-ts">
+        // filtrer :
+        const res = new Array(a.length);
+        let off = 0;
+        for(let i = 0; i < a.length; ++i)
+            if( filter(a[i]) )
+                res[off++] = a[i];
+        res.length = off;
+    </script>
+</div>
+
+<div>Pour <b>supprimer</b> (in place):
+    <ul>
+        <li>si l'ordre n'a pas d'incidence : me</li>
+        <li>si seq : déplacer (~= filter inplace)</li>
+        <li>si non seq : marquer pour supr.</li>
+    </ul>
+</div>
+
+<ul>
+    <li>+ N-Dim -> 1Dim [+ parcours]</li>
+</ul>
+
++ pre-alloc vs x2 strat array.
+
+<h4>Buffers</h4>
+
+<ul>
+    <li>=> qu'est-ce qu'un buffer ?</li>
+    <li>circular (FIFO) / pile (LIFO) / dble buffer</li>
+    <li>sync 1 écrivain opti / sauf pile.</li>
+</ul>
+
+<h4>Sparse Array</h4>
+
+<ul>
+    <li>+ dense (tableau idx) + (tableau data - can be moved - last delete, change correspondance).</li>
+</ul>
+
+<h4>Graphes</h4>
+
+<div>Allocation peut être un (ou plusieurs) tableaux, cf sparse, et pointer dessus.</div>
+
+<div>E.g. graphe binaire équilibré. => search binaire + rapide / modifications + compliqué...</div>
+
+<h4>SoA</h4>
+
+<ul>
+    <li>Strats, on a vu struct d'array, mais d'autres strats.</li>
+    <li>Éviter un objet "noeud" qui contient méta-data.</li>
+    <li>flags => séparer en plusieurs array</li>
+    <li>ou un array avec les props à côté.</li>
+</ul>
+
+<h4>Pool</h4>
+
+<div>Réutiliser</div>
 
         </main>
     </body>
