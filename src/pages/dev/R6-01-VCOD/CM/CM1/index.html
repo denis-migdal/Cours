@@ -335,9 +335,10 @@
 <todo></todo>
 
 <ul>
+    <li>Unité d'exécution</li>
     <li>CPU (pseudo //)</li>
-    <li>async / pull</li>
-    <li>thread/process / partages [mem + atomics] et locks (synchr => peut être très coûteux, plus que monothread)</li>
+    <li>async</li>
+    <li>thread/process / partages [mem + atomics] et locks (synchr => peut être très coûteux, plus que monothread) + critical code</li>
     <li>GPU</li>
     <li>Cluster (coût com => filtrer/réduire avant de transmettre => MapReduce)</li>
 </ul>
@@ -467,6 +468,8 @@
         </script>
     </div>
 </div>
+
+<todo>IMG</todo>
 
 <div>Les <i>bitmap</i> sont un cas particulier de bitfields ou chaque bit représente l'état d'une entité différente. Par exemple la disponibilité (1) ou non (0) d'une ressource :
     <div class="flex-2">
@@ -634,15 +637,16 @@
     <ul>
         <li>si l'ordre n'a pas d'incidence : me</li>
         <li>si seq : déplacer (~= filter inplace)</li>
-        <li>si non seq : marquer pour supr.</li>
+        <li>si non seq : marquer pour supr ou NOOP (compact before parcours).</li>
     </ul>
 </div>
 
 <ul>
-    <li>+ N-Dim -> 1Dim [+ parcours]</li>
+    <li>Transformer un tableau N-Dim en 1-Dim en jouant sur les idx (calc rapide)</li>
+    <li>Parcours => données continue => Dim la plus faible.</li>
 </ul>
 
-+ pre-alloc vs x2 strat array.
+<div>Array alloue x2 sa taille lorsque se réalloue (+ copies).</div>
 
 <h4>Buffers</h4>
 
@@ -652,15 +656,27 @@
     <li>sync 1 écrivain opti / sauf pile.</li>
 </ul>
 
-<h4>Sparse Array</h4>
+<div>dble buffer : flip</div>
+<div>Array circulaire => modulo</div>
+
+<todo>IMG</todo>
+
+<h4>Sparse Array / index indirections</h4>
 
 <ul>
+    <li>Move without copy</li>
+    <li>copy elements by dupl ptr</li>
+    <li>remove => idx free elements at the end ?</li>
     <li>+ dense (tableau idx) + (tableau data - can be moved - last delete, change correspondance).</li>
+    <li>parcours</li>
 </ul>
 
 <h4>Graphes</h4>
 
 <div>Allocation peut être un (ou plusieurs) tableaux, cf sparse, et pointer dessus.</div>
+
+<div>Ajouter/Supprimer => oresque comme sur une liste chaînée.</div>
+<div>Astuce : sous-tableaux de tailles fixes => calc avec idx au lieu de parcourir. ~> presque le principe d'une hash map.</div>
 
 <div>E.g. graphe binaire équilibré. => search binaire + rapide / modifications + compliqué...</div>
 
@@ -676,6 +692,11 @@
 <h4>Pool</h4>
 
 <div>Réutiliser</div>
+<div>Au lieu de désaouller mettre dans pool pour réutiliser ensuite.</div>
+
+<h4>Views</h4>
+
+<div>Et les view... => pas copié, mais un intermédiaire (taille diff ou transformé).</div>
 
         </main>
     </body>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>ATP (cheat sheet)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link   href="/skeleton/index.css"  rel="stylesheet">
+        <script  src="/skeleton/index.js"  type="module"     blocking="render"></script>
+    </head>
+    <body>
+        <main>
+            <h1>Cheat sheet</h1>
+
+            <style>
+                h4 {
+                    font-size: medium;
+                }
+                h5 {
+                    font-size: medium;
+                    font-style: italic;
+                    margin-top: 1rem;
+                    margin-bottom: 1rem;
+                }
+            </style>
+
+<h2>Composition</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Entrée</th>
+            <th>Sortie</th>
+            <th>Erreur</th>
+            <th>Sortie+Erreur</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Commande</th>
+            <td colspan="2" style="text-align: center;"><script type="c-bash">cmd1 | cmd2</script></td>
+            <td><script type="c-bash">cmd1 2> >(cmd2)</script></td>
+            <td><script type="c-bash">cmd1 |& cmd2</script></td>
+        </tr>
+        <tr>
+            <th>Fichier (<i>écrasement</i>)</th>
+            <td><script type="c-bash">cmd < file</script></td>
+            <td><script type="c-bash">cmd > file</script></td>
+            <td><script type="c-bash">cmd 2> file</script></td>
+            <td><script type="c-bash">cmd &> file</script></td>
+        </tr>
+        <tr>
+            <th>Fichier (<i>concaténation</i>)</th>
+            <td>NA</td>
+            <td><script type="c-bash">cmd >> file</script></td>
+            <td><script type="c-bash">cmd 2>> file</script></td>
+            <td><script type="c-bash">cmd &>> file</script></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="flex-2">
+    <div>
+        <center><script type="c-bash"><<<</script> herestring (<i>here string</i>) :</center>
+        <script type="c-bash">
+            cmd1 <<< <h>$STR</h>
+        </script>
+    </div>
+    <div>
+        <center><script type="c-bash"><<</script> heredoc (<i>here <u>doc</u>ument</i>), si multiligne :</center>
+        <script type="c-bash">
+            cmd1 <<-<h>EOF</h>
+                <h>$CONTENT</h>
+            <h>EOF</h>
+        </script>
+    </div>
+</div>
+
+<ul class="flex-2">
+    <li><script type="c-bash">mkfifo <h>$FILE</h></script> : tube nommé.</li>
+    <li><script type="c-bash">mktemp <h>[-d]</h> <h>[$FILE_PATTERN]</h></script> : fichier unique.</li>
+</ul>
+
+<ul class="flex-3">
+    <li><script type="c-text">/dev/zero</script> : infinité de 0.</li>
+    <li><script type="c-text">/dev/urandom</script> : infinité d'aléas.</li>
+    <li><script type="c-text">/dev/null</script> : ignorer.</li>
+</ul>
+
+<ul class="flex-2">
+    <li><script type="c-bash">{ <h>$CMD_LINE</h> }</script> : comme une commande (same shell).</li>
+    <li><script type="c-bash">( <h>$CMD_LINE</h> )</script> : comme une commande (new shell).</li>
+    <li><script type="c-bash"><( <h>$CMD_LINE</h> )</script> : sortie comme fichier.</li>
+    <li><script type="c-bash">$( <h>$CMD_LINE</h> )</script> : sortie comme string.</li>
+    <li><script type="c-bash">>( <h>$CMD_LINE</h> )</script> : entrée comme fichier.</li>
+    <li><script type="c-bash">$(( <h>$CALC</h> ))</script> : calcul arithmétique.</li>
+</ul>
+
+<ul class="flex-4">
+    <li style="grid-column: span 2"><script type="c-bash">exit <h>[$CODE]</h></script> / <script type="c-py">sys.exit(<h>[$CODE]</h>)</script></li>
+    <li><script type="c-bash">errno <h>$CODE</h></script> : sens.</li>
+    <li><script type="c-bash">errno -l</script> : lister les codes.</li>
+</ul>
+<ul class="flex-4">
+    <li><script type="c-bash">cmd1 ; cmd2</script></li>
+    <li><script type="c-bash">cmd1 && cmd2</script></li>
+    <li><script type="c-bash">cmd1 || cmd2</script></li>
+    <li><script type="c-bash">cmd && ok || nok</script></li>
+</ul>
+
+        </main>
+    </body>
+</html>

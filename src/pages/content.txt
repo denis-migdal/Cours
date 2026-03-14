@@ -61,6 +61,8 @@
         + CM:CM
             - CM1:CM1
             - CM2:CM2
+            - CM3:CM3
+        - cheat:Cheat Sheet
         + DS:DS
             - cur:cur
     - R5-06-VCOD:S5-VCOD Developpement Logiciel
@@ -87,7 +89,7 @@
             - DP:Design Patterns
         + DS:DS
             - cur:2024-2024
-    + R6-XX-VCOD:S6-VCOD Optimisation
+    + R6-01-VCOD:S6-VCOD Optimisation
         + CM:CM
             - CM1:CM1
 --

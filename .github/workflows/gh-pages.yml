@@ -12,7 +12,7 @@ on:
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
-  pages: write
+  pages   : write
   id-token: write
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
@@ -22,26 +22,37 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+  build:
+    runs-on : ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Restore Timestamps
-        uses: chetan/git-restore-mtime-action@v2
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - run : |
+          npm install
+          npm run build-prod
+      - uses: actions/upload-artifact@v3
+        with:
+          name: prod
+          path: './dist/prod'
+  deploy:
+    needs      : build
+    runs-on    : ubuntu-latest
+    environment:
+      name: github-pages
+      # url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      #- name: Restore Timestamps
+      #  uses: chetan/git-restore-mtime-action@v2
+      - uses: actions/download-artifact@v3
+        with:
+          name: prod
+          path: './dist/prod/'
+      # Upload github-pages (3 steps)
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
           path: './dist/prod/'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
+      # peut-être besoin id deployement ?
