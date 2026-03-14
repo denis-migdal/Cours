@@ -1,1 +1,0 @@
-{"version":3,"file":"tools/index.js","mappings":"iFAAe,G","sources":["webpack://Cours/./src/pages/tools/index.html"],"sourcesContent":["export default __webpack_public_path__ + \"tools/index.html\";"],"names":[],"sourceRoot":""}
