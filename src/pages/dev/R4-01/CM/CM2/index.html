@@ -149,6 +149,64 @@ Script du nom de l'évent (si plusieurs script principal aura pour rôle de les 
 <todo>Présenter CI/CD + docker ?</todo>
 + github pages + notion d'artefacts.
 
+<todo>Add yml</todo>
+
+Indetation = hiérarchie + "-" élément d'une liste.
+
+Indiquer quand exécuter le yml.
+<script type="c-text">
+on: push
+</script>
+
+Indiquer les branches + autoriser exec manuelle
+<script type="c-text">
+on:
+    push:
+        branches:
+            - master
+    workflow_dispatch:
+</script>
+
+<script type="c-text">
+jobs:
+  <h>$JOB_NAME</h>:
+    runs-on : ubuntu-latest # image
+    steps:
+      - run: <h>$CMDLINE</h> # commande shell.
+      - run : |              # idem, multi-ligne
+          <h>$CMDLINE_1</h>
+          <h>$CMDLINE_1</h>
+      - uses: <h>$ACTION_NAME</h> # actions pré-définie
+      - uses: <h>$ACTION_NAME</h>
+        - with:                   # avec paramètres
+            <h>$KEY</h>: <h>$VALUE</h>
+</script>
+
+<todo>Expliquer actions => @ = versionning</todo>
+
+Créer ses propres actions (lien fichier)
+    => inputs (pour with)
+    => composite (ensemble d'actions)
+    => Python avec run + ${{ inputs.XXX }}
+    => conteneur docker
+<div>
+name: "My Action"
+description: "Example composite action"
+
+inputs:
+  message:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - run: echo "${{ inputs.message }}"
+      shell: bash
+</div>
+
+<todo>github pages (cf yml)</todo>
+<todo>pull request / issues aussi possible.</todo>
+
 <h3>Cron</h3>
 
 <todo>X</todo>

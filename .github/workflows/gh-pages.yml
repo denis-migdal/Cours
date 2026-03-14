@@ -1,13 +1,13 @@
 # Simple workflow for deploying static content to GitHub Pages
 name: Deploy static content to Pages
 
+# Runs on pushes targeting the default branch
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["V3.1"]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches:
+      - V3.1
   workflow_dispatch:
+  
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
