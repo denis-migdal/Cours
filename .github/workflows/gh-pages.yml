@@ -31,7 +31,7 @@ jobs:
       - run : |
           npm install
           npm run build-prod
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: prod
           path: './dist/prod'
@@ -44,7 +44,7 @@ jobs:
     steps:
       #- name: Restore Timestamps
       #  uses: chetan/git-restore-mtime-action@v2
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: prod
           path: './dist/prod/'
