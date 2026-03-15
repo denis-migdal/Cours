@@ -93,12 +93,7 @@
         + CM:CM
             - CM1:CM1
 --
-- tools:🛠 Outils
-    - https://github.com/denis-migdal/Linux-VM-Installer:LVMI
-- bib:📚 Bibliothèques
-    - https://liss.migdal.ovh/:LISS
-    - https://vshs.migdal.ovh/:VSHS
-    - https://chartshtml.migdal.ovh/:ChartsHTML
+- https://github.com/denis-migdal-ShellTools:🛠 Outils Shell
 --
 - bdd:⛁ Bases de données (old)
     - R1-01:Tableur et Reporting

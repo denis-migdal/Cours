@@ -107,28 +107,38 @@
 
 <h2>Automatisation</h2>
 
-<todo>Next CM ? => en échange, plus de détails sur outils ? ou à cheval sur les 2 CM ?</todo>
-
-<todo>E.g. docker ici ?</todo>
-
 <div>Les différentes opérations (e.g. déployer, exécuter) doivent être partageables et reproductibles. Les différents processus doivent respecter et forcer les conventions définies au sein de l'équipe.</div>
 
-<div>Automatiser les différentes opérations et processus permet de résoudre ces problèmes. Par exemple un simple script peut permettre d'effectuer simplement une opération complexe, s'assurant aussi de l'homogénéité de l'opération au sein de l'équipe. Cette automatisation peut être de 4 natures :
-    <ul>
-        <li><b>manuelle</b> : s'exécute manuellement.</li>
-        <li><b>réactive</b> : s'exécute automatiquement suite à un événement.</li>
+<div>Automatiser les différentes opérations et processus permet de résoudre (en partie) ces problèmes. Par exemple un simple script permet d'effectuer simplement une série d'opérations complexes, tout en garantissant une exécution homogène au sein de l'équipe. Cette automatisation peut être de 4 natures :
+    <ul class="flex-2">
+        <li><b>manuelle</b> : exécuté manuellement.</li>
+        <li><b>réactive</b> : s'exécute suite à un événement.</li>
         <li><b>périodique</b> : s'exécute à interval régulier.</li>
-        <li><b>procédurale</b> : l'outil nous guide à travers une liste d'étapes.</li>
+        <li><b>procédurale</b> : guide à travers une liste d'étapes.</li>
     </ul>
 </div>
 
-<h3>Scripts</h3>
+<h3>Manuelle</h3>
 
-<div>Les scripts permettent de définir une successions d'opérations dans un fichier. Ils peuvent être exécutés manuellement ou par un service donné.</div>
+<div>Les scripts permettent de regrouper, au sein d'un fichier, une successions d'opérations, pouvant ensuite être exécutés. Comme ce sont des fichiers, ils peuvent aisément être diffusés au sein d'une équipe, e.g. par le biais d'un dépôt Git. Ces scripts peuvent être locaux à un projet, e.g. dans un dossier <script type="c-text">/scripts/</script> du dépôt, ou réutilisés à travers plusieurs projets, e.g. regroupés dans un dépôt dédié.</div>
 
-<div>Par exemple, un script peut lancer un programme Python en définissant <script type="c-shell">PYTHONPYCACHEPREFIX</script> afin de s'assurer que les dossiers <script type="c-text">__pycache__</script> ne polluent pas le dossier <script type="c-text">src/</script> du dépôt.</div>
+<div>Par exemple, un script peut lancer un programme Python en fixant une série de paramètres, de sorte à ce que l'ensemble de l'équipe l'exécute de la même manière. Il peut ainsi servir à, e.g. définir <script type="c-shell">PYTHONPYCACHEPREFIX</script> afin d'éviter que les dossiers <script type="c-text">__pycache__</script> ne polluent le dossier <script type="c-text">src/</script> du dépôt.</div>
 
-<h3>Réactivité</h3>
+<div>Les scripts ou lignes de commandes peuvent alors être appelés directement,  par le biais d'alias (e.g. Shell, Git), mais aussi via des lanceurs ou raccourcis claviers. Un <b>lanceur</b> s'affiche dans la liste de vos applications, et possède quelques informations descriptives, dont une icône. Ils sont définis par un fichier dans :
+    <ul class="flex-2">
+        <li><script type="c-text">/usr/<h>[local/]</h>share/applications/</script></li>
+        <li><script type="c-text">~/.local/share/applications/</script></li>
+    </ul>
+    <script type="c-text">
+        [Desktop Entry]
+        Name=<h>$NAME</h>
+        Icon=<h>$PATH</h>.svg
+        Exec=<h>$CMD_LINE</h>
+        Type=Application
+    </script>
+</div>
+
+<h3>Réactive</h3>
 
 <div>La réactivité consiste à réagir à un événement en exécutant un script donné. Ces événements peuvent être de différentes natures et origines. Par exemple, des événements de modifications sur le système de fichier, des événements liés au dépôt Git/Github, etc.</div>
 
@@ -137,6 +147,23 @@
 <div>Beaucoup de commandes de développement intègre un <b>watch mode</b>, qui permet d'effectuer l'action donnée à chaque modifications, e.g. reconstruire le projet. Le <i>hot reload</i> consiste à mettre à jour un processus en cours d'exécution, sans l'arrêter.</div>
 
 <todo>Présenter ionotify/iowait ?</todo>
+
+<script type="c-bash">
+    OUT_FORMAT=$'%T\t%w\t%e\t%f'    # TIME WATCHED EVENTS FILE
+    ISO_FORMAT='%FT%H:%M:%S.%9N%:z' # 2000-01-01T01:01:01.000000000+01:00
+
+    inotifywait -q --monitor <h>$FILE</h> <h>[-r]</h>   \
+                <h>[--exclude $PATTERN]</h>      \
+                <h>[--include $PATTERN]</h>      \
+                <h>[--format  "$OUT_FORMAT"]</h> \
+                <h>[--timefmt "$ISO_FORMAT"]</h> |
+        while IFS=$'\t' read -r <h>TIME</h> <h>WATCHED</h> <h>EVENTS</h> <h>FILE</h>; do
+            <h>...</h>
+        done
+</script>
+
+-> Github...
+-> cf CM suivant pour comprendre.
 
 <div>Pour Git, il est par exemple possible d'exécuter des scripts au début ou à la fin de certaines opérations (<i>hooks</i>), par exemple pour formatter les fichiers de code, s'assurer que les tests passent avant d'accepter le commit, etc.</div>
 
@@ -206,7 +233,7 @@ runs:
       shell: bash
 </div>
 
-<todo>github pages (cf yml)</todo>
+<todo>github pages (cf yml) (github actions + custom domain)</todo>
 <todo>pull request / issues aussi possible.</todo>
 
 <h3>Cron</h3>
