@@ -140,27 +140,48 @@
 
 <h3>Réactive</h3>
 
-<div>La réactivité consiste à réagir à un événement en exécutant un script donné. Ces événements peuvent être de différentes natures et origines. Par exemple, des événements de modifications sur le système de fichier, des événements liés au dépôt Git/Github, etc.</div>
+<div>La réactivité consiste exécuté un code donné lorsqu'un événement associé survient. C'est le principe derrière la <i>programmation orientée événement</i> (<i>Event-Driven Programming</i>) en développement Web. À ne pas confondre avec la <i>programmation réactive</i> qui se base sur des systèmes de <i>signaux</i>, réagissant à des flux de données. Ces événements peuvent être de différentes natures et origines, e.g. des événements :
+    <ul>
+        <li>de modifications sur le système de fichier</li>
+        <li>liés au dépôt Git/Github</li>
+    </ul>
+</div>
 
-<div>Par exemple live server sur VSCode, ou <script type="c-text">localserve <h>$DIR</h></script> permettent de lancer un site Web qui servira les fichiers du dossiers indiqué, et se mettra à jour à chaque modification de ces fichiers.</div>
+<h4>Écouter le système de fichiers</h4>
 
-<div>Beaucoup de commandes de développement intègre un <b>watch mode</b>, qui permet d'effectuer l'action donnée à chaque modifications, e.g. reconstruire le projet. Le <i>hot reload</i> consiste à mettre à jour un processus en cours d'exécution, sans l'arrêter.</div>
+<div>Un exemple classique de réactivité, est d'exécuter du code lorsque les fichiers sont modifiés, e.g. une re-compiler, exécuter les tests, synchroniser de fichiers, etc. On distingue alors :
+    <ul>
+        <li>le <b><i>watch mode</i></b> : effectue une action donnée à chaque modifications, e.g. reconstruire le projet.</li>
+        <li>le <i><b>hot reload</b></i> met à jour un processus en cours d'exécution, sans l'arrêter.</li>
+    </ul>
+</div>
+
+<div>En développement Web, il est ainsi classique d'utiliser des outils comme <i>Live Server</i> sur VSCode, (ou la commande <script type="c-text">localserve <h>$DIR</h></script>) afin d'obtenir un site Web de développement dont les pages se rafraîchissent automatiquement à la modifications des fichiers.</div>
 
 <todo>Présenter ionotify/iowait ?</todo>
 
-<script type="c-bash">
-    OUT_FORMAT=$'%T\t%w\t%e\t%f'    # TIME WATCHED EVENTS FILE
-    ISO_FORMAT='%FT%H:%M:%S.%9N%:z' # 2000-01-01T01:01:01.000000000+01:00
+<div class="flex-2">
+    <script type="c-py">
+        from watchfiles import watch
 
-    inotifywait -q --monitor <h>$FILE</h> <h>[-r]</h>   \
-                <h>[--exclude $PATTERN]</h>      \
-                <h>[--include $PATTERN]</h>      \
-                <h>[--format  "$OUT_FORMAT"]</h> \
-                <h>[--timefmt "$ISO_FORMAT"]</h> |
-        while IFS=$'\t' read -r <h>TIME</h> <h>WATCHED</h> <h>EVENTS</h> <h>FILE</h>; do
-            <h>...</h>
-        done
-</script>
+        for changes in watch('<h>$DIR</h>'):
+            print(changes)
+    </script>
+    <div>
+        <script type="c-bash">
+            source watchfiles
+            
+            function process_change() {
+                <h>...</h>
+            }
+
+            watchfiles process_change <h>$DIR</h>
+        </script>
+        <div>💡 <a href="https://github.com/denis-migdal-ShellTools/StreamLib/blob/main/watchfiles" target="_blank"><script type="c-bash">watchfiles</script></a> est basé sur <script type="c-bash">inotifywait</script>.</div>
+    </div>
+</div>
+
+<h4>X</h4>
 
 -> Github...
 -> cf CM suivant pour comprendre.
@@ -237,6 +258,8 @@ runs:
 <todo>pull request / issues aussi possible.</todo>
 
 <h3>Cron</h3>
+
+=> strico sensus réactif, mais on fait la séparation.
 
 <todo>X</todo>
 

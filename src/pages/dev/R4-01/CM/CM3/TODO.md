@@ -1,0 +1,1 @@
+Shell : PS1 pour montrer nom dépo + current branch.

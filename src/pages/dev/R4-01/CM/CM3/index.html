@@ -201,6 +201,19 @@
     </script>
 </div>
 
+<div>⚠ Utilisez <script type="c-bash">quote</script> pour éviter les attaques par injections.
+    <script type="c-bash">
+        source quote
+
+        MSG=$( quote 'Hello World' )
+        python3 <<-EOF
+            print("${$MSG}")
+        EOF
+    </script>
+</div>
+
+<div>💡 <a href="https://github.com/denis-migdal-ShellTools/StreamLib/blob/main/quote" target="_blank"><script type="c-py">quote</script></a> est basé sur <script type="c-py">jq</script>.</div>
+
 <div>Pour exécuter des commandes Shell à partir de Python, un simple appel de fonction peut suffire. Cela permet d’effectuer des opérations d’administration système directement depuis Python.
 <script type="c-py">
     import shell_exec
@@ -212,7 +225,15 @@
 
 <div>💡 <a href="https://github.com/denis-migdal-ShellTools/shell_exec" target="_blank"><script type="c-py">shell_exec</script></a> est basé sur <script type="c-py">subprocess.run</script>. En fonction des besoins, il est possible de créer ses propres wrappers.</div>
 
-<div>⚠ Vous pouvez utiliser les f-string pour construire la ligne de commande, mais cela est dangereux si utilisé avec des données externes. En effet, il n'a pas de protections contre les injections.</div>
+<div>⚠ Utilisez <script type="c-py">shlex.quote</script> pour éviter les attaques par injections :
+    <script type="c-py">
+        import shell_exec
+        from shlex import quote
+
+        msg = "Hello 'World'"
+        shell_exec(f"echo {msg}")
+    </script>
+</div>
 
 <h3>Code de sortie</h3>
 
@@ -254,8 +275,6 @@
         </script>
     </div>
 </div>
-
-<div>💡 <script type="c-bash">IFS='' read -r <h>$VARNAME</h> <h>[-p $PROMPT]</h> <h>[-i $DEFAULT]</h> <h>[-s|-e]</h> <h>[-N 1]</h></script> lit une ligne de l'entrée standard, puis l'écrit dans la variable indiquée.</div>
 
 <div>⚠ Comme vous le savez, le Shell ré-interprète certains caractères. Par exemple, les espaces indiquent le début d'un nouvel argument. Pour éviter cela, il convient d'utiliser des guillements :
     <ul class="flex-2">
@@ -325,6 +344,26 @@
 
 <div>💡 <script type="c-bash">source</script> est notamment utilisé pour importer des bibliothèques Shell, initialisant des variables d'environnement, définissant des alias ou des fonctions, etc.</div>
 
+
+<h3>Lire l'entrée standard</h3>
+
+<div>La commande <script type="c-bash">read <h>$VARNAME</h> <h>[-p $PROMPT]</h> <h>[-i $DEFAULT]</h> <h>[-s|-e]</h></script> demande à l'utilisateur d'entrer une valeur qui sera ensuite stockée dans une variable (<script type="c-bash">-e</script> pour autoriser l'<u>é</u>dition, <script type="c-bash">-s</script> pour un <u>s</u>ecret). Cependant elle comporte de nombreux pièges.</div>
+
+<ul>
+    <li>Pour lire une <b>ligne brute</b> : <script type="c-bash">IFS='' read -r <h>$VARNAME</h></script> (<script type="c-bash">-r</script> ligne brute).</li>
+    <li>Pour lire un seul <b>caractère</b> : <script type="c-bash">IFS='' read -r <h>$VARNAME</h> -N 1</script>  (<script type="c-bash">-N</script> nombre de caractères à lire).</li>
+    <li>Pour lire <b>plusieurs valeurs</b> : <script type="c-bash">IFS='<h>$SEP</h>' read -r -a <h>$VARNAME</h></script> (<script type="c-bash">-a</script> produit un tableau).</li>
+    <li>Pour lire <b>plusieurs records</b> : <script type="c-bash">IFS='<h>$FS</h>' read -r -d <h>$RS</h> -a <h>$VARNAME</h></script> (<script type="c-bash">-d</script> délimiteur de lignes).</li>
+</ul>
+<div></div>
+
+<div>💡 <script type="c-bash">IFS</script> est une variable d'environnement qui indique au Shell la manière de découper les lignes. Afin d'éviter des problèmes lors du découpage de l'entrée standard, on peut utiliser les séparateurs suivants :
+    <ul class="flex-2">
+        <li><script type="c-bash">RS=$'\x1E'</script> : <i>record separator</i>.</li>
+        <li><script type="c-bash">FS=$'\x1F'</script> : <i>field separator</i>.</li>
+    </ul>
+</div>
+
 <h3>Fonctions et arguments</h3>
 
 <div>Les arguments passés au script sont accessibles via les variables Shell suivantes :
@@ -357,7 +396,7 @@
     <div class="flex-2">
         <script type="c-bash">
             function foo() {
-                INPUT=$(cat)
+                local INPUT=$(cat)
             }
 
             echo "Hello" | foo
@@ -375,6 +414,8 @@
         </script>
     </div>
 </div>
+
+<div>⚠ Par défaut, les variables Shell sont globales. Utilisez <script type="c-bash">local <h>[-a|-A]</h> <h>$NAME</h>=<h>$VALUE</h></script> pour définir une variable locale.</div>
 
 <h3>Structures de contrôle</h3>
 
