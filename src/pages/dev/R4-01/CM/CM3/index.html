@@ -157,8 +157,8 @@
 
 <div>Il est possible d'exécuter une ligne de commande, de sorte à ce qu'elle soit considérée comme une unique commande :
     <ul class="flex-2">
-        <li><script type="c-bash">{ <h>$CMD_LINE</h> }</script> : dans la <b>même instance</b> shell.</li>
-        <li><script type="c-bash">( <h>$CMD_LINE</h> )</script> : dans une <b>nouvelle instance</b> shell.</li>
+        <li><script type="c-bash">{ <h>$CMD_LINE</h> ; }</script> : dans la <b>même instance</b> shell.</li>
+        <li><script type="c-bash">( <h>$CMD_LINE</h> ; )</script> : dans une <b>nouvelle instance</b> shell.</li>
     </ul>
 </div>
 
@@ -325,7 +325,7 @@
 
 <div>Il existe plusieurs manière de définir/modifier une variable d'environnement en Shell :
     <ul class="flex-2">
-        <li><script type="c-bash">export <h>$NAME[=$VALUE]</h></script> : pour le Shell actuel.</li>
+        <li><script type="c-bash">declare -x <h>$NAME[=$VALUE]</h></script> : pour le Shell actuel.</li>
         <li><script type="c-bash"><h>$NAME=$VALUE</h> <h>$CMD</h></script> : pour la commande lancée.</li>
     </ul>
 </div>
@@ -364,7 +364,7 @@
 
 <div>⚠ Il n'est pas possible de stocker le caractère <script type="c-bash">\x00</script> dans une variable Shell.</div>
 
-<div>Afin d'éviter tout problème de parsing, nous vous conseillons de transférer vos données en utilisant JSON. Pour cela nous vous fournissons deux fonctions (dont vous pourrez regarder le <a href="https://github.com/denis-migdal-ShellTools/StreamLib/tree/main/json">code</a> au besoin) :
+<div>Afin d'éviter tout problème de parsing, nous vous conseillons de transférer vos structures de données en utilisant JSON. Pour cela nous vous fournissons deux fonctions (dont vous pourrez regarder le <a href="https://github.com/denis-migdal-ShellTools/StreamLib/tree/main/json">code</a> au besoin) :
     <ul class="flex-2">
         <li><script type="c-bash">write_jsonline <h>$VARNAME=$VALUE[...]</h></script></li>
         <li><script type="c-bash">read_jsonline <h>$MAP</h></script> (doit être déclaré avec <script type="c-bash">-A</script>).</li>
