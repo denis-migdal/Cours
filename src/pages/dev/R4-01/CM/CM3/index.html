@@ -37,7 +37,7 @@
         <li><script type="c-bash">|</script> : une autre <b>commande</b>, e.g. <script type="c-bash">cmd1 | cmd2</script> redirige la sortie standard de cmd1 vers l'entrée standard de cmd2.</li>
         <li><script type="c-bash"><</script> : un fichier (<b>lecture</b>), e.g. <script type="c-bash">cmd < file</script> place le fichier sur l'entrée standard de la commande.</li>
         <li><script type="c-bash">></script> : un fichier (<b>écriture</b>), e.g. <script type="c-bash">cmd > file</script> redirige la sortie standard de la commande vers le fichier.</li>
-        <li><script type="c-bash"><<</script> et <script type="c-bash"><<<</script> : une <b>chaîne de caractère</b> (pour l'entrée).</li>
+        <li><script type="c-bash"><<-</script> et <script type="c-bash"><<<</script> : une <b>chaîne de caractère</b> (pour l'entrée).</li>
     </ul>
 </div>
 
@@ -92,7 +92,7 @@
             </script>
         </div>
         <div>
-            <center><script type="c-bash"><<</script> heredoc (<i>here <u>doc</u>ument</i>), si multiligne :</center>
+            <center><script type="c-bash"><<-</script> heredoc (<i>here <u>doc</u>ument</i>), si multiligne :</center>
             <script type="c-bash">
                 cmd1 <<-<h>EOF</h>
                     <h>$CONTENT</h>
@@ -205,7 +205,7 @@
 
 <div>⚠ Utilisez <script type="c-bash">quote</script> pour éviter les attaques par injections.
     <script type="c-bash">
-        source quote
+        import quote
 
         MSG=$( quote 'Hello World' )
         python3 <<-EOF
@@ -270,17 +270,16 @@
 <h3>Variables</h3>
 
 <div>Comme en Python, il est possible d'utiliser des <i>variables</i> dans Shell. Cependant, leur utilisation diffère légèrement :
-    <div class="flex-2">
-        <script type="c-bash">
-            <h>$VARNAME</h>=<h>$VALUE</h> # définition
-        </script>
-        <script type="c-bash">
-            echo ${<h>$VARNAME</h>} # utilisation
-        </script>
-    </div>
+    <script type="c-bash">
+        declare <h>[-r]</h> <h>[-g]</h> <h>$VARNAME</h>=<h>$VALUE</h> # déclaration (-r: readonly, -g globale).
+        <h>$VARNAME</h>=<h>$VALUE</h>                   # affectation
+        echo ${<h>$VARNAME</h>}                  # récupérer la valeur
+    </script>
 </div>
 
-<div>⚠ Comme vous le savez, le Shell ré-interprète certains caractères. Par exemple, les espaces indiquent le début d'un nouvel argument. Pour éviter cela, il convient d'utiliser des guillements :
+<div>⚠ Pensez à bien déclarer vos variables avec <script type="c-bash">declare</script> avant de les utiliser </div>
+
+<div>⚠ Comme vous le savez, le Shell ré-interprète certains caractères. Par exemple, les espaces indiquent le début d'un nouvel argument. Pour éviter cela, il convient d'utiliser des guillemets :
     <ul class="flex-2">
         <li><script type="c-bash">'<h>$TXT</h>'</script> ne faire aucune interprétation.</li>
         <li><script type="c-bash">"<h>$TXT</h>"</script> interpréter les variables et conserver les espaces.</li>
@@ -288,10 +287,10 @@
     </ul>
     <div class="flex-2">
         <script type="c-bash">
-            FOO='Mon texte' # définition
+            FOO='Mon texte' # affectation
         </script>
         <script type="c-bash">
-            echo "${FOO}" # utilisation
+            echo "${FOO}" # récupérer la valeur
         </script>
     </div>
 </div>
@@ -348,25 +347,32 @@
 
 <div>💡 <script type="c-bash">source</script> est notamment utilisé pour importer des bibliothèques Shell, initialisant des variables d'environnement, définissant des alias ou des fonctions, etc.</div>
 
+<todo>Astuce import + BASHSOURCE[0] + dirname</todo>
 
 <h3>Lire l'entrée standard</h3>
 
-<div>La commande <script type="c-bash">read <h>$VARNAME</h> <h>[-p $PROMPT]</h> <h>[-i $DEFAULT]</h> <h>[-s|-e]</h></script> demande à l'utilisateur d'entrer une valeur qui sera ensuite stockée dans une variable (<script type="c-bash">-e</script> pour autoriser l'<u>é</u>dition, <script type="c-bash">-s</script> pour un <u>s</u>ecret). Cependant elle comporte de nombreux pièges.</div>
-
-<ul>
-    <li>Pour lire une <b>ligne brute</b> : <script type="c-bash">IFS='' read -r <h>$VARNAME</h></script> (<script type="c-bash">-r</script> ligne brute).</li>
-    <li>Pour lire un seul <b>caractère</b> : <script type="c-bash">IFS='' read -r <h>$VARNAME</h> -N 1</script>  (<script type="c-bash">-N</script> nombre de caractères à lire).</li>
-    <li>Pour lire <b>plusieurs valeurs</b> : <script type="c-bash">IFS='<h>$SEP</h>' read -r -a <h>$VARNAME</h></script> (<script type="c-bash">-a</script> produit un tableau).</li>
-    <li>Pour lire <b>plusieurs records</b> : <script type="c-bash">IFS='<h>$FS</h>' read -r -d <h>$RS</h> -a <h>$VARNAME</h></script> (<script type="c-bash">-d</script> délimiteur de lignes).</li>
-</ul>
-<div></div>
-
-<div>💡 <script type="c-bash">IFS</script> est une variable d'environnement qui indique au Shell la manière de découper les lignes. Afin d'éviter des problèmes lors du découpage de l'entrée standard, on peut utiliser les séparateurs suivants :
+<div>Usuellement on utilise la commande <script type="c-bash">read</script> pour lire l'entrée standard, cependant elle est <u>très</u> piégeuse. Nous vous fournissons donc une série de fonctions (dont vous pourrez regarder le <a href="https://github.com/denis-migdal-ShellTools/StreamLib/tree/main/read">code</a> au besoin), pour lire :
     <ul class="flex-2">
-        <li><script type="c-bash">RS=$'\x1E'</script> : <i>record separator</i>.</li>
-        <li><script type="c-bash">FS=$'\x1F'</script> : <i>field separator</i>.</li>
+        <li><script type="c-bash">readline <h>$VARNAME</h></script> : une ligne.</li>
+        <li><script type="c-bash">readchar <h>$VARNAME</h></script> : un caractère.</li>
+        <li><script type="c-bash">read_secret <h>$VARNAME</h></script> : un secret.</li>
+        <li><script type="c-bash">read_args <h>$VARNAME</h></script> : une liste d'arguments.</li>
     </ul>
 </div>
+
+<div>💡 <script type="c-bash">--p <h>$PROMPT</h></script> pour ajouter un prompt.</div>
+
+<div>⚠ Il n'est pas possible de stocker le caractère <script type="c-bash">\x00</script> dans une variable Shell.</div>
+
+<div>Afin d'éviter tout problème de parsing, nous vous conseillons de transférer vos données en utilisant JSON. Pour cela nous vous fournissons deux fonctions (dont vous pourrez regarder le <a href="https://github.com/denis-migdal-ShellTools/StreamLib/tree/main/json">code</a> au besoin) :
+    <ul class="flex-2">
+        <li><script type="c-bash">write_jsonline <h>$VARNAME=$VALUE[...]</h></script></li>
+        <li><script type="c-bash">read_jsonline <h>$MAP</h></script> (doit être déclaré avec <script type="c-bash">-A</script>).</li>
+    </ul>
+</div>
+
+<todo>jq : --arg / -n (no input) / 'out_format' / -c compact</todo>
+<todo>[[ -t ]] pour -c</todo>
 
 <h3>Fonctions et arguments</h3>
 
@@ -400,7 +406,7 @@
     <div class="flex-2">
         <script type="c-bash">
             function foo() {
-                local INPUT=$(cat)
+                declare INPUT=$(cat)
             }
 
             echo "Hello" | foo
@@ -418,8 +424,6 @@
         </script>
     </div>
 </div>
-
-<div>⚠ Par défaut, les variables Shell sont globales. Utilisez <script type="c-bash">local <h>[-a|-A]</h> <h>$NAME</h>=<h>$VALUE</h></script> pour définir une variable locale.</div>
 
 <h3>Structures de contrôle</h3>
 
