@@ -230,7 +230,7 @@
         import shell_exec
         from shlex import quote
 
-        msg = "Hello 'World'"
+        msg = quote("Hello 'World'")
         shell_exec(f"echo {msg}")
     </script>
 </div>
@@ -539,8 +539,8 @@
         <script type="c-bash">
             function len() {
                 python3 <<-EOF
-                    args = "$@"
-                    print( args.lenght )
+                    args = "$1"
+                    print( args.length )
                 EOF
             }
 

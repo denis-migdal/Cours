@@ -1,15 +1,3 @@
-
-- hooks/CI/CD : automatiser
-	-> build
-	-> tests
-	-> vérifications / checks / enforce policies
-    -> yaml (format CI/CD) ~= dockerfile (?)
-
-    -> artefacts / build / release / gitpages
-        -> deploy
-
-========================================================
-
 <h2>Outils connexes (=> CM2 ?)</h2>
 
 <h3>Github</h3>

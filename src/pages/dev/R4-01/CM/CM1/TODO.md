@@ -22,3 +22,9 @@ git clone (--bare) / init
 =======================================
 
 - git merge-base --is-ancestor <commit1> <commit2> ?
+
+=======================================
+
+- https://www.youtube.com/watch?v=q7kQDFEWECg (legacy code) [do not include]
+  - at 26"14 : les fichiers les + modifiés par les commits
+    -> et si last change ?

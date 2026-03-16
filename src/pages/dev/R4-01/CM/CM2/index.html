@@ -141,7 +141,7 @@
 <h3>Réactive</h3>
 
 <div>La réactivité consiste exécuté un code donné lorsqu'un événement associé survient. C'est le principe derrière la <i>programmation orientée événement</i> (<i>Event-Driven Programming</i>) en développement Web. À ne pas confondre avec la <i>programmation réactive</i> qui se base sur des systèmes de <i>signaux</i>, réagissant à des flux de données. Ces événements peuvent être de différentes natures et origines, e.g. des événements :
-    <ul>
+    <ul class="flex-2">
         <li>de modifications sur le système de fichier</li>
         <li>liés au dépôt Git/Github</li>
     </ul>
@@ -187,6 +187,15 @@
 -> cf CM suivant pour comprendre.
 
 <div>Pour Git, il est par exemple possible d'exécuter des scripts au début ou à la fin de certaines opérations (<i>hooks</i>), par exemple pour formatter les fichiers de code, s'assurer que les tests passent avant d'accepter le commit, etc.</div>
+
+<div>- hooks/CI/CD : automatiser
+	-> build
+	-> tests
+	-> vérifications / checks / enforce policies
+    -> yaml (format CI/CD) ~= dockerfile (?)
+
+    -> artefacts / build / release / gitpages
+        -> deploy</div>
 
 <todo>Présenter git hooks</todo>
 git config core.hooksPath tools/git/hooks -> pour les versionner.
@@ -266,6 +275,8 @@ runs:
 E.g. nightly build / reports.
 
 <h3>Procédures</h3>
+
+<div>Cf TODO.md</div>
 
 <div>Issues: Templates / labels définis.</div>
 
