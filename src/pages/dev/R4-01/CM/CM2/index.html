@@ -162,6 +162,7 @@
 
 <div class="flex-2">
     <script type="c-py">
+        # Python
         from watchfiles import watch
 
         for changes in watch('<h>$DIR</h>'):
@@ -169,6 +170,7 @@
     </script>
     <div>
         <script type="c-bash">
+            # Shell
             source watchfiles
             
             function process_change() {

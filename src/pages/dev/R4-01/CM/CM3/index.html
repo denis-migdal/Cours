@@ -193,6 +193,8 @@
 
 <div>Les redirections d'E/S des commandes fonctionnent quelque soit le langage dans lequel est écrit la commande. Ainsi, il est tout à fait possible de rediriger la sortie d'un script Python, vers un script Bash, et inversement. Mais il est aussi possible d'appeler du code Python à partir d'un script Bash, et inversement.</div>
 
+<h4>Exécuter du Python à partir de Shell</h4>
+
 <div>Pour exécuter un code Python à partir d'un script Bash, il suffit d'écrire le code qu'on souhaite exécuter sur l'entrée standard de l'interpréteur Python. Cela permet d'effectuer des opérations potentiellement complexes à faire en Shell.
     <script type="c-bash">
         python3 <<-EOF
@@ -213,6 +215,8 @@
 </div>
 
 <div>💡 <a href="https://github.com/denis-migdal-ShellTools/StreamLib/blob/main/quote" target="_blank"><script type="c-py">quote</script></a> est basé sur <script type="c-py">jq</script>.</div>
+
+<h4>Exécuter du Shell à partir de Python</h4>
 
 <div>Pour exécuter des commandes Shell à partir de Python, un simple appel de fonction peut suffire. Cela permet d’effectuer des opérations d’administration système directement depuis Python.
 <script type="c-py">
