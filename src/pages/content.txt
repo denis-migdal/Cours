@@ -62,6 +62,10 @@
             - CM1:CM1
             - CM2:CM2
             - CM3:CM3
+            - CM4:CM4
+        + TP:TP
+            - TP3:TP3
+            - TP4:TP4
         - cheat:Cheat Sheet
         + DS:DS
             - cur:cur

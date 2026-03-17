@@ -1,11 +1,20 @@
 Fait en 1h : injecter exo/exemples.
 - revoir ordre (deps + gradation difficulté)
 
+Utiliser python -c !!!!
+
 =========================================
+
+- Lib, rentry (sb.imported) + namespace as source first arg (e.g. sb.readline).
+
+=========================================
+
+- source : return possible.
 
 - [[ -t 0 ]] / [[ -t 1 ]] => est-ce que stdin/stdout terminal ou pipé ?
 - declare -i (entiers : op entiers possibles)
 - declare -n (hack)
+- declare -p
 
 =========================================
 

@@ -195,27 +195,31 @@
 
 <h4>Exécuter du Python à partir de Shell</h4>
 
-<div>Pour exécuter un code Python à partir d'un script Bash, il suffit d'écrire le code qu'on souhaite exécuter sur l'entrée standard de l'interpréteur Python. Cela permet d'effectuer des opérations potentiellement complexes à faire en Shell.
+<div>Pour exécuter un code Python à partir d'un script Bash, il suffit de lui fournir code qu'on souhaite exécuter sur son paramètre <script type="c-py">-c <h>$CODE</h></script>. Cela permet d'effectuer des opérations potentiellement complexes à faire en Shell.
     <script type="c-bash">
-        python3 <<-EOF
+        declare -r PYTHON_CODE=$( cat<<-'EOF'
             print("Hello World")
         EOF
+        )
+
+        python3 -c "$PYTHON_CODE"
     </script>
 </div>
 
-<div>⚠ Utilisez <script type="c-bash">quote</script> pour éviter les attaques par injections.
+<div>⚠ Pour éviter les attaques par injections, passez les données d'entrées soit par l'entrée standard, les paramètres, ou les variables d'environnement.
     <script type="c-bash">
-        import quote
+        declare -r PYTHON_CODE=$( cat<<-'EOF'
+            import sys
+            MSG=sys.argv[1]
 
-        MSG=$( quote 'Hello World' )
-        python3 <<-EOF
-            print("${$MSG}")
+            print(MSG)
         EOF
+        )
+
+        python3 -c "$PYTHON_CODE" "Hello"
     </script>
+    
 </div>
-
-<div>💡 <a href="https://github.com/denis-migdal-ShellTools/StreamLib/blob/main/quote" target="_blank"><script type="c-py">quote</script></a> est basé sur <script type="c-py">jq</script>.</div>
-
 <h4>Exécuter du Shell à partir de Python</h4>
 
 <div>Pour exécuter des commandes Shell à partir de Python, un simple appel de fonction peut suffire. Cela permet d’effectuer des opérations d’administration système directement depuis Python.
@@ -542,14 +546,18 @@
                 echo ${#*}
             }
 
+
+
             SIZE=$(len "Hello World")
         </script>
         <script type="c-bash">
             function len() {
-                python3 <<-EOF
-                    args = "$1"
-                    print( args.length )
-                EOF
+                declare -r PYTHON_CODE=$( cat <<-'EOF'
+                        import sys
+                        print( sys.argv[1].length )
+                    EOF
+                )
+                python3 -c "$PYTHON_CODE" "$1"
             }
 
             SIZE=$(len "Hello World")
