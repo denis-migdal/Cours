@@ -113,7 +113,7 @@
     <ul class="flex-2">
         <li><b>manuelle</b> : exécuté manuellement.</li>
         <li><b>réactive</b> : s'exécute suite à un événement.</li>
-        <li><b>périodique</b> : s'exécute à interval régulier.</li>
+        <li><b>planifié</b> : s'exécute à moment donné.</li>
         <li><b>procédurale</b> : guide à travers une liste d'étapes.</li>
     </ul>
 </div>
@@ -158,113 +158,203 @@
 
 <div>En développement Web, il est ainsi classique d'utiliser des outils comme <i>Live Server</i> sur VSCode, (ou la commande <script type="c-text">localserve <h>$DIR</h></script>) afin d'obtenir un site Web de développement dont les pages se rafraîchissent automatiquement à la modifications des fichiers.</div>
 
-<todo>Présenter ionotify/iowait ?</todo>
+<div>Pour cela, on utilise des outils qui vont écouter un dossier donner, et nous informer lorsqu'une modification survient :
+    <div class="flex-2">
+        <script type="c-py">
+            # Python
+            from watchfiles import watch
 
-<div class="flex-2">
-    <script type="c-py">
-        # Python
-        from watchfiles import watch
-
-        for changes in watch('<h>$DIR</h>'):
-            print(changes)
-    </script>
-    <div>
-        <script type="c-bash">
-            # Shell
-            import watchfiles
-
-            watchfiles <h>$DIR</h>
+            for changes in watch('<h>$DIR</h>'):
+                print(changes)
         </script>
-        <div>💡 <a href="https://github.com/denis-migdal-ShellTools/StreamLib/blob/main/watchfiles" target="_blank"><script type="c-bash">watchfiles</script></a> est basé sur <script type="c-bash">inotifywait</script>.</div>
+        <div>
+            <script type="c-bash">
+                # Shell
+                import watchfiles
+
+                watchfiles <h>$DIR</h>
+            </script>
+            <div>💡 <a href="https://github.com/denis-migdal-ShellTools/StreamLib/blob/main/watchfiles" target="_blank"><script type="c-bash">watchfiles</script></a> est basé sur <script type="c-bash">inotifywait</script>.</div>
+        </div>
+    </div>
+</div>
+
+<h4>Git Hooks</h4>
+
+<div>Il est aussi possible de réagir avant et après certains événements d'un dépôt Git, e.g. pour :
+    <ul>
+        <li>avant un commit, formatter le code, s'assurant ainsi de son uniformité (e.g. espaces vs tabulations) ;</li>
+        <li>avant d'accepter des commits, les valider, e.g. tests, linters, etc.</li>
+        <li>etc.</li>
+    </ul>
+</div>
+
+<div>Pour réagir à un événements, il suffit alors de créer un <i>hooks</i>, un simple fichier exécutable du même nom que l'évent qu'on souhaite écouter. Si l'exécutable retourne une erreur, l'action est généralement annulée, e.g. :
+    <ul>
+        <li><script type="c-text">pre-commit</script> : e.g. pour interdire la création du commit si e.g. ne passe pas les tests.</li>
+        <li><script type="c-text">commit-msg</script> : e.g. pour vérifier si le message de commit respecte un format donné.</li>
+        <li><script type="c-text">update</script> (serveur) : e.g. pour rejeter les commits reçus si e.g. ne passent pas les tests.</li>
+        <li><script type="c-text">post-update</script> (serveur) : e.g. pour déployer le code automatiquement.</li>
+    </ul>
+</div>
+
+<div>⚠ Il ne peut n'y avoir qu'un exécutable par événement. Ainsi, si on souhaite exécuter plusieurs scripts pour un même événement, il faudra créer un exécutable principal qui appellera les différents scripts.</div>
+
+<div>💡 Par défaut, les hooks se trouvent dans le dossier <script type="c-text">.git/hooks</script>, ils ne sont donc ni versionnés, ni partagés, chaque clone du dépôt ayant ses propres hooks. La configuration Git <script type="c-text">core.hooksPath</script> permet d'en changer le dossier, permettant ainsi de les ajouter au versionnage.</div>
+
+<h4>Github CI/CD</h4>
+
+<div>De nombreux services Web (e.g. Github, Gitlab, Gitea, etc) permettent d'héberger des serveurs Git, avec une gestion par le biais d'une interface Web. Il fournissent usuellement des outils dit de CI/CD dont l'utilisation varie en fonction du service Web. Dans le cadre de ce cours, nous utiliserons <i>Github</i>.</div>
+
+<div>Ces outils fournissent des fonctionnalités plus avancées que les <i>Git Hooks</i>, permettant non seulement de rejeter des commits après exécution de tests, mais aussi de :
+    <ul>
+        <li>construire les différents <i>builds</i> à distribuer (e.g. pour Linux, Windows).</li>
+        <li>mettre à jour le site Web associé au dépôt, via les <i>Git Pages</i>.</li>
+        <li>automatiser certaines actions sur les <i>issues</i> et <i>pull requests</i>.</li>
+        <li>etc.</li>
+    </ul>
+</div>
+
+<div>Pour cela les actions à effectuer sont décrit sous la forme de fichiers YAML (<script type="c-text">.yml</script>), contenant des propriétés dont la structure hiérarchique est définie par l'indentation :
+    <div class="flex-2">
+        <div>
+            <center><b>Dictionnaire</b></center>
+            <script type="c-bash">
+                # config = {foo: 42, faa: 1337}
+                config:
+                    foo: 42
+                    faa: 1337
+            </script>
+        </div>
+        <div>
+            <center><b>Liste</b></center>
+            <script type="c-bash">
+                # config = [42, 1337]
+                config:
+                    - 42
+                    - 1337
+            </script>
+        </div>
+    </div>
+</div>
+
+<div>Ces fichiers sont alors stockés dans le dossier <script type="c-text">.github/workflows/</script> du dépôt Git, puis "exécutés" par Github à chaque événement sur le dépôt. Pour cela, il faut définir :
+    <div class="flex-2">
+        <div><center><b>Quand s'exécuter :</b></center>
+            <script type="c-text">
+                on:
+                  <h>push</h>:       # event (reçoit des commits)
+                    branches: # filtres
+                      - <h>$BRANCH_NAME</h>
+                  workflow_dispatch: # pour exec. manuel
+            </script>
+        </div>
+        <div><center><b>Que faire :</b></center>
+            <script type="c-text">
+                jobs:
+                  <h>$JOB_NAME</h>:
+                    runs-on : <h>ubuntu-latest</h> # image
+                    steps:
+                      - <h>...</h>
+            </script>
+        </div>
+    </div>
+</div>
+
+<div>Les étapes (<i>steps</i>) peuvent être de deux natures différentes :
+    <div class="flex-2">
+        <div><center><b>Commande Shell :</b></center>
+            <script type="c-text">
+                steps:
+                    - run: <h>$CMD_LINE</h> # une ligne
+                    - run: |         # multi-ligne
+                        <h>$CMD_LINE</h>
+                        <h>...</h>
+            </script>
+        </div>
+        <div><center><b>Action prédéfinie :</b></center>
+            <script type="c-text">
+                steps:
+                  - uses <h>$ACTION_NAME</h> # sans paramètre
+                  - uses <h>$ACTION_NAME</h> # avec paramètres
+                    with:
+                      <h>$KEY</h>: <h>$VALUE</h>
+                      <h>...</h>
+            </script>
+        </div>
+    </div>
+</div>
+
+<div>💡 La première des étapes est usuellement de cloner le dépôt :
+    <script type="c-text">
+        - uses: <h>actions/checkout@v4</h>
+          with:
+            submodules: true
+    </script>
+</div>
+
+<div>Chaque tâche (job) s'exécute dans son propre conteneur isolé, elles ne partagent ainsi pas le même contexte d'exécution. Une première manière de partager de <i>petites</i> données, est :
+    <div class="flex-2">
+        <div><center><b>Dans le producteur de la valeur:</b></center>
+            <ol>
+                <li>ajouter une entrée à <script type="c-bash">$GITHUB_OUTPUT</script>.</li>
+                <li>assigner un identifiant à l'étape.</li>
+                <li>déclarer l'exportation.</li>
+            </ol>
+        </div>
+        <div><center><b>Dans le consommateur de la valeur:</b></center>
+            <ol>
+                <li>Déclarer la dépendance.</li>
+                <li>Utiliser la valeur.</li>
+            </ol>
+        </div>
+    </div>
+    <div class="flex-2">
+        <script type="c-text">
+            <h>$J1</h>:
+              outputs:
+                <h>$N</h>: ${{ steps.<h>$ID</h>.outputs.<h>$K</h> }}     #3
+              steps:
+                - run echo "<h>$K</h>=1" >> $GITHUB_OUTPUT #1
+                  id: <h>$ID</h>                           #2
+        </script>
+        <script type="c-text">
+            <h>$J2</h>:
+              needs: <h>$J1</h>                          #1
+              steps:
+                - <h>...</h> ${{ needs.<h>$J1</h>.outputs.<h>$N</h> }} #2
+        </script>
+    </div>
+</div>
+
+<div>Une autre manière de partager des données est d'utiliser des <i>artefacts</i>, une sorte d'archive qui pourra être téléversé puis téléchargé par les tâches :
+    <div class="flex-2">
+        <div><center><b>Dans le producteur:</b></center>
+            <script type="c-text">
+                - uses: actions/upload-artifact@v4
+                  with:
+                    name: <h>$ARTEFACT_NAME</h>
+                    path: <h>$SRC</h>
+            </script>
+        </div>
+        <div><center><b>Dans le consommateur:</b></center>
+            <script type="c-text">
+                - uses: actions/download-artifact@v4
+                  with:
+                    name: <h>$ARTEFACT_NAME</h>
+                    path: <h>$DST</h>
+            </script>
+        </div>
     </div>
 </div>
 
 <h4>X</h4>
 
--> Github...
--> cf CM suivant pour comprendre.
+<div>+ github pages + notion d'artefacts.</div>
 
-<div>Pour Git, il est par exemple possible d'exécuter des scripts au début ou à la fin de certaines opérations (<i>hooks</i>), par exemple pour formatter les fichiers de code, s'assurer que les tests passent avant d'accepter le commit, etc.</div>
+<h3>Planifié</h3>
 
-<div>- hooks/CI/CD : automatiser
-	-> build
-	-> tests
-	-> vérifications / checks / enforce policies
-    -> yaml (format CI/CD) ~= dockerfile (?)
-
-    -> artefacts / build / release / gitpages
-        -> deploy</div>
-
-<todo>Présenter git hooks</todo>
-git config core.hooksPath tools/git/hooks -> pour les versionner.
-Script du nom de l'évent (si plusieurs script principal aura pour rôle de les lancer).
-
-<div>💡 Github a son propre système, cf CI/CD, e.g. déployer sur un environnement de test ou de production dès que la branche associée reçoit des nouveaux commits.</div>
-
-<todo>Présenter CI/CD + docker ?</todo>
-+ github pages + notion d'artefacts.
-
-<todo>Add yml</todo>
-
-Indetation = hiérarchie + "-" élément d'une liste.
-
-Indiquer quand exécuter le yml.
-<script type="c-text">
-on: push
-</script>
-
-Indiquer les branches + autoriser exec manuelle
-<script type="c-text">
-on:
-    push:
-        branches:
-            - master
-    workflow_dispatch:
-</script>
-
-<script type="c-text">
-jobs:
-  <h>$JOB_NAME</h>:
-    runs-on : ubuntu-latest # image
-    steps:
-      - run: <h>$CMDLINE</h> # commande shell.
-      - run : |              # idem, multi-ligne
-          <h>$CMDLINE_1</h>
-          <h>$CMDLINE_1</h>
-      - uses: <h>$ACTION_NAME</h> # actions pré-définie
-      - uses: <h>$ACTION_NAME</h>
-        - with:                   # avec paramètres
-            <h>$KEY</h>: <h>$VALUE</h>
-</script>
-
-<todo>Transférer artefacts (2 commands)</todo>
-
-<todo>Expliquer actions => @ = versionning</todo>
-
-Créer ses propres actions (lien fichier)
-    => inputs (pour with)
-    => composite (ensemble d'actions)
-    => Python avec run + ${{ inputs.XXX }}
-    => conteneur docker
-<div>
-name: "My Action"
-description: "Example composite action"
-
-inputs:
-  message:
-    required: true
-
-runs:
-  using: "composite"
-  steps:
-    - run: echo "${{ inputs.message }}"
-      shell: bash
-</div>
-
-<todo>github pages (cf yml) (github actions + custom domain)</todo>
-<todo>pull request / issues aussi possible.</todo>
-
-<h3>Cron</h3>
+CRON + démarrage.
 
 => strico sensus réactif, mais on fait la séparation.
 
