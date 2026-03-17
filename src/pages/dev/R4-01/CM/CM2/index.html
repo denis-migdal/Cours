@@ -103,7 +103,7 @@
 
 <div>⚠ Les commentaires au sein du code ne doivent pas être une répétition du code, ils doivent être utilisés soit pour indiquer une nuance importante, pour référencer un issue, ou pour générer la documentation API.</div>
 
-<todo>Sphinx</todo>
+<todo>Sphinx (cf script dans assets)</todo>
 
 <h2>Automatisation</h2>
 
@@ -348,65 +348,89 @@
     </div>
 </div>
 
-<h4>X</h4>
-
-<div>+ github pages + notion d'artefacts.</div>
+<div>⚠ Certaines actions nécessitent des droits particuliers, e.g. pour mettre à jour les Git Pages :
+    <script type="c-text">
+        # Une seule exécution à la fois.
+        concurrency:
+          group: "pages"
+        
+        jobs:
+          deploy:
+            runs-on: ubuntu-latest
+            <h>permissions</h>:
+              pages   : write
+              id-token: write
+            steps:
+              - <h>...</h>
+              # Deploy github-pages (3 steps)
+              - uses: actions/configure-pages@v5
+              - uses: actions/upload-pages-artifact@v3
+                with:
+                  path: <h>$SRC</h>
+              - uses: actions/deploy-pages@v4
+    </script>
+</div>
 
 <h3>Planifié</h3>
 
-CRON + démarrage.
+<div>Certaines tâches peuvent être planifiées, comme des mises à jours, sauvegardes, synchronisations de données, <i>nightly builds</i>, générations de rapports, etc. Pour cela on utilise CRON (<i><u>c</u>h<u>ron</u>os</i>) afin de planifier des exécutions régulières de tâches données. La <i>crontab</i> (<i><u>c</u>h<u>ron</u>os <u>tab</u>le</i>) est un fichier où chaque ligne correspond à la planification d'une tâche, sous la forme <script type="c-bash"><h>$MOMENT</h> <h>$CMDLINE</h></script>.</div>
 
-=> strico sensus réactif, mais on fait la séparation.
+<div>Le moment est défini par 5 paramètres :
+    <ol class="flex-3">
+        <li>minute (0-59) ;</li>
+        <li>heure (0-23) ;</li>
+        <li>jour du mois (1-31) ;</li>
+        <li>mois (1-12) ;</li>
+        <li>jour de la semaine (1-7).</li>
+    </ol> 
+</div>
 
-<todo>X</todo>
+<div>On peut ainsi indiquer un moment précis, e.g. <i>"les premiers janvier à 0H00"</i> : <script type="c-text">0 0 1 1 *</script>. Mais d'autres notations existent : 
+    <ul class="flex-2">
+        <li><script type="c-text">*</script> "tous les" <i>e.g. heures</i>.</li>
+        <li><script type="c-text">*/5</script> "toutes les 5" <i>e.g. heures</i>.</li>
+        <li><script type="c-text">1-5</script> "de 1 à 5" <i>e.g. heures</i>.</li>
+        <li><script type="c-text">1,5</script> "à 1 et 5" <i>e.g. heures</i>.</li>
+    </ul>
+    Ainsi, <script type="c-text">*/15 8-18 * * 1-5</script> signifie <i>"toutes les 15 minutes, de 8h à 18h, du lundi au vendredi"</i>.
+</div>
 
-E.g. nightly build / reports.
+<div>Pour manipuler la crontab, on utilise les commandes suivantes
+    <ul class="flex-3">
+        <li><script type="c-bash">crontab -l</script> : afficher.</li>
+        <li><script type="c-bash">crontab -e</script> : éditer (<i>recommandé</i>)</li>
+        <li><script type="c-bash">crontab <h>-|$FILE</h></script> : remplacer.</li>
+    </ul>
+</div>
+
+<div>⚠ Il est important de planifier ses tâches au bon moment. Pour des tâches lentes et peu critiques, on les planifie usuellement la nuit, de sorte à avoir un impact minimal. En revanche, pour des tâches plus critiques, qui peuvent échouer, on les planifiera de sorte à pouvoir réagir immédiatement de sorte à pouvoir corriger le problème au plus tôt. Ainsi on évite ce genre d'opérations le vendredi après-midi peu avant le week-end.</div>
+
+<div>CRON est cependant peu approprié pour des postes de travail. En effet, si l'ordinateur n'est pas allumé au moment indiqué, la tâche ne s'exécutera pas. Ainsi, si les mises à jours sont prévues toutes les jours à 3h, elle ne seront pas effectuées si l'ordinateur est éteint à ce moment.</div>
+
+<div>Ainsi, on utilisera alors anacron (ana- à rebours) qui permet d'exécuter les tâches de manières périodiques même si l'ordinateur était éteint au moment où elles auraient dû être exécutées. Pour cela on place tout simplement des exécutables dans les dossiers <script type="c-text">/etc/cron.<h>$FREQ</h></script> :
+    <ul class="flex-3">
+        <li><script type="c-text">daily</script></li>
+        <li><script type="c-text">weekly</script></li>
+        <li><script type="c-text">monthly</script></li>
+    </ul>
+</div>
+
+<div>L'année dernière, nous avions aussi vu <script type="c-bash">systemctl enable <h>$SERVICE</h></script> activant un service au démarrage de l'ordinateur. Il est aussi possible d'exécuter des commandes à l'ouverture de la session dans les paramètres de la distribution (e.g. <script type="c-text">Session et démarrage > Démarrage automatiqu d'applications</script>).</div>
 
 <h3>Procédures</h3>
 
-<div>Cf TODO.md</div>
+<todo>Reformuler.</todo>
 
-<div>Issues: Templates / labels définis.</div>
-
-<div>Souvent des logiciels/interfaces ad hoc.</div>
-
-<h2>X</h2>
-
-<div>Fork + PR</div>
-
-<div>Somewhere droits d'accès ? e.g. commits signés ?</div>
-
-<div>
-    Règles
-
-conventions de code
-
-règles de nommage
-
-standards de documentation
-
-exigences de tests
-
-✅ Processus
-
-workflow Git (issues, branches, PR)
-
-revue de code
-
-cycle de validation (CI, tests)
-
-publication / release
-
-✅ Outils (mais comme moyens, pas comme finalité)
-
-IDE, extensions
-
-linters, formatters
-
-CI/CD
-
-scripts d’automatisation
+<div>Il n'est pas suffisant de définir des procédures, il faut aussi s'assurer de leur respect. Il est alors important de mettre en place les outils techniques afin de guider les intervenants dans les différentes étapes, automatiser ce qui peut l'être, et s'assurer de la validité des opérations.
 </div>
+
+<div>Par exemple, définir des templates pour les issues (e.g. <i>bug</i>, <i>feature request</i>, etc), structurant les issues, garantissant la présence des différents éléments requis, et facilitant le travail de lecture des tickets. En fonction du template choisi, des étiquettes peuvent être attribuées, facilitant les recherches et tries futurs. Sur de gros dépôts, l'IA peut alors être utilisée pour rechercher des issues similaires, générer un code minimal reproduisant l'erreur, etc.</div>
+
+<div>L'intégration des différents outils entre eux aide aussi. Par exemple, les issues peuvent être assignées à des <i>milestone</i> ou à une <i>roadmap</i>, qu'on peut ensuite visualiser à travers d'un kanban. L'issue peut aussi être automatiquement fermée lorsqu'un commit la référence, e.g. <script type="c-text">fix: #XX</script>.</div>
+
+<div>Lors d'un <i>Pull Request</i> (PR), des tests peuvent être exécutés, et leur résultat affiché sur la PR. Des demandes de reviews peuvent être envoyés, avant l'acceptable du PR.</div>
+
+<div>Certaines conventions peuvent être imposée par des outils comme des linters et formatteurs. Le CI/CD peut permettre d'automatiser certaines actions sur certaines branches, correspondant e.g. à une étape de validation donnée. Automatiser le passage d'une issue d'un état à un autre.</div>
 
         </main>
     </body>
