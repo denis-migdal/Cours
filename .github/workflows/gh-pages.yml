@@ -16,11 +16,11 @@ jobs:
           submodules: true
       - run : |
           npm install
-          npm run build-prod
+          npm run build
       - uses: actions/upload-artifact@v4
         with:
-          name: prod
-          path: './dist/prod'
+          name: dev
+          path: './dist/dev'
   deploy:
     needs      : build
     runs-on    : ubuntu-latest
@@ -30,11 +30,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: prod
-          path: './dist/prod/'
+          name: dev
+          path: './dist/dev/'
       # Upload github-pages (3 steps)
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist/prod/'
+          path: './dist/dev/'
       - uses: actions/deploy-pages@v4
