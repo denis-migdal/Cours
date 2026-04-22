@@ -9,6 +9,7 @@
             "@sqlite/*"   : [ "./libs/sqlite/*" ],
             "@Cours/*"    : ["./src/*"]
         },
+        "types" : ["node"],
         "sourceMap": true,
         "alwaysStrict": true,
 
