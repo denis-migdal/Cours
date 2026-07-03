@@ -2,41 +2,17 @@
 <html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>AdmSys (cheat sheet)</title>
+        <title>ASL (Cheat Sheet)</title>
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link   href="/skeleton/index.css"  rel="stylesheet">
-        <script  src="/skeleton/index.js"  type="module"     blocking="render"></script>
-
-        <style>
-            h5 {
-                margin-bottom: 0.5rem !important;
-            }
-
-            main > div {
-                margin-top: 0.5rem !important;
-                margin-bottom: 0.5rem !important;
-            }
-
-            ul {
-                margin-top: 0.5rem !important;
-            }
-        </style>
+        <link   href="/templates/cheat@2026/index.css"  rel="stylesheet">
+        <script  src="/templates/cheat@2026/index.js"  type="module"></script>
     </head>
     <body>
         <main>
             <h1>Cheat sheet</h1>
 
             <style>
-                h4 {
-                    font-size: medium;
-                }
-                h5 {
-                    font-size: medium;
-                    font-style: italic;
-                    margin-top: 1rem;
-                    margin-bottom: 1rem;
-                }
             </style>
 
 <h4>CM1 : Administrer un ordinateur Linux</h4>
@@ -49,24 +25,29 @@
     <li><script type="c-bash">alias <h>[$NAME]</h></script> : <b>afficher</b> (ou <b>lister</b>).</li>
 </ul>
 
+<ul>
+    <li>Dans <script type="c-text">/etc/system.d/aliases.sh</script> ou <script type="c-text">~/.bash_aliases</script>, puis <script type="c-bash">source <h>$FILE</h></script> ou <script type="c-bash">exec bash --login</script>.</li>
+</ul>
+
 <h5>Sudo (<u>s</u>uper<u>u</u>ser <u>do</u>)</h5>
 
 <ul class="flex-2">
     <li><script type="c-bash">sudo <h>!!|$CMD</h></script> : exécuter en tant qu'administrateur.</li>
+    <li><script type="c-bash">sudo -l <h>[-U $USER]</h></script> : <u>l</u>ister les droits de <script type="c-bash"><h>$USER</h></script>.</li>
     <li><script type="c-bash">sudo -i</script> : ouvrir un shell administrateur (<i><u>i</u>nteractive</i>).</li>
-    <li><script type="c-bash">sudo -l <h>[-U $USER]</h></script> : <u>l</u>ister les droits.</li>
+    <li><script type="c-bash">sudo -i -u <h>$USER</h></script> : ouvrir un shell en tant que <script type="c-bash"><h>$USER</h></script>.</li>
 </ul>
 
-Droits définis dans <script type="c-bash">/etc/sudoers{,/*}</script> : <script type="c-bash"><h>$USER|%$GROUP</h> ALL=(ALL:ALL) <h>[!]$CMD,...</h></script>.
+Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <script type="c-bash"><h>$USER|%$GROUP</h> ALL=(ALL:ALL) <h>[!]$CMD,...</h></script>.
 
 <h5>Mises à jours</h5>
 
 <ul class="flex-2">
-    <li><script type="c-bash">lsb_release -a</script> : afficher la version de la distribution.</li>
     <li><script type="c-bash">apt update</script> : télécharger la liste des mises à jours.</li>
+    <li><script type="c-bash">apt <h>[full-]</h>upgrade</script> : installer les mises à jours.</li>
     <li><script type="c-bash">apt install <h>$PAQUET...</h></script> : <b>installer</b> des paquets.</li>
     <li><script type="c-bash">apt <h>remove|purge</h> <h>$PAQUET...</h></script> : <b>désinstaller</b>.</li>
-    <li><script type="c-bash">apt <h>[full-]</h>upgrade</script> : installer les mises à jours.</li>
+    <li><script type="c-bash">lsb_release -a</script> : afficher la version de la distribution.</li>
     <li><script type="c-bash">apt autoremove</script> : désinstaller paquets inutilisés.</li>
 </ul>
 
@@ -89,6 +70,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers{,/*}</script> : <script 
     <li><script type="c-bash">passwd <h>[-u $USR]</h> <h>--[un]lock</h></script> : (dés)activer mdp.</li>
     <li><script type="c-bash">chage <h>$USER</h> -E <h>1|-1</h></script> : (dés)activer login.</li>
     <li><script type="c-bash">passwd <h>[-u $USER]</h></script> : changer mdp.</li>
+    <li><script type="c-text">/etc/skel/</script> (<u>skel</u>eton) fichiers par défaut du home.</li>
 </ul>
 
 <ul class="flex-2">
@@ -108,18 +90,16 @@ Droits définis dans <script type="c-bash">/etc/sudoers{,/*}</script> : <script 
 
         p = ArgumentParser()
         <h>Déclarer ici les paramètres.</h>
-
         args = p.parse_args(sys.argv[1:])
     </script>
     <script type="c-python">
-        # paramètre positionnel
-        p.add_argument("a")
-
-        # paramètre nommé
-        p.add_argument("--a")
-
-        # drapeau
-        p.add_argument("--a", action="store_true")
+        p.add_argument("<h>$NAME</h>")      # positionnel
+        p.add_argument("--<h>$NAME</h>")    # nommé
+        p.add_argument("-<h>$N</h>", "--<h>$NAME</h>") # court
+        # options:
+        action="store_true" # drapeau
+        default=<h>$VAL</h>        # valeur par défaut
+        type=<h>int|float|bool</h> # conversion
     </script>
 </div>
 
@@ -195,9 +175,10 @@ Droits définis dans <script type="c-bash">/etc/sudoers{,/*}</script> : <script 
 </table>
 
 <ul class="flex-2">
+    <li><script class="custom" type="c-bash">colors</script> : afficher les couleurs.</li>
+    <li><script type="c-text">\ec</script> : effacer l'écran.</li>
     <li><script type="c-text">\e[38;2;<h>$R</h>;<h>$G</h>;<h>$B</h>m</script> : couleur du texte (RGB).</li>
     <li><script type="c-text">\e[48;2;<h>$R</h>;<h>$G</h>;<h>$B</h>m</script> : couleur de fond (RGB)</li>
-    <li><script type="c-text">\ec</script> : effacer l'écran.</li>
     <li><script type="c-text">\e[<h>$LINE</h>;<h>$COL</h>H</script> : déplacer le cursor.</li>
     <li><script type="c-text">\e[?1049<h>h|l</h></script> : utiliser le buffer alternatif.</li>
     <!-- <li><script type="c-bash">IFS='[;' read -sd R -p $'\e[6n' _ R C</script></li> -->

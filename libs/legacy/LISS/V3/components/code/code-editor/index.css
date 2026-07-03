@@ -1,0 +1,40 @@
+:host([readonly]) {
+    pointer-events: none;
+}
+
+:host(.compact) {
+    & > div {
+        padding: 2px;
+    }
+}
+
+:host(:not(.compact)) {
+    & > div {
+        padding: 12px;
+    }
+}
+
+:host {
+    display: block;
+
+    & > div {
+
+        width: 100%;
+        height: 100%;
+        font-family: monospace;
+
+        box-sizing: border-box;
+
+        /*border: 1px solid rgb(204, 204, 204);*/
+        border-radius: 3px;
+        background-color: var(--background, light-dark(rgb(204, 204, 204), rgb(51, 51, 51) ) );
+
+        white-space: pre-line;
+        overflow-wrap: break-word;
+
+        /* ensures last line height even if empty */
+        &::after {
+            content: "\200b"
+        }
+    }
+}

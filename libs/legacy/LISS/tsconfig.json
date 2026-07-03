@@ -1,0 +1,24 @@
+{
+    "include": ["V3"],
+    "exclude": ["V3/tests"],
+    "compilerOptions": {
+        "outDir": "./build/TS",
+        "paths": {"@LISS/*": ["./V3/*"]},
+        "sourceMap": true,
+        "alwaysStrict": true,
+        "strict": true,
+        "noErrorTruncation": true,
+        "exactOptionalPropertyTypes": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "allowSyntheticDefaultImports": true,
+
+        "module": "esnext",
+        "target": "esnext",
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "incremental": true,
+    }
+}

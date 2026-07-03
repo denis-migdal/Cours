@@ -1,0 +1,20 @@
+@import "../page@2026/";
+
+h4 {
+    font-size: medium;
+}
+h5 {
+    font-size: medium;
+    font-style: italic;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+main > div {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+ul {
+    margin-top: 0.5rem !important;
+}

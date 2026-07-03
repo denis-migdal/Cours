@@ -138,6 +138,18 @@
     <li><script type="c-bash">unalias <h>$NAME</h></script> : supprimer l'alias <script type="c-bash"><h>$NAME</h></script>.</li>
 </ul>
 
+<div class="danger">Les alias sont temporaires, n'existant qu'au sein du Shell dans lequel ils ont été déclarés. Pour les rendre permanent, il convient de les ajouter à l'un des fichiers chargés au démarrage du shell :
+    <ul class="flex-2">
+        <li><script type="c-text">/etc/system.d/aliases.sh</script> : pour tous.</li>
+        <li><script type="c-text">~/.bash_aliases</script> : pour un utilisateur.</li>
+    </ul>
+    Pour prendre en compte ces modifications dans le terminal courant on peut :
+    <ul class="flex-2">
+        <li><script type="c-bash">source <h>$FILE</h></script> : "recharger" le fichier.</li>
+        <li><script type="c-bash">exec bash --login</script> : "relancer" le shell actuel.</li>
+    </ul>
+</div>
+
 <div class="exo">Créez un alias permettant de copier les fichiers images du home vers le dossier <script type="c-text">/Save/</script> (cf ensemble de chemins).</div>
 
 <h4>Réécriture de la ligne de commande</h4>
@@ -272,6 +284,7 @@ Il suffit alors de déclarer les différents arguments de la commande, et la bib
 
     args = psr.parse_args(sys.argv[1:])
     print(args) # les arguments après interprétation
+    args.<h>$NAME</h>  # accéder à l'argument <h>$NAME</h>.
 </script>
 
 <div>Par convention, on distingue 3 types d'arguments :

@@ -1,0 +1,25 @@
+@import "../page@2026/";
+
+table {
+    width: 100%;
+
+    & th + td {
+        width: 100%;
+    }
+
+    & td + td {
+        white-space: nowrap;
+    }
+}
+
+/* for resources status */
+[ready] {
+    color: green;
+    font-weight: bold;
+}
+[revise] {
+    color: orange;
+}
+[draft] {
+    color: red;
+}

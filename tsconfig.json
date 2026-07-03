@@ -11,9 +11,9 @@
         "paths": {
             "MWL@2026:*"     : ["./libs/MWL@2026/src/*"],
             "TPEngine@2026:*": ["./libs/MWL@2026/src/TPEngine/*"],
-            "@LISS/*"     : ["./libs/LISS/V3/*"],
-            "@TPEngine/*" : [ "./libs/TPEngine/src/*" ],
-            "@WebSlides/*": [ "./libs/WebSlides/src/*" ],
+            "@LISS/*"     : ["./libs/legacy/LISS/V3/*"],
+            "@TPEngine/*" : [ "./libs/legacy/TPEngine/src/*" ],
+            "@WebSlides/*": [ "./libs/legacy/WebSlides/src/*" ],
             "@sqlite/*"   : [ "./libs/sqlite/*" ],
             "@Cours/*"    : ["./src/*"]
         }

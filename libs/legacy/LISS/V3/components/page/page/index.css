@@ -1,0 +1,142 @@
+@media print {
+    @page {
+        size  : A4;
+        margin: 15px 0; /* top/bottom page margins */
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+body.overview {
+    
+    overflow-y: hidden;
+
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+
+    main {
+
+        margin: 0;
+
+        border-left: none;
+        border-right: none;
+
+        columns: auto 210mm;
+
+        overflow-x: auto;
+
+        /* TODO: scale */
+        --scale: calc( (var(--screen_width)/818) / var(--overview) );
+        height: calc( 100vh / var(--scale) );
+        width: calc( 100vw / var(--scale) );
+
+        transform: scale( var(--scale) );
+        transform-origin: top left;
+    }
+
+    & .menu_area {
+        display: none;
+    }
+}
+
+main {
+    display   : block;
+    box-sizing: border-box;
+    width     :  210mm; /* A4 width */
+    /*padding   : 0 12px; left-right page margins */
+    border-left : 12px solid transparent;
+    border-right: 12px solid transparent;
+
+    overflow-x: hidden;
+    
+    font-size: 14px; /* 16px is the default */
+    line-height: 18px;
+    /*
+    margin-left : auto;
+    margin-right: auto;
+    */
+}
+
+/* scale down */
+@media screen and (max-width: 210mm) {
+    main {
+        transform-origin: top left;
+        scale: min(1, calc( var(--screen_width)/818 ) );
+    }
+}
+/* scale up */
+@media screen and (min-width: 210mm) and (display-mode: fullscreen) {
+    main {
+        transform-origin: top left;
+        scale: max(1, calc( var(--screen_width)/818 ) );
+    }
+}
+/* center */
+@media screen and (min-width: 210mm) and (not (display-mode: fullscreen)) {
+    main {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.center {
+    width: fit-content;
+}
+
+.flex-2 {
+    gap: 1px;
+    display: grid;
+    grid: auto / 1fr 1fr;
+
+    & img {
+        width: 100%;
+    }
+}
+
+.flex-3 {
+    gap: 1px;
+    display: grid;
+    grid: auto / 1fr 1fr 1fr;
+
+    & img {
+        width: 100%;
+    }
+}
+
+
+.flex-4 {
+    gap: 1px;
+    display: grid;
+    grid: auto / 1fr 1fr 1fr 1fr;
+
+    & img {
+        width: 100%;
+    }
+}
+
+.dark  {
+    color-scheme: dark;
+}
+.light {
+    color-scheme: light;
+}
+
+@media print {
+    .onscreen {
+        display: none;
+    }
+}
+
+@media screen {
+    .onprint {
+        display: none;
+    }
+}

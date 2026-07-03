@@ -3,6 +3,7 @@ node_modules/
 package-lock.json
 dist/
 answers.*
+*.answers
 .~lock.*
 **/DS/cur/
 todo.md
