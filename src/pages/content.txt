@@ -69,13 +69,11 @@
         - cheat:Cheat Sheet
         + DS:DS
             - cur:cur
-    - R5-06-VCOD:S5-VCOD Developpement Logiciel
+    - R5-06-VCOD-A:S5-VCOD UML et bonnes pratiques
         + CM:CM
             - CM1:CM1 - Analyse
             - CM2:CM2 - Conception
             - CM3:CM3 - Implémentation
-            - CM5:CM5 - ?
-            - CM6:CM6 - ?
         + Slides:Slides
             - CM1:CM1 - Analyse
             - CM2:CM2 - Conception
@@ -91,6 +89,17 @@
             - defs:Définitions
             - UML:UML
             - DP:Design Patterns
+        + DS:DS
+            - cur:2024-2024
+    - R5-06-VCOD-B:S5-VCOD Gestion de projet
+        + CM:CM
+            - CM1:CM1 - ?
+            - CM2:CM2 - ?
+            - CM3:CM3 - ?
+        + TP:TP
+            - TP1:TP1
+            - TP2:TP2
+            - TP3:TP3
         + DS:DS
             - cur:2024-2024
     + R6-01-VCOD:S6-VCOD Optimisation
