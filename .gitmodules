@@ -1,15 +1,18 @@
 [submodule "build/WebpackFramework"]
 	path = build/WebpackFramework
 	url = git@github.com:denis-migdal/Webpack-Framework.git
-[submodule "libs/TPEngine"]
-	path = libs/TPEngine
+[submodule "libs/legacy/TPEngine"]
+	path = libs/legacy/TPEngine
 	url = git@github.com:denis-migdal/TPEngine.git
-[submodule "libs/WebSlides"]
-	path = libs/WebSlides
+[submodule "libs/legacy/WebSlides"]
+	path = libs/legacy/WebSlides
 	url = git@github.com:denis-migdal/WebSlides.git
-[submodule "libs/LISS3"]
-	path = libs/LISS
+[submodule "libs/legacy/LISS"]
+	path = libs/legacy/LISS
 	url = git@github.com:denis-migdal/LISS.git
 [submodule "libs/MWL@2026"]
 	path = libs/MWL@2026
 	url = git@github.com:denis-migdal-WebLibs/MiscWebLib.git
+[submodule "libs/TPEngine@2026"]
+	path = libs/TPEngine@2026
+	url = git@github.com:denis-migdal/TPEngine.git

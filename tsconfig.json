@@ -10,7 +10,7 @@
 
         "paths": {
             "MWL@2026:*"     : ["./libs/MWL@2026/src/*"],
-            "TPEngine@2026:*": ["./libs/MWL@2026/src/TPEngine/*"],
+            "TPEngine@2026:*": ["./libs/TPEngine@2026/src/*"],
             "@LISS/*"     : ["./libs/legacy/LISS/V3/*"],
             "@TPEngine/*" : [ "./libs/legacy/TPEngine/src/*" ],
             "@WebSlides/*": [ "./libs/legacy/WebSlides/src/*" ],
