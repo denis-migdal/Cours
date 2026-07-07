@@ -1,13 +1,21 @@
 @import "../page@2026/";
 
-h4 {
+body {
+    margin-top: 24px;
+}
+
+h2 {
     font-size: medium;
 }
-h5 {
+h3 {
     font-size: medium;
     font-style: italic;
     margin-top: 1rem;
     margin-bottom: 0.5rem;
+}
+
+main > img {
+    width: 100% !important;
 }
 
 main > div {

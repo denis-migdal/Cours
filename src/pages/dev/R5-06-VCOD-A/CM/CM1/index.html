@@ -2,11 +2,11 @@
 <html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>CM1 (DevLog)</title>
+        <title>CM1 - Analyse (DevLog)</title>
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link   href="/skeleton/index.css"  rel="stylesheet">
-        <script  src="/skeleton/index.js"  type="module"     blocking="render" async></script>
+        <link   href="/templates/page@2026/index.css"  rel="stylesheet">
+        <script  src="/templates/page@2026/index.js"  type="module"></script>
     </head>
     <body>
         <main>
@@ -22,13 +22,13 @@
                     <li><b><i>Conception</i></b> : déterminer <b>comment faire</b>.</li>
                     <li><b><i>Implémentation</i></b> : traduire les étapes précédentes en code, i.e. <b>faire</b>, </li>
                     <li><b><i>Intégration et Déploiement</i></b> : intégrer le code produit (livrables) au projet puis le pousser en <b>production</b>.</li>
-                    <li><b><i>Maintenance</i></b> : évolution du code après sa mise en production (e.g. correction de bugs, ajout de fonctionalités, etc).</li>
+                    <li><b><i>Maintenance</i></b> : évolution du code après sa mise en production (e.g. corrections de bugs, ajouts de fonctionnalités, etc).</li>
                 </ol>
             </p>
 
             <p>À ces différentes étapes, on ajoute des phases de <b><i>tests</i></b> (vus en cours d'<i>Automatisations et Tests en Programmation</i>), afin de garantir la qualité et conformité du code produit.</p>
 
-            <p>La <b><i>planification</i></b> de ces différentes étapes dépend du cycle de développement (modèle en cascade, cycle en V, cycle itératif, etc) choisi. Les différents cycles de développement seront étudiés dans un autre cours.
+            <p>La <b><i>planification</i></b> de ces différentes étapes dépend du cycle de développement (modèle en cascade, cycle en V, cycle itératif, etc) choisi. Les différents cycles de développement seront étudiés en <i>Gestion de Projets</i> (deuxième partie de ce cours).
             </p>
 
             <h3>Objectifs de l'Analyse</h3>
@@ -58,11 +58,11 @@
             <div><i>"<u>Passer commande :</u> l'utilisateur rempli son panier, puis le valide avant de procéder au payement. Si l'utilisateur n'est pas connecté, une authentification lui sera demandée lors de la validation du panier."</i>
             </div>
 
-            <div>⚠ Une action utilisateur, e.g. ajouter un produit au panier n'est pas une finalité en soit.</div>
+            <div class="danger">Une action utilisateur, e.g. ajouter un produit au panier n'est pas une finalité en soit.</div>
 
             <p>Dans ce cadre, UML fournit le <i>diagramme de cas d'utilisation</i>, afin de réfléchir aux différents usages et acteurs du système. Il permet une représentation graphique et synthétique de la liste des cas d'utilisations décrits dans le cahier des charges :</p>
 
-            <img style="width: 40%;" src="./assets/usecase.svg"/>
+            <img style="width: 40%;" src="./assets/Use case.svg"/>
 
             <todo>- expliquer formalisme de base</todo>
 
@@ -74,7 +74,7 @@
 
             <img style="width: 80%;" src="./assets/usecase2.svg"/>
 
-            <div>⚠ Bien évidemment, ce diagramme est peu utile si vous n'avez que peu de cas d'utilisations et/ou d'acteurs.</div>
+            <div class="danger">Bien évidemment, ce diagramme est peu utile si vous n'avez que peu de cas d'utilisations et/ou d'acteurs.</div>
 
             <h3>Activités</h3>
 

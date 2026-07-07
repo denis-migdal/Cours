@@ -15,9 +15,9 @@
             <style>
             </style>
 
-<h4>CM1 : Administrer un ordinateur Linux</h4>
+<h2>CM1 : Administrer un ordinateur Linux</h2>
 
-<h5>Alias</h5>
+<h3>Alias</h3>
 
 <ul class="flex-3">
     <li><script type="c-bash">alias <h>$NAME</h>='<h>$VALUE</h>'</script> : <b>créer</b>.</li>
@@ -29,7 +29,7 @@
     <li>Dans <script type="c-text">/etc/system.d/aliases.sh</script> ou <script type="c-text">~/.bash_aliases</script>, puis <script type="c-bash">source <h>$FILE</h></script> ou <script type="c-bash">exec bash --login</script>.</li>
 </ul>
 
-<h5>Sudo (<u>s</u>uper<u>u</u>ser <u>do</u>)</h5>
+<h3>Sudo (<u>s</u>uper<u>u</u>ser <u>do</u>)</h3>
 
 <ul class="flex-2">
     <li><script type="c-bash">sudo <h>!!|$CMD</h></script> : exécuter en tant qu'administrateur.</li>
@@ -40,7 +40,7 @@
 
 Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <script type="c-bash"><h>$USER|%$GROUP</h> ALL=(ALL:ALL) <h>[!]$CMD,...</h></script>.
 
-<h5>Mises à jours</h5>
+<h3>Mises à jours</h3>
 
 <ul class="flex-2">
     <li><script type="c-bash">apt update</script> : télécharger la liste des mises à jours.</li>
@@ -60,7 +60,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     </li>
 </ul>
 
-<h5>Gestion des utilisateurs</h5>
+<h3>Gestion des utilisateurs</h3>
 
 <ul class="flex-2">
     <li><script type="c-bash">adduser <h>$USER</h></script> : <b>créer</b> utilisateur.</li>
@@ -80,7 +80,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     <li><script type="c-bash">members <h>$GROUP</h></script></li>
 </ul>
 
-<h5>Scripts python</h5>
+<h3>Scripts python</h3>
 
 <div class="flex-2">
     <script type="c-python">
@@ -103,7 +103,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     </script>
 </div>
 
-<h5>Manipulation de chemins</h5>
+<h3>Manipulation de chemins</h3>
 
 <div class="flex-2">
     <script type="c-python">
@@ -116,7 +116,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     </script>
 </div>
 
-<h5>Mise en forme : <script type="c-text">\e[<h>$CODE</h>m</script> (utiliser <script type="c-text">\033[<h>$CODE</h>m</script> en Python), cf <a href="https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797">liste des codes</a></h5>
+<h3>Mise en forme : <script type="c-text">\e[<h>$CODE</h>m</script> (utiliser <script type="c-text">\033[<h>$CODE</h>m</script> en Python), cf <a href="https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797">liste des codes</a></h3>
 
 <style>
   .table_format {
@@ -184,9 +184,9 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     <!-- <li><script type="c-bash">IFS='[;' read -sd R -p $'\e[6n' _ R C</script></li> -->
 </ul>
 
-<h4 style="page-break-before: always">CM2 : Processus et accès à distance</h4>
+<h2 style="page-break-before: always">CM2 : Processus et accès à distance</h2>
 
-<h5>Informations système</h5>
+<h3>Informations système</h3>
 
 <ul class="flex-3">
     <li><script type="c-bash">cpufetch</script></li>
@@ -194,7 +194,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     <li><script type="c-bash">btop</script></li>
 </ul>
 
-<h5>Gestion des processus</h5>
+<h3>Gestion des processus</h3>
 
 <ul class="flex-2">
     <li><script type="c-bash">ps</script> (<script type="c-bash">-g</script> de la session, <script type="c-bash">-r</script> en cours d'exécution)</li>
@@ -210,7 +210,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     <li><script type="c-bash">reptyr  <h>$PID</h></script></li>
 </ul>
 
-<h5>Jobs et services</h5>
+<h3>Jobs et services</h3>
 
 <ul class="flex-3">
     <li><script type="c-bash">jobs</script> : lister.</li>
@@ -222,7 +222,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     <li><script type="c-bash">service <h>$NAME</h> <h>restart|stop|status</h></script></li>
 </ul>
 
-<h5>Monitorer process</h5>
+<h3>Monitorer process</h3>
 
 <ul class="flex-2">
     <li><script type="c-bash"><h>$CMD</h> | ts '[%F %T]'</script> : timestamp l'affichage.</li>
@@ -231,7 +231,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     <li><script type="c-bash">strace -wc <h>$CMD</h></script> : <u>trace</u> des appels <u>s</u>ystèmes.</li>
 </ul>
 
-<h5>Accès à distance</h5>
+<h3>Accès à distance</h3>
 
 <ul class="flex-2">
     <li><script type="c-bash">ssh <h>[-p $PORT]</h> <h>$USER@$SERVER</h> <h>[$CMD]</h></script></li>
@@ -243,16 +243,16 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     <li><script type="c-bash">last --present <h>today</h></script> : dernières connexions.</li>
 </ul>
 
-<h4 style="page-break-before: always">CM3 : Volumes de données et systèmes de fichiers</h4>
+<h2 style="page-break-before: always">CM3 : Volumes de données et systèmes de fichiers</h2>
 
-<h5>Informations</h5>
+<h3>Informations</h3>
 
 <ul class="flex-2">
     <li><script type="c-bash">ls -lh -d <h>$FILE[...]</h></script> (<i><u>l</u>ong, <u>h</u>uman, <u>d</u>irectory</i>)</li>
     <li><script type="c-bash">lsvol</script> (script prof)</li>
 </ul>
 
-<h5>Changer les droits</h5>
+<h3>Changer les droits</h3>
 
 <div>
     <ul style="margin-bottom: 5px;">
@@ -274,7 +274,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     <li><script type="c-bash">setfacl <h>$FILE</h> <h>-m|-x</h> <h>u|g:$WHO:$DROITS[,..]</h></script></li>
 </ul>
 
-<h5>Sauvegarde de fichiers</h5>
+<h3>Sauvegarde de fichiers</h3>
 
 <div>
     <ul class="flex-2" style="margin-bottom: 0;">
@@ -295,7 +295,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     <li><script type="c-bash">ln <h>[-s]</h> <h>$SRC</h> <h>$DST</h></script> : <u>l</u>i<u>n</u>k (hard or <script type="c-bash">-s</script> <u>s</u>ymbolic)</li>
 </ul>
 
-<h5>Monter et formatter un volume</h5>
+<h3>Monter et formatter un volume</h3>
 
 <ul class="flex-2">
     <li><script type="c-bash">mount <h>[-t $FS]</h> <h>[-o $OPTS]</h> <h>[$VOL]</h> <h>$MP</h></script>.</li>
@@ -321,7 +321,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
     <li><script type="c-bash">udisksctl loop-delete -b <h>$DEV</h></script></li>
 </ul>
 
-<h5>Partionner</h5>
+<h3>Partionner</h3>
 
 <ul>
     <li><script type="c-bash">cfdisk <h>$DISK</h></script></li>
@@ -330,7 +330,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
 <todo>2. LVM</todo>
 <todo>3. LVM</todo>
 
-<h5>Les fichiers des applications</h5>
+<h3>Les fichiers des applications</h3>
 
 <table>
     <thead>
@@ -380,7 +380,7 @@ Droits définis dans <script type="c-bash">/etc/sudoers<h>[/*]</h></script> : <s
 </ul>
 
 <!--
-<h4 style="page-break-before: always">CM4 :</h4>
+<h2 style="page-break-before: always">CM4 :</h2>
 -->
 
         </main>

@@ -33,16 +33,16 @@
               </li>
               <li><b><i>Maintenance</i></b> : après la mise en production.
                 <ul class="flex-2">
-                  <li>correction de bugs.</li>
-                  <li>ajout de fonctionalités.</li>
+                  <li>corrections de bugs.</li>
+                  <li>ajouts de fonctionalités.</li>
                 </ul>
               </li>
           </ol>
         </div>
         <div>Autres étapes :
           <ul>
-            <li><b><i>planification</i></b> (cf cycles de développement logiciel).</li>
-            <li><b>tests</b> (cf <i>R4-01 Automatisations et Tests en Programmation</i>).</li>
+            <li><b><i>Planification</i></b> (cf <i>Gestion de Projets</i>).</li>
+            <li><b><i>Tests</i></b> (cf <i>R4-01 Automatisations et Tests en Programmation</i>).</li>
           </ul>
         </div>
     </frame-uca>
@@ -70,9 +70,9 @@
       <ul>
         <li><b>MVP</b> (<i>Minimum Viable Product</i>) : ensemble minimal des fonctionnalités nécessaires.
           <ul>
-            <li><b>prioriser les besoins.</b></li>
             <li>Avoir un produit testable et exploitable le plus rapidement possible.</li>
             <li>Loi de <b>Pareto</b> : ~20% des fonctionnalités répondent à ~80% des usages.</li>
+            <li><b>prioriser les besoins.</b></li>
           </ul>
         </li>
       </ul>
@@ -96,7 +96,7 @@
       </ul>
     </div>
 
-    <div>⚠ À utiliser en fonction des ressources et contraintes :
+    <div class="danger">À utiliser en fonction des ressources et contraintes :
       <ul class="flex-2">
         <li>exercice de TP produit en 2 minutes.</li>
         <li>code critique d'une centrale nucléaire.</li>
@@ -107,37 +107,69 @@
     <frame-uca>
       <div>Le cahier des charges décrit les différentes fonctionnalités du projet, par le biais de <i>cas d'utilisations</i>.</div>
 
-      <div><i>"<u>Passer commande :</u> l'utilisateur rempli son panier, puis le valide avant de procéder au payement. Si l'utilisateur n'est pas connecté, une authentification lui sera demandée lors de la validation du panier."</i>
-      </div>
-
       <div><b>Cas d'utilisations</b> (<i>use case</i>) décrit, en langage non technique, un ensemble d'actions <b>pour une finalité</b>.
         <ul>
           <li>e.g. interactions du système avec différents <b>acteurs</b> (≈ rôle assumé par une entité externe).</li>
         </ul>
-
       </div>
 
-      <div>⚠ Une action utilisateur, e.g. ajouter un produit au panier n'est pas une finalité en soit.</div>
+      <div><i>"<u>Passer commande :</u> l'utilisateur rempli son panier, puis le valide avant de procéder au payement. Si l'utilisateur n'est pas connecté, une authentification lui sera demandée lors de la validation du panier."</i>
+      </div>
+
+      <div class="danger">Une action utilisateur, e.g. ajouter un produit au panier n'est pas une finalité en soit.</div>
     </frame-uca>
     <frame-uca>
       <div><i>Diagramme de cas d'utilisation</i> : représente graphiquement et synthétiquement la liste des cas d'utilisations.
         <ul>
-          <li>Réfléchir différents usages et acteurs du système.</li>
+          <li>Réfléchir aux différents acteurs et usages du système.</li>
         </ul>
       </div>
 
-      <img class="center" style="width: 40%;" src="../../CM/CM1/assets/usecase.svg"/>
+      <img class="center" style="width: 40%;" src="../../CM/CM1/assets/Use case.svg"/>
 
-      <div>⚠ Peu utile si vous n'avez que peu de cas d'utilisations et d'acteurs.</div>
+      <div class="danger">Peu utile si vous n'avez que peu de cas d'utilisations et d'acteurs.</div>
     </frame-uca>
     <frame-uca>
-            <p><b>Astuce 1 :</b> utiliser des codes couleur, e.g. pour indiquer le niveau de priorisation (e.g. pour le MVP).</p>
+      <div>
+        <img src="../../CM/CM1/assets/Use case - desc.svg"/>
+      </div>
+      <div class="hint">Il existe aussi un lien <script type="c-text"><<extends>></script> équivalent à un <script type="c-text"><<include>></script> avec condition. Cependant, je n'en recommande pas l'usage, car trop ambiguë (confusion avec l'héritage, et sens de la flèche trompeur).
+      </div>
+    </frame-uca>
+    <frame-uca>
+      <div class="exo">Identifiez les acteurs et les cas d'utilisations de la situation suivante :<br/>
+        <quote>Le client souhaite un système permettant de gérer les absences des étudiants, qui pourront ensuite les justifier.</quote>
+      </div>
 
-            <p><b>Astuce 2 :</b> indexer les cas d'utilisation e.g. <i>"1.2 Visualiser un produit"</i> pour le retrouver dans le CdC.</p>
+      <img onslide="1" class="center" style="width: 40%;" src="../../CM/CM1/assets/absences.svg"/>
 
-            <p><b>Astuce 3 :</b> découper en sous diagrammes (par acteurs, ou groupes de fonctionnalités) pour conserver des diagrammes lisibles et visuels, e.g. :</p>
+      <div>
+        <div class="hint">Il est important d'échanger avec le client afin d'identifier les besoins implicites.</div>
+        <div class="danger">Attention de ne pas se perdre dans les détails ne relevant pas des fonctionnalités essentielles du projet.</div>
+      </div>
+    </frame-uca>
 
-            <img class="center" style="width: 80%;" src="../../CM/CM1/assets/usecase2.svg"/>
+    <frame-uca>
+      <div class="exo">Identifiez les acteurs et les cas d'utilisations de la situation suivante :<br/>
+        <quote>Le client souhaite avoir une plateforme en ligne permettant la gestion des notes des étudiants. Les notes sont saisies par les enseignants, et peuvent être consultées par les étudiants. Ces notes sont ensuite utilisées lors du jury de fin d'année.</quote>
+      </div>
+
+      <img onslide="1" class="center" style="width: 35%;" src="../../CM/CM1/assets/notes.svg"/>
+
+      <div>
+        <div class="hint">Il est important d'adopter le langage du client, d'où l'importance d'échanger avec lui afin de s'en approprier le vocabulaire.</div>
+      </div>
+    </frame-uca>
+    <frame-uca>
+      <div>
+        <b>Astuces :</b>
+        <ol>
+          <li>Utiliser des codes couleur, e.g. pour indiquer le niveau de priorisation (e.g. pour le MVP).</li>
+          <li>Indexer les cas d'utilisation e.g. <i>"1.2 Visualiser un produit"</i> pour le retrouver dans le CdC.</li>
+          <li>Découper en sous diagrammes (par acteurs, ou groupes de fonctionnalités) pour conserver des diagrammes lisibles et visuels.</li>
+        </ol>
+      </div>
+      <img class="center" style="width: 80%;" src="../../CM/CM1/assets/usecase2.svg"/>
     </frame-uca>
   </frame-subsection>
   <frame-subsection name="Activités">
