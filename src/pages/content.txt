@@ -79,7 +79,6 @@
             - CM2:CM2 - Conception
             - CM3:CM3 - Implémentation
         + TD:TD
-            - TD1:TD1 - Analyse
             - TD2:TD2 - Conception
         + TP:TP
             - TP1:TP1 - Analyse

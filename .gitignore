@@ -2,11 +2,13 @@ build/TS
 node_modules/
 package-lock.json
 dist/
-answers.*
-*.answers
-.~lock.*
-**/DS/cur/
 todo.md
 TODO.md
+.~lock.*
 .$*.drawio.bkp
+**/DS/cur/
 **/photos/
+answers
+answers.*
+*.answers
+!answers.enc

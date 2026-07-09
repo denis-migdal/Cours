@@ -12,7 +12,9 @@
         "watch": "clear ; webpack --watch    --mode=development",
         "build-prod": "clear ; webpack --no-watch --mode=production",
         "tests": "clear ; deno task --cwd ./tests test",
-        "types": "clear ; ./build/WebpackFramework/files/genTypes.sh"
+        "types": "clear ; ./build/WebpackFramework/files/genTypes.sh",
+        "genID": "openssl rand -hex 4",
+        "encrypt": "./libs/TPEngine@2026/scripts/encrypt"
     },
     "author": "[AUTHOR]",
     "license": "[LICENCE]",
