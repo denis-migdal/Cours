@@ -16,13 +16,15 @@
 
 <div class="hint">Nous vous fournissons des <a href="https://github.com/denis-migdal/DrawIO-UML-Shape-Libraries">bibliothèques de formes UML</a> que vous pouvez importer dans draw.io.</div>
 
+<div class="danger">Afin que vous puissiez vous exercer sur les deux types de diagrammes, vous penserez à bien alterner les exercices.</div>
+
 <h2>Cas d'utilisation</h2>
 
-<div>Créez les diagrammes de cas d'utilisations pour les contextes suivants.</div>
+<div class="exo">Créez les diagrammes de cas d'utilisations pour les contextes suivants.</div>
 
 <h3>Télécommande</h3>
 
-<div>Une télécommande permet de contrôler un téléviseur. Ce téléviseur possède des hauts parleurs, un mécanisme de mise sous tension (<i>alimentation</i>), un mécanisme de changement de de chaîne (<i>turner</i>), un mécanisme de réglage du son par augmentation ou diminution (<i>ampli</i>), un écran associé à un mécanisme de réglage du contraste et de la couleur des images par augmentation ou diminution.</div>
+<div class="context">Une télécommande permet de contrôler un téléviseur. Ce téléviseur possède des hauts parleurs, un mécanisme de mise sous tension (<i>alimentation</i>), un mécanisme de changement de de chaîne (<i>turner</i>), un mécanisme de réglage du son par augmentation ou diminution (<i>ampli</i>), un écran associé à un mécanisme de réglage du contraste et de la couleur des images par augmentation ou diminution.</div>
 
 <q-file data-config='{"QID": "1c5f5c81", "accept": ".svg"}'></q-file>
 
@@ -30,48 +32,50 @@
 
 <ol>
     <li><q-file data-config='{"QID": "1c5f5c81", "accept": ".svg"}'>
-        Un distributeur de billets automatique.
+        Un distributeur de billets automatique :
     </q-file></li>
     <li><q-file data-config='{"QID": "1d0f48e7", "accept": ".svg"}'>
-        Un distributeur automatique proposant boissons et friandises.
+        Un distributeur automatique proposant boissons et friandises :
     </q-file></li>
     <li><q-file data-config='{"QID": "c876a7ee", "accept": ".svg"}'>
-        Un système de gestion de bibliothèque.
+        Un système de gestion de bibliothèque :
     </q-file></li>
 </ol>
 
 <h3>Entreprise</h3>
 
-<div>L'entreprise Poule Emploi propose un service de mise en relation entre employeurs potentiels et demandeurs d'emplois, permettant à l'un comme l'autre de consulter un catalogue (d'offres ou de CV). L'accès à ces catalogues, ainsi que l'ajout d'une offre ou d'un CV, nécessite un compte client payant créé par un employé de l'entreprise Poule Emploi. Le management a accès aux données client pour des raisons de reporting.</div>
+<div class="context">L'entreprise Poule Emploi propose un service de mise en relation entre employeurs potentiels et demandeurs d'emplois, permettant à l'un comme l'autre de consulter un catalogue (d'offres ou de CV). L'accès à ces catalogues, ainsi que l'ajout d'une offre ou d'un CV, nécessite un compte client payant créé par un employé de l'entreprise Poule Emploi. Le management a accès aux données client pour des raisons de reporting.</div>
 
 <q-file data-config='{"QID": "db73aef6", "accept": ".svg"}'></q-file>
 
 <h2>Activité</h2>
 
-<div>Créez les diagrammes d'activité pour les contextes suivants.</div>
+<div class="exo">Créez les diagrammes d'activité pour les contextes suivants.</div>
 
 <h3>Recette de cuisine</h3>
 
-<ul>
-    <li>Commencez par casser le chocolat en morceau, puis le faire fondre.</li>
-    <li>En parallèle, casser les oeufs en séparant les blancs des jaunes.</li>
-    <li>Quand le chocolat est fondu, ajouter les jaunes d'oeufs.</li>
-    <li>Battre les blancs en neige jusqu'à ce qu'ils soient bien fermes.</li>
-    <li>Les incorporer délicatement à la préparation chocolat sans les briser.</li>
-    <li>Verser dans des ramequins individuels.</li>
-    <li>Mettre au frais au moins 3 heures au réfrigérateur avant de servir.</li>
-</ul>
+<div class="context">
+    <ul>
+        <li>Commencez par casser le chocolat en morceau, puis le faire fondre.</li>
+        <li>En parallèle, casser les oeufs en séparant les blancs des jaunes.</li>
+        <li>Quand le chocolat est fondu, ajouter les jaunes d'oeufs.</li>
+        <li>Battre les blancs en neige jusqu'à ce qu'ils soient bien fermes.</li>
+        <li>Les incorporer délicatement à la préparation chocolat sans les briser.</li>
+        <li>Verser dans des ramequins individuels.</li>
+        <li>Mettre au frais au moins 3 heures au réfrigérateur avant de servir.</li>
+    </ul>
+</div>
 
 <q-file data-config='{"QID": "a1e5280d", "accept": ".svg"}'></q-file>
 
 <h3>Commande d'un produit</h3>     
 
-<div>La commande d'un produit fait intervenir les acteurs suivants :
+<div class="context">La commande d'un produit fait intervenir les acteurs suivants :
     <ul>
-        <li>Client : commande un produit et paye la facture.</li>
-        <li>Caisse : encaisse l'argent du client.</li>
-        <li>Vente : traite et facture la commande du client.</li>
-        <li>Entrepôt : sort les articles et expédie la commande.</li>
+        <li><b>Client :</b> commande un produit et paye la facture.</li>
+        <li><b>Caisse :</b> encaisse l'argent du client.</li>
+        <li><b>Vente :</b> traite et facture la commande du client.</li>
+        <li><b>Entrepôt :</b> sort les articles et expédie la commande.</li>
     </ul>
 </div>
 
@@ -79,15 +83,24 @@
 
 <h3>Réparations</h3>
 
-<div>Le logiciel de gestion des réparations est destiné en priorité au chef d'atelier, il devra lui permettre de saisir les fiches de réparations et le travail effectué par les divers employés de l'atelier.</div>
-
-<div>Pour effectuer leur travail, les mécaniciens et autres employés de l'atelier vont chercher des pièces de rechange au magasin. Lorsque le logiciel sera installé, les magasiniers ne fourniront des pièces que pour les véhicules pour lesquels une fiche de réparation est ouverte : ils saisiront directement les pièces fournies depuis un terminal installé au magasin.</div>
-
-<div>Lorsqu'une réparation est terminée, le chef d'atelier va essayer la voiture. Si tout est en ordre, il met la voiture sur le parc clientèle et bouclera la fiche de réparation informatisée. Les fiches de réparations bouclées par le chef d'atelier devront être importées par le comptable dans le logiciel comptable.</div>
-
-<div>Créez le diagramme d'activité pour le traitement d'une réparation.</div>
+<div class="context">Le logiciel de gestion des réparations est destiné en priorité au chef d'atelier, il devra lui permettre de saisir les fiches de réparations et le travail effectué par les divers employés de l'atelier.<br/>
+    <br/>
+    Pour effectuer leur travail, les mécaniciens et autres employés de l'atelier vont chercher des pièces de rechange au magasin. Lorsque le logiciel sera installé, les magasiniers ne fourniront des pièces que pour les véhicules pour lesquels une fiche de réparation est ouverte : ils saisiront directement les pièces fournies depuis un terminal installé au magasin.<br/>
+    <br/>
+    Lorsqu'une réparation est terminée, le chef d'atelier va essayer la voiture. Si tout est en ordre, il met la voiture sur le parc clientèle et bouclera la fiche de réparation informatisée. Les fiches de réparations bouclées par le chef d'atelier devront être importées par le comptable dans le logiciel comptable.
+</div>
 
 <q-file data-config='{"QID": "e56e9843", "accept": ".svg"}'></q-file>
+
+<h3>Jury de fin d'année</h3>
+
+<div class="context">Une UE est validée (AKI) si elle a une moyenne supérieure ou égale à 10. Si la moyenne est entre 8 et 10, l'UE est ajournée (AJAC). Si la moyenne est inférieure à 8, l'étudiant ne valide pas l'UE (NAKI). Le jury peut donner des points jury aux UE.<br/>
+<br/>
+Si l'étudiant a validité toutes ses UE, ou n'a qu'une UE ajournée, il passe de droit à l'année suivante, sauf si l'UE ajournée n'avait pas été validée l'année précédente. La dernière année, l'étudiant doit avoir eu toutes ses UE pour valider son année. En 2ème et 3ème année, un étudiant ne peut valider son année s'il n'a pas effectué de stage.<br/>
+<br/>
+Si l'étudiant ne valide pas son année, il peut redoubler ou être exclus par le jury. Un étudiant ne peut redoubler qu'une fois par année. Si un étudiant est défaillant, ses notes ne sont pas calculées et est exclus de la formation.</div>
+
+<q-file data-config='{"QID": "775495af", "accept": ".svg"}'></q-file>
 
         </main>
     </body>

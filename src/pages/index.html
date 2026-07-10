@@ -5,12 +5,13 @@
         <title>Cours</title>
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link   href="/skeleton/index.css"  rel="stylesheet">
-        <script  src="/skeleton/index.js"  type="module"     blocking="render"></script>
+        <link   href="/templates/page@2026/index.css"  rel="stylesheet">
+        <script  src="/templates/page@2026/index.js"  type="module"></script>
+        <link   href="./index.css"  rel="stylesheet">
     </head>
     <body>
         <main>
-            <div>⚠ Certains des supports ne sont pas nécessairement finalisés et peuvent être à un état de brouillon.</div>
+            <div class="danger">Certains des supports ne sont pas nécessairement finalisés et peuvent être à un état de brouillon.</div>
             <table>
                 <style scoped>
                     td {
@@ -23,7 +24,7 @@
                 <tbody>
                     <tr>
                         <th><a href="/acc/R1-13">👋 Accueil</a></th>
-                        <td><a href="/acc/R1-13">Accueil Numérique</a></td>
+                        <td><a href="/acc/R1-13" draft>Accueil Numérique</a></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -32,11 +33,11 @@
                     </tr>
                     <tr>
                         <th><a href="/sec/">🔒 Sécurité</a></th>
-                        <td><a href="/sec/R1-11/">Introduction à la Cybersécurité</a></td>
-                        <td><a href="/sec/R2-14/">Administration Système avec Linux</a></td>
-                        <td><a href="/sec/R3-12-VCOD/">Cryptographie et réseaux</a></td>
-                        <td><a href="/sec/R4-10-VCOD/">Identité Numérique</a></td>
-                        <td><a href="/sec/S5-07/">Pentest, Hacking, et Renforcement</a></td>
+                        <td><a href="/sec/R1-11/" draft>Introduction à la Cybersécurité</a></td>
+                        <td><a href="/sec/R2-14/" revise>Administration Système avec Linux</a></td>
+                        <td><a href="/sec/R3-12-VCOD/" disabled>Cryptographie et réseaux</a></td>
+                        <td><a href="/sec/R4-10-VCOD/" draft>Identité Numérique</a></td>
+                        <td><a href="/sec/S5-07/" draft>Pentest, Hacking, et Renforcement</a></td>
                         <td></td>
                     </tr>
                     <tr>
@@ -44,22 +45,32 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><a href="/dev/R4-01/">Automatisation et Test en Programmation</a>
+                        <td><a href="/dev/R4-01/" draft>Automatisation et Test en Programmation</a>
                         <hr/>
                         <i>SAÉ croisée</i></td>
                         <td>
-                            <a href="/dev/R5-06-VCOD-A/">UML et bonnes pratiques</a>
+                            <a href="/dev/R5-06-VCOD-A/" revise>UML et bonnes pratiques</a>
                             <hr/>
-                            <a href="/dev/R5-06-VCOD-B/">Gestion de projet</a>
+                            <a href="/dev/R5-06-VCOD-B/" draft>Gestion de projet</a>
                         </td>
-                        <td><a href="/dev/R6-01-VCOD/">Optimisation</a></td>
+                        <td><a href="/dev/R6-01-VCOD/" draft>Optimisation</a></td>
                     </tr>
                     <tr>
-                        <th colspan="7"><i>Anciens cours</i></th>
+                        <th colspan="7" style="text-align: center;"><i>Anciens cours</i></th>
+                    </tr>
+
+                    <tr>
+                        <th><a href="/sec/">🔒 Sécurité</a></th>
+                        <td></td>
+                        <td></td>
+                        <td><a href="/sec/R3-12-VCOD/" draft>Cryptographie et réseaux</a></td>
+                        <td><a href="/sec/R4-10-VCOD/" draft></td>
+                        <td><a href="/sec/S5-07/" draft></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <th><a href="/bdd/">⛁ Bases de données</a></th>
-                        <td><a href="/bdd/R1-01/">Tableur et Reporting</a><hr/><a href="/bdd/R1-02/">Bases de données relationnelles 1</a></td>
+                        <td><a href="/bdd/R1-01/" draft>Tableur et Reporting</a><hr/><a href="/bdd/R1-02/" draft>Bases de données relationnelles 1</a></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -70,11 +81,11 @@
                         <th><a href="/web/">🌐 Web</a></th>
                         <td></td>
                         <td></td>
-                        <td><a href="/web/R3-03">Technologies Web</a></td>
-                        <td><a href="/web/R4-09-VCOD">Programmation Web</a>
+                        <td><a href="/web/R3-03" draft>Technologies Web</a></td>
+                        <td><a href="/web/R4-09-VCOD" draft>Programmation Web</a>
                         <hr/>
-                        <i><a href="">SAÉ Collecte Automatisée de données Web</a></i></td>
-                        <td><a href="/web/R5-07-VCOD">Programmation Web pour la Visualisation</a></td>
+                        <i><a href="" draft>SAÉ Collecte Automatisée de données Web</a></i></td>
+                        <td><a href="/web/R5-07-VCOD" draft>Programmation Web pour la Visualisation</a></td>
                         <td></td>
                     </tr>
                 </tbody>

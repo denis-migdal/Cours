@@ -12,14 +12,4 @@ table {
     }
 }
 
-/* for resources status */
-[ready] {
-    color: green;
-    font-weight: bold;
-}
-[revise] {
-    color: orange;
-}
-[draft] {
-    color: red;
-}
+@import "./ressources.css";
