@@ -1,15 +1,15 @@
-@import "MWL@2026:Components/page/theme/reset.css";
+@import "MWL@2026:components/page/theme/reset.css";
 
-@import "MWL@2026:Components/page/layout";
-@import "MWL@2026:Components/page/theme/table.css";
+@import "MWL@2026:components/page/layout";
+@import "MWL@2026:components/page/theme/table.css";
 
-@import "MWL@2026:Components/page/lastmodified";
+@import "MWL@2026:components/page/lastmodified";
 
-@import "MWL@2026:Components/page/menu";
-@import "MWL@2026:Components/page/color-switch/index.css";
+@import "MWL@2026:components/page/menu";
+@import "MWL@2026:components/page/color-switch/index.css";
 
-@import "MWL@2026:Components/page/theme/utilities.css";
-@import "MWL@2026:Components/page/blocks";
+@import "MWL@2026:components/page/theme/utilities.css";
+@import "MWL@2026:components/page/blocks";
 
 .terminal {
     border: 1px solid gray; border-radius: 5px; padding: 5px;
