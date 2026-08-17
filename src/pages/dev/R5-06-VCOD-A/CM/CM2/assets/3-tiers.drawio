@@ -1,0 +1,31 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="ofIWexnx_0GLQSB3X0cM">
+    <mxGraphModel dx="860" dy="577" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="yZh5lv0i6lK4qowUKKZk-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#DAE8FC,#1D293B);strokeColor=#6c8ebf;verticalAlign=top;" value="&lt;b&gt;Presentation&lt;/b&gt;" vertex="1">
+          <mxGeometry height="90" width="270" x="80" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="yZh5lv0i6lK4qowUKKZk-2" parent="1" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;points=[[0,0,0,0,15],[0,0,0,0,35],[0,0,0,10,0],[0,0.5,0,0,0],[0,1,0,10,0],[0.25,0,0,0,0],[0.25,1,0,0,0],[0.5,0,0,0,0],[0.5,1,0,0,0],[0.75,0,0,0,0],[0.75,1,0,0,0],[1,0,0,0,0],[1,0.25,0,0,0],[1,0.5,0,0,0],[1,0.75,0,0,0],[1,1,0,0,0]];" value="ProductWidget" vertex="1">
+          <mxGeometry height="50" width="110" x="90" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="yZh5lv0i6lK4qowUKKZk-4" parent="1" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;points=[[0,0,0,0,15],[0,0,0,0,35],[0,0,0,10,0],[0,0.5,0,0,0],[0,1,0,10,0],[0.25,0,0,0,0],[0.25,1,0,0,0],[0.5,0,0,0,0],[0.5,1,0,0,0],[0.75,0,0,0,0],[0.75,1,0,0,0],[1,0,0,0,0],[1,0.25,0,0,0],[1,0.5,0,0,0],[1,0.75,0,0,0],[1,1,0,0,0]];" value="CatalogWidget" vertex="1">
+          <mxGeometry height="50" width="110" x="230" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="yZh5lv0i6lK4qowUKKZk-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#D5E8D4,#1F2F1E);strokeColor=#82b366;verticalAlign=top;" value="&lt;b&gt;Business&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="270" x="80" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="yZh5lv0i6lK4qowUKKZk-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#FFE6CC,#36210A);strokeColor=#d79b00;verticalAlign=top;" value="&lt;b&gt;Infrastructure&lt;/b&gt;" vertex="1">
+          <mxGeometry height="90" width="270" x="80" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="yZh5lv0i6lK4qowUKKZk-7" parent="1" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;points=[[0,0,0,0,15],[0,0,0,0,35],[0,0,0,10,0],[0,0.5,0,0,0],[0,1,0,10,0],[0.25,0,0,0,0],[0.25,1,0,0,0],[0.5,0,0,0,0],[0.5,1,0,0,0],[0.75,0,0,0,0],[0.75,1,0,0,0],[1,0,0,0,0],[1,0.25,0,0,0],[1,0.5,0,0,0],[1,0.75,0,0,0],[1,1,0,0,0]];" value="Database" vertex="1">
+          <mxGeometry height="50" width="110" x="90" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="yZh5lv0i6lK4qowUKKZk-8" parent="1" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;points=[[0,0,0,0,15],[0,0,0,0,35],[0,0,0,10,0],[0,0.5,0,0,0],[0,1,0,10,0],[0.25,0,0,0,0],[0.25,1,0,0,0],[0.5,0,0,0,0],[0.5,1,0,0,0],[0.75,0,0,0,0],[0.75,1,0,0,0],[1,0,0,0,0],[1,0.25,0,0,0],[1,0.5,0,0,0],[1,0.75,0,0,0],[1,1,0,0,0]];" value="MailService" vertex="1">
+          <mxGeometry height="50" width="110" x="230" y="190" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

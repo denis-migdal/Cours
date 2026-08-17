@@ -1,0 +1,25 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="a4R6rPQ3CgMJuKxXiOek">
+    <mxGraphModel dx="860" dy="577" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="O7YGdcdu3jyuRsaqv4Z1-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#DAE8FC,#1D293B);strokeColor=#6c8ebf;" value="DAO" vertex="1">
+          <mxGeometry height="30" width="120" x="130" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="O7YGdcdu3jyuRsaqv4Z1-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#FFF2CC,#281D00);strokeColor=#d6b656;" value="Database" vertex="1">
+          <mxGeometry height="30" width="120" x="130" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="O7YGdcdu3jyuRsaqv4Z1-17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#FFF2CC,#281D00);strokeColor=#d6b656;" value="OS" vertex="1">
+          <mxGeometry height="30" width="120" x="130" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="O7YGdcdu3jyuRsaqv4Z1-18" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#F8CECC,#512D2B);strokeColor=#b85450;" value="FileSystem" vertex="1">
+          <mxGeometry height="30" width="120" x="130" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="O7YGdcdu3jyuRsaqv4Z1-21" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#D5E8D4,#1F2F1E);strokeColor=#82b366;" value="Catalogue" vertex="1">
+          <mxGeometry height="30" width="120" x="130" y="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

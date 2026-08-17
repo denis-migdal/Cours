@@ -10,7 +10,7 @@
     </head>
     <body>
         <main>
-            <h1>Analyse : cas d'utilisations et activités</h1>
+            <h1>Analyse : cas d'utilisation et activités</h1>
 
             <h2>Qu'est-ce que l'Analyse ?</h2>
             
@@ -52,38 +52,117 @@
 
             <p>Ainsi, même si UML est très utile en soit, tous les diagrammes ne le sont pas nécessairement pour tous les projets. Il convient donc de ne pas trop abuser de UML (<i>death by UML fever</i>).</p>
 
-            <h3>Les cas d'utilisations</h3>
+            <h3>Les cas d'utilisation</h3>
 
-            <p>Le cahier des charges décrit, entres autres, les différentes fonctionnalités de système par le biais de cas d'utilisations. Un <b>cas d'utilisations</b> (<i>use case</i>) décrit, en langage non technique, un ensemble d'actions du système <b>en vue d'une finalité</b>. Il décrit notamment ses interactions avec les différents acteurs (≈ rôle assumé par une entité externe au système), e.g. :</p>
+            <p>Le cahier des charges décrit, entres autres, les différentes fonctionnalités de système par le biais de cas d'utilisation. Un <b>cas d'utilisation</b> (<i>use case</i>) décrit, en langage non technique, un ensemble d'actions du système <b>en vue d'une finalité</b>. Il décrit notamment ses interactions avec les différents acteurs (≈ rôle assumé par une entité externe au système), e.g. :</p>
             <div><i>"<u>Passer commande :</u> l'utilisateur rempli son panier, puis le valide avant de procéder au payement. Si l'utilisateur n'est pas connecté, une authentification lui sera demandée lors de la validation du panier."</i>
             </div>
 
             <div class="danger">Une action utilisateur, e.g. ajouter un produit au panier n'est pas une finalité en soit.</div>
 
-            <p>Dans ce cadre, UML fournit le <i>diagramme de cas d'utilisation</i>, afin de réfléchir aux différents usages et acteurs du système. Il permet une représentation graphique et synthétique de la liste des cas d'utilisations décrits dans le cahier des charges :</p>
+            <p>Dans ce cadre, UML fournit le <i>diagramme de cas d'utilisation</i>, pour représenter graphiquement et synthétiquement la liste des cas d'utilisation décrits dans le cahier des charges. Il permet ainsi d'échanger sur (et de réfléchir aux) différents usages et acteurs du système.</p>
 
             <img style="width: 40%;" src="./assets/Use case.svg"/>
 
-            <todo>- expliquer formalisme de base</todo>
+            <div class="danger">Bien évidemment, ce diagramme est peu utile si vous n'avez que peu de cas d'utilisation et/ou d'acteurs.</div>
 
-            <p><b>Astuce 1 :</b> Vous pouvez utiliser des codes couleur, e.g. afin d'indiquer le niveau d'importance de chaque cas d'utilisation (e.g. pour le MVP).</p>
+            <h4>Formalisme</h4>
 
-            <p><b>Astuce 2 :</b> Il est conseillé de préfixer les cas d'utilisations par une référence permettant d'en retrouver plus aisément la description dans le cahier des charges. e.g. <i>"1.2 Visualiser un produit"</i>.</p>
+            <div class="flex-2" style="gap:10px">
+                <img style="width:100%" src="./assets/Use case - desc.svg"/>
+                <div>
+                    <p>En UML, une flèche dont la pointe est un triangle creux indique une <i>spécialisation</i> (cf héritage en POO). Elle indique qu'un acteur (ou cas d'utilisation) étend un autre, i.e. qu'il en est une sous-catégorie.</p>
 
-            <p><b>Astuce 3 :</b> Ce diagramme doit rester visuel et lisible. Il ne faut ainsi pas hésiter à découper ce diagramme en plusieurs diagrammes, en regroupant les cas d'utilisations par acteurs, ou par groupes de fonctionnalités :</p>
+                    <p>Les acteurs <i>supports</i> sont des acteurs qui assistent ou administrent le système. Par convention, ils sont placés à droite du système.</p>
 
-            <img style="width: 80%;" src="./assets/usecase2.svg"/>
+                    <p>Les <i>pseudo cas d'utilisation</i> ne sont pas des cas d'utilisation en soit, mais peuvent être ajoutés à la liste des cas d'utilisation du cahier des charges. Je les représente via un ovale pointillé afin de les distinguer.</p>
+                </div>
+            </div>
+            <div class="hint">Il existe aussi un lien <script type="c-text"><<extends>></script> équivalent à un <script type="c-text"><<include>></script> avec condition. Cependant, je n'en recommande pas l'usage, car trop ambiguë (confusion avec l'héritage, et sens de la flèche trompeur).
+            </div>
 
-            <div class="danger">Bien évidemment, ce diagramme est peu utile si vous n'avez que peu de cas d'utilisations et/ou d'acteurs.</div>
+            <h4>Conseils</h4>
+
+            <div>Le diagramme de cas d'utilisation sert à échanger avec le client, notamment afin d'en identifier les besoins non-exprimés. Dans ce cadre, il est important d'adopter le langage et le vocabulaire du client.</div>
+            
+            <div class="danger">Attention de ne pas se perdre dans des détails ne relevant pas des fonctionnalités essentielles du projet.</div>
+        
+
+            <div>Aussi, Les diagrammes de cas d'utilisation doivent rester <b>lisibles</b> et <b>visuels</b>. Pour cela on peut :
+                <ol>
+                    <li><b>Indexer les cas d'utilisation</b>, <i>e.g. "1.2 Visualiser un produit"</i>, afin de le retrouver plus facilement dans le CdC.</li>
+                    <li><b>Utiliser des codes couleur</b>, e.g. pour indiquer le niveau de priorisation (e.g. pour le MVP).</li>
+                    <li><b>Découper en sous diagrammes</b>, <i>e.g. par acteurs ou groupes de fonctionnalités</i>, pour rester lisible.</li>
+                </ol>
+            </div>
+            <img style="width: 80%;" src="./assets/Use case2.svg"/>
 
             <h3>Activités</h3>
 
+            <div>Chaque cas d'utilisation doit ensuite être décrit individuellement, notamment en en décrivant la procédure, i.e. les différentes étapes, vérifications, conditions, etc. L'objectif est encore d'échanger avec le client, afin d'expliciter le processus métier et son fonctionnement.</div>
+
             <p>Pour décrire visuellement un cas d'utilisation, il est possible d'utiliser un <b>diagramme d'activité</b> où chaque noeud correspond à une action :</p>
 
-            <img style="width:40%" src="./assets/activité.svg"/>
+            <img style="width:60%" src="./assets/Activity.svg"/>
 
-            <todo>- expliquer formalisme de base</todo>
-            <todo>Plus de détails https://laurent-audibert.developpez.com/Cours-UML/?page=diagramme-activites</todo>
+            <p class="danger">Une action est indépendante de l'interface graphique. Il ne faut ainsi pas mettre, i.e. "clic sur le bouton confirmer", mais "confirmation".</p>
+
+            <h4>Formalisme</h4>
+
+            <p>Il existe aussi d'autres symboles utiles, bien que moins fréquents :</p>
+
+            <h5>Événements</h5>
+            <div class="flex-2">
+                <img style="width:80%" src="./assets/Activity-2.svg"/>
+                <div>Le sablier représente une attente (généralement en temps), quand la réception d'un signal peut soit être l'attente d'un signal (si flèche entrante), ou la réaction à un signal (sinon).</div>
+            </div>
+
+            <h5>Interruptions</h5>
+            <div class="flex-2">
+                <img style="width:80%" src="./assets/Activity-4.svg"/>
+                <div><p>Une <b>zone interruptible</b>, représentée en pointillés, est une zone dont les actions peuvent être interrompus, <i>e.g. erreur, annulation de l'activité, etc</i>.<p>
+
+                <p>L'<b>interruption</b>, représentée par une flèche en éclair, pointe vers les actions à effectuer en cas d'interruption.</p>
+                </div>
+            </div>
+
+            <h5>Partitions</h5>
+            <div class="flex-2">
+                <img style="width: 80%" src="./assets/Activity-1.svg"/>
+                <div><p>Les <b>partitions</b> divisent le diagramme en zones, chacune correspondant e.g. à un acteur. Cela est permet d'insister sur <i>qui</i> effectue l'action.</p>
+                <p>Les données échangées lors des communications entre acteurs peuvent être représentés via un rectangle.</p></div>
+            </div>
+
+            <h5>Sous-activité</h5>
+            <div class="flex-2">
+                <img style="width: 80%" src="./assets/Activity-3.svg"/>
+                <div><p>Une <b>sous-activité</b> permet de regrouper une sous-partie du diagramme d'activité, au sein d'un ensemble cohérent, afin d'en améliorer la lecture.</p>
+                <p>Vous noterez qu'on utilise alors des symboles de début/fin de flux au lieu des symboles de début/fin d'activités.</p>
+                </div>
+            </div>
+            <h2>Draw.io</h2>
+
+
+      <div class="hint">Pour des diagrammes complexes et/ou instables, les schémas sur papiers montrent vite leurs limites. On utilise alors des logiciels de dessins numériques.</div>
+
+      <div>Fonctionnalités de draw.io :
+        <ul>
+          <li><b>Classiques :</b> position, dimension, style, rotation, etc.</li>
+          <li><b>Avancées :</b>
+            <ul>
+              <li><i>aligner et distribuer :</i> facilite le positionnement.</li>
+              <li><i>grouper et dissocier :</i> pour créer des formes complexes (composition de plusieurs formes).</li>
+              <li><i>formes personnalisées :</i> définir et réutiliser ses propres bibliothèques de formes.</li>
+            </ul></li>
+          <li><b>Intégration Web :</b>
+            <ul>
+              <li><i>Couleurs adaptatives :</i> mode clair/sombre.</li>
+              <li><i>Édition en HTML/CSS :</i> possibilité d'éditer ses formes en HTML/CSS.</li>
+              <li><i>Animations :</i> manipulations des formes (e.g. couches) en JS.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
         </main>
     </body>
 </html>

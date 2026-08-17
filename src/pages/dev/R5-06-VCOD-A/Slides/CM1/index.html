@@ -103,11 +103,11 @@
       </ul>
     </div>
   </frame-uca>
-  <frame-subsection name="Les cas d'utilisations">
+  <frame-subsection name="Les cas d'utilisation">
     <frame-uca>
-      <div>Le cahier des charges décrit les différentes fonctionnalités du projet, par le biais de <i>cas d'utilisations</i>.</div>
+      <div>Le cahier des charges décrit les différentes fonctionnalités du projet, par le biais de <i>cas d'utilisation</i>.</div>
 
-      <div><b>Cas d'utilisations</b> (<i>use case</i>) décrit, en langage non technique, un ensemble d'actions <b>pour une finalité</b>.
+      <div><b>Cas d'utilisation</b> (<i>use case</i>) décrit, en langage non technique, un ensemble d'actions <b>pour une finalité</b>.
         <ul>
           <li>e.g. interactions du système avec différents <b>acteurs</b> (≈ rôle assumé par une entité externe).</li>
         </ul>
@@ -119,7 +119,7 @@
       <div class="danger">Une action utilisateur, e.g. ajouter un produit au panier n'est pas une finalité en soit.</div>
     </frame-uca>
     <frame-uca>
-      <div><i>Diagramme de cas d'utilisation</i> : représente graphiquement et synthétiquement la liste des cas d'utilisations.
+      <div><i>Diagramme de cas d'utilisation</i> : représente graphiquement et synthétiquement la liste des cas d'utilisation.
         <ul>
           <li>Réfléchir aux différents acteurs et usages du système.</li>
         </ul>
@@ -127,7 +127,7 @@
 
       <img style="width: 40%;" src="../../CM/CM1/assets/Use case.svg"/>
 
-      <div class="danger">Peu utile si vous n'avez que peu de cas d'utilisations et d'acteurs.</div>
+      <div class="danger">Peu utile si vous n'avez que peu de cas d'utilisation et d'acteurs.</div>
     </frame-uca>
     <frame-uca>
       <div>
@@ -137,7 +137,7 @@
       </div>
     </frame-uca>
     <frame-uca>
-      <div class="exo">Identifiez les acteurs et les cas d'utilisations de la situation suivante :<br/>
+      <div class="exo">Identifiez les acteurs et les cas d'utilisation de la situation suivante :<br/>
         <quote>Le client souhaite un système permettant de gérer les absences des étudiants, qui pourront ensuite les justifier.</quote>
       </div>
 
@@ -145,12 +145,12 @@
 
       <div>
         <div class="hint">Il est important d'échanger avec le client afin d'identifier les besoins implicites.</div>
-        <div class="danger">Attention de ne pas se perdre dans les détails ne relevant pas des fonctionnalités essentielles du projet.</div>
+        <div class="danger">Attention de ne pas se perdre dans des détails ne relevant pas des fonctionnalités essentielles du projet.</div>
       </div>
     </frame-uca>
 
     <frame-uca>
-      <div class="exo">Identifiez les acteurs et les cas d'utilisations de la situation suivante :<br/>
+      <div class="exo">Identifiez les acteurs et les cas d'utilisation de la situation suivante :<br/>
         <quote>Le client souhaite avoir une plateforme en ligne permettant la gestion des notes des étudiants. Les notes sont saisies par les enseignants, et peuvent être consultées par les étudiants. Ces notes sont ensuite utilisées lors du jury de fin d'année.</quote>
       </div>
 
@@ -164,9 +164,9 @@
       <div>
         <b>Astuces :</b>
         <ol>
-          <li>Utiliser des codes couleur, e.g. pour indiquer le niveau de priorisation (e.g. pour le MVP).</li>
-          <li>Indexer les cas d'utilisation e.g. <i>"1.2 Visualiser un produit"</i> pour le retrouver dans le CdC.</li>
-          <li>Découper en sous diagrammes (par acteurs, ou groupes de fonctionnalités) pour conserver des diagrammes lisibles et visuels.</li>
+          <li><b>Indexer les cas d'utilisation</b>, <i>e.g. "1.2 Visualiser un produit"</i>, pour le retrouver dans le CdC.</li>
+          <li><b>Utiliser des codes couleur</b>, e.g. pour indiquer le niveau de priorisation (e.g. pour le MVP).</li>
+          <li><b>Découper en sous diagrammes</b>, <i>e.g. par groupes d'acteurs ou de fonctionnalités</i>, pour conserver des diagrammes lisibles et visuels.</li>
         </ol>
       </div>
       <img style="width: 80%;" src="../../CM/CM1/assets/Use case2.svg"/>
@@ -174,11 +174,16 @@
   </frame-subsection>
   <frame-subsection name="Activités">
     <frame-uca>
-      <div><b>Diagramme d'activité</b> : décrit visuellement un cas d'utilisation, chaque noeud correspond à une <b>action</b>.</div>
+      
+      <div><b>Diagramme d'activité</b> : décrit visuellement un cas d'utilisation, chaque noeud correspond à une <b>action</b>.
+        <ul>
+          <li>expliciter le processus métier et son fonctionnement.</li>
+        </ul>
+      </div>
 
       <img style="width:50%" src="./../../CM/CM1/assets/Activity.svg"/>
 
-      <div class="danger">Une action est indépendante de l'interface graphique. Il ne faut ainsi pas mettre "clic sur le bouton confirmé", mais "confirmation".</div>
+      <div class="danger">Une action est indépendante de l'interface graphique. Il ne faut ainsi pas mettre, i.e. "clic sur le bouton confirmer", mais "confirmation".</div>
     </frame-uca>
     <frame-uca>
       <div class="flex-2">
