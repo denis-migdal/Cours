@@ -2,21 +2,123 @@
 <html lang="fr">
     <head>
         <meta charset="utf8"/>
-        <title>CM3 (DevLog)</title>
+        <title>CM3 - Implémentation (DevLog)</title>
         <meta name="color-scheme" content="dark light">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link   href="/skeleton/index.css"  rel="stylesheet">
-        <script  src="/skeleton/index.js"  type="module"     blocking="render"></script>
+        <link   href="/templates/page@2026/index.css"  rel="stylesheet">
+        <script  src="/templates/page@2026/index.js"  type="module"></script>
     </head>
     <body>
         <main>
-            <h1>Implémentation</h1>
+            <h1>Implémentation : classes et objects</h1>
 
 <h2>Les classes</h2>
 
-<todo>Cheat sheets : UML + DP + termes</todo>
+<div>Chaque composant est usuellement implémenté par un ensemble de classes. Le découpage des composants en classes reste une étape de conception, cependant elle commence à faire intervenir des notions d'implémentation.</div>
 
-<div>Chaque composant sera usuellement implémenté par un ensemble de classes. Ce découpage des composants en classes reste une étape de conception, cependant elle commence à faire intervenir des notions d'implémentation.</div>
+<todo>But : garantir (dans la manière de coder et par les tests, donc aussi conçu pour les tests, cf ATP).</todo>
+
+<h3>Diagramme de classes</h3>
+
+- diagramme de classes + objet
+- diagramme de classe à la fois conception et durant implémentation.
+- POO
+- Objet : état à un instant T : débug ou montrer changement d'états.
+
+<h2>Les classes ne sont pas LA solution</h2>
+
+<div>Les classes, l'héritage, et les méthodes ne sont pas la solution à tout. Avant de voir comment les utiliser, nous allons nous intéresser à quand les utiliser.</div>
+
+<h3>Classes vs structures</h3>
+
+<div class="flex-3 gap">
+    <div class="span-2">
+        <div>Les classes ont une <b>sémantique d'entité</b>. C'est à dire que chaque instance représente une entité différente. Ainsi, deux instances différentes seront considérées inégales (comparaison par référence). Modifier ses attributs ne modifie pas son identité. On ne copie pas une classe, on la <b>clone</b>. Les classes ont la responsabilité de la cohérence de leur données internes, et vont donc en contrôler l'accès.</div>
+
+        <div>Les structures ont une <b>sémantique de valeur</b>. C'est à dire que les instances ayant le même contenu sont considérées égales (comparaison par valeur). Les attributs sont usuellement en lecture seule. Le cas échéant, il n'est pas nécessaire d'en protéger l'accès, et les copies sont inutiles. L'héritage a généralement peu de sens.</div>
+    </div>
+    <div>
+        <table>
+            <thead>
+                <tr><th></th><th>Classe</th><th>Structure</th></tr>
+            </thead>
+            <tbody>
+                <tr><th>Sémantique</th><td>entité</td><td>valeur</td></tr>
+                <tr><th>Comparaison</th><td>référence</td><td>valeur</td></tr>
+                <tr><th>Accès</th><td>RW</td><td>RO</td></tr>
+                <tr><th>Duplication</th><td>clone</td><td>inutile</td></tr>
+                <tr><th>Encapsulation</th><td>oui</td><td>non</td></tr>
+                <tr><th>Héritage</th><td>ok</td><td>boff</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="hint">Une entité peut représenter ses attributs par le biais d'une structure afin d'en faciliter la manipulation.
+    <todo>diag : User <>--> UserData.</todo>
+</div>
+
+<div class="danger">Certaines bibliothèques génériques ne distinguent pas proprement classes et structures. Par exemple <script type="c-ts">Vector3D</script> peut à la fois servir à représenter une <i>position</i> (valeur), ou un <i>point</i> (entité).</div>
+
+<h3>Héritage vs composition</h3>
+
+<div>L'héritage doit servir à <i>spécialiser</i> la classe mère, pas à en ajouter de nouvelles fonctionnalités. La chaîne d'héritage ne doit représenter qu'un seul axe de spécialisation conceptuel.</div>
+
+<todo>diag JSONFileSteam class</todo>
+
+<div>Par exemple, <script type="c-ts">JSONFileStream</script> héritant de <script type="c-ts">FileStream</script>, lui même-héritant de <script type="c-ts">Stream</script> fait intervenir 2 concepts : la nature du flux, et la manière d'encoder/décoder les données. Or dès qu'on ajoute de nouveaux variants (e.g. socket au lieu de fichier, binaire au lieu de JSON), ou de nouvelles fonctionnalités (e.g. compression, chiffrement), on se retrouve avec une explosion des combinaisons possibles (et donc des classes à créer), et des noms ridiculement longs (e.g. <script type="c-ts">EncryptedCompressedBinarySocketStream</script>).</div>
+
+<todo>JSONStream diag</todo>
+
+<div>On préfère donc souvent la <b>composition</b> à l'héritage, c'est à dire construire l'instance par l'assemblage de différentes briques. Par exemple, <script type="c-ts">JSONFileStream</script> utilisera en interne un <script type="c-ts">FileStream</script> et un <script type="c-ts">JSONCodec</script> qui définiront respectivement la manière de lire le flux, et d'encoder/décoder les données (DP <b>Strategy</b>). Ces deux briques pourront alors être réutilisées dans d'autres classes (<b>CRP</b> - <i>Composite Reuse Principle</i>).</div>
+
+<div>Mieux, on peut injecter les dépendances de l'extérieur (<i>dependencies injections</i>), i.e. via le constructeur, des méthodes, ou un setter. Ainsi, on peut se contenter d'un <script type="c-ts">JSONStream(stream)</script> qui prendra en argument le flux à utiliser, réduisant le nombre de classes à créer.</div>
+
+<h3>Méthode vs fonction</h3>
+
+<div>En soit, une méthode n'est rien de plus qu'une fonction qui possède un paramètre spécial <script type="c-ts">this</script>, <script type="c-ts">o.foo()</script> et <script type="c-ts">foo(o)</script> sont ainsi deux manières de faire la même chose. Le principal intérêt des méthodes est de pouvoir être redéfinies dans les classes filles, ainsi que d'accéder aux membres privés de l'instance.</div>
+
+<div>Idéalement, on chercher à simplifier l'implémentation, et à réduire la surface des tests (donc de l'interface). Pour cela on limite les méthodes au strict minimum permettant de manipuler l'état interne de l'objet et d'en garantir la cohérence. On écrit ensuite des fonctions utilitaires (<i>helpers</i>) permettant d'orchestrer les méthodes de la classe sans être tenté d'accéder aux membres privés.</div>
+
+<div class="hint">Il est tout à fait possible de fournir une interface plus ergonomique (API de convenance) en créant une classe de plus haut niveau regroupant les fonctions utilitaires :
+    <script type="c-ts">
+        class Foo {
+            // Facile à tester, cohérence interne garantie.
+            private impl = new FooImpl();
+
+            foo() {
+                return foo(impl);
+            }
+        }
+    </script>
+</div>
+
+<h3>Constructeur vs Factory Function</h3>
+
+<div>En soit une classe n'est qu'un moyen de créer un objet (<i>instance</i>), ce qui est tout à fait possible de faire via une fonction (DP <b>Factory Function</b>). Par exemple, une classe qui hérite d'une autre en se contentant d'en redéfinir le constructeur, peut être remplacée par une fonction équivalente :
+    <div class="flex-2">
+        <script type="c-ts">
+        class FailError extends Error {
+            constructor(msg) {
+                super(`Fail: ${msg}`)
+            }
+        }
+        </script>
+        <script type="c-ts">
+            function FailError(msg) {
+                return new Error(`Fail: ${msg}`);
+            }
+        </script>
+    </div>
+</div>
+
+<div>Les fonctions ont l'avantage de ne pas préjuger de l'origine de l'instance retournée. Ainsi, la fonction peut créer une instance, mais aussi e.g. utiliser un cache, un registre, etc. De plus, les fonctions garantissent que le comportement de la classe mère n'est pas modifié, réduisant la surface des tests nécessaires.</div>
+
+<div>Dans certains cas, avoir une classe ne fait aucun sens. Par exemple une classe <script type="c-ts">NewUser</script> est un non-sens, étant donné que l'entité peut, au court du temps, ne plus être un nouvel utilisateur. Il faut donc soit passer par une Factory Function, soit par une instance <script type="c-ts">newUser</script> qu'on clonera lorsqu'on souhaite créer un nouvel utilisateur (DP <b>Prototype</b>).</div>
+
+<h2>SOLID</h2>
+
+<todo>Cheat sheets : UML + DP + termes</todo>
 
 <div>Les classes doivent respecter les principes <b>SOLID</b> :
     <ul>
@@ -30,198 +132,413 @@
 
 <h3>Single responsability</h3>
 
-<div>Comme pour les composants, une classe (ou une fonction) doit faire une seule chose et le faire bien. Cela facilite la lisibilité du code, son test, sa maintenance, sa réutilisation, son extension, etc.</div>
+<h4>Principe</h4>
 
-<div>Par exemple, une fonction <script type="c-ts">sum()</script> calculant une somme et affichant le résultat a 2 responsabilités. Cela ne permettra pas de réutiliser le résultat ailleurs dans le code. Il est donc important de créer 2 fonctions ayant chacune sa propre responsabilité :
+<div>Chaque élément (composants, classes, méthodes/fonctions) ne doit avoir qu'une seule responsabilité (mais le faire bien). Par exemple, une fonction qui calcule un résultat <u>puis</u> qui l'affiche, fait deux choses différentes : calculer et afficher.</div>
+
+<div>Séparer ces deux responsabilités en 2 fonctions distinctes (<script type="c-ts">compute()</script> et <script type="c-ts">print()</script>) facilite l'implémentation des fonctions et leurs tests. Mais surtout, cela permet leur réutilisation pour des usages différents, e.g. au lieu d'afficher le résultat (<script type="c-ts">print(compute())</script>), le sauvegarder (<script type="c-ts">save(compute())</script>).</div>
+
+<div class="hint">Une fonction comportant plusieurs lignes fait bien "plusieurs choses". Par "responsabilité unique" on entend "une seule raison <i>conceptuelle</i> de changer".</div>
+
+<h4>Orchestration</h4>
+
+<div>Une fonction <script type="c-ts">onClick()</script> effectuant <script type="c-ts">print(compute())</script> fait 2 choses, pourtant elle est considérée comme n'ayant qu'une seule responsabilité. En effet, on dit qu'elle <b>délègue</b> des responsabilités à <script type="c-ts">compute()</script> et <script type="c-ts">print()</script>. L'orchestration est vue comme une responsabilité unique.</div>
+
+<div>Ainsi, lorsqu'un élément fait trop de choses, on cherchera à en déléguer les responsabilités. Par exemple, une classe <script type="c-ts">Game</script> pourra déléguer l'affichage à <script type="c-ts">GameView</script>, le modèle à <script type="c-ts">GameModel</script>, et le traitement des actions à <script type="c-ts">GameLoop</script>. Chacun de ces sous-composants pouvant eux-même être redécoupés. La classe <script type="c-ts">Game</script> sert alors de <b>glue code</b> et d'orchestrateur.</div>
+
+<div class="hint">L'orchestrateur alors ainsi transmettre l'intention, pas l'implémentation, i.e. définir ce qu'on <i>veut</i> faire, pas comment on le fait.</div>
+
+<h4>Externalisation de responsabilités</h4>
+
+<div>Il est aussi possible de sortir une responsabilité de la classe au lieu de la déléguer. Par exemple, une classe <script type="c-ts">TreeGraph</script> a pour responsabilité de définir la topologie d'un arbre, i.e. les liens entre les différents noeuds. En revanche, il n'est pas de sa responsabilité d'en définir le parcours.</div>
+
+<div>D'autant plus qu'un même graphe peut-être parcouru via des algorithmes différents en fonction de ce qu'on recherche (e.g. parcours en profondeur, en largeur, Dijkstra, A*, etc). On va alors utiliser une fonction externe qui se chargera du parcours (DP <b>Servant</b>) :
     <div class="flex-2">
         <script type="c-ts">
-            const result = sum(a, b);
-            printResult(result);
-        </script>
-        <script type="c-ts">
-            const result = sum(a, b);
-            saveResult(result);
-        </script>
-    </div>
-</div>
-
-<div>Autre exemple, un graphe se mettant à jour à partir d'une source de données. Il a 2 responsabilités : se dessiner et se mettre à jour. Il n'est ainsi pas possible de réutiliser (ou de tester) ce graphe sans le système de mise à jour (e.g. signaux, event, etc.). Si nos composants dépendent de ce système de synchronisation, toute modification de ce système impactera l'ensemble du projet. La synchronisation doit donc se faire à l'extérieur du graphe (<b>DP servant</b>), e.g. :
-    <div class="flex-2">
-        <script type="c-ts">
-            fonction sync(graph, source, callback) {
-                source.listen( () => {
-                    callback(graph, source);
-                    graph.draw();
-                });
-            }
-        </script>
-        <script type="c-ts">
-            sync(graph, source, (g, s) => {
-                g.data  = s.value.data.map(...);
-                g.color = s.value.isEnabled ? "green"
-                                            : "red";
-            });
-        </script>
-    </div>
-</div>
-
-<div>Un autre exemple, une classe <script type="c-ts">GameController</script> peut faire beaucoup de choses, et ainsi avoir de nombreuses responsabilités. Pour éviter cela, on peut <b>déléguer</b> les différentes responsabilités dans plusieurs classes (e.g. <script type="c-ts">BoardController</script>, <script type="c-ts">DeckController</script>, etc.) qui seront utilisées par <script type="c-ts">GameController</script>. Sa responsabilité sera alors de faire le lien (<i>glue</i>) entre les différents éléments du jeu. Cela réduira la taille de <script type="c-ts">GameController</script>, rendra le code plus explicite, en facilitera la lecture, évitera certaines duplication de code, et permettra de tester les différents composants du jeu de manière indépendante.</div>
-
-<div>Le fait de séparer les classes et les fonctions en composants élémentaires permettent leur réutilisation et évite la duplication de code. Imaginons une fonction <script type="c-ts">SaveDataIntoJSONFile()</script>, sauvegardant des données dans un fichier au format JSON. Cette fonction a 2 responsabilités : convertir les données au format JSON, puis les enregistrer dans un fichier. On peut cependant avoir plusieurs formats (JSON, XML, CSV, binaire, etc.). De même on peut avoir différents types de stockage (e.g. fichier, RAM, localStorage, indexDB, etc.). Il faudrait alors avoir F*S fonctions avec beaucoup de code dupliquées dans chacunes d'entre elles. Si on sépare cette fonction en 2, e.g. <script type="c-ts">Data2JSON()</script> et <script type="c-ts">SaveIntoFile()</script>, F+S fonctions suffisent alors pour supporter toutes les combinaisons possibles, e.g. <script type="c-ts">SaveIntoFile( Data2JSON() ).</script>.</div>
-
-<todo>Memento ?</todo>
-
-<h3>Open-Close</h3>
-
-<div>Ce principe veut que le code permette l'ajout de nouvelles fonctionnalités, mais interdise la modification des classes/fonctions existantes. D'une part parce qu'on n'a pas toujours la main sur l'existant (e.g. bibliothèques), et d'autre part parce que toutes modifications d'une classe/fonction est source de bugs dans tout ce qui en dépend. Ce principe est ainsi nécessaire pour étendre le code tout en évitant de casser l'existant (regression), et ainsi garantissant la stabilité du code. Le but est aussi de laisser la porte aux modifications futures sans avoir à les anticiper (cf YAGNI).</div>
-
-<div>Par exemple, si on souhaite pouvoir compresser nos données lors de leur enregistrement via <script type="c-ts">SaveDataIntoJSONFile()</script>, il nous faudra en modifier le code. Ce qui rajoutera une responsabilité à cette fonction, et en complexifiera le code. En revanche, si on a 2 fonctions <script type="c-ts">Data2JSON()</script> et <script type="c-ts">SaveIntoFile()</script>, nous n'avons pas besoin d'en modifier le code, et pouvons ajouter une simple fonction <script type="c-ts">Compress()</script> : <script type="c-ts">SaveIntoFile(Compress(Data2JSON()))</script>. Le principe de responsabilité unique aide donc à respecter le principe Open-Close.</div>
-
-<div>💡 Vous noterez que l'example ci-dessus peut très vite conduire à de longues lignes de code répétitives. Grâce à certains DP, vous pouvez créer une fonction e.g. <script type="c-ts">Save(..., "ram://foo.json.zip")</script>, qui se chargera de tout cela pour vous.</div>
-
-<div>Le premier réflexe est souvent d'utiliser l'héritage pour étendre une classe. Par exemple, des classes <script type="c-ts">FileStream</script>, <script type="c-ts">SocketStream</script>, etc. héritant de <script type="c-ts">Stream</script>. Cependant, dès que plusieurs extensions sont possibles, cela conduit très vite à une explosion du nombre de classes, e.g. <script type="c-ts">JSONFileStream</script>, <script type="c-ts">BinarySocketStream</script>, etc. Il est ainsi souvent préférable d'utiliser une <b>injection de dépendance</b>, i.e. d'au lieu de définir un comportement par héritage, de le passer dans le constructeur de la classe mère (cf <b>DP Strategy</b>, <b>Composite Reuse Principle</b> (CRP) ):
-    <script type="c-ts">
-        class Stream {
-            constructor(target, transform) {...}
-
-            push(data) {
-                this.target.write( this.transform(data) );
-            }
-        }
-    </script>
-</div>
-
-<div>Imaginons maintenant que nous souhaitions compresser le flux, le chiffrer, et/ou ajouter une somme de control. Une manière de le faire est d'utiliser un <b>DP décorateur</b> (cf <i>mixins</i>) pour définir de nouvelles méthodes, ou redéfinir des méthodes de <script type="c-ts">Target</script> :
-    <div class="flex-2">
-        <script type="c-ts">
-            function WithCompression(Target) {
-                return class extends Target {
-                    override write() {
-                        //...
-                        super.write(...)
-                    }
+            function DFS(treeGraph, callback) {
+                const stack = [treeGraph.rootNode];
+                while(node = stack.pop()) {
+                    callback(node);
+                    stack.push(...node.nextNodes);
                 }
             }
         </script>
         <script type="c-ts">
-            const CF = WithCompression(File);
-            const s  = new Stream( new CF(), ...);
-
-            const CS = WithCompression(Socket);
-            const s  = new Stream( new CS(), ...);
+            DFS(treeGraph, (node) => <h>...</h>);
         </script>
     </div>
 </div>
 
-<todo>DP Composite here ?</todo>
-<todo><div>💡 Le Design Pattern <b>Composite</b> encapsule un ensemble d'éléments. Par exemple un groupe de TP est composé d'un ensemble d'étudiants, et fournit les moyennes du groupe. De même un groupe de TD est composé d'un ensemble de groupes de TP, et une promotion est composée d'un ensemble de groupe de TD.
-</div></todo>
+<h4>Responsabilités latentes</h4>
 
-<div>⚠ L'implémentation n'a pas à représenter le réel, mais les données. Ainsi, même si une voiture rouge <i>est une</i> voiture, elle n'a pas forcément à être implémentée par un héritage (bien au contraire).</div>
+<div>Certaines responsabilités sont difficiles à identifier (<i>latent responsabilities</i>), et peuvent ainsi briser la responsabilité unique. Notamment, certains responsabilités émergent de l'interaction entre les objets (<i>emergent responsibility</i>).</div>
+
+<div>Par exemple, un signal est "lié" à d'autres signaux, eux-même liés à d'autres encore. Lorsque le signal est déclenché (<i>trigger</i>), il notifie les signaux auxquels il est lié en les déclenchant à leur tour. On a ici un graphe implicite de signaux, avec un parcours implicite. Une responsabilité de parcours émerge donc de l'interaction des signaux entre eux.</div>
+
+<div>Or le rôle d'un signal est d'être un signal, pas de savoir comment il se propage et se transmet. On va ainsi externaliser la propagation du signal via une classe qui en définira le comportement. Cette propagation peut être plus ou moins complexe : se faire en plusieurs phases (e.g <script type="c-ts">trigger</script>, <script type="c-ts">changes</script>, <script type="c-ts">notify</script>), utiliser des stratégies de batching (e.g. n'exécuter les listeners qu'une fois par frame), définir un ordre de parcours particulier, gérer les cycles, etc.</div>
+
+<h3>Open-Close</h3>
+
+<h4>Principe</h4>
+
+<div>Le code doit <i>être ouvert aux extensions</i>, i.e. permettre l'ajout de nouvelles fonctionnalités, tout en étant <i>fermé aux modifications</i>, i.e. le code (stable) existant ne doit pas être modifié. Le code stable doit ainsi pouvoir être étendu sans être modifié.</div>
+
+<div>En effet, modifier un code stable risque d'engendrer des bugs dans ce qui "marchait déjà" (regression), à la fois au sein du code modifié, mais aussi dans le code l'utilisant. Souvent même, on ne peut tout simplement pas modifier directement l'existant (e.g. bibliothèques), au risque de devoir réappliquer ses propres modifications pour chaque nouvelle version.</div>
+
+<h4>Modifier l'existant</h4>
+
+<div><i>"Fermé aux modifications"</i> ne signifie pas qu'on s'interdit doctement toutes formes de modifications. Par exemple, insérer une nouvelle méthode à une API de convenance est vu comme un ajout de code, et non comme une modification.</div>
+
+<div>De même, si une fonction possède un bug, il faut bien la modifier pour le corriger. On préférera alors souvent dupliquer la fonction, corriger l'erreur, puis supprimer l'ancienne version. Cela permet ainsi de pouvoir comparer les deux implémentations, de migrer progressivement le code, et de pouvoir facilement revenir en arrière en cas de problèmes. Pour cela on peut mettre en place une indirection :
+    <div class="flex-2">
+        <script type="c-ts">
+            // même fichier :
+            function foo_OLD() {<h>...</h>}
+            function foo_NEW() {<h>...</h>}
+            export const foo = foo_OLD;
+        </script>
+        <script type="c-ts">
+            // différents fichiers :
+
+            export {foo} from "./foo.old";
+            //export {foo} from "./foo.new";
+        </script>
+    </div>
+</div>
+
+<h4>Étendre l'existant</h4>
+
+<div>Pouvoir étendre l'existant nécessite de laisser la porte ouverte aux évolutions futures, pas pas de devoir les anticiper. Cela ne requiert pas de rendre le code générique.</div>
+
+<div>Par exemple, une fonction dont la responsabilité est d'orchestrer l'impression d'une facture à partir d'un client et d'une liste de produits peut être rendue générique de sorte à supporter plusieurs formatages, types d'impressions, etc.
+    <div class="flex-2">
+        <script type="c-ts">
+            function printInvoice(client, products) {
+
+                const invoice = new Invoice(client,
+                                            products);
+                print( formatInvoice(invoice) );
+            }
+        </script>
+        <script type="c-ts">
+            function printInvoice(client, products,
+                                format, printer) {
+                const invoice = new Invoice(ci, pi);
+                const formatted = format(invoice)
+                printter.print( formatted );
+            }
+        </script>
+    </div>
+</div>
+
+<div>Or, la généricité obtenue par l'ajout de paramètres complexifie l'implémentation, l'usage, et les tests de la fonction... tout en étant inutile si cette généricité n'est jamais utilisée. Au pire, il est toujours possible d'écrire une autre fonction d'orchestration répondant à un autre usage/contexte. Ce n'est que lorsqu'on aura besoin de 3-4 versions différentes de la même orchestration, qu'on commencera à factoriser en généralisant la fonction.</div>
+
+<h4>Comment faire ?</h4>
+
+<div>Les concepts précédemment étudiés aident déjà au respect de l'OCP. La responsabilité unique, évite l'ajout de responsabilités à l'existant, donc sa modification. La composition permet la création/modifications de fonctionnalités, simplement en assemblant les briques différemment. L'injection de dépendances évite de modifier une classe lorsque ses dépendances changent. L'API de convenance évite à la fois de modifier la structure de base lorsqu'on ajoute une nouvelle fonctionnalité, mais évite aussi de modifier l'interface de haut niveau lorsqu'une fonction est convertie en méthode e.g. pour des raisons de performances.</div>
+
+<div>On va aussi favoriser les registres aux <script type="c-ts">switch</script> (ou blocks de <script type="c-ts">if</script>/<script type="c-ts">else if</script>/<script type="c-ts">else</script>). En effet, avec un <script type="c-ts">switch</script>, rajouter une valeur possible nécessite de modifier le code existant afin d'ajouter une clause <script type="c-ts">case</script> correspondante. Avec un registre, e.g. tableau associatif, il suffit d'enregistrer un nouveau callback associé à la nouvelle valeur, ce qui peut se faire de manière décentralisée :
+    <div class="flex-2">
+        <script type="c-ts">
+            function translate(msg, lang) {
+                switch(lang) {
+                    case "FR": return translateFR(msg)
+                    case "EN": return translateEN(msg)
+                }
+            }
+        </script>
+        <div>
+            <script type="c-ts">
+                function translate(msg, lang) {
+                    translators[lang](msg);
+                }
+            </script>
+            <script type="c-ts">
+                // fichier lang/FR: ajoute un translator.
+                translators["FR"] = translateFR;
+            </script>
+        </div>
+    </div>
+</div>
+
+<div>Une autre manière de procéder est de créer des <b>templates</b>, i.e. des fonctions/classes génériques dont on peut définir une certaine partie du comportement, e.g. par injection de dépendances. Pour les classes, on peut créer un algorithme générique dont certaines parties sont définies par l'implémentation (ou la surcharge) de méthodes (potentiellement abstraites). L'intérêt est alors de garantir le respect d'une structure algorithmique :
+    <div class="flex-2">
+        <script type="c-ts">
+            class Template {
+                final foo() {
+                    this.before();
+                    <h>...</h>
+                    this.after();
+                }
+                abstract before(): void;
+                after() {<h>...</h>} // default behavior.
+            }
+        </script>
+        <script type="c-ts">
+            class Foo extends Template {
+                before() { <h>...</h> }
+                overload after() { <h>...</h> }
+            }
+        </script>
+    </div>
+</div>
 
 <h3>Liskov</h3>
 
-<div>- Liskov : (éviter bugs) contrat avant/après (pre/post guards closes - asserts), design by contract.
-Certains héritages pour spécialiser : une sorte d'héritage privé car respecte pas Liskov.</div>
+<h4>Le polymorphisme</h4>
 
-- exemples de problèmes
-- polymorphisme
+<div>On doit pouvoir remplacer toute instance d'un type <script type="c-ts">X</script>, par toute instance de ses sous-types, i.e. les instances héritant ou implémentant <script type="c-ts">X</script>. Par exemple, une fonction acceptant un paramètre de type <script type="c-ts">X</script>, doit pouvoir supporter tout sous-types de <script type="c-ts">X</script>. Ainsi, une variable/paramètre de type <script type="c-ts">X</script> peut prendre "plusieurs formes", c'est ce qu'on appelle le <b>polymorphisme</b>.</div>
 
-- spécialisation : héritage ou autres formes.
+<div>Or, la fonction doit pouvoir s'exécuter sans connaître le type réel du paramètre à l'exécution, i.e. "comme si" il était indistinguable d'un <script type="c-ts">X</script>. En effet, si la fonction doit se retrouver à gérer chaque cas particulier, non seulement son code s'en retrouve complexifié, mais aussi devra être modifié à chaque nouvelle dérivée/implémentation de <script type="c-ts">X</script>.</div>
 
-<h3>Interfaces</h3>
+<h4>Contrats</h4>
 
-<div>Les deux derniers principes sont assez simples. La ségrégation d'interface indique qu'un code doit dépendre d'une interface minimale, i.e. de ne dépendre que des fonctions dont il a besoin. Par exemple, une fonction qui lit un flux passé en paramètre doit pouvoir accepter un flux en lecture seule (i.e. qui n'a pas d'opération d'écriture).
-Dans certains langages, cela permet d'exploiter le <i>duck typing</i>.</div>
+<div>Une interface défini un <b>contrat</b>, en indiquant ce qu'elle accepte en entrée, et ce qu'elle peut retourner. On parle alors de :
+    <ul>
+        <li><b>pre-condition</b> : ce qui doit être vrai au début de la fonction/méthode, i.e. dans les données d'entrée.</li>
+        <li><b>post-condition</b> : ce qui doit être vrai à la fin de la fonction/méthode, i.e. dans les données de sortie.</li>
+        <li><b>invariant</b> : ce qui doit rester toujours vrai.</li>
+    </ul>
+</div>
 
-<div>L'inversion des dépendances indique qu'il faut dépendre d'une interface, et non d'une implémentation, permettant ainsi de changer l'implémentation utilisée, et évitant des dépendances circulaires dans certains langages. Cela permet de coder des algorithmes génériques et réutilisables. Par exemple, une fonction lisant un flux passé en paramètre a juste besoin que l'objet respecte une certaine interface, et n'a pas besoin d'une implémentation de flux particulière.</div>
+<div class="hint">Idéalement, ce contrat est explicité/garanti par un système de vérification de types (<i>type checking</i>), et/ou d'assertions.</div>
 
+<div>Pour pouvoir être substituable à <script type="c-ts">X</script>, tout sous-types de <script type="c-ts">X</script> doit respecter les attentes posées par <script type="c-ts">X</script>, i.e. son contrat (explicite comme implicite), i.e. ce à quoi s'attend tout utilisateur de <script type="c-ts">X</script>. En effet, si le sous-type de <script type="c-ts">X</script> :
+    <ul>
+        <li><b>pre-condition</b> : ne supporte pas certaines entrées, il ne saura pas traiter tout ce que l'utilisateur de <script type="c-ts">X</script> lui transmettra.</li>
+        <li><b>post-condition</b> : retourne des valeurs supplémentaires, l'utilisateur de <script type="c-ts">X</script> ne saura pas comment les traiter.</li>
+    </ul>
+</div>
 
-<h2>UML</h2>
+<div>Ainsi, tout sous-type de <script type="c-ts">X</script> doit accepter en entrée tout ce qu'un <script type="c-ts">X</script> accepte, et ne retourner que ce qu'un <script type="c-ts">X</script> peut retourner :
+    <ul class="flex-3">
+        <li><b>pre-condition</b> : <u>au moins</u> <script type="c-ts">X</script>.</li>
+        <li><b>post-condition</b> : <u>au plus</u> <script type="c-ts">X</script>.</li>
+        <li><b>invariant</b> : toujours vrai.</li>
+    </ul>
+</div>
 
-- diagramme de classes + objet
-- diagramme de classe à la fois conception et durant implémentation.
-- POO
-- Objet : état à un instant T : débug ou montrer changement d'états.
-- État transition ?
+<todo>Figure entonnoir pre/post/invariant.</todo>
 
-<h2>Creationnal DP</h2>
+<h4>Faux héritage</h4>
 
-- prototype (clone) + type obj
-    - spawn
-- builder ~> ex gamectrler : plusieurs resps (encore !)
-    - complex
+<div>Certaines spécialisations ne correspondent pas systématiquement à un sous-type. Par exemple, on a appris qu'un carré était un cas particulier d'un rectangle. On serait ainsi tenté de faire hériter <script type="c-ts">Square</script> de <script type="c-ts">Rectangle</script>. Or, si cela ne pose pas de problèmes pour des structures (i.e. RO), pour des entités (i.e. RW), 2 problèmes se posent :
+    <ul>
+        <li>un utilisateur de <script type="c-ts">Rectangle</script> ne s'attend pas à ce que la modification de la largeur modifie aussi sa longueur.</li>
+        <li>un <script type="c-ts">Rectangle</script> dont la largeur devient égale à sa longueur ne se transforme pas en <script type="c-ts">Square</script> (et inversement).</li>
+    </ul>
+</div>
 
-<h3>Liste (TODO)</h3>
+<div>Ainsi, il faut considérer soit que <script type="c-ts">Square</script> et <script type="c-ts">Rectangle</script> sont deux entités distinctes avec leurs propres comportements, soit qu'un carré n'est pas un type, mais une propriété de <script type="c-ts">Rectangle</script> vérifiée lorsque sa largeur égale sa longueur.</div>
 
-<todo>CM2/DOP</todo>
+<div>L'héritage doit ainsi être utilisé avec parcimonie, et ne doit pas être servir à juste réutiliser des comportements. On préférera souvent la composition qui permet de choisir des sous-parties de comportements à hériter, remplacer, voire supprimer. On ne défini alors plus un sous-type mais un type différent.</div>
 
-CM2 abstraction ???
-- Abstract factory (CM2 abstraction ???)
-- singleton -> Service locator (CM2???)
-    - global scope.
-- factory method / virtual constructor (???)
-    -> créer sans savoir réel type
+<h4>L'exception</h4>
 
-Structural
-- Adapter (CM2)
-- Bridge (CM2 avec adapter ?)
-- Facade (CM2)
-- Proxy (CM2)
-- Decorateur (CM2)
-- flyweight (DOP)
+<div>Nous avons précédemment affirmé qu'une fonction doit pouvoir s'exécuter sans connaître le type réel de l'instance qui lui est transmise. Cela n'est cependant pas toujours vrai, notamment dans le cas où une méthode redéfinissable a été retirée de l'interface.</div>
 
-Behavioral
-- Chain of resp = click handler (?)
-- Interpretor (NO)
-- Command (CM2) - peut aussi être callback + on peut passer param when call.
-- Iterator (CM2)
-- Mediator (CM2)
-- Observer (CM2)
-- Memento (CM2 ?)
-- State (CM3) vs Strategy (CM3)
-- Template method (CM2?) vs Behvioral ?
-- Visitor (?)
+<div>Par exemple, la classe <script type="c-ts">Shape</script> pouvait définir une méthode <script type="c-ts">.draw(target)</script> que les classes <script type="c-ts">Rectangle</script> et <script type="c-ts">Circle</script> redéfinissaient. Or, il n'est pas de la responsabilité d'une forme de savoir se dessiner. Le problème est alors de pouvoir ré-associer les fonctions <script type="c-ts">drawRectangle()</script> et <script type="c-ts">drawCircle()</script> avec respectivement <script type="c-ts">Rectangle</script> et <script type="c-ts">Circle</script>.</div>
 
-- dble buffer (DOP)
-- game loop (CM2)
-- update method (?) + request update
- 
-- type obj (CM3 - creationnal)
-- bytecode (NO)
-- service locator (CM3 - in place of singleton)
-- event queue (CM2)
-- object pool (DOP)
-- data locality (DOP)
-- dirty flag (DOP)
-- spacial separation (NO)
-- copy on write (p211, DOP)
+<div>Une solution, bien que peu idéale, est alors de passer par un registre :
+    <script type="c-ts">
+        painters[Circle   .ShapeTypeID] = drawCircle;
+        painters[Rectangle.ShapeTypeID] = drawRectangle;
 
-- instrumentalisé par un autre : servant DP (single resp ?)
+        function draw(target, shape, pos) {
+            painters[shape.ShapeTypeID](target, shape, pos);
+        }
+    </script>
+</div>
 
-<h2>Machines à État ???</h2>
+<h3>Ségrégation des interfaces</h3>
 
-<todo>- diagramme état-transition, DP state.
-</todo>
+<div>Un code ne doit dépendre que de ce dont il a besoin, i.e. de l'interface minimale permettant de répondre à ses besoins. Par exemple, une fonction affichant un rectangle n'a pas à connaître (et donc de dépendre) des méthodes permettant de modifier le rectangle.</div>
 
-<todo>
-    + Diagramme de structure composite : quand la classe étudiée est complexe -> problème de design.</todo>
+<div>Cela permet à la fois d'identifier de manière précise les dépendances d'un code, d'apporter des garanties, ainsi que de rendre le code plus générique. En effet, une fonction qui dépend une interface sans mutateurs, indique (et garantie) qu'elle ne modifiera pas l'objet, et aura des contraintes moindres quant à ce qu'elle accepte.</div>
+
+<div>Par exemple, une fonction acceptant une <script type="c-ts">Curve</script> en lecture seule pourra aussi accepter une <script type="c-ts">Line</script> car partagent la même interface en lecture, même si elles ont des interfaces incompatibles en écriture.</div>
+
+<div class="hint">Certains langages supportent le <b>duck typing</b>, i.e. tout objet est compatible avec une interface, sans avoir besoin de l'implémenter ou de l'étendre, tant qu'il en respecte les contraintes.
+    <div class="quote">If it looks like a duck, swims like a duck, and quacks like a duck, then it probably is a duck.</div>
+</div>
+
+<h4>Principe de moindre connaissance</h4>
+
+<div>Un principe connexe à la ségrégation des interfaces est le principe de moindre connaissance : le code doit avoir une connaissance minimale des choses.</div>
+
+<div>Par exemple une fonction <script type="c-ts">calcNetPrice()</script> n'a pas à savoir comment un produit stocke son prix brut, ni de la manière dont le taux de TVA est récupéré. Le fait de ne pas dépendre d'une interface <script type="c-ts">Product</script> permet à la fonction d'être réutilisée directement, ou avec d'autres structures.
+    <div class="flex-2">
+        <script type="c-ts">
+            // DON'T
+            function calcNetPrice(p: Product) {
+                return p.grossPrice * (1 + VAT(p))
+            }
+        </script>
+        <script type="c-ts">
+            // DO
+            function calcNetPrice(grossPrice, VAT) {
+                return grossPrice * (1 + VAT)
+            }
+        </script>
+    </div>
+</div>
+
+<div class="hint">Rien n'empêche par la suite d'ajouter une fonction/méthode <script type="c-ts">netPrice(p)</script> de convenance préparant les paramètres, puis appelant la fonction <script type="c-ts">calcNetPrice()</script>.</div>
+
+<h3>Inversion des dépendances</h3>
+
+<div>Le code doit dépendre d'une abstraction <b>stable</b> agnostique de l'implémentation. L'abstraction doit ainsi communiquer l'intention sans dépendre de l'implémentation. Cela permet à la fois de protéger les utilisateurs de potentiels changements dans l'implémentation, mais aussi de pouvoir indifféremment utiliser différentes implémentations.</div>
+
+<div class="danger">Cela ne signifie pas que tout doit dépendre d'une interface. Une abstraction peut aussi être une classe abstraite, voire une classe concrète, qu'il est possible de transformer ensuite en interface lorsque le besoin émerge.</div>
+
+<div>Par exemple, une fonction dépendant d'une abstraction est générique : elle peut être (re)utilisée avec toutes implémentations de l'abstraction. Ainsi, si elle prend un flux, elle pourra accepter tout type de flux respectant la même interface, indépendamment son implémentation.</div>
+
+<div class="danger">Contrairement à ce qui est affirmé par endroits, l'inversion des dépendances ne dit rien quant au composant qui doit être propriétaire de l'interface (composant utilisateur, composant fournissant l'implémentation, ou autre ?). Idéalement, on la placera dans un composant abstrait qui sera implémentée d'un côté, et utilisée de l'autre.</div>
+
+<div class="hint">Dépendre d'interfaces peut aussi éviter des dépendances circulaires dans certains langages.</div>
 
 <h2>Qualité du code</h2>
 
-<div>En général, la lisibilité et maintenabilité du code importante bien plus que tout autre chose. En effet, il vaut souvent bien mieux un code lent, facilement modifiable, qu'un code inutilement rapide et complexe.</div>
+<div>Le code doit être facilement modifiable tout en garantissant sa validité. Nous avons vu dans le cours d'<i>Automatisation et Tests en Programmation</i> comment garantir la validité d'un code à travers les tests. Nous avons vu dans ce cours comment construire une architecture évolutive. Cela n'est cependant pas suffisant.</div>
 
-<div>Pour cela il est bien évidemment nécessaire de bien indenter son code, d'avoir des noms explicites, une arborescence de fichiers explicite, etc. Un code bien écrit doit pouvoir se comprendre aisément en le survolant. On doit, par exemple, pouvoir comprendre l'usage et l'utilité d'une fonction à sa signature. Aussi, les fonctions doivent rester courtes (moins d'un écran), une fonction longue étant généralement le signe d'une responsabilité multiple ou d'un manque d'abstraction.</div>
+<h3>Lisibilité du code</h3>
 
-<div>Il existe de multiples techniques et d'idiomes pour rendre un code plus explicite. Par exemple, gérer les cas d'erreurs en premier, utiliser des tableaux associatifs (de valeurs ou de fonctions), utiliser certains patrons de conceptions, pas de <script type="c-ts">else</script> après un <script type="c-ts">return</script>, <script type="c-ts">break</script>, ou <script type="c-ts">throw</script>/<script type="c-py">raise</script> etc.</div>
+<div>Pour être facilement maintenable, un code doit être facilement lisible, par soit même, ou par un tiers. Un code bien écrit doit ainsi pouvoir facilement se comprendre en le survolant. L'arborescence des fichiers doit être explicite, matérialisant les frontières de l'architecture, et permettant aisément de retrouver un code donné.</div>
 
-<div>Les commentaires ne doivent pas être redondant avec le code, i.e. ne doit pas décrire le code. Ce type de commentaires n'apportent pas d'informations utiles et peuvent très vite se retrouver obsolètes lorsque le code est modifié sans que les commentaires ne soient mis à jour, induisant alors les lecteurs en erreur. Les commentaires doivent rester rares et expliquer les nuances non-triviales du code, par exemple la correction d'un bug avec le lien de son ticket (e.g. github issue). De manière générale, si un code a besoin de commentaires pour être compris, il est généralement préférable de le réécrire pour le rendre plus explicite.</div>
-<!-- https://www.youtube.com/watch?v=Bf7vDBBOBUA -->
+<div>Les noms doivent être explicites et dévoiler l'intention. L'interface et les signatures des fonctions/méthodes doivent suffire à en comprendre la fonction et l'usage. Les fonctions doivent rester relativement courtes (généralement un écran) : une fonction trop longue étant souvent le signe de multiples responsabilités ou d'un manque d'abstraction.</div>
 
-<div>⚠ Il ne faut pas confondre les commentaires avec la documentation du code, qui sert à indiquer aux autres développeurs l'usage et les fonctionnalités d'une interface. Il est recommandé d'utiliser pour cela des outils qui généreront automatiquement la documentation à partir du code, et d'éventuels exemples d'usages (qui peuvent aussi servir de tests).</div>
+<div>Le code en lui-même doit être facile à lire :
+    <ul>
+        <li>le code doit être indenté correctement, les structures répétées mises en évidence par leur alignement.</li>
+        <li>gérer les cas courts/d'erreurs en premier, sans mettre de <script type="c-ts">else</script> après un <script type="c-ts">return</script>, <script type="c-ts">break</script>/<script type="c-ts">continue</script>, ou <script type="c-ts">throw</script>.</li>
+        <li>utiliser le chaînage de méthodes lorsque pertinent, en alignant les appels, e.g. :
+            <script type="c-ts">
+                o.filter( e => e.length )
+                 .map   ( e => 2*e )
+            </script>
+        </li>
+    </ul>
+</div>
 
-<div>De manière générale, il ne faut pas se répéter (<b>DRY</b> - <i>Do Not Repeat Yourself</i>). En effet, il est alors très aisé de se retrouver avec des versions dupliquées différentes au fur et à mesure des modifications successives du code. Cela est aussi généralement peu confortable de fréquemment rechercher un bout de code pour le copier/coller à différents endroits. Lorsqu'un même bout de code est répété 3 fois, cela est généralement signe qu'il faut refactorer et factoriser le code.</div>
+<h3>Glue code</h3>
 
+<div>Nous avons évoqué le <i>glue code</i>, comme le code permettant d'initialiser le projet. Ce code a tendance à s'agrandir au fur et à mesure des ajouts de fonctionnalités, devenant très rapidement un fouillis où tout est entre-mêlé (<i>spaghetti code</i>).</div>
+
+<div>Pour éviter cela, le glue code doit se contenter d'expliciter des intentions, implémentées dans des fonctions ad hoc, e.g. :
+    <script type="c-ts">
+        const cfg  = fetchConfig();
+        const core = initCoreSystem(cfg);
+
+        initFeature1(cfg, core);
+        if( cfg.isX ) enableFeatureX(cfg, core);
+    </script>
+</div>
+
+<div>Cet exemple n'est pas idéal, car tout changement de la configuration d'une fonctionnalité requiert potentiellement de modifier <script type="c-ts">fetchConfig()</script>. On pourrait alors créer une structure <script type="c-ts">Feature</script> déclarant son initialisation, sa configuration, ses dépendances, ses dépendants, etc.</div>
+
+<div>Toutefois, cela ajoute une couche de complexité pour un gain discutable. En effet, le glue code n'a pas besoin d'être stable, réutilisable, ou testable.</div>
+
+<h3>Tout n'est pas un clou</h3>
+
+<div class="quote">Quand on a un marteau, tout ressemble à un clou.</div>
+
+<div>Un outil peut fonctionner pour certains usages/besoins sans être pour autant idéal. Par exemple, lorsqu'on a un système de signaux, on est tenté de l'utiliser de partout, contaminant l'ensemble du code, et complexifiant certaines opérations pourtant triviales à l'origine.</div>
+
+<div>Il est ainsi important de bien connaître les limites de ses outils, et le cadre dans lequel les utiliser. Les signaux peuvent ainsi être très utiles lorsqu'on a des valeurs évaluées paresseusement, avec un système de synchronisation de valeurs. Cependant, il est très difficile de conserver une évaluation paresseuse performante lorsqu'on synchronise une sous-partie d'une valeur (risque de boucle dans l'évaluation).</div>
+
+<div>Il est ainsi nécessaire de s'imposer des règles, un cadre, pour l'utilisation de ces outils, e.g. :
+    <ul>
+        <li>seules les entités sont réactives, les structures étant immuables.</li>
+        <li>utiliser l'évaluation paresseuse lorsque le consommateur peut sauter des valeurs coûteuses à calculer.</li>
+        <li>ne pas évaluer paresseusement des entités complexes si des sous-parties peuvent être synchronisées.</li>
+    </ul>
+</div>
+
+<h3>Connaître les outils</h3>
+
+<div class="quote">Quand n'on a qu'un marteau, tout est un clou.</div>
+
+<div>Connaître (et maîtriser) un maximum d'outils vous permettra de choisir le plus pertinent pour un problème donné. Il est ainsi important de connaître les patrons (<i>patterns</i>) fréquent de son domaine et du langage utilisé.</div>
+
+<div>Dans le cadre de ce cours, nous avons évoqué un grand nombre de concepts et de patrons. Nous allons ainsi finir cette partie en évoquant quelques autres. Le principal est d'en retenir l'existence afin de pouvoir les retrouver par la suite.</div>
+
+<h4>Historique</h4>
+
+<div>Il est fréquent d'avoir besoin d'un historique, que ce soit pour des opérations d'annulations/restaurations, ou pour sauvegarder l'état actuel en vue d'une restoration future. Bien évidemment, si l'état est déjà persistant (e.g. stocké dans une BDD), il est possible d'utiliser des outils dédiés existants.</div>
+
+<div>Dans le cas où l'état est (tout ou partie) volatile, on peut alors soit effectuer un enregistrement de l'état (sauvegarde complète), soit des différentes actions ayant conduit à cet état (sauvegarde incrémentale). Le premier s'effectue en demandant à une classe d'exporter une <u>copie</u> de son état interne brut, i.e. sans encodage (DP <b>Memento</b>). Le second s'effectue en stockant chaque action sous la forme d'un objet permettant de l'exécuter et de le révoquer (DP <b>Command</b>).</div>
+
+<div class="hint">Le DP Command permet aussi d'implémenter les transactions. Il suffit alors d'enregistrer les actions effectuées depuis le début de la transaction, puis, de les valider ou les rejeter lorsque la transaction est terminée.</div>
+
+<h4>Structure composite</h4>
+
+<div>Il est fréquent d'avoir une hiérarchie d'objets (e.g. menu, dossiers, DOM, etc). Dans ce cas, il peut être intéressant de voir la hiérarchie comme un arbre, et chaque objet comme un <i>noeud</i>. Une interface permet alors d'uniformiser les traitements effectués sur les noeuds, indépendamment du fait qu'il soit terminal ou non (DP <b>Composite</b>). Les noeuds terminaux (feuilles) sont considérés comme des noeuds normaux, mais dont la liste des fils est invariablement vide.
+</div>
+
+<div>Les requêtes envoyées à un noeud peuvent alors être :
+    <ul>
+        <li>transmis aux noeuds fils, et leur résultat agrégé (DP <b>Composite</b>).</li>
+        <li>traité par le noeud ou transmis récursivement à l'un noeud fils (ou parent), (DP <b>chain of responsability</b>).</li>
+    </ul>
+</div>
+
+<div>La <i>chaîne de responsabilité</i> est notamment utilisée pour identifier l'élément graphique ciblé par un clic. L'événement souris est alors envoyé au noeud racine qui le redirige récursivement vers l'enfant ciblé.</div>
+
+<h4>Composition</h4>
+
+<div>Une manière d'effectue une composition est d'utiliser le DP <b>Decorator</b> afin d'ajouter des responsabilités à une classe, une fonction, ou à une instance. On peut la retrouver sous 3 formes différentes :
+    <div class="flex-3">
+        <script type="c-ts">
+            // function decorator
+            function decorate(Target) {
+                return function() {
+                    <h>...</h>
+                }
+            }
+        </script>
+        <script type="c-ts">
+            // instance decorator
+            class Decorator {
+                constructor(target) {
+                    <h>...</h>
+                }
+            }
+        </script>
+        <script type="c-ts">
+            // class decorator.
+            function decorate(T) {
+              return class extends T {
+                  <h>...</h>
+              }
+            }
+        </script>
+    </div>
+</div>
+
+<div>L'enchaînement de décorateurs peut en revanche devenir très vite très lourd :
+    <script type="c-ts">
+        new RetryClientDecorator(new CacheClientDecorator(new LoggingClientDecorator(new MetricsClientDecorator(new AuthClientDecorator(new BasicHttpClient())))));
+    </script>
+</div>
+
+<div>Pour éviter cela, le DP <b>Builder</b> permet de construire un objet pas à pas, e.g. une structure immuable, un objet décoré, etc. :
+     <script type="c-ts">
+        const instance  = new UserInfoBuilder().setUsername("foo")
+                                               .setAge     (42)
+                                               .build();
+    </script>
+</div>
+
+<div>Une autre solution est d'utiliser un DP <b>Factory Function</b> pour construire un objet à partir d'une configuration :
+    <script type="c-ts">
+        const instance = createUserInfo({
+                                username: "foo",
+                                age     : 42
+                            })
+    </script>
+</div>
+
+<div class="hint">Si la configuration représente le type de l'objet construit, on parle alors de DP <b>Type Object</b>.</div>
         </main>
     </body>
 </html>
