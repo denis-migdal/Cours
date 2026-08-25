@@ -1,8 +1,9 @@
 + acc:👋 Accueil
     - R1-13:Accueil Numérique
         + CM:CM
-            - CM1:CM1 - Méthodes d'Apprentissage Universitaire
-            - CM2:CM2 - Commandes Shell
+            - CM1:CM1 - Règles et outils UCA
+            - CM2:CM2 - Méthodes d'Apprentissage Universitaire
+            - CM3:CM3 - Commandes Shell
         + Slides:Slides
             - CM2:CM2 - Commandes Shell
         + TD:TD
