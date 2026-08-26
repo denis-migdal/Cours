@@ -1,1 +1,1 @@
-import "WebSlides@2026/libs";
+import "WebSlides@2026/pages/templates/slides@2026/";
