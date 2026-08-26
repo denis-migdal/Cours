@@ -1,4 +1,4 @@
-@import "WebSlides@2026:libs";
+@import "WebSlides@2026/libs";
 
-@import "MWL@2026:components/page/theme/utilities.css";
-@import "MWL@2026:components/page/blocks";
+@import "MWL@2026/components/page/theme/utilities.css";
+@import "MWL@2026/components/page/blocks";

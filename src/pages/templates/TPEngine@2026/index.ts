@@ -1,3 +1,3 @@
 import "../page@2026";
 
-import "TPEngine@2026:libs/template";
+import "TPEngine@2026/libs/template";
