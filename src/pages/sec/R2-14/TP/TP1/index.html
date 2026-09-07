@@ -15,27 +15,27 @@
 <h2>Créer une commande</h2>
 
 <ol>
-  <li><q-text cfg-qid="330d9769" cfg-lang="bash">
+  <li><q-text @qid="330d9769" @lang="bash">
     À l'aide de la commande <script class="custom" type="c-bash">mkcmd <h>$FILE</h></script>, transformez le fichier <script type="c-text">ASL/TP1/skeleton</script> en commande :
   </q-text></li>
-  <li><q-text cfg-qid="6d88e596" cfg-lang="shell">
+  <li><q-text @qid="6d88e596" @lang="shell">
     Exécutez la commande <script type="c-bash">skeleton Hello World</script> :
   </q-text></li>
-  <li><q-text cfg-qid="4e9af1f1" cfg-lang="bash">
+  <li><q-text @qid="4e9af1f1" @lang="bash">
     À l'aide de <script type="c-bash">nano <h>$FILE</h></script>, ouvrez le fichier <script type="c-text">ASL/TP1/skeleton</script> afin d'en comprendre le fonctionnement.
     <div class="hint">Si nécessaire, exécutez <script type="c-bash">skeleton</script> avec d'autres arguments, afin de mieux en appréhender le comportement.</div>
     <div class="danger">Pour pouvoir à nouveau exécuter des commandes, il vous faudra tout d'abord sortir de <script type="c-bash">nano</script> (<script type="c-text">^+X</script>).</div>
   </q-text></li>
-  <li><q-text cfg-qid="d30d06c9" cfg-lang="bash">
+  <li><q-text @qid="d30d06c9" @lang="bash">
     Dans le même dossier, effectuez une copie du fichier <script type="c-text">skeleton</script>, que vous nommerez <script type="c-text">add</script> :
   </q-text></li>
-  <li><q-text cfg-qid="0dbf62ef" cfg-lang="bash">
+  <li><q-text @qid="0dbf62ef" @lang="bash">
     Transformez <script type="c-text">add</script> en commande :
   </q-text></li>
-  <li><q-text cfg-qid="cbdfe890" cfg-lang="py">
+  <li><q-text @qid="cbdfe890" @lang="py">
     Modifiez le fichier <script type="c-text">add</script> afin qu'il affiche la somme des deux arguments passés en paramètres (sans utiliser argparse).
   </q-text></li>
-  <li><q-text cfg-qid="9b7184cc" cfg-lang="shell">
+  <li><q-text @qid="9b7184cc" @lang="shell">
     Testez la commande <script type="c-bash">add</script> en effectuant la somme 1.2 + 2.3:
   </q-text></li>
 </ol>
@@ -50,10 +50,10 @@
   <li>Modifiez la commande de sorte à ce qu'elle utilise le résultat de argparse.</li>
   <li>Ajoutez un drapeau <script type="c-bash">-c</script>/<script type="c-bash">--color</script> qui affichera le résultat en couleur (implémenté plus tard).</li>
   <li>Ajoutez un drapeau <script type="c-bash">-s</script>/<script type="c-bash">--string</script> qui effectuera la concaténation au lieu de la somme (à implémenter).</li>
-  <li><q-text cfg-qid="47c88a8a" cfg-lang="py">
+  <li><q-text @qid="47c88a8a" @lang="py">
     Copiez le contenu final de votre script ci-dessous :
   </q-text></li>
-  <li><q-text cfg-qid="75c12e73" cfg-lang="shell">
+  <li><q-text @qid="75c12e73" @lang="shell">
     Effectuez la concaténation de 2 et 3 :
   </q-text></li>
 </ol>
@@ -66,17 +66,17 @@
 
 <ol>
   <li>Testez la mise en forme avec <script type="c-bash">echo $'\e[<h>1;34</h>m(blue)\e[0m'</script>.</li>
-  <li><q-text cfg-qid="768d95e8">
+  <li><q-text @qid="768d95e8">
     Pourquoi utiliser <script type="c-bash">$''</script> et non <script type="c-bash">''</script> ?
   </q-text></li>
-  <li><q-text cfg-qid="86b02cdb" cfg-lang="bash">
+  <li><q-text @qid="86b02cdb" @lang="bash">
     Affichez "Hello" en italique et magenta :
   </q-text></li>
-  <li><q-text cfg-qid="2e086291" cfg-lang="py">
+  <li><q-text @qid="2e086291" @lang="py">
     Modifiez la commande <script type="c-bash">add</script> afin que le résultat s'affiche en vert et en gras (seulement si <script type="c-shell">-c</script> activé).
     <div class="danger">Pour python, il faudra remplacer les <script type="c-text">\e</script> par <script type="c-text">\033</script>.</div>
   </q-text></li>
-  <li><q-text cfg-qid="751f6d87" cfg-lang="py">
+  <li><q-text @qid="751f6d87" @lang="py">
     Modifiez la commande <script type="c-bash">add</script> afin que les résultats négatifs s'affichent en rouge clignotant  (seulement si <script type="c-shell">-c</script> activé) :
   </q-text></li>
 </ol>
@@ -85,22 +85,22 @@
 
 <ol>
   <li>Exécutez la commande <script type="c-bash">set -x</script> afin d'afficher les lignes de commande réellement exécutées.</li>
-  <li><q-text cfg-qid="7d75a832" cfg-lang="bash">
+  <li><q-text @qid="7d75a832" @lang="bash">
     Dans le shell courant, créez un alias <script type="c-bash">stradd</script> <b>temporaire</b> (i.e. non-persistant) correspondant à <script type="c-bash">add --string</script> :
   </q-text>
-  <li><q-text cfg-qid="cec98f53" cfg-lang="shell">
+  <li><q-text @qid="cec98f53" @lang="shell">
     Exécutez la commande <script type="c-bash">stradd -c Hello World</script>
   </q-text></li>
   <li>Rendez l'alias permanent en l'ajoutant au fichier <script type="c-text">~/.bash_aliases</script>, puis "rechargez" le via <script type="c-bash">source <h>$FILE</h></script>.</li>
   <li>Exécutez la commande <script type="c-bash">set +x</script> afin de ne plus afficher les lignes de commande réellement exécutées.</li>
   <li>Utilisez la commande <script type="c-bash">type <h>$CMD</h></script> afin de déterminer la nature de :
     <ul class="flex-3">
-      <li><q-text cfg-qid="46120216"><script type="c-bash">add</script> :</q-text></li>
-      <li><q-text cfg-qid="83751dc7"><script type="c-bash">stradd</script> :</q-text></li>
-      <li><q-text cfg-qid="d4ad6bd1"><script type="c-bash">ls</script> :</q-text></li>
+      <li><q-text @qid="46120216"><script type="c-bash">add</script> :</q-text></li>
+      <li><q-text @qid="83751dc7"><script type="c-bash">stradd</script> :</q-text></li>
+      <li><q-text @qid="d4ad6bd1"><script type="c-bash">ls</script> :</q-text></li>
     </ul>
   </li>
-  <li><q-text cfg-qid="d74365dd">Expliquez en quoi le fait qu'un tiers puisse modifier notre <script type="c-text">~/.bash_aliases</script> constitue une faille de sécurité.</q-text></li>
+  <li><q-text @qid="d74365dd">Expliquez en quoi le fait qu'un tiers puisse modifier notre <script type="c-text">~/.bash_aliases</script> constitue une faille de sécurité.</q-text></li>
 </ol>
 
 <h2>Gérer un utilisateur</h2>
@@ -109,21 +109,21 @@
 
 <ol>
   <li>Ajoutez un fichier <script type="c-text">README.txt</script> au dossier <script type="c-bash">/etc/skel/</script>.</li>
-  <li><q-text cfg-qid="48dc07ee" cfg-lang="bash">
+  <li><q-text @qid="48dc07ee" @lang="bash">
     Créez un nouvel utilisateur <script type="c-text">user</script> (mdp: <script type="c-text">123456</script>).
   </q-text></li>
-  <li><q-text cfg-qid="15d8f3a7" cfg-lang="bash">
+  <li><q-text @qid="15d8f3a7" @lang="bash">
     Ouvrez un nouveau shell en tant que <script type="c-text">user</script> (<script type="c-bash">exit</script> pour sortir).
   </q-text></li>
-  <li><q-text cfg-qid="7565329"}'>Quel mot de passe avez-vu dû utiliser pour vous connecter ? Pourquoi ?</q-text></li>
+  <li><q-text @qid="7565329"}'>Quel mot de passe avez-vu dû utiliser pour vous connecter ? Pourquoi ?</q-text></li>
   <li>Vérifiez que le fichier <script type="c-text">README.txt</script> a bien été ajouté lors de la création du home de <script type="c-text">user</script>.</li>
-  <li><q-text cfg-qid="f656d17e" cfg-lang="bash">
+  <li><q-text @qid="f656d17e" @lang="bash">
     Créez un groupe <script type="c-text">updaters</script> auquel vous ajouterez ensuite <script type="c-text">user</script>.
   </q-text></li>
-  <li><q-text cfg-qid="1272cfbe" cfg-lang="bash">
+  <li><q-text @qid="1272cfbe" @lang="bash">
     Affchez les membres du groupe <script type="c-text">updaters</script>, puis les groupes auxquels appartient <script type="c-text">user</script>.
   </q-text></li>
-  <li><q-text cfg-qid="2643187b">
+  <li><q-text @qid="2643187b">
     Modifiez le fichier sudoers afin de permettre au groupe <script type="c-text">updaters</script> d'exécuter <script type="c-bash">apt update</script> et <script type="c-bash">apt upgrade</script>.
   </q-text></li>
   <li>Mettez à jour le système tout en restant <script type="c-text">user</script>.</li>
