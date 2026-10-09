@@ -95,10 +95,10 @@
             - UML:UML
             - DP:Design Patterns
         + annales:Annales
-            - cur:2026-2027
             - 2026-2027 blanc
             --
             - bank:Banque de questions
+            - cur:Sujet
     - R5-06-VCOD-B:[S5-VCOD] Gestion de projet
         + W0:0. Git
         + W1:1. CdC + Kick off
