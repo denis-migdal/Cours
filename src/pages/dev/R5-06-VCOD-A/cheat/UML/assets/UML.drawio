@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Page-1" id="a18boKZmewaTG3S8IR6Z">
-    <mxGraphModel dx="904" dy="607" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1227" dy="824" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -820,7 +820,7 @@
           <mxGeometry height="240" width="130" x="454" y="320" as="geometry" />
         </mxCell>
         <mxCell id="AAGseRXGF4UFzJ6hZ7-N-142" parent="AAGseRXGF4UFzJ6hZ7-N-138" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
-          <mxGeometry height="80" width="10" x="45" y="50" as="geometry" />
+          <mxGeometry height="80" width="10" x="59" y="50" as="geometry" />
         </mxCell>
         <mxCell id="AAGseRXGF4UFzJ6hZ7-N-148" parent="AAGseRXGF4UFzJ6hZ7-N-138" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=1;collapsible=0;width=50;height=20;" value="type" vertex="1">
           <mxGeometry height="53" width="110" x="-15" y="177" as="geometry" />
