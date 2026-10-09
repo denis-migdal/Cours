@@ -22,30 +22,66 @@
 
 <div>Créez les diagrammes de déploiement ou de composants pour les contextes suivants.</div>
 
+<h3>Serrure connectée</h3>
+
+<div class="context">L'utilisateur présente sa preuve d'identité (e.g. carte magnétique ou modalité biométrique) au capteur d'une serrure connectée. Le capteur est instrumenté par un <i>module client</i> (<script type="c-text">AuthClient</script>) communicant avec un <i>module serveur</i> (<script type="c-text">AuthServer</script>) hébergé sur un serveur distant. Le module serveur contient une base de donnée utilisateurs ainsi que des règles d'accès.</div>
+
+<q-file @qid="#c0ad453b" @accept=".svg">Diagramme de déploiement :</q-file>
+
+<h3>Système de gestion de formations</h3>
+
+<div class="context">Les employés souhaitant suivre des formations peuvent consulter un catalogue de formations
+et faire une demande. La demande est traitée par un responsable de l’entreprise, qui peut consulter le dossier RH de l’employé et le contenu de la formation pour prendre sa décision. Le catalogue de formations est proposé et maintenu par un prestataire extérieur. Employés et responsables disposent d’un client spécifique pour, respectivement, formuler et valider une demande. Le client utilise l'intranet de l'entreprise pour authentifier ses utilisateurs, ainsi que pour récupérer les dossiers RH.</div>
+
+<ol>
+    <li>Identifiez les acteurs, ainsi que les différents clients/serveurs.</li>
+    <li>Identifiez les différents composants de chaque client/serveur.</li>
+    <li>Ajoutez les liens entre les différents éléments du diagramme.</li>
+</ol>
+
+<q-file @qid="#64dc6486" @accept=".svg"><b>Diagramme de déploiement :</b></q-file>
+
+<h3>Site de vente en ligne</h3>
+
+<div class="context">Un site de vente en ligne permet de visualiser un catalogue de produits, les ajouter à un panier, de passer commande, puis de suivre ses commandes. Lors de la création d'une commande à partir du panier :
+    <ol>
+        <li>la disponibilité des produits sont vérifiées auprès du fournisseur.</li>
+        <li>le payement est effectué auprès de la banque.</li>
+        <li>fournisseur et transporteur sont notifiés de la commande.</li>
+    </ol>
+    Les bases de données utilisateurs, produits, ainsi que commandes sont hébergées sur un serveur dédié.
+</div>
+
+<q-file @qid="#b6b34ce1" @accept=".svg"><b>Diagramme de déploiement :</b></q-file>
+
 <h3>Démineur</h3>
 
 <div class="context">Le démineur est un jeu dont le but est de trouver le plus rapidement possible toutes les cases du plateau contenant des mines sans les toucher.<br/>
 Le jeu est composé d’un plateau rectangulaire, d’un chronomètre et d’un compteur de mines. Le plateau est un quadrillage de cases. Au début du jeu, toutes les cases du plateau sont couvertes, le compteur de mines indiquant le nombre de mines restant à localiser. Le chronomètre compte le nombre de secondes écoulées depuis le début de la partie. La partie commence lorsque la première case est découverte. Le joueur peut interagir en découvrant une case, ou en la marquant d’un symbole (sans influence sur le déroulement du jeu).<br/>
-L'application comporte aussi un menu permettant d'enregistrer, de reprendre, ou de générer une partie.</div>
-
-<div class="flex-2">
-    <q-file @qid="#70e50a4f" @accept=".svg"><b>Diagramme de composants (bas niveau) :</b></q-file>
-    <q-file @qid="#d5a61569" @accept=".svg"><b>Diagramme de déploiement (haut niveau) :</b></q-file>
-</div>
-
-<h3>Système de gestion de formations</h3>
-
-<div class="context">Les employés souhaitant suivre des formations complémentaires peuvent consulter un catalogue de formations
-et faire une demande. La demande est traitée par un responsable de l’entreprise, qui peut consulter le dossier RH de l’employé et le contenu de la formation pour prendre sa décision. Le catalogue de formations est proposé et maintenu par un prestataire extérieur. Employés et Responsables disposent d’une interface spécifique pour interagir avec le système, nécessitant de s’authentifier sur l’intranet de l’entreprise.</div>
-
-<q-file @qid="#64dc6486" @accept=".svg"><b>Diagramme de déploiement :</b></q-file>
-
-<h3>Autres :</h3>
+L'application comporte aussi un menu permettant d'enregistrer, de charger, ou de générer une partie.</div>
 
 <ol>
-    <li><q-file @qid="#c0ad453b" @accept=".svg">Diagramme de déploiement pour un système de sécurité d’ouverture de porte par carte magnétique :</q-file></li>
-    <li><q-file @qid="#b6b34ce1" @accept=".svg">Diagramme de de déploiement pour un site de vente en ligne :</q-file></li>
+    <li>On distingue le modèle (<script type="c-text">Game</script>) de la vue (<script type="c-text">GameScreen</script>). La vue comporte le menu, le HUD, ainsi que la vue du jeu.</li>
+    <li>Répartissez les éléments graphiques du jeu dans les différentes parties de la vue.</li>
+    <li>On distingue 4 interfaces :
+        <ul>
+            <li><script type="c-text">GameSession</script> : permet de créer une nouvelle partie ou de charger une partie existante.</li>
+            <li><script type="c-text">GameState</script> : représente l'état du jeu.</li>
+            <li><script type="c-text">GameAction</script> : permet d'effectuer des actions de jeu.</li>
+            <li><script type="c-text">GameCodec</script> : permet d'encoder/décoder une partie.</li>
+        </ul>
+    </li>
+    <li>Reliez chaque élément graphique du jeu aux interfaces dont ils dépendent.</li>
+    <li>Précisez le contenu de chaque interface (sauf <script type="c-text">GameState</script>).</li>
+    <li>Dans <script type="c-text">Game</script>, ajoutez :
+        <ul>
+            <li><script type="c-text">GameState</script> : représente l'état du jeu.</li>
+            <li><script type="c-text">GameRules</script> : prend des actions en entrée et modifie l'état du jeu en conséquence.</li>
+        </ul>
+    </li>
 </ol>
+
+<q-file @qid="#70e50a4f" @accept=".svg"><b>Diagramme de composant :</b></q-file>
 
 <h2>Séquence et communication</h2>
 
@@ -53,25 +89,44 @@ et faire une demande. La demande est traitée par un responsable de l’entrepri
 
 <h3>Télécommande</h3>
 
-<div class="context">Une télécommande permet de contrôler un téléviseur. Ce téléviseur possède des hauts parleurs, un mécanisme de mise sous tension (<i>alimentation</i>), un mécanisme de changement de de chaîne (<i>turner</i>), un mécanisme de réglage du son par augmentation ou diminution (<i>ampli</i>), un écran associé à un mécanisme de réglage du contraste et de la couleur des images par augmentation ou diminution.</div>
+<div class="context">À la réception d'un signal infrarouge, le capteur infrarouge de la télévision décode le signal afin de le transformer en commande. La commande est ensuite transférée au composant concerné.<br/>
+<br/>
+<u>Pour rappel :</u> Une télécommande permet de contrôler un téléviseur. Ce téléviseur possède des hauts parleurs, un mécanisme de mise sous tension (<i>alimentation</i>), un mécanisme de changement de de chaîne (<i>turner</i>), un mécanisme de réglage du son par augmentation ou diminution (<i>ampli</i>), un écran associé à un mécanisme de réglage du contraste et de la couleur des images par augmentation ou diminution.</div>
 
-<q-file @qid="#48f54b4b" @accept=".svg"></q-file>
+<q-file @qid="#48f54b4b" @accept=".svg"><b>Diagramme de séquence :</b></q-file>
 
-<h3>Systèmes</h3>
 
-<ol>
-    <li><q-file @qid="#c9084d16" @accept=".svg">
-        Un distributeur de billets automatique :
-    </q-file></li>
-    <li><q-file @qid="#908d32e2" @accept=".svg">
-        Un distributeur automatique proposant boissons et friandises :
-    </q-file></li>
-    <li><q-file @qid="#e948eeaa" @accept=".svg">
-        Un système de gestion de bibliothèque :
-    </q-file></li>
-</ol>
+<h3>Site de vente en ligne</h3>
 
-<h3>Entreprise</h3>
+<div class="context">Un site de vente en ligne permet de visualiser un catalogue de produits, les ajouter à un panier, de passer commande, puis de suivre ses commandes. Lors de la création d'une commande à partir du panier :
+    <ol>
+        <li>la disponibilité des produits sont vérifiées auprès du fournisseur.</li>
+        <li>le payement est effectué auprès de la banque.</li>
+        <li>fournisseur et transporteur sont notifiés de la commande.</li>
+    </ol>
+    Les bases de données utilisateurs, produits, ainsi que commandes sont hébergées sur un serveur dédié.
+</div>
+
+<q-file @qid="#908d32e2" @accept=".svg"><b>Diagramme de séquence (création d'une commande) :</b></q-file>
+
+<h3>Distributeur de billets automatique</h3>
+
+<div class="context">Lorsqu'un utilisateur souhaite retirer de l'argent, il insère sa carte bancaire dans le DAB, puis demande à retirer un montant. Le DAB vérifie d'abord auprès du module de distribution de billets si le montant demande est disponible, avant de demander le code PIN à utilisateur.<br/>
+Le DAB vérifie le code PIN saisi auprès de la carte bancaire. En cas de 5 tentatives infructueuses, la carte est avalée. Si le code PIN est correct, le DAB transmet la demande de retrait à la banque.<br/>
+Quoi qu'il arrive, la carte est éjectée. Si la carte n'est pas prise au-delà d'un certain temps, la carte est avalée.<br/>
+Le module de distribution de billets sort ensuite les billets. Idem, si les billets ne sont pas pris au-delà d'un certain temps, ils sont avalés. Si tout se passe bien, le retrait est confirmé auprès de la banque.
+</div>
+
+<q-file @qid="#c9084d16" @accept=".svg"><b>Diagramme de séquence :</b></q-file>
+
+<h3>Gestion des emprunts</h3>
+
+<div class="context">Lorsqu'un utilisateur souhaite emprunter un livre, le système interroge tout d'abord la base de données <script type="c-text">UserDB</script> afin de vérifier s'il peut emprunter. Il vérifie ensuite auprès de la base de données <script type="c-text">BookDB</script> s'il est disponible.<br/>
+Si le livre n'est pas disponible, le système demande à l'utilisateur s'il souhaite le réserver. Il notifie ensuite les différentes bases de données afin d'enregistrer l'emprunt ou la réservation.</div>
+
+<q-file @qid="#e948eeaa" @accept=".svg"><b>Diagramme de séquence :</b></q-file>
+
+<h3>Entreprise (à supprimer?)</h3>
 
 <div class="context">L'entreprise Poule Emploi propose un service de mise en relation entre employeurs potentiels et demandeurs d'emplois, permettant à l'un comme l'autre de consulter un catalogue (d'offres ou de CV). L'accès à ces catalogues, ainsi que l'ajout d'une offre ou d'un CV, nécessite un compte client payant créé par un employé de l'entreprise Poule Emploi. Le management a accès aux données client pour des raisons de reporting.</div>
 
