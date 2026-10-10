@@ -11,6 +11,48 @@
     <body>
         <main>
             <h1>Sujet session 2026-2027 (blanc)</h1>
+
+<h2>Questions de cours [/10]</h2>
+
+<h2>Modélisation UML [/10]</h2>
+
+<div class="context">À l'UCA, les personnels sont susceptibles de partir en missions (e.g. conférence, formation, etc). Afin d'être remboursés de leurs frais, il doivent saisir un <i>ordre de mission</i> (OM) sur la plateforme Nautilus.<br/>
+<br/>
+La <b>procédure</b> est alors relativement simple (l'interface bien moins). L'OM, une fois créé, est soumis pour validation. Si l'OM est validé, l'agent pourra effectuer sa mission. À son retour de mission, il devra saisir ses heures de missions, puis, si des frais ont été engagés (OM <i>avec frais</i>), saisir l'<i>état de frais</i>. Une fois l'état de frais validé, la demande de remboursement est envoyée au service financier. L'OM est ensuite <i>clôturé</i>.<br/><br>
+Le <b>processus de validation</b> s'organise comme suit. Lors de la soumission d'un OM ou d'un état de frais, une demande de validation est envoyée au(x) responsable(s). Si la demande est validée, Nautilis notifie le service financier ainsi que l'agence (si l'OM contient une réservation).<br/>
+<br/>
+En soit, un OM effectué par un agent possède un titre, une date de début et une date de fin. Elle est composée d'un ensemble de frais qui ont une date, un montant, et un montant remboursé. Lors de l'état de frais, chaque frais sera associé à une preuve. Les frais peuvent être de différentes natures :
+    <ul>
+        <li><i>Voiture :</i> le montant remboursé est le nombre de km multiplié par un coefficient.</li>
+        <li><i>Transport :</i> le montant remboursé est le montant.</li>
+        <li><i>Hôtel :</i> le montant remboursé est le minimum entre le montant et le forfait.</li>
+        <li><i>Repas :</i> le montant remboursé est de 15€.</li>
+    </ul>
+L'<b>architecture</b> du système reste aussi relativement simple. Nautilus utilise le serveur d'authentification de l'UCA afin d'authentifier les agents et de leur donner accès au logiciel. Un module <script type="c-text">Procedure</script> instrumente l'ensemble de la procédure. La procédure est elle-même composée de 3 modules : un pour les OM, un pour les états de frais, et un pour les validations. Nautilus dispose aussi d'un module <script type="c-text">Notifier</script> pour envoyer des notifications via le serveur de mail de l'UCA. Un autre module <script type="c-text">Reservation</script> permet d'interagir avec des agences externes.
+
+</div>
+
+<h3>Diagramme de cas d'utilisations</h3>
+
+<q-file @qid="#1ac3fad6" @accept=".svg" @coeff="2">Dessinez le diagramme de cas d'utilisations :</q-file>
+
+
+<h3>Diagramme d'activité</h3>
+
+<q-file @qid="#6eedf5fa" @accept=".svg" @coeff="2">Dessinez le diagramme d'activité de la <b>procédure</b>, de la création à la clôture de l'OM :</q-file>
+
+<h3>Diagramme de déploiement</h3>
+
+<q-file @qid="#9f66fc77" @accept=".svg" @coeff="2">Dessinez le diagramme de déploiement de l'<b>architecture</b> :</q-file>
+
+<h3>Diagramme de séquence</h3>
+
+<q-file @qid="#393eaeb2" @accept=".svg" @coeff="2">Dessinez le diagramme de séquence représentant le <b>processus de validation</b> :</q-file>
+
+<h3>Diagramme de classes</h3>
+
+<q-file @qid="#96c82973" @accept=".svg" @coeff="2">Dessinez le diagramme de classe permettant de représenter un OM :</q-file>
+
         </main>
     </body>
 </html>
