@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf8"/>
+        <title>2026-2027 (DevLog)</title>
+        <meta name="color-scheme" content="dark light">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <script type="module" src="/@templates/TPSubject@2026/index.js"></script>
+        <link rel="stylesheet" href="/@templates/TPSubject@2026/index.css"/>
+    </head>
+    <body>
+        <main>
+            <h1>Sujet session 2026-2027 (1h30 machine)</h1>
+
+
+<h2>Questions de cours [/10]</h2>
+
+
+<h3>Analyse [/2]</h3>
+
+<ol>
+    <li><q-text @qid="#cb8f77c4" @pts="1">Qu'est-ce que l'analyse ? En quoi est-ce une étape importante d'un projet ?</q-text></li>
+    <li><q-text @qid="#39e5888d" @pts="1">Expliquez ce qu'est un cas d'utilisation (et ce qu'il n'est pas).</q-text></li>
+</ol>
+
+<h3>Conception [/4]</h3>
+
+<ol>
+    <li><q-text @qid="#c883b63e" @pts="1">Qu'est-ce qu'une dette technique ? En quoi leur accumulation est-il un danger pour le projet ?</q-text></li>
+    <li><q-text @qid="#9e104e8d" @pts="1">Expliquez en quoi découper un projet en composants indépendant est intéressant.</q-text></li>
+    <li><q-text @qid="#fd086bac" @pts="1">Qu'est-ce que l'architecture 3-tiers ? Quel est son intérêt ?</q-text></li>
+    <li><q-text @qid="#11a2155b" @pts="1">Expliquez le principe KISS.</q-text></li>
+</ol>
+
+<h3>Implémentation [/4]</h3>
+
+<ol>
+    <li><q-text @qid="#873098bc" @pts="1">Qu'est-ce que la composition ? En quoi peut-elle être plus intéressante que l'héritage ?</q-text></li>
+    <li><q-text @qid="#253ce48f" @pts="1">Qu'est-ce qu'une responsabilité latente ?</q-text></li>
+    <li><q-text @qid="#4092bea4" @pts="1">Qu'est-ce que le principe Open/Close ? En quoi est-il important ?</q-text></li>
+    <li><q-text @qid="#d0c97cb6" @pts="1">Quelle est la distinction entre détails et politiques ?</q-text></li>
+</ol>
+
+<h2>Modélisation UML [/10]</h2>
+
+<div class="hint">Vous trouverez les bibliothèques de formes Draw.io dans le dossier <script type="c-text">sujet/migdal/Draw.io</script>.</div>
+
+<div class="context">Moodle est une plateforme de cours en ligne permettant aux étudiants de consulter leurs ressources de cours, ainsi que de déposer leurs rendus de TP. L'enseignant qui administre le cours peut ensuite corriger les rendus.<br/>
+<br/>
+Lors d'un <b>devoir</b>, chaque étudiant peut effectuer des dépôts. Un dépôt est enregistré pour évaluation seulement si le dépôt est ouvert. Une fois la date de rendu dépassée, le dépôt est fermé. L'enseignant peut alors soit rouvrir le dépôt (en fixant une nouvelle date de rendu), soit corriger le rendu puis déposer un corrigé.<br/>
+<br/>
+L'<b>architecture</b> de Moodle est modulaire. Un module <script type="c-text">Users</script> a la responsabilité de la gestion des utilisateurs, notamment leur authentification (via le serveur CAS de l'université). Un autre module <script type="c-text">Cours</script> gère l'affichage des cours, ainsi que leur administration. <script type="c-text">Activités</script>, quant à elle, regroupe un ensemble d'activités qu'on peut ensuite associer à un cours. <script type="c-text">Devoir</script> est un exemple d'activité. Enfin, un module <script type="c-text">Artefacts</script> gère les ressources persistantes (e.g. upload, download, etc).<br/>
+<br/>
+Le <b>processus de rendu</b> s'effectue alors comme suit. Lors de la demande de dépôt d'un utilisateur, le module <script type="c-text">Devoir</script> vérifie auprès du cours si l'utilisateur est bien un étudiant, puis auprès du module <script type="c-text">Users</script> si l'utilisateur est toujours connecté. Si l'utilisateur n'est plus connecté, la procédure <script type="c-text">4.2 Connexion CAS</script> est utilisée. Enfin, le rendu est uploadé via le module <script type="c-text">Artefacts</script> qui retourne un identifiant correspondant au fichier.<br/>
+<br/>
+En soit, un <b>devoir</b> est une activité disposant d'une date de rendu, ainsi que d'une propriété permettant de savoir si l'activité est fermée ou ouverte (i.e. si la date de rendu est dépassée ou non). Elle est aussi composée d'un ensemble d'artefacts (rendus), qui ont une date, un identifiant, ainsi qu'un utilisateur propriétaire.<br/>
+Bien évidemment, l'activité connaît le cours qui le possède. Le cours est administré par un unique utilisateur, et possède une liste d'utilisateurs inscripts en tant qu'étudiants. À noter que la classe <script type="c-text">User</script> possède une méthode permettant de s'assurer qu'un utilisateur est bien connecté.
+</div>
+
+<h3>Diagramme de cas d'utilisations</h3>
+
+<q-file @qid="#12e78a7c" @accept=".svg" @coeff="2">Dessinez le diagramme de cas d'utilisations :</q-file>
+
+
+<h3>Diagramme d'activité</h3>
+
+<q-file @qid="#cba830ab" @accept=".svg" @coeff="2">Dessinez le diagramme d'activité d'un <b>devoir</b>, du dépôt du rendu au dépôt de sa correction :</q-file>
+
+<h3>Diagramme de déploiement</h3>
+
+<q-file @qid="#a2ba7cd3" @accept=".svg" @coeff="2">Dessinez le diagramme de déploiement de l'<b>architecture</b> :</q-file>
+
+<h3>Diagramme de séquence</h3>
+
+<q-file @qid="#b5e8ef7e" @accept=".svg" @coeff="2">Dessinez le diagramme de séquence représentant le <b>processus de rendu</b> :</q-file>
+
+<h3>Diagramme de classes</h3>
+
+<q-file @qid="#2070c649" @accept=".svg" @coeff="2">Dessinez le diagramme de classe permettant de représenter un <b>devoir</b> :</q-file>
+
+        </main>
+    </body>
+</html>
