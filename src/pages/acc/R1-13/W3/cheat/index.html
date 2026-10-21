@@ -24,22 +24,6 @@
 
 <!-- https://github.com/tldr-pages/tldr-python-client -->
 
-<h4>Le terminal</h4>
-
-<ul class="flex-3">
-    <li><script type="c-bash">clear</script> : efface le terminal.</li>
-    <li><script type="c-bash">reset</script> : réinitialise le terminal.</li>
-    <li><script type="c-bash">exit</script> : quitte le Shell actuel.</li>
-</ul>
-
-<h4>L'historique</h4>
-
-<ul>
-    <li><script type="c-bash">history</script> : affiche l'historique des dernières lignes de commandes exécutées.</li>
-    <li><script type="c-bash">!!</script> : réexécuter la dernière commande exécutée.</li>
-    <li><script type="c-bash">!<h>$CMD</h></script> : réexécute la dernière commande <script type="c-bash"><h>$CMD</h></script> exécutée.</li>
-</ul>
-
 <h4>Navigation</h4>
 
 <ul>
@@ -58,13 +42,13 @@
 <div class="flex-2">
     <ul>
         <li><script type="c-bash">rm <h>[-r]</h> <h>$FILE...</h></script> : <b>supprimer</b> (<i><u>r</u>e<u>m</u>ove</i>).</li>
-        <li><script type="c-bash">cp <h>[-r]</h> <h>$SRC...</h> <h>-t|-T</h> <h>$DST</h></script> : <b>copier</b> (<i><u>c</u>o<u>p</u>y</i>).</li>
-        <li><script type="c-bash">mv      <h>$SRC...</h> <h>-t|-T</h> <h>$DST</h></script> : <b>déplacer</b> (<i><u>m</u>o<u>v</u>e</i>).</li>
+        <li><script type="c-bash">cp <h>[-r]</h> <h>$SRC...</h> <h>-t|-T $DST</h></script> : <b>copier</b> (<i><u>c</u>o<u>p</u>y</i>).</li>
+        <li><script type="c-bash">mv      <h>$SRC...</h> <h>-t|-T $DST</h></script> : <b>déplacer</b> (<i><u>m</u>o<u>v</u>e</i>).</li>
     </ul>
     <ul>
         <li><script type="c-bash"><h>-r</h></script> : si dossier (<i><u>r</u>ecursive</i>).</li>
-        <li><script type="c-bash"><h>-t</h></script> : <script type="c-bash"><h>$DST</h></script> <b>dossier</b> dans lequel placer <script type="c-bash"><h>$SRC</h></script> (<i><u>t</u>arget</i>).</li>
-        <li><script type="c-bash"><h>-T</h></script> : <script type="c-bash"><h>$DST</h></script> nouveau <b>chemin</b> de <script type="c-bash"><h>$SRC</h></script> (<i>not  <u>t</u>arget</i>).</li>
+        <li><script type="c-bash"><h>-t $DST</h></script> <b>dossier</b> dans lequel placer <script type="c-bash"><h>$SRC</h></script> (<i><u>t</u>arget</i>).</li>
+        <li><script type="c-bash"><h>-T $DST</h></script> nouveau <b>chemin</b> de <script type="c-bash"><h>$SRC</h></script> (<i>not  <u>t</u>arget</i>).</li>
     </ul>
 </div>
 
@@ -88,6 +72,22 @@
     <li><script type="c-bash">thunar <h>[$FILE]</h> &</script> : explorateur de fichier (GUI).</li>
 </ul>
 
+
+<h4>Le terminal</h4>
+
+<ul class="flex-3">
+    <li><script type="c-bash">clear</script> : efface le terminal.</li>
+    <li><script type="c-bash">reset</script> : réinitialise le terminal.</li>
+    <li><script type="c-bash">exit</script> : quitte le Shell actuel.</li>
+</ul>
+
+<h4>L'historique</h4>
+
+<ul>
+    <li><script type="c-bash">history</script> : affiche l'historique des dernières lignes de commandes exécutées.</li>
+    <li><script type="c-bash">!!</script> : réexécuter la dernière commande exécutée.</li>
+    <li><script type="c-bash">!<h>$CMD</h></script> : réexécute la dernière commande <script type="c-bash"><h>$CMD</h></script> exécutée.</li>
+</ul>
 
 
         </main>

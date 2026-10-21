@@ -52,14 +52,16 @@
         --
         + annales:Annales
             - cur:cur
-    - R4-10-VCOD:[S4-VCOD] Identité Numérique
+    - R4-10-VCOD:[S4-VCOD] Identité Numérique et Anonymisation
         + W1:1. Internet et ses acteurs
             - CM
             - TP
         --
         + annales:Annales
             - cur:2024-2024
-    - S5-07:[S5-VCOD] SAÉ Pentest, Hacking, et Renforcement
+    - S5-07-A:[S5-VCOD] SAÉ Challenge
+        - W1:Consignes
+    - S5-07-B:[S5-VCOD] SAÉ Pentest, Hacking, et Renforcement
 - dev:💻 Développement
     - R4-01:[S4] Automatisation et Test en Programmation
         + W1:1. Gestionnaire de version (git)

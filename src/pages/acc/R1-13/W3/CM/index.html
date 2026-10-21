@@ -12,59 +12,366 @@
         <main>
             <h1>CM3 : Commandes Shell</h1>
 
-<h2>Interagir avec le poste de travail</h2>
+<h2>Interagir avec un ordinateur</h2>
 
-<h3>Le poste de travail</h3>
+<div>En soit, un ordinateur est un circuit électronique, qui pour une entrée donnée produit une sortie. Initialement, l'entrée était constituée d'une série d'interrupteurs, et la sortie d'une série de lampes (début XIXe siècle).</div>
 
-<div>Les postes de travail sont les ordinateurs sur lesquelles vous travaillez, ils possèdent :
-<ul>
-    <li><b>un processeur</b> (CPU) : exécute des instructions ;</li>
-    <li><b>une puce ou carte graphique</b> (GPU) : gère l'affichage ;</li>
-    <li><b>une mémoire vive</b> (RAM) : stocke des données temporaires ;</li>
-    <li><b>des supports de stockages</b> (e.g. SSD) : sur lesquels sont enregistrés des fichiers ;</li>
-    <li><b>une puce ou carte réseau</b> : gère le WiFi, Bluetooth, et Ethernet.</li>
-</ul></div>
+<div class="hint">Au fur et à mesure que ces circuits électroniques grandissent (~1940), ces éléments d'entrés-sorties seront regroupés sur un poste de contrôle appelé <i>"panneau de commande"</i>, <i>"pupitre de commande"</i>, ou <i>"console de commande"</i>, séparé du reste de l'ordinateur (<i>mainframe</i>).</div>
 
-<div>La <b>carte mère</b> relie ces différents composants et fourni des ports permettant de brancher des <b>périphériques</b> (<i>devices</i>) :
-<ul>
-    <li><b>USB</b> : pour les claviers, souris, disques externes, etc.</li>
-    <li><b>RJ45</b> : pour les câbles Ethernet.</li>
-    <li><b>HDMI/Display Port/VGA</b> : pour les écrans.</li>
-</ul></div>
+<h3>Cartes perforées et impression</h3>
 
-<p>Tous ces composants matériels sont gérés par le <b>Système d'exploitation</b> (<i>Operating System</i>), e.g. Windows, Linux, etc.</p>
+<div>Cependant, les interrupteurs sont peu pratiques. On va très vite vouloir stocker les entrées (données et/ou instructions) afin de pouvoir facilement les rejouer, les transporter, et les archiver. Or, on sait déjà faire cela depuis au moins 1321 avec les cylindres à picots (e.g. boîtes à musiques), et depuis 1725 avec les cartes perforées (métiers à tisser, piano mécanique, etc). C'est ainsi qu'à partir de <b>1890</b>, les cartes perforées seront utilisées par les tous premiers systèmes électroniques.</div>
 
-<h3>Interface CLI</h3>
+<div>De même, les lampes sont peu pratiques. Si on a très vite utilisé des cadrans (tout en conservant des voyants), on souhaite pouvoir conserver les résultats sans avoir à les retranscrire à la main. On désire alors pouvoir imprimer les résultats, or cette technologie existe déjà depuis 1840 avec les télégraphes électriques. C'est ainsi qu'en <b>1925</b>, le premier ordinateur avec imprimante voit le jour.</div>
 
-<div>On distingue 3 manières d’interagir avec un ordinateur :
+<h3>Clavier et CLI</h3>
+
+<div>Perforer les cartes manuellement, est peu pratique. Heureusement, dès 1901, les perforatrices intègre un clavier facilitant l'écritures des cartes. En eux-même les claviers ne sont pas nouveaux, avec les premières machines à écrire en 1808 et les télégraphes électriques en 1846.</div>
+
+<div>Et si au lieu de perforer une carte au clavier, puis d'insérer la carte dans l'ordinateur, on intégrait directement le clavier à l'ordinateur ? C'est ainsi que les premiers claviers sur ordinateurs apparaissent vers 1941 (clavier numérique) et <b>1956</b> (clavier alpha-numérique).</div>
+
+<div>Le clavier permet ainsi de saisir des instructions (<i>commandes</i>) directement sur l'ordinateur qui l'imprime puis en imprime les résultats (<i>télétype</i>). On se heurte toutefois à un double problème :
     <ul>
-        <li><b>GUI</b> : interface <i>graphique</i> (<i>Graphical User Interface</i>) ;</li>
-        <li><b>CLI</b> : interface <i>en lignes de commande</i> (<i>Command Line Interface</i>) ;</li>
-        <li><b>TUI</b> : interface <i>textuelle</i> (<i>Text-based User Interface</i>) ;</li>
+        <li>comment indiquer que l'ordinateur est prêt à recevoir une nouvelle commande ?</li>
+        <li>lors de l'impression, comment distinguer la commande exécutée de son résultat ?</li>
     </ul>
 </div>
 
-<div>Les <i>lignes de commandes</i> sont des instructions textuelles. Elles présentent de nombreux avantages par rapport à une GUI :
+<div>On utilise alors une <b>invite de commande</b> (<i>prompt</i>) permettant d'indiquer que l'ordinateur a fini d'exécuter la commande précédente, et qu'une nouvelle commande peut être saisie. La commande est alors imprimée sur la même ligne que l'invite, ce qui permet de distinguer les commandes des résultats. La commande tenant sur une ligne, on parle alors de <b>ligne de commande</b>.
+    <div class="flex-3">
+        <script type="c-text">
+            >
+        </script>
+        <script type="c-text">
+            > 1+1
+        </script>
+        <script type="c-text">
+            > 1+1
+            2
+            >
+        </script>
+    </div>
+</div>
+
+<div>C'est ce qu'on appelle une <b>interface en ligne de commande</b> (<i>CLI - Command Line Interface</i>).</div>
+
+<h3>Fichiers exécutables</h3>
+
+<div>Si le clavier permet de saisir des données et des commandes directement sur l'ordinateur, il ne remplace pas pour autant les cartes perforées. En effet, pour la <b>saisie</b> d'entrées complexes et/ou répétés, le clavier reste peu efficace.</div>
+
+<div>Toutefois, parallèlement à l'intégration des claviers, les ordinateurs gagnent progressivement en capacité de stockage interne, avec les bandes magnétiques en 1951 et les disques durs en 1956. Les cartes perforées (utilisées jusqu'en 1980-1990) seront progressivement remplacées par les bandes magnétiques, Internet (1970), les disquettes (1971), les CD/DVD (1982), clefs USB (2000), etc.</div>
+
+<div>Il faudra toutefois attendre <b>1961</b> pour avoir les premiers systèmes de fichiers. Dès lors, il est possible d'écrire (sans écrans...), puis d'enregistrer, des instructions dans un fichier qu'on pourra ensuite exécuter sur demande. On parle alors de <b>fichiers exécutables</b>.</div>
+
+<h3>Écrans et TUI</h3>
+
+<div>Si la télévision date de 1926, il faudra attendre 1951 pour avoir les premiers écrans informatiques qui restent très limités. Ce n'est qu'en 1964 que les écrans permettent l'affichage du texte, remplaçant ainsi les imprimantes pour l'affichage. C'est au même moment qu'apparaissent les <b>terminaux</b>, une paire écran/clavier distants permettant à un <i>utilisateur</i> de se <i>connecter</i> à l'ordinateur (<i>mainframe</i>). Le mainframe continuait toutefois de disposer d'une console pour son administration.</div>
+
+<div>Contrairement aux imprimantes qui étaient limitées à une écriture séquentielle, sans possibilité de revenir en arrière, les écrans permettent d'écrire à n'importe quelle position de leur surface. Il est ainsi possible de construire des interfaces plus ergonomiques et intuitives avec e.g. des formulaires de saisie, des menus, voire un panneau de commande virtuel. On parle alors d'<i>interface textuelle/terminal</i> (<b>TUI</b> - <i>Text-based/Terminal User Interface</i>).</div>
+
+<todo>IMG interface TUI e.g. formulaire de saisie.</todo>
+
+<div>La première souris apparaît en 1968, elle permet alors de naviguer en cliquant sur un élément de l'écran, au lieu d'utiliser les touches du clavier (tabulation, flèches).</div>
+
+<div class="hint">Les lignes de commandes (CLI) conservent toutefois de nombreux avantages :
     <ul>
-        <li>on peut copier/coller des lignes de commandes (c'est du texte).</li>
-        <li>les lignes de commandes sont indépendantes de la langue de l'utilisateur (i.e. pas de traductions).</li>
-        <li>on a toute la puissance qu'offre un langage de programmation (variables, conditions, boucles, etc).</li>
-        <li>on peut automatiser une série d'instructions en enregistrant les lignes de commandes dans un fichier (script).</li>
+        <li>on peut les enregistrer dans un fichier (script) afin d'en automatiser l'exécution.</li>
+        <li>on bénéficie de toute la puissance d'un langage de programmation (variables, conditions, boucles, etc).</li>
     </ul>
 </div>
 
-<div>Il est possible que l'ordinateur n'ai tout simplement pas de GUI. Cela est usuellement le cas pour les serveurs, ce qui permet d'en économiser les ressources (GPU/CPU/RAM/réseau) et de réduire les surfaces d'attaques.</div>
+<h3>Fenêtres et GUI</h3>
+
+<div>Les interfaces graphiques modernes (<b>GUI</b> - <i>Graphical User Interface</i>) n'apparaissent qu'en 1973 avec un gestionnaire de fenêtre, permettant de manipuler des fenêtres à la souris et de les dessiner pixel par pixel.</div>
+
+<div>Les terminaux vont progressivement disparaître au profit d'ordinateurs personnels équipés d'une interface graphique. Les <b>émulateurs de terminal</b> vont alors simuler un terminal au sein d'une fenêtre graphique, permettant de continuer d'administrer l'ordinateur via des lignes de commandes.</div>
+
+<div>Les ordinateurs commencent à être reliés entre eux à partir de 1969, permettant leur administration à distance. Cependant, l'ouverture d'une session graphique à distance (1982) reste très coûteuse jusqu'à la démocratisation de la fibre (~2010). Même aujourd'hui, l'accès à distance s'effectue principalement en mode texte (CLI et TUI).</div>
+
+
+<div class="hint">De nombreux ordinateurs ne disposent pas d'une GUI (e.g. serveurs, embarqués) afin de réduire les surfaces d'attaques, et d'en économiser les ressources (calculs, réseau, etc.).</div>
+
+<h2>Le Shell</h2>
+
+<div>Comme nous venons de le voir, les interfaces en ligne de commande restent encore très utilisées de nos jours, bien qu'anciennes (1956). Aujourd'hui on utilise le <b>Shell</b> (1971) qui est à la fois :
+    <ul>
+        <li>le <b>langage</b> dans lequel on écrit les lignes de commandes.</li>
+        <li>l'<b>interpréteur</b> qui lit et exécute les lignes de commandes.</li>
+    </ul>
+</div>
+
+<div>Le <b>Terminal</b> sert alors d'interface graphique entre l'utilisateur et le Shell. Il permet d'écrire des <i>lignes de commandes</i> qui seront envoyées au Shell, puis d'en visualiser les résultats retournés par le Shell.</div>
+
+<todo>IMG ?</todo>
+
+<h3>Commandes Shell</h3>
+
+<div>Une <i>ligne de commande</i> est une ligne de texte représentant une instruction à exécuter, e.g. :
+    <div class="flex-3">
+        <script type="c-text">
+            > 1+2
+            3
+        </script>
+        <script type="c-text">
+            > add 1 2
+            3
+        </script>
+        <script type="c-text">
+            > add(1, 2)
+            3
+        </script>
+    </div>
+</div>
+
+<div>En Shell, une <i>ligne de commande</i> commence par une <b>commande</b> qui représente l'instruction à exécuter, e.g. :
+    <ul class="flex-3">
+        <li><script type="c-bash">cp</script> : <i><u>c</u>o<u>p</u>y</i>, copier un fichier.</li>
+        <li><script type="c-bash">mv</script> : <i><u>m</u>o<u>v</u>e</i>, déplacer un fichier.</li>
+        <li><script type="c-bash">rm</script> : <i><u>r</u>e<u>m</u>ove</i>, supprimer un fichier.</li>
+        <li><script type="c-bash">touch</script> : créer un fichier.</li>
+        <li><script type="c-bash">mkdir</script>: <i><u>m</u>a<u>k</u>e <u>dir</u>ectory</i>/créer dossier.</li>
+        <li><script type="c-bash">find</script> : rechercher un fichier.</li>
+    </ul>
+</div>
+
+<div>La commande est potentiellement suivie d'un ou de plusieurs <b>arguments</b>, le tout séparé par des espaces :
+    <div class="flex-2">
+        <script type="c-text">
+            > cmd arg1 arg2
+            result
+        </script>
+        <script type="c-text">
+            > add 1 2
+            3
+        </script>
+    </div>
+</div>
+
+<div>Ainsi, lorsque le Shell interprète une ligne de commande, il découpe tout d'abord la ligne en utilisant les espaces comme séparateurs. Le premier élément est alors la commande à exécuter, et les éléments suivants, les arguments à lui passer en <b>paramètre</b>.</div>
+
+<div class="info">Les <b>arguments</b> (<i>appel</i>) sont les <i>valeurs</i> qu'on transmets aux <b>paramètres</b> (<i>définition</i>) d'une commande/fonction.</div>
+
+<div class="danger">Si un argument contient un espace, il sera interprété comme deux arguments distincts. Pour éviter cela, il convient d'échapper l'espace, ou de le placer entre guillemets simples :
+    <ul class="flex-3">
+        <li><script type="c-bash">a\ b</script></li>
+        <li><script type="c-bash">'a b'</script></li>
+        <li><script type="c-bash">a' 'b</script></li>
+    </ul>
+</div>
+
+<div>En soit, l'appel d'une commande s'apparente à l'<b>appel d'une fonction</b>, avec une <i>commande</i> à exécuter (≈ une fonction à exécuter) et des <i>arguments</i> passés en paramètres de la commande (fonction). La syntaxe est toutefois différente des appels de fonction dont vous avez l'habitude en R ou en Python :
+    <ul class="flex-2">
+        <li><i>Ligne de commande Shell :</i> <script type="c-bash">foo 1 2 3</script>.</li>
+        <li><i>Appel d'une fonction python :</i> <script type="c-python">foo(1, 2, 3)</script>.</li>
+    </ul>
+</div>
+
+<h3>La documentation</h3>
+
+<h4>Lire la documentation</h4>
+
+<div>L'usage d'une commande est décrite par sa <i>signature</i>, qui utilise les notations suivantes :
+    <table>
+        <thead>
+            <tr>
+                <th>Syntaxe</th>
+                <th>Signification</th>
+                <th>Exemple</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><script type="c-bash">cmd <h>$VAR</h></script></td>
+                <td>une valeur (à remplacer).</td>
+                <td><script type="c-bash">cmd <h>foo</h></script></td>
+            </tr>
+            <tr>
+                <td><script type="c-bash">cmd <h>[foo]</h></script></td>
+                <td>valeur facultative.</td>
+                <td><script type="c-bash">cmd</script> ou <script type="c-bash">cmd <h>foo</h></script></td>
+            </tr>
+            <tr>
+                <td><script type="c-bash">cmd <h>foo|faa</h></script></td>
+                <td>l'un ou l'autre.</td>
+                <td><script type="c-bash">cmd <h>foo</h></script> ou <script type="c-bash">cmd <h>faa</h></script></td>
+            </tr>
+            <tr>
+                <td><script type="c-bash">cmd <h>$ARG...</h></script></td>
+                <td>un ou plusieurs arguments.</td>
+                <td><script type="c-bash">cmd <h>foo fii fuu</h></script></td>
+            </tr>
+            <tr>
+                <td><script type="c-bash">cmd <h>$ARG,...</h></script></td>
+                <td>idem, mais séparés par une virgule.</td>
+                <td><script type="c-bash">cmd <h>foo,fii,fuu</h></script></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>Une commande s'utilise dès lors très simplement :
+    <ol class="flex-2">
+        <li><b>recopier</b> la signature de la commande.</li>
+        <li><b>remplacer</b> les encadrés par la valeur souhaitée.</li>
+    </ol>
+</div>
+
+<div>Par exemple, l'usage des commandes <script type="c-bash">cp</script>, <script type="c-bash">mv</script>, et <script type="c-bash">rm</script> peuvent être décrites ainsi :
+    <div class="flex-2">
+        <ul>
+            <li><script type="c-bash">rm <h>[-r]</h> <h>$FILE...</h></script> : <b>supprimer</b> (<i><u>r</u>e<u>m</u>ove</i>).</li>
+            <li><script type="c-bash">cp <h>[-r]</h> <h>$SRC...</h> <h>-t|-T $DST</h></script> : <b>copier</b> (<i><u>c</u>o<u>p</u>y</i>).</li>
+            <li><script type="c-bash">mv      <h>$SRC...</h> <h>-t|-T $DST</h></script> : <b>déplacer</b> (<i><u>m</u>o<u>v</u>e</i>).</li>
+        </ul>
+        <ul>
+            <li><script type="c-bash"><h>-r</h></script> : si dossier (<i><u>r</u>ecursive</i>).</li>
+            <li><script type="c-bash"><h>-t $DST</h></script> <b>dossier</b> dans lequel placer <script type="c-bash"><h>$SRC</h></script> (<i><u>t</u>arget</i>).</li>
+            <li><script type="c-bash"><h>-T $DST</h></script> nouveau <b>chemin</b> de <script type="c-bash"><h>$SRC</h></script> (<i>not  <u>t</u>arget</i>).</li>
+        </ul>
+    </div>
+</div>
+
+<div class="hint">Les arguments préfixés par <script type="c-bash">-</script> sont des <b>options</b> modifiant le comportement de la commande.</div>
+
+<todo>Exo</todo>
+
+<div class="danger">Les fichiers supprimés via <script type="c-bash">rm</script> sont supprimés <b>définitivement</b>. Ainsi, il est préférable d'utiliser la commande <script type="c-bash">trash</script>, afin de placer les fichiers dans la corbeille de l'utilisateur, permettant de restaurer les fichiers supprimés par erreurs.</div>
+
+<h4>Accéder à la documentation</h4>
+
+<div>L'accès à la documentation des commandes dépend de leur nature (cf <script type="c-bash">type -t <h>$CMD</h></script>) :
+    <ul class="flex-2">
+        <li>si <script type="c-text">file</script> (commande "normale") : <script type="c-bash">man <h>$CMD</h></script></li>
+        <li>si <script type="c-text">keyword</script> ou <script type="c-text">builtin</script> (interne au Shell) : <script type="c-bash">help <h>$CMD</h></script>.</li>
+    </ul>
+</div>
+
+<div class="flex-2">
+    <script type="c-shell">
+        > type -t cp
+        file
+        > man cp
+    </script>
+    <script type="c-shell">
+        > type -t cd
+        builtin
+        > help cd
+    </script>
+</div>
+
+<div class="hint">La commande <script type="c-bash">tldr <h>$CMD</h></script> est une version simplifiée de <script type="c-bash">man</script> et de <script type="c-bash">help</script>.</div>
+
+<div class="hint">Nous vous fournissons une <i>cheat sheet</i> donnant l'usage simplifié des commandes utilisées dans le cadre de cours.</div>
+
+<h2>Les fichiers</h2>
+
+<h3>Chemins absolus</h3>
+
+<div>Sous Linux tous les fichiers sont, directement ou indirectement, contenus dans le dossier <b>racine</b> (<i>root directory</i>), noté <script type="c-text">/</script> :
+
+    <script type="c-bash">
+        📂 /
+        ├── 📂 home  # contient les dossiers personnels des utilisateurs.
+        ├── 📂 mnt   # contient les volumes montés (e.g. partition Windows)
+        ├── 📂 media # contient les volumes éjectables (e.g. clef USB)
+        ├── 📂 tmp   # contient les fichiers temporaires (supprimés au redémarrage).
+        ...
+    </script>
+</div>
+
+<div>Le <b>chemin absolu</b> (<i>absolute path</i>) identifie alors un fichier par son emplacement par rapport à la <b>racine</b>. C'est à dire, en partant de la racine, le chemin à emprunter pour atteindre ce fichier.</div>
+
+<div class="flex-2 gap">
+    <div>Par exemple, le chemin <script type="c-text">/tmp/foo/faa</script> indique que pour atteindre le fichier <script type="c-text">faa</script>, il faudra :
+        <ol>
+            <li>partir de la racine <script type="c-text">/</script>.</li>
+            <li>aller dans le dossier <script type="c-text">tmp</script>.</li>
+            <li>aller dans le dossier <script type="c-text">foo</script>.</li>
+            <li>pour enfin atteindre <script type="c-text">faa</script>.</li>
+        </ol>
+    </div>
+<div class="terminal">
+<pre>
+<font color="#0039AA"><b>📂 /</b></font>
+<font color="#8A8A8A">└── </font><font color="#0039AA"><b>📂 tmp</b></font>
+    <font color="#8A8A8A">└── </font><font color="#0039AA"><b>📂 foo</b></font>
+        <font color="#8A8A8A">├── </font>📄 faa
+        <font color="#8A8A8A">├── </font><font color="#0039AA"><b>📂 fee</b></font>
+        <font color="#8A8A8A">└── </font>📄 fuu</pre>
+</div>
+</div>
+</div>
+
+<div class="hint">Par convention, lorsque le chemin désigne un dossier, on le suffixera par <script type="c-text">/</script>, e.g. <script type="c-text">/tmp/foo/fee/</script>.</div>
+
+<h3>Répertoire de travail</h3>
+
+
+
+<h2>+ tard</h2>
+
+<h3>Commandes TUI</h3>
+
+<div>Il est aussi possible de lancer des applications TUI dans le terminal par le biais de commandes Shell. Par exemple, la commande <script type="c-bash">nano</script> lance un éditeur de texte dans le terminal :
+    <div class="flex-2">
+        <script type="c-shell">
+            > nano
+        </script>
+        <div class="center">
+            <img src="./assets/nano.png"/><br/>
+            <i>Raccourcis claviers indiqués en bas de la fenêtre.</i>
+        </div>
+    </div>
+</div>
+
+<div>Lorsqu'une commande s'exécute, elle prend le contrôle du terminal (clavier et écran). Le Shell ne reprend le contrôle du terminal qu'une fois son exécution terminée. Ainsi, pour revenir au Shell et entrer de nouvelles commandes, il faudra tout d'abord quitter l'application TUI.</div>
+
+<div class="hint">Les interfaces TUI sont moins "standard", mais sont plus ergonomiques. Afin de faciliter votre apprentissage, nous essayerons de proposer des alternatives TUI ergonomiques lorsque possible.</div>
+
+<h3>Usage du terminal</h3>
+
+<h4>Clavier/Souris</h4>
+
+<div>Le terminal reste compatible avec des sorties imprimantes : il reçoit les caractères de manière séquentielle, et les affiche les uns après les autres, ligne par ligne. Il intègre toutefois un mécanisme de défilement qui maintient à l'écran les dernières lignes écrites. Il conserve également un historique des lignes affichées, que l'on peut naviguer à l'écran à l'aide d'une barre de défilement.</div>
+
+<div>Les raccourcis claviers du terminal sont préfixés par la touche majuscule (<script type="c-text">⇧</script>), permettant d'indiquer qu'ils doivent être interprétés par le terminal, au lieu d'être envoyés à la commande en cours d'exécution (ou au Shell). Le terminal permet par exemple de sélectionner un texte, puis de le copier/coller :
+    <ul>
+        <li><i>au clavier :</i> copier (<script type="c-text">⇧+^+C</script>) et coller (<script type="c-text">⇧+^+V</script>).</li>
+        <li><i>à la souris :</i> clic-milieu ou clic-molette pour coller le texte sélectionné.</li>
+    </ul>
+</div>
+
+<div class="danger">Attention à ne pas oublier la touche majuscule pour la copie. En effet, <script type="c-text">^+C</script> arrête la commande en cours d'exécution.</div>
+
+<h4>Caractères de contrôle</h4>
+
+<todo>Animation ?</todo>
+
+<div>Le terminal est contrôlé par le biais de caractères de contrôle non-imprimables, transmis dans le même flux que les caractères à afficher. Ces caractères permettent alors d'effacer l'écran, déplacer le curseur, changer la couleur du texte, etc.</div>
+
+<div>Certaines commandes Shell envoient des caractères de contrôle au terminal, comme :
+<ul class="flex-2">
+    <li><script type="c-bash">clear</script> : efface l'écran.</li>
+    <li><script type="c-bash">reset</script> : réinitialise le terminal.</li>
+</ul>
+</div>
+
+<div class="hint">La commande <script type="c-bash">exit</script> quitte le Shell actuel. Si celui-ci est associé à un terminal graphique, son arrêt entraîne généralement la fermeture du terminal.</div>
+
+<h4>Buffer alternatif</h4>
+
+<div>Le Shell et les commandes n'écrivent pas directement sur l'écran du terminal, mais dans un <b>tampon</b> (<i>buffer</i>) qui est ensuite affiché à l'écran par le terminal. Le terminal dispose en réalité de deux buffers :
+    <ul>
+        <li>le buffer <b>principal</b> : utilisé par le Shell et les commandes CLI.</li>
+        <li>le buffer <b>alternatif</b> : utilisé par les commandes TUI.</li>
+    </ul>
+</div>
+
+<div>Pour faire une analogie, imaginez deux imprimantes indépendantes dont une seule est affichée à l'écran. L'intérêt est alors, lorsqu'on quitte une application TUI, de retrouver l'écran tel qu'il était avant son lancement. Pour cela, l'application TUI écrit sur l'écran via le buffer alternatif, qu'on affiche à l'écran. Lorsqu'on quitte l'application TUI, on affiche alors le buffer principal, qui n'aura pas été modifié. On retrouve donc l'écran tel qu'il était avant le lancement de l'application TUI.</div>
+
+<h2>[OLD] Interagir avec le poste de travail</h2>
 
 <h3>Le terminal</h3>
-
-<h4>Shell vs Terminal</h4>
-
-<ul>
-    <li>Le <b>Shell</b> est le programme qui va <b>interpréter</b> et <b>exécuter</b> les lignes de commandes que vous écrirez.</li>
-    <li>Le <b>Terminal</b> (ou <i>console</i>) est l'interface graphique qui permet de faire le lien entre l'utilisateur et le Shell. Il vous permet d'écrire des <i>lignes de commandes</i> qui seront envoyées au Shell, puis d'en visualiser le résultat.</li>
-</ul>
-
-<div>🕮 Historiquement, les premiers ordinateurs avaient la taille d'une pièce (e.g. 160m²). Des consoles constituées d'un clavier et d'un écran permettaient d’interagir avec l'ordinateur (mainframe). Vous pouvez voir le shell comme le mainframe, et le terminal comme la console permettant d'interagir avec le mainframe.</div>
 
 <h4>Utilisation du terminal</h4>
 
@@ -82,34 +389,6 @@
 </div>
 
 <h3>Le Shell</h3>
-
-<h4>La ligne de commande</h4>
-
-<div>Une ligne de commande est une manière de formuler, par le biais d'une ligne de texte, une instruction à exécuter. Elle est assimilable à l'appel d'une fonction, avec :
-    <ul>
-        <li>une <b>commande</b> à exécuter (≈ une fonction à exécuter) ;</li>
-        <li>des <b>arguments</b> passés en paramètres de la commande.</li>
-    </ul>
-</div>
-
-<div>Quand l'ordinateur interprète une ligne de commande, il exécute la commande indiquée par le premier élément, en lui transmettant les arguments sous la forme d'une liste de chaînes de caractères.</div>
-
-<div>🕮 Les <b>arguments</b> sont les <i>valeurs</i> qu'on transmets (appel) aux <b>paramètres</b> d'une commande/fonction (définition).</div>
-
-<div>⚠ Sa syntaxe est différente des appels de fonction dont vous avez l'habitude en R ou en Python. En effet, les différents éléments ne sont pas séparés par une virgule, mais par un espace :
-    <ul class="flex-2">
-        <li><i>Fonction python :</i> <script type="c-python">foo(1, 2, 3)</script> ;</li>
-        <li><i>Ligne de commande :</i> <script type="c-bash">foo 1 2 3</script>.</li>
-    </ul>
-</div>
-<div>
-⚠ Quand un argument inclus un espace, il convient de le mettre entre guillemets simples ou de l'échapper :
-    <ul class="flex-3">
-        <li><script type="c-bash">foo 'a b'</script></li>
-        <li><script type="c-bash">foo a' 'b</script></li>
-        <li><script type="c-bash">foo c\ d</script></li>
-    </ul>
-</div>
 
 <h4>L'invite de commande</h4>
 
@@ -150,73 +429,7 @@
 
 <div>💡 Les interfaces TUI sont moins "standard", mais sont plus ergonomiques. Afin de faciliter votre apprentissage, nous essayerons de proposer des alternatives ergonomique lorsque possible.</div>
 
-<h3>Lire la documentation</h3>
-
-<div>La documentation s'utilise très simplement :
-    <ol>
-        <li><b>recopier</b> la structure de la commande souhaitée ;</li>
-        <li><b>remplacer</b> les encadrés <script type="c-text"><h>$VAR</h></script> par la valeur souhaitée.</li>
-    </ol>
-</div>
-
-<div>Nous utilisons les notations suivantes :
-<ul>
-    <li><script type="c-text"><h>$VAR...</h></script>/<script type="c-text"><h>$VAR,...</h></script>/<script type="c-text"><h>$VAR;...</h></script> : accepte une liste de valeurs séparées par un espace/virgule/point virgule.</li>
-    <li><script type="c-text"><h>[$VAR]</h></script> : l'argument est facultatif.</li>
-    <li><script type="c-text"><h>A|B</h></script> : indique une alternative.</li>
-</ul></div>
-
-<div>
-    <table>
-        <thead>
-            <tr>
-                <th>Structure</th>
-                <th>Exemple</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><script type="c-bash">cmd <h>$SRC</h> <h>$DST</h></script></td>
-                <td><script type="c-bash">cmd <h>foo</h> <h>faa</h></script></td>
-            </tr>
-            <tr>
-                <td><script type="c-bash">cmd <h>$SRC</h> <h>[$DST]</h></script></td>
-                <td><script type="c-bash">cmd <h>foo</h></script></td>
-            </tr>
-            <tr>
-                <td><script type="c-bash">cmd <h>$SRC...</h> <h>$DST</h></script></td>
-                <td><script type="c-bash">cmd <h>foo fii fuu</h> <h>faa</h></script></td>
-            </tr>
-            <tr>
-                <td><script type="c-bash">cmd <h>$SRC,...</h> <h>$DST</h></script></td>
-                <td><script type="c-bash">cmd <h>foo,fii,fuu</h> <h>faa</h></script></td>
-            </tr>
-            <tr>
-                <td><script type="c-bash">cmd <h>A|B</h></script></td>
-                <td><script type="c-bash">cmd <h>A</h></script></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
 <h3>Quelques commandes utiles</h3>
-
-<h4>La documentation</h4>
-
-<ul>
-    <li><script type="c-bash">type -t <h>$CMD</h></script> : affiche le type de la commande <script type="c-bash"><h>$CMD</h></script>.</li>
-    <li><script type="c-bash">help <h>$CMD</h></script> : affiche la documentation de la commande <script type="c-bash"><h>$CMD</h></script> (si son type est <script type="c-text">keyword</script> ou <script type="c-text">builtin</script>).</li>
-    <li><script type="c-bash">man <h>$CMD</h></script> : affiche la documentation de la commande <script type="c-bash"><h>$CMD</h></script> (si son type est <script type="c-text">file</script>).</li>
-    <li><script type="c-bash">tldr <h>$CMD</h></script> : une version simplifée de <script type="c-bash">man <h>$CMD</h></script> et <script type="c-bash">help <h>$CMD</h></script>.</li>
-</ul>
-
-<h4>Le terminal</h4>
-
-<ul>
-    <li><script type="c-bash">clear</script> : efface le contenu du terminal.</li>
-    <li><script type="c-bash">reset</script> : réinitialise le terminal.</li>
-    <li><script type="c-bash">exit</script> : quitte le Shell actuel.</li>
-</ul>
 
 <h4>L'historique</h4>
 
@@ -227,6 +440,7 @@
 </ul>
 
 <h2>Les fichiers</h2>
+
 
 <h3>Manipuler les fichiers</h3>
 
@@ -249,8 +463,6 @@
     </ul>
 </div>
 
-<div>⚠ Les fichiers supprimés via <script type="c-bash">rm</script> ne sont pas placés dans la corbeille et sont donc supprimés <b>définitivement</b>.<br/>
-À la place, il est ainsi recommandé d'utiliser la commande <script type="c-bash">trash <h>$FILE...</h></script> afin de déplacer les fichiers dans la corbeille.</div>
 
 <h4>Éditer un fichier</h4>
 
@@ -262,27 +474,6 @@
 </div>
 
 <h3>Les chemins</h3>
-
-<h4>Chemin absolu</h4>
-
-<div>Sous Linux tous les fichiers sont, directement ou indirectement, contenus dans le dossier <b>racine</b> (<i>root directory</i>), noté <script type="c-text">/</script> :
-<div class="terminal">
-<pre>
-<font color="#0039AA"><b>📂 /</b></font>
-<font color="#8A8A8A">└── </font><font color="#0039AA"><b>📂 tmp</b></font>
-    <font color="#8A8A8A">└── </font><font color="#0039AA"><b>📂 foo</b></font>
-        <font color="#8A8A8A">├── </font>📄 faa
-        <font color="#8A8A8A">├── </font><font color="#0039AA"><b>📂 fee</b></font>
-        <font color="#8A8A8A">├── </font>📄 fii
-        <font color="#8A8A8A">└── </font>📄 fuu</pre>
-</div>
-</div>
-
-<div>Le <b>chemin absolu</b> (<i>absolute path</i>) identifie alors un fichier par son emplacement par rapport à la <b>racine</b>, i.e. en partant de la racine, le chemin à emprunter pour atteindre ce fichier. Ainsi, pour atteindre le fichier <script type="c-text">faa</script>, il faudra partir de la racine <script type="c-text">/</script>, puis aller dans les dossiers <script type="c-text">tmp</script>, puis <script type="c-text">foo</script>, pour enfin atteindre <script type="c-text">faa</script>, donnant ainsi le chemin absolu : <script type="c-text">/tmp/foo/faa</script>.</div>
-
-<div>💡 Par convention, lorsque le chemin désigne un dossier, on le suffixera par <script type="c-text">/</script>, e.g. <script type="c-text">/tmp/foo/fee/</script>.</div>
-
-<div>⚠ Lorsque vous utilisez un chemin absolu dans vos scripts, il n'y a aucune garantie que le fichier visé soit placé exactement au même endroit d'un ordinateur à l'autre. Il convient ainsi d'éviter les chemins absolus dans vos scripts.</div>
 
 <h4>Chemin relatif</h4>
 
@@ -323,19 +514,6 @@
 
 <h3>Arborescence</h3>
 
-<h4>Arborescence Linux</h4>
-
-<div>
-Les fichiers sous Linux sont usuellement organisés de la sorte :
-    <script type="c-bash">
-        📂 /
-        ├── 📂 home  # contient les dossiers personnels des utilisateurs.
-        ├── 📂 mnt   # contient les volumes montés (e.g. partition Windows)
-        ├── 📂 media # contient les volumes éjectables (e.g. clef USB)
-        ├── 📂 tmp   # contient les fichiers temporaires (supprimés au redémarrage).
-        ...
-    </script>
-</div>
 
         </main>
     </body>
